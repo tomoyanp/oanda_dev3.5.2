@@ -1,0 +1,43 @@
+DBの名前 　oanda_db
+ユーザ   　 tomoyan/tomoyan180
+
+通貨価格　管理テーブル GBP_JPY_TABLE
+----------------------------------------------------------------------------------------------------------
+|col_name | id                              | ask_price | bid_price | insert_time                        |
+----------------------------------------------------------------------------------------------------------
+|type     | BIGINT                          | double    | double    | TIMESTAMP                          |
+|option   | not null default auto_increment |           |           | not null default current_timestamp |
+
+
+取引管理テーブル transaction_table
+ -> 決済したら、settlement_price、settlement_time、flagを更新する
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+|col_name | order_id | instrument | execution_price | settlment_price | regression_value | execution_time            | settlement_time | flag            |
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+|type     | BIGINT   | VARCHAR    | VARCHAR         | VARCHAR         | VARCHAR          | TIMESTAMP                 | TIMESTAMP       | VARCHAR         |
+|option   | not null |            |                 |                 |                  | default current_timestamp |                 | default 'FALSE' |
+
+
+
+sql> desc INDICATOR_TABLE
+    -> ;
++-------------+-----------+------+-----+-------------------+-----------------------------+
+| Field       | Type      | Null | Key | Default           | Extra         |
++-------------+-----------+------+-----+-------------------+-----------------------------+
+| id          | int(11)   | NO   | PRI | NULL              | auto_increment         |
+| instrument  | char(10)  | NO   | MUL | NULL              |         |
+| type        | char(20)  | NO   |     | NULL              |         |
+| upper_sigma | double    | YES  |     | NULL              |         |
+| lower_sigma | double    | YES  |     | NULL              |         |
+| base_line   | double    | YES  |     | NULL              |         |
+| slope       | double    | YES  |     | NULL              |         |
+| ewma_value  | double    | YES  |     | NULL              |         |
+| high_price  | double    | YES  |     | NULL              |         |
+| low_price   | double    | YES  |     | NULL              |         |
+| insert_time | timestamp | NO   | MUL | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
++-------------+-----------+------+-----+-------------------+-----------------------------+
+11 rows in set (0.00 sec)
+
+mysql>
+            # 移動平均の取得(WMA200 1h)

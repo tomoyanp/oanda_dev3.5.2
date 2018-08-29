@@ -64,16 +64,12 @@ class TradeWrapper:
         else:
             if base_time.second >= 50:
                 balance = self.oanda_wrapper.getBalance()
-                #print "balance=%s" % balance
                 balance = balance * 0.7 * 20
                 #balance = balance * 0.2 * 20
-                #print "revalege balance=%s" % balance
                 units = balance / current_price
-                #print "simple units=%s" % units
                 tmp = int(units / 1000)
                 units = int(tmp * 1000)
                 self.oanda_wrapper.setUnit(units)
-                #print "units=%s" % units
                 #self.debug_logger.info("units=%s" % units)
 
     def setTradeAlgo(self, algo, base_time):

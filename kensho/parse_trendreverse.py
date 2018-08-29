@@ -51,7 +51,6 @@ upper_sigma_list = []
 for elm in out:
     upper_sigma_list.append(elm.split("=")[1].strip())
 
-print upper_sigma_list
 
 cmd = "cat %s | grep lower_sigma" % filename
 out = commands.getoutput(cmd)
@@ -60,7 +59,6 @@ lower_sigma_list = []
 for elm in out:
     lower_sigma_list.append(elm.split("=")[1].strip())
 
-print lower_sigma_list
 
 for i in range(0, len(profit_list)):
   algo = algo_list[i].split(" ")[2]
@@ -84,7 +82,6 @@ for i in range(0, len(profit_list)):
 
   difference_sigma = float(upper_sigma_list[i]) - float(lower_sigma_list[i])
 
-  print order_time + "," + settle_time + "," + str(difference_time.total_seconds()) + "," + algo + "," + side + "," + profit + "," + str(difference_sigma)
-#  print algo_list[i].split(" ")[2], profit_list[i].split(" ")[2]
+  print(order_time + "," + settle_time + "," + str(difference_time.total_seconds()) + "," + algo + "," + side + "," + profit + "," + str(difference_sigma))
  
 write_file.close()

@@ -50,7 +50,6 @@ class DbCache(threading.Thread):
         start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
         end_time = base_time.strftime("%Y-%m-%d %H:%M:%S")
         sql = "select ask_price, bid_price, insert_time from %s_TABLE group by insert_time having insert_time > \'%s\' and insert_time < \'%s\' order by insert_time" % (self.instrument, start_time, end_time)
-        print sql
         return sql
 
     def getAddSql(self, base_time):
@@ -75,23 +74,17 @@ class DbCache(threading.Thread):
 
         if len(self.ask_price_list) < 1:
             sql = self.getInitialSql(base_time)
-            print sql
             response = self.mysqlConnector.select_sql(sql)
             self.setResponse(response)
         else:
             cmp_time = self.insert_time_list[len(self.insert_time_list)-1]
-            print cmp_time
-            print type(cmp_time)
-            #cmp_time = datetime.strptime(cmp_time, "%Y-%m-%d %H:%M:%S")
             cmp_time = cmp_time + timedelta(seconds=5)
             if cmp_time < base_time:
                 sql = self.getInitialSql(base_time)
-                print sql
                 response = self.mysqlConnector.select_sql(sql)
                 self.setResponse(response)
             else:
                 sql = self.getAddSql(base_time)
-                print sql
                 response = self.mysqlConnector.select_sql(sql)
                 self.addResponse(response)
         logging.info(sql)

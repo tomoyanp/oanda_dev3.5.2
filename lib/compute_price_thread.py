@@ -42,7 +42,6 @@ class ComputePriceThread(threading.Thread):
             before_start_time = before_start_day.strftime("%Y-%m-%d 07:00:00")
 
         sql = "select max(ask_price), max(bid_price) from %s_TABLE where insert_time > \'%s\' and insert_time < \'%s\'" % (self.instrument, before_start_time, before_end_time)
-        #print sql
         response = self.mysql_connector.select_sql(sql)
 
         for res in response:
@@ -52,7 +51,6 @@ class ComputePriceThread(threading.Thread):
         hi_price = (ask_price + bid_price)/2
 
         sql = "select min(ask_price), min(bid_price) from %s_TABLE where insert_time > \'%s\' and insert_time < \'%s\'" % (self.instrument, before_start_time, before_end_time)
-        #print sql
         response = self.mysql_connector.select_sql(sql)
 
         for res in response:
@@ -110,7 +108,6 @@ class ComputePriceThread(threading.Thread):
         polling_time = 3600
         cmp_object = self.indicator_object.getHighLowPriceDataset()
         if self.calculatePollingTime(base_time, cmp_object, polling_time):
-            print "NOOOOOOOOOOOOOOOOOOOOOOO"
             # 前日高値、安値の計算
             high_price, low_price = self.getHiLowPriceBeforeDay(base_time)
             self.indicator_object.setHighLowPriceDataset(high_price, low_price, base_time)
@@ -145,22 +142,13 @@ class ComputePriceThread(threading.Thread):
         self.indicator_object.setEwma200_5mDataset(ewma200, base_time)
 
     def run(self):
-        print "thread start"
         for i in range(0, 100):
-            #print "thread start"
 #        while True:
             base_time = self.getBaseTime()
-            #print base_time
-            #print "=========================="
-            #print "base_time = %s" % base_time
-            #print "old_base_time = %s" % self.old_base_time
             if self.old_base_time < base_time:
-                print base_time
                 if decideMarket(base_time):
                     self.setPrice(base_time)
                     self.setIndicator(base_time)
                 self.old_base_time = base_time
             else:
                 pass
-            #print "thread end"
-        print "thread end"

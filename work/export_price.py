@@ -32,7 +32,6 @@ if __name__ == "__main__":
         end_time = "%s 23:59:59" % target_day
 
         sql = u"select * from %s_TABLE where insert_time > \'%s\' and insert_time < \'%s\'" % (currency, start_time, end_time)
-        print sql
         response = con.select_sql(sql)
         filename = "%s/csv/%s_export_%s.csv" % (current_path, currency, target_day)
         target_file = open(filename, "w")

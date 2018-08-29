@@ -19,7 +19,6 @@ class SetPriceThread(threading.Thread):
         while True:
             index = index + 1 
             self.base_time = self.price_object.getBaseTime()
-            print self.base_time
             self.price_object.setData(index) 
             time.sleep(0.1)
       

@@ -273,7 +273,6 @@ class API(EndpointsMixin, object):
             response = func(url, **request_args)
             content = response.content.decode('utf-8')
         except requests.RequestException as e:
-            print (str(e))
             content = dict(error=str(e))
 
 

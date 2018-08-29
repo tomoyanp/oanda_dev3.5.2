@@ -72,16 +72,12 @@ while start_time < end_time:
                 bid_price = candle["openBid"]
                 sql = u"insert into %s_TABLE(ask_price, bid_price, insert_time) values(%s, %s, \'%s\')" % (instrument, ask_price, bid_price, insert_time)
                 #mysql_connector.insert_sql(sql)
-                print sql
-            print "============================================================="
             start_time =  insert_time
     
         else:
-            print "response length <= 0"
 
     except Exception as e:
-        print e
+        print(e)
 
-    print type(start_time)
     start_time = start_time + timedelta(seconds=5)
 

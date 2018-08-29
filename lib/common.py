@@ -17,7 +17,6 @@ def account_init(mode, base_path):
     property_path = "%s/property" % base_path
     property_file = open("%s/account.properties" % property_path, "r")
     jsonData = json.load(property_file)
-    print jsonData
     account_data = jsonData[mode]
     return account_data
 
@@ -156,39 +155,12 @@ def getSlope(target_list):
 
     price_list = np.array(target_list)
     index_list = np.array(index_list)
-    #print index_list
 
     z = np.polyfit(index_list, price_list, 1)
     slope, intercept = np.poly1d(z)
 
     return slope
 
-
-
-#def getSlope(target_list):
-#    index_list = []
-#    tmp_list = []
-#    index = 60
-#
-#    for i in range(0, len(target_list)):
-#        if i % index == 0:
-#            tmp_list.append(target_list[i])
-#
-#    target_list = tmp_list
-#    length = len(target_list) * 10
-#    #length = len(target_list)
-#    for i in range(1, len(target_list)+1):
-#        val = float(i)/float(length)
-#        index_list.append(val)
-#
-#    price_list = np.array(target_list)
-#    index_list = np.array(index_list)
-#    #print index_list
-#
-#    z = np.polyfit(index_list, price_list, 1)
-#    slope, intercept = np.poly1d(z)
-#
-#    return slope
 
 # trendcheckとかの補助的な計算は毎回やる必要ないので
 # ここでindex形式でスリープさせる
@@ -206,8 +178,6 @@ def countIndex(index, candle_width):
 def sleepTransaction(sleep_time, test_mode, base_time):
     sleep_time = int(sleep_time)
     if test_mode:
-        print "NO SLEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEP"
-        print "SLEEP TIME = %s" % sleep_time
         base_time = base_time + timedelta(seconds=sleep_time)
     else:
         time.sleep(sleep_time)

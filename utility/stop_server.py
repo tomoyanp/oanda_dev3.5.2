@@ -71,7 +71,7 @@ def stop_service(process):
     
             pid_list.append(proc[1].strip())
     
-        print pid_list
+        print(pid_list)
     
     #    for pid in pid_list:
     #        pid_list.append(pid[1].strip())
@@ -134,7 +134,7 @@ if __name__ == '__main__':
         exec_cmd(cmd)
 
     except:
-        print traceback.format_exc()
+        print(traceback.format_exc())
         message = traceback.format_exc()
         sendmail.set_msg(message)
         sendmail.send_mail()

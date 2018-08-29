@@ -42,9 +42,7 @@ class OandaWrapper:
                 )
 
                 time.sleep(5)
-                print response
                 if len(response) > 0:
-                    print "ordered"
                     break
             return response
         except Exception as e:
@@ -60,9 +58,7 @@ class OandaWrapper:
                 )
 
                 time.sleep(5)
-                print response
                 if len(response) > 0:
-                    print "modify_trade"
                     break
             return response
         except Exception as e:
@@ -72,13 +68,10 @@ class OandaWrapper:
         response = self.oanda.get_positions(self.account_id)
         order_flag = False
         length = len(response["positions"])
-        print length
         if length > 0:
             for i in range(0, len(response["positions"])):
                 position_inst = response["positions"][i]["instrument"]
-                print position_inst
                 if position_inst == instrument:
-                    print "Order exists"
                     order_flag = True
 
         return order_flag
@@ -116,9 +109,6 @@ class OandaWrapper:
 
     def close_trade(self, trade_id):
         try:
-            #response = self.oanda.get_trades(self.account_id)
-            #print response
-            #trade_id = response["trades"][0]["id"]
             response = self.oanda.close_trade(self.account_id, trade_id)
             return response
 

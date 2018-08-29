@@ -49,4 +49,4 @@ if __name__ == "__main__":
                 time.sleep(polling_time)
 
         except Exception as e:
-            print e.args
+            print(e.args)

@@ -46,14 +46,11 @@ if __name__ == "__main__":
                     insert_time = insert_time.strftime("%Y-%m-%d %H:%M:%S")
                     sql = u"select ask_price, bid_price, insert_time from %s_TABLE where insert_time = \'%s\'" % (currency, insert_time)
                     response = con.select_sql(sql)
-                    print sql
-                    print response
                     for res in response:
                       ask_price = res[0]
                       bid_price = res[1]
                       insert_time = res[2]
                     base_time = base_time.strftime("%Y-%m-%d %H:%M:%S")
-                    print base_time
                     sql = u"insert into %s_TABLE(ask_price, bid_price, insert_time) values(%s, %s, \'%s\')" % (currency, ask_price, bid_price, base_time)
                     con.insert_sql(sql)
                     base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
@@ -66,4 +63,4 @@ if __name__ == "__main__":
                 break
 
     except Exception as e:
-        print e.args
+        print(e.args)

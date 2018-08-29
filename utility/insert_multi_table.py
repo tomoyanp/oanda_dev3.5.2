@@ -38,16 +38,6 @@ def insertTable(base_time, currency, connector, table_type, span):
     min_price = (min(ask_price_list) + min(bid_price_list)) / 2
     target_time = base_time - timedelta(seconds=(span-1))
 
-    print "==================="
-    print "table_type=%s" % table_type
-    print "base_time=%s" % base_time
-    print "target_time=%s" % target_time
-    print "start_price=%s" % start_price
-    print "end_price=%s" % end_price
-    print "max_price=%s" % max_price
-    print "min_price=%s" % min_price
-
-
     sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, insert_time) values(%s, %s, %s, %s, \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, target_time)
     connector.insert_sql(sql)
 
@@ -103,4 +93,4 @@ if __name__ == "__main__":
                 break
 
         except Exception as e:
-            print e.args
+            print(e.args)

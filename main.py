@@ -74,8 +74,6 @@ if __name__ == '__main__':
 
     try:
       while True:
-          print "test mode = %s" % test_mode
-          print "base_time = %s" % base_time
           if test_mode:
               pass
           else:

@@ -26,14 +26,11 @@ while True:
     if decideMarket(target_time):
         trend_time_width = 5
         instrument = "GBP_JPY"
-        #sql = "select base_line from INDICATOR_TABLE where instrument = \'%s\' and type = \'bollinger1h3\' and insert_time <= \'%s\' order by insert_time desc limit 5" % (instrument, target_time)
         sql = "select ask_price from %s_TABLE where insert_time <= \'%s\' and insert_time like \'%%59:59\' order by insert_time desc limit 10" % (instrument, target_time)
-        print sql
         
         response = mysqlConnector.select_sql(sql)
         base_line_list = []
         for res in response:
-            print res
             base_line_list.append(res[0])
 
         base_line_list.reverse()

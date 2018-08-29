@@ -49,6 +49,4 @@ if __name__ == "__main__":
         base_time = base_time + timedelta(seconds=i) 
         thread.setBaseTime(base_time)
         price_list = price_object.getPriceList()
-        print price_list
-        print "================================"
 

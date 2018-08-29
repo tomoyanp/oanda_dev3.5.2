@@ -21,7 +21,6 @@ while True:
         trend_time_width = int(trend_time_width)
         before_time = target_time - timedelta(hours=trend_time_width)
         sql = "select ask_price from %s_TABLE where insert_time > \'%s\' and insert_time < \'%s\'" % (instrument, before_time, target_time)
-        print sql
         
         response = mysqlConnector.select_sql(sql)
         if len(response) > 1:
@@ -35,7 +34,6 @@ while True:
             
             price_list = np.array(price_list)
             index_list = np.array(index_list)
-            print price_list
             z = np.polyfit(index_list, price_list, 3)
             a, b, c, d = np.poly1d(z)
             

@@ -16,4 +16,3 @@ while True:
     time.sleep(1)
     price_object.setBaseTime(now)
     data = price_object.getData()
-    print data

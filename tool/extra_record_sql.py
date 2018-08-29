@@ -57,7 +57,7 @@ while start_time < end_time:
                 granularity="S5"
             )
         except ValueError as e:
-            print e
+            print(e)
     
         if len(response) > 0:
             instrument = response["instrument"]
@@ -67,20 +67,17 @@ while start_time < end_time:
                 time = time.split(".")[0]
                 insert_time = datetime.strptime(time, "%Y-%m-%dT%H:%M:%S")
                 insert_time = insert_time + timedelta(hours=9)
-                print candle
                 ask_price = candle["openAsk"]
                 bid_price = candle["openBid"]
                 sql = u"insert into %s_TABLE(ask_price, bid_price, insert_time) values(%s, %s, \'%s\');" % (instrument, ask_price, bid_price, insert_time)
                 sql_file.write("%s\n" % sql)
-                print sql
-            print "============================================================="
             start_time = insert_time
     
         else:
-            print "response length <= 0"
+            print("response length <= 0")
 
     else:
-        print "Market closed %s" % start_time
+        print("Market closed %s" % start_time)
 
     start_time = start_time + timedelta(seconds=5)
 

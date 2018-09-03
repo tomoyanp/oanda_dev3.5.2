@@ -1,10 +1,10 @@
 import re
-import commands
+import subprocess
 from datetime import datetime
 import time
 
 
-file_list = commands.getoutput("ls *.result")
+file_list = subprocess.getoutput("ls *.result")
 file_list = file_list.split("\n")
 
 import sys
@@ -14,38 +14,38 @@ filename = sys.argv[1].strip()
 write_file = open("%s.parse" % filename, "a")
 write_file.write("# %s\n" % filename)
 cmd = "cat %s | grep Algorithm" % filename
-out = commands.getoutput(cmd)
+out = subprocess.getoutput(cmd)
 out = out.split("\n")
 
 algo_list = out
 
 cmd = "cat %s | grep \"EXECUTE ORDER\"" % filename
-out = commands.getoutput(cmd)
+out = subprocess.getoutput(cmd)
 out = out.split("\n")
 
 order_list = out
 
 cmd = "cat %s | grep \"EXECUTE SETTLE\"" % filename
-out = commands.getoutput(cmd)
+out = subprocess.getoutput(cmd)
 out = out.split("\n")
 
 settle_list = out
 
 cmd = "cat %s | grep PROFIT | grep -v STL" % filename
-out = commands.getoutput(cmd)
+out = subprocess.getoutput(cmd)
 out = out.split("\n")
 
 profit_list = out
 
 
 cmd = "cat %s | grep TRADE_FLAG" % filename
-out = commands.getoutput(cmd)
+out = subprocess.getoutput(cmd)
 out = out.split("\n")
 
 flag_list = out
 
 cmd = "cat %s | grep upper_sigma" % filename
-out = commands.getoutput(cmd)
+out = subprocess.getoutput(cmd)
 out = out.split("\n")
 upper_sigma_list = []
 for elm in out:
@@ -53,7 +53,7 @@ for elm in out:
 
 
 cmd = "cat %s | grep lower_sigma" % filename
-out = commands.getoutput(cmd)
+out = subprocess.getoutput(cmd)
 out = out.split("\n")
 lower_sigma_list = []
 for elm in out:

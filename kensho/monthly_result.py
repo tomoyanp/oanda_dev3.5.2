@@ -1,9 +1,9 @@
 import re
-import commands
+import subprocess
 from datetime import datetime
 
 
-file_list = commands.getoutput("ls *.result")
+file_list = subprocess.getoutput("ls *.result")
 file_list = file_list.split("\n")
 
 for rf in file_list:
@@ -12,12 +12,12 @@ for rf in file_list:
   write_file = open("%s_monthly_export.txt" % rf, "a")
   write_file.write("# %s\n" % rf)
   cmd = "cat %s | grep PROFIT| grep -v STL" % rf
-  out = commands.getoutput(cmd)
+  out = subprocess.getoutput(cmd)
   out = out.split("\n")
 
 
   cmd = "cat %s | grep EXECUTE|grep SETTLE" % rf
-  stl_day = commands.getoutput(cmd)
+  stl_day = subprocess.getoutput(cmd)
   stl_day = stl_day.split("\n")
 
   profit = 0

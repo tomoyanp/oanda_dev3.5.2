@@ -1,8 +1,8 @@
 import re
-import commands
+import subprocess
 
 
-file_list = commands.getoutput("ls *.log")
+file_list = subprocess.getoutput("ls *.log")
 file_list = file_list.split("\n")
 
 for rf in file_list:
@@ -12,7 +12,7 @@ for rf in file_list:
   write_file.write("#######################\n")
   write_file.write("# %s\n" % rf)
   cmd = "cat %s | grep PROFIT| grep -v STL" % rf
-  out = commands.getoutput(cmd)
+  out = subprocess.getoutput(cmd)
   out = out.split("\n")
 
   for line in out:

@@ -4,7 +4,7 @@ import sys
 import os
 import traceback
 import json
-import commands
+import subprocess
 from datetime import datetime
 
 # 実行スクリプトのパスを取得して、追加
@@ -32,7 +32,7 @@ def exec_cmd(cmd):
     now = datetime.now()
     now = now.strftime("%Y%m%d%H%M%S")
     logging.info("### %s ===> %s" % (now, cmd))
-    out = commands.getoutput(cmd)
+    out = subprocess.getoutput(cmd)
     logging.info("%s" % (out))
     logging.info("==========================================")
     return out

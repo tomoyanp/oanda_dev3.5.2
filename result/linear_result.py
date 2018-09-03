@@ -1,8 +1,8 @@
 import re
-import commands
+import subprocess
 
 
-file_list = commands.getoutput("ls *.log")
+file_list = subprocess.getoutput("ls *.log")
 file_list = file_list.split("\n")
 
 for rf in file_list:
@@ -11,12 +11,12 @@ for rf in file_list:
   write_file = open("%s_linear_export.txt" % rf, "a")
   write_file.write("# %s\n" % rf)
   cmd = "cat %s | grep PROFIT| grep -v STL" % rf
-  out = commands.getoutput(cmd)
+  out = subprocess.getoutput(cmd)
   out = out.split("\n")
 
 
   cmd = "cat %s | grep EXECUTE\ SETTLE" % rf
-  stl_day = commands.getoutput(cmd)
+  stl_day = subprocess.getoutput(cmd)
   stl_day = stl_day.split("\n")
 
   for i in range(0, len(out)):

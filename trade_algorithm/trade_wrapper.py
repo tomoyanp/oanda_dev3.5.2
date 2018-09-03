@@ -15,7 +15,7 @@ from volatility_algo import VolatilityAlgo
 from daytime_algo import DaytimeAlgo
 from oanda_wrapper import OandaWrapper
 from common import instrument_init, account_init
-import commands
+import subprocess
 import time
 from logging import getLogger, FileHandler, DEBUG
 
@@ -112,13 +112,13 @@ class TradeWrapper:
                 pass
 
     def removeOnfile(self):
-        commands.getoutput("rm -f %s/onfile" % self.onfile_path)
+        subprocess.getoutput("rm -f %s/onfile" % self.onfile_path)
 
     def createOnfile(self):
-        commands.getoutput("touch %s/onfile" % self.onfile_path)
+        subprocess.getoutput("touch %s/onfile" % self.onfile_path)
 
     def checkOnfile(self):
-        onfile_exists = commands.getoutput("ls %s/ | wc -l" % self.onfile_path)
+        onfile_exists = subprocess.getoutput("ls %s/ | wc -l" % self.onfile_path)
         onfile_exists = int(onfile_exists)
 
         flag = False

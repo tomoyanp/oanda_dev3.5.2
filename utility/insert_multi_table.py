@@ -15,6 +15,7 @@ from oanda_wrapper import OandaWrapper
 from price_obj import PriceObj
 from datetime import datetime, timedelta
 from common import decideMarket
+from get_indicator import getBollingerDataSet
 import time
 
 
@@ -36,9 +37,52 @@ def insertTable(base_time, currency, connector, table_type, span):
     end_price = (ask_price_list[-1] + bid_price_list[-1]) / 2
     max_price = (max(ask_price_list) + max(bid_price_list)) / 2
     min_price = (min(ask_price_list) + min(bid_price_list)) / 2
-    target_time = base_time - timedelta(seconds=(span-1))
 
-    sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, insert_time) values(%s, %s, %s, %s, \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, target_time)
+    window_size = 21
+    length = 1
+
+    # compute bollinger band
+
+    sigma_valiable = 1
+    data_set = getBollingerDataSet(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
+    uppersigma1 = data_set["upper_sigmas"][-1]
+    lowersigma1 = data_set["lower_sigmas"][-1]
+
+    sigma_valiable = 2
+    data_set = getBollingerDataSet(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
+    uppersigma2 = data_set["upper_sigmas"][-1]
+    lowersigma2 = data_set["lower_sigmas"][-1]
+
+    sigma_valiable = 3
+    data_set = getBollingerDataSet(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
+    uppersigma3 = data_set["upper_sigmas"][-1]
+    lowersigma3 = data_set["lower_sigmas"][-1]
+
+
+    # compute simple moving average
+    window_size = 20
+    data_set = getBollingerDataSet(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
+    sma20 = data_set["base_lines"][-1]
+
+    window_size = 40
+    data_set = getBollingerDataSet(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
+    sma40 = data_set["base_lines"][-1]
+
+    window_size = 80
+    data_set = getBollingerDataSet(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
+    sma80 = data_set["base_lines"][-1]
+
+    window_size = 100
+    data_set = getBollingerDataSet(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
+    sma100 = data_set["base_lines"][-1]
+
+    window_size = 200
+    data_set = getBollingerDataSet(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
+    sma200 = data_set["base_lines"][-1]
+
+
+    target_time = base_time - timedelta(seconds=(span-1))
+    sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, uppersigma1, lowersigma1, uppersigma2, lowersigma2, uppersigma3, lowersigma3, sma20, sma40, sma80, sma100, sma200, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,  \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, uppersigma1, lowersigma1, uppersigma2, lowersigma2, uppersigma3, lowersigma3, sma20, sma40, sma80, sma100, sma200, target_time)
     connector.insert_sql(sql)
 
 if __name__ == "__main__":
@@ -50,9 +94,9 @@ if __name__ == "__main__":
     sleep_time = 3600
 
     if mode == "test":
-        base_time = "2018-06-29 00:00:00"
+        base_time = "2015-02-01 00:00:00"
         base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
-        end_time = "2018-06-30 08:00:00"
+        end_time = "2018-08-01 08:00:00"
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
     else:
         base_time = datetime.now()

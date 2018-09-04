@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 from common import getBollingerDataSet
 
 def getBollingerWrapper(base_time, instrument, table_type, window_size, connector, sigma_valiable, length):
-    sql = "select end_price from %s_%s_TABLE where insert_time < \'%s\' order by insert_time DESC limit %s" % (instrument, table_type, base_time, (window_size+length))
+    sql = "select end_price from %s_%s_TABLE where insert_time < \'%s\' order by insert_time DESC limit %s" % (instrument, table_type, base_time, (window_size+length-1))
     response = connector.select_sql(sql)
     price_list = []
     for res in response:

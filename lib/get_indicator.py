@@ -16,6 +16,7 @@ def getBollingerWrapper(base_time, instrument, table_type, window_size, connecto
     for res in response:
         price_list.append(res[0])
 
+    print(len(price_list))
     price_list.reverse()
     data_set = getBollingerDataSet(price_list, window_size=window_size, sigma_valiable=sigma_valiable)
 

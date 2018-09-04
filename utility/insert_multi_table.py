@@ -47,10 +47,16 @@ def insertTable(base_time, currency, connector, table_type, span):
         uppersigma1 = data_set["upper_sigmas"][-1]
         lowersigma1 = data_set["lower_sigmas"][-1]
 
+        if uppersigma1 != uppersigma1: raise ValueError 
+        if lowersigma1 != lowersigma1: raise ValueError 
+
         sigma_valiable = 2
         data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
         uppersigma2 = data_set["upper_sigmas"][-1]
         lowersigma2 = data_set["lower_sigmas"][-1]
+
+        if uppersigma2 != uppersigma2: raise ValueError 
+        if lowersigma2 != lowersigma2: raise ValueError 
 
         sigma_valiable = 3
         data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
@@ -58,33 +64,48 @@ def insertTable(base_time, currency, connector, table_type, span):
         lowersigma3 = data_set["lower_sigmas"][-1]
 
 
+        if uppersigma3 != uppersigma3: raise ValueError 
+        if lowersigma3 != lowersigma3: raise ValueError 
+
         # compute simple moving average
         window_size = 20
         data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
         sma20 = data_set["base_lines"][-1]
 
+
+        if sma20 != sma20: raise ValueError 
+
         window_size = 40
         data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
         sma40 = data_set["base_lines"][-1]
+
+        if sma40 != sma40: raise ValueError 
 
         window_size = 80
         data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
         sma80 = data_set["base_lines"][-1]
 
+        if sma80 != sma80: raise ValueError 
+
         window_size = 100
         data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
         sma100 = data_set["base_lines"][-1]
 
+        if sma100 != sma100: raise ValueError 
+
         window_size = 200
         data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
         sma200 = data_set["base_lines"][-1]
+
+
+        if sma200 != sma200: raise ValueError 
 
         target_time = base_time - timedelta(seconds=(span-1))
         sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, uppersigma1, lowersigma1, uppersigma2, lowersigma2, uppersigma3, lowersigma3, sma20, sma40, sma80, sma100, sma200, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,  \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, uppersigma1, lowersigma1, uppersigma2, lowersigma2, uppersigma3, lowersigma3, sma20, sma40, sma80, sma100, sma200, target_time)
 
     except Exception as e:
         target_time = base_time - timedelta(seconds=(span-1))
-        sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, uppersigma1, lowersigma1, uppersigma2, lowersigma2, uppersigma3, lowersigma3, sma20, sma40, sma80, sma100, sma200, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,  \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, None, None, None, None, None, None, None, None, None, None, None, target_time)
+        sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, insert_time) values(%s, %s, %s, %s,  \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, target_time)
 
     connector.insert_sql(sql)
 

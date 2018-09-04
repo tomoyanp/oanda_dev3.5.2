@@ -73,6 +73,7 @@ class LstmAlgo(SuperAlgo):
             minutes = base_time.minute
             seconds = base_time.second
             current_price = self.getCurrentPrice()
+            #print(base_time)
 
 
             if hour == 6 and minutes == 0 and seconds < 10:
@@ -272,7 +273,8 @@ class LstmAlgo(SuperAlgo):
 
     def train_save_model(self, base_time):
         window_size = 24 # 24時間単位で区切り
-        learning_span = 24*20 # 1ヶ月分で学習
+        #learning_span = 24*20 # 1ヶ月分で学習
+        learning_span = 24*60 # 3ヶ月分で学習
         output_train_index = 8 # 8時間後をラベルにする
         table_type = "1h"
         figure_filename = "figure_1h.png"
@@ -298,11 +300,11 @@ class LstmAlgo(SuperAlgo):
 
         tmp_result = tmp_result[:,0].astype(np.float32)
         tmp_order = tmp_order[:,0].astype(np.float32)
-        print(tmp_result)
-        print(tmp_order)
+        #print(tmp_result)
+        #print(tmp_order)
 
         output_dataframe_dataset = tmp_result - tmp_order
-        print(output_dataframe_dataset)
+        #print(output_dataframe_dataset)
 
         # 全体で正規化してモデルを取得
         self.normalization_model = self.build_to_normalization(tmp_dataframe)
@@ -313,7 +315,7 @@ class LstmAlgo(SuperAlgo):
         output_normalization_dataset = self.change_to_normalization(self.output_normalization_model, output_dataframe_dataset)
         train_output_dataset = output_normalization_dataset.copy()
 
-        print(output_normalization_dataset)
+        #print(output_normalization_dataset)
 
         # window_sizeで分割する
         train_input_dataset = self.create_train_dataset(train_normalization_dataset, learning_span, window_size)
@@ -357,10 +359,11 @@ class LstmAlgo(SuperAlgo):
         test_predict = self.learning_model.predict(test_input_dataset)
 
         # 正規化戻し＋浮動小数点に戻す
-        result = self.output_normalization_model.inverse_transform(train_output_dataset).tolist()
+        result = self.output_normalization_model.inverse_transform(test_predict).tolist()
         
         print(result)
         print("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result))
+        self.debug_logger.info("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result[0][0]))
 
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):

@@ -14,6 +14,7 @@ from multi_evolv_algo import MultiEvolvAlgo
 from volatility_algo import VolatilityAlgo
 from daytime_algo import DaytimeAlgo
 from oanda_wrapper import OandaWrapper
+from lstm_algo import LstmAlgo
 from common import instrument_init, account_init
 import subprocess
 import time
@@ -87,6 +88,8 @@ class TradeWrapper:
             self.trade_algo = MultiAlgo(self.instrument, self.base_path, self.config_name, base_time)
         elif algo == "volatility":
             self.trade_algo = VolatilityAlgo(self.instrument, self.base_path, self.config_name, base_time)
+        elif algo == "lstm":
+            self.trade_algo = LstmAlgo(self.instrument, self.base_path, self.config_name, base_time)
         else:
             self.trade_algo = HiLowAlgo(self.instrument, self.base_path, self.config_name, base_time)
 

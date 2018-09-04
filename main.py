@@ -11,6 +11,7 @@ sys.path.append(current_path)
 sys.path.append(current_path + "/trade_algorithm")
 sys.path.append(current_path + "/obj")
 sys.path.append(current_path + "/lib")
+sys.path.append(current_path + "/lstm_lib")
 
 property_path = current_path + "/property"
 config_path = current_path + "/config"

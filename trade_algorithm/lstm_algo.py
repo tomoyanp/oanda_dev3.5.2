@@ -281,16 +281,18 @@ class LstmAlgo(SuperAlgo):
 
         tmp_dataframe = self.get_original_dataset(target_time, table_type, span=learning_span+output_train_index)
 
-        train_dataframe_dataset = tmp_dataframe[:, :-output_train_index].copy()
-        output_dataframe_dataset = tmp_dataframe[:, output_train_index:].copy()
-
         # timestamp落とす前に退避
-        time_dataframe_dataset = tmp_dataframe["insert_time", output_train_index:].copy()
+        #time_dataframe_dataset = tmp_dataframe["insert_time", output_train_index:].copy()
+        time_dataframe_dataset = tmp_dataframe["insert_time"][(output_train_index+window_size):].copy()
 
         # 正規化したいのでtimestampを落とす
         del tmp_dataframe["insert_time"]
-        del train_dataframe_dataset["insert_time"]
-        del output_dataframe_dataset["insert_time"]
+
+        #train_dataframe_dataset = tmp_dataframe[:, :-output_train_index].copy()
+        train_dataframe_dataset = tmp_dataframe.copy().values[:-output_train_index]
+        
+        #output_dataframe_dataset = tmp_dataframe[:, output_train_index:].copy()
+        output_dataframe_dataset = tmp_dataframe.copy().values[(output_train_index+window_size):]
 
         # 正規化を戻す際に必要
         max_price = max(tmp_dataframe["end_price"])
@@ -308,10 +310,16 @@ class LstmAlgo(SuperAlgo):
         train_input_dataset = self.create_train_dataset(train_normalization_dataset, learning_span, window_size)
 
         # end_priceだけ抽出する
-        train_output_dataset = output_normalization_dataset[0, :]
+        train_output_dataset = output_normalization_dataset[:,0]
+
+        print(train_input_dataset)
+        print(train_output_dataset)
+
+        print(train_input_dataset.shape)
+        print(train_output_dataset.shape)
 
         learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
-        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, vebose=2, shuffle=True)
+        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=True)
 
         train_predict = learning_model.predict(train_input_dataset)
         paint_train_predict = []

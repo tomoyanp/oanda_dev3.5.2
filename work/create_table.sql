@@ -80,3 +80,24 @@ alter table NZD_JPY_TABLE add index insert_time_index(insert_time)
 
 create table INDICATOR_TABLE(id int auto_increment primary key, instrument char(10) not null, type char(20) not null, upper_sigma double, lower_sigma double, base_line, double, slope double, ewma_value double, high_price double, low_price double, insert_time timestamp) UNIQUE(instrument, type, insert_time)
 alter table INDICATOR_TABLE add index indicator_index(insert_time, type, instrument)
+
+
+ysql> desc GBP_JPY_1m_TABLE;
++-------------+-----------+------+-----+-------------------+-----------------------------+
+| Field       | Type      | Null | Key | Default           | Extra      |
++-------------+-----------+------+-----+-------------------+-----------------------------+
+| insert_time | timestamp | NO   | PRI | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+| start_price | double    | YES  |     | NULL              |      |
+| end_price   | double    | YES  |     | NULL              |      |
+| max_price   | double    | YES  |     | NULL              |      |
+| min_price   | double    | YES  |     | NULL              |      |
++-------------+-----------+------+-----+-------------------+-----------------------------+
+5 rows in set (0.08 sec)
+
+
+create table GBP_JPY_1m_TABLE(start_time double, end_price double, max_price double, min_price double, uppersigma1 double, lowersigma1 double, uppersigma2 double, lowersigma2 double, uppersigma3 double, lowersigma3 double, sma20 double, sma40 double, sma80 double, sma100 double, sma200 double, insert_time timestamp not null primary key)
+
+
+create table GBP_JPY_5m_TABLE(start_time double, end_price double, max_price double, min_price double, uppersigma1 double, lowersigma1 double, uppersigma2 double, lowersigma2 double, uppersigma3 double, lowersigma3 double, sma20 double, sma40 double, sma80 double, sma100 double, sma200 double, insert_time timestamp not null primary key);
+create table GBP_JPY_1h_TABLE(start_time double, end_price double, max_price double, min_price double, uppersigma1 double, lowersigma1 double, uppersigma2 double, lowersigma2 double, uppersigma3 double, lowersigma3 double, sma20 double, sma40 double, sma80 double, sma100 double, sma200 double, insert_time timestamp not null primary key);
+create table GBP_JPY_day_TABLE(start_time double, end_price double, max_price double, min_price double, uppersigma1 double, lowersigma1 double, uppersigma2 double, lowersigma2 double, uppersigma3 double, lowersigma3 double, sma20 double, sma40 double, sma80 double, sma100 double, sma200 double, insert_time timestamp not null primary key);

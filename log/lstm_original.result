@@ -1,0 +1,1047 @@
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 00:00:00, 144.5605, -0.3307036757469177, 2018-06-01 06:00:00, 144.5865
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 01:00:00, 144.4735, -0.2572832703590393, 2018-06-01 07:00:00, 144.6735
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 02:00:00, 144.5495, -0.12003643065690994, 2018-06-01 08:00:00, 144.555
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 03:00:00, 144.40800000000002, 0.030806889757514, 2018-06-01 09:00:00, 144.6905
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 04:00:00, 144.36200000000002, 0.19609880447387695, 2018-06-01 10:00:00, 144.846
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 05:00:00, 144.588, 0.35266271233558655, 2018-06-01 11:00:00, 144.837
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 07:00:00, 144.5845, 0.6602567434310913, 2018-06-01 13:00:00, 144.7015
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 08:00:00, 144.6645, 0.41230520606040955, 2018-06-01 14:00:00, 144.777
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 09:00:00, 144.57150000000001, 0.12636852264404297, 2018-06-01 15:00:00, 144.947
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 10:00:00, 144.68849999999998, -0.11496573686599731, 2018-06-01 16:00:00, 145.0795
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 11:00:00, 144.83749999999998, -0.3681471049785614, 2018-06-01 17:00:00, 145.18849999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 12:00:00, 144.853, -0.5049406290054321, 2018-06-01 18:00:00, 145.36950000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 13:00:00, 144.7705, -0.5659590363502502, 2018-06-01 19:00:00, 145.471
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 14:00:00, 144.7065, -0.5743317008018494, 2018-06-01 20:00:00, 145.74200000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 15:00:00, 144.772, -0.42299017310142517, 2018-06-01 21:00:00, 146.043
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 16:00:00, 144.945, -0.2370612770318985, 2018-06-01 22:00:00, 146.147
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 17:00:00, 145.075, 0.06521312147378922, 2018-06-01 23:00:00, 146.0435
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 18:00:00, 145.196, 0.2818017303943634, 2018-06-02 00:00:00, 146.254
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 19:00:00, 145.35399999999998, 0.38956573605537415, 2018-06-02 01:00:00, 146.1485
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 20:00:00, 145.476, 0.4080473780632019, 2018-06-02 02:00:00, 146.125
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 21:00:00, 145.7765, 0.30537277460098267, 2018-06-02 03:00:00, 146.168
+base_time, current_price, predict_value, right_time, right_price
+2018-06-01 22:00:00, 146.0375, 0.02641606703400612, 2018-06-02 04:00:00, 146.2545
+base_time, current_price, predict_value, right_time, right_price
+2018-06-02 00:00:00, 146.03750000000002, -0.3791501522064209, 2018-06-02 05:00:00, 146.197
+base_time, current_price, predict_value, right_time, right_price
+2018-06-02 01:00:00, 146.2505, -0.5891646146774292, 2018-06-02 05:00:00, 146.197
+base_time, current_price, predict_value, right_time, right_price
+2018-06-02 02:00:00, 146.149, -0.7287134528160095, 2018-06-02 05:00:00, 146.197
+base_time, current_price, predict_value, right_time, right_price
+2018-06-02 03:00:00, 146.118, -0.8341620564460754, 2018-06-02 05:00:00, 146.197
+base_time, current_price, predict_value, right_time, right_price
+2018-06-02 04:00:00, 146.154, -0.8384411334991455, 2018-06-02 05:00:00, 146.197
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 08:00:00, 146.265, 0.31432321667671204, 2018-06-04 14:00:00, 146.548
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 09:00:00, 146.365, 0.28010809421539307, 2018-06-04 15:00:00, 146.5095
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 10:00:00, 146.67950000000002, 0.24993900954723358, 2018-06-04 16:00:00, 146.39499999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 11:00:00, 146.592, 0.2044650763273239, 2018-06-04 17:00:00, 146.41
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 12:00:00, 146.5705, 0.16563192009925842, 2018-06-04 18:00:00, 146.762
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 13:00:00, 146.591, 0.13160842657089233, 2018-06-04 19:00:00, 146.596
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 14:00:00, 146.58249999999998, 0.10442741960287094, 2018-06-04 20:00:00, 146.527
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 15:00:00, 146.546, 0.08455418795347214, 2018-06-04 21:00:00, 146.5195
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 16:00:00, 146.5115, 0.06913919746875763, 2018-06-04 22:00:00, 146.4085
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 17:00:00, 146.383, 0.056235332041978836, 2018-06-04 23:00:00, 146.17849999999999
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 18:00:00, 146.408, 0.047647442668676376, 2018-06-05 00:00:00, 146.014
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 19:00:00, 146.753, 0.03786437585949898, 2018-06-05 01:00:00, 146.0315
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 20:00:00, 146.5935, 0.016579780727624893, 2018-06-05 02:00:00, 146.238
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 21:00:00, 146.5265, 0.0019999302458018064, 2018-06-05 03:00:00, 146.127
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 22:00:00, 146.51749999999998, -0.014169114641845226, 2018-06-05 04:00:00, 146.23250000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-04 23:00:00, 146.40949999999998, -0.03170572966337204, 2018-06-05 05:00:00, 146.187
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 00:00:00, 146.1755, -0.0456780381500721, 2018-06-05 06:00:00, 146.2095
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 01:00:00, 146.014, -0.05311201885342598, 2018-06-05 07:00:00, 146.3385
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 02:00:00, 146.0335, -0.058231811970472336, 2018-06-05 08:00:00, 146.44
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 03:00:00, 146.2335, -0.06333993375301361, 2018-06-05 09:00:00, 146.3005
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 04:00:00, 146.12900000000002, -0.07235899567604065, 2018-06-05 10:00:00, 146.308
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 05:00:00, 146.21949999999998, -0.07778667658567429, 2018-06-05 11:00:00, 146.22899999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 08:00:00, 146.334, -0.2755202054977417, 2018-06-05 14:00:00, 146.2715
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 09:00:00, 146.4355, -0.27584823966026306, 2018-06-05 15:00:00, 146.3295
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 10:00:00, 146.303, -0.2765761613845825, 2018-06-05 16:00:00, 146.313
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 11:00:00, 146.3105, -0.2778070569038391, 2018-06-05 17:00:00, 146.7735
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 12:00:00, 146.228, -0.2795923948287964, 2018-06-05 18:00:00, 146.86149999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 13:00:00, 146.257, -0.282398521900177, 2018-06-05 19:00:00, 146.691
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 14:00:00, 146.325, -0.28461119532585144, 2018-06-05 20:00:00, 146.611
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 15:00:00, 146.277, -0.2864117920398712, 2018-06-05 21:00:00, 146.66250000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 16:00:00, 146.327, -0.28924182057380676, 2018-06-05 22:00:00, 146.6455
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 17:00:00, 146.313, -0.2915038466453552, 2018-06-05 23:00:00, 146.50549999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 18:00:00, 146.786, -0.2939208745956421, 2018-06-06 00:00:00, 146.46550000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 19:00:00, 146.868, -0.2922402620315552, 2018-06-06 01:00:00, 146.632
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 20:00:00, 146.689, -0.29189613461494446, 2018-06-06 02:00:00, 146.91250000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 21:00:00, 146.608, -0.29408982396125793, 2018-06-06 03:00:00, 146.999
+base_time, current_price, predict_value, right_time, right_price
+2018-06-05 22:00:00, 146.667, -0.2966565489768982, 2018-06-06 04:00:00, 146.926
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 00:00:00, 146.50650000000002, -0.30142587423324585, 2018-06-06 06:00:00, 147.18
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 01:00:00, 146.466, -0.3056400418281555, 2018-06-06 07:00:00, 147.1995
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 02:00:00, 146.6295, -0.30916666984558105, 2018-06-06 08:00:00, 147.3235
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 03:00:00, 146.91750000000002, -0.31045594811439514, 2018-06-06 09:00:00, 147.2625
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 04:00:00, 146.999, -0.3090663254261017, 2018-06-06 10:00:00, 147.3245
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 05:00:00, 146.9215, -0.3079247772693634, 2018-06-06 11:00:00, 147.257
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 08:00:00, 147.19549999999998, -0.035667769610881805, 2018-06-06 14:00:00, 147.36149999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 09:00:00, 147.3205, -0.03400598093867302, 2018-06-06 15:00:00, 147.4645
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 10:00:00, 147.26, -0.03269600868225098, 2018-06-06 16:00:00, 147.7335
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 11:00:00, 147.32299999999998, -0.027444565668702126, 2018-06-06 17:00:00, 147.58350000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 12:00:00, 147.25900000000001, -0.02327430620789528, 2018-06-06 18:00:00, 147.9235
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 13:00:00, 147.316, -0.01716436631977558, 2018-06-06 19:00:00, 147.82350000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 14:00:00, 147.324, -0.01292416825890541, 2018-06-06 20:00:00, 147.9005
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 15:00:00, 147.3415, -0.007599867880344391, 2018-06-06 21:00:00, 147.7095
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 16:00:00, 147.465, -0.002959286328405142, 2018-06-06 22:00:00, 147.7735
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 17:00:00, 147.74, 0.0005966613534837961, 2018-06-06 23:00:00, 147.75400000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 18:00:00, 147.586, 0.002481665462255478, 2018-06-07 00:00:00, 147.732
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 19:00:00, 147.92450000000002, 0.01183887105435133, 2018-06-07 01:00:00, 147.6865
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 20:00:00, 147.81900000000002, 0.014465720392763615, 2018-06-07 02:00:00, 147.699
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 21:00:00, 147.8995, 0.024116214364767075, 2018-06-07 03:00:00, 147.7665
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 22:00:00, 147.703, 0.03120674379169941, 2018-06-07 04:00:00, 147.7845
+base_time, current_price, predict_value, right_time, right_price
+2018-06-06 23:00:00, 147.7785, 0.04259108379483223, 2018-06-07 05:00:00, 147.79500000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 00:00:00, 147.75549999999998, 0.04904115945100784, 2018-06-07 06:00:00, 147.761
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 01:00:00, 147.71949999999998, 0.0563027486205101, 2018-06-07 07:00:00, 147.8285
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 02:00:00, 147.684, 0.06278427690267563, 2018-06-07 08:00:00, 147.80599999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 03:00:00, 147.683, 0.06908611208200455, 2018-06-07 09:00:00, 147.9515
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 04:00:00, 147.762, 0.07375004887580872, 2018-06-07 10:00:00, 147.675
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 05:00:00, 147.7865, 0.07684510201215744, 2018-06-07 11:00:00, 147.59750000000003
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 07:00:00, 147.7635, 0.2921278476715088, 2018-06-07 13:00:00, 147.628
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 08:00:00, 147.834, 0.29276326298713684, 2018-06-07 14:00:00, 147.7365
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 09:00:00, 147.8005, 0.28936803340911865, 2018-06-07 15:00:00, 147.926
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 10:00:00, 147.9515, 0.28809985518455505, 2018-06-07 16:00:00, 148.0115
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 11:00:00, 147.679, 0.28124675154685974, 2018-06-07 17:00:00, 147.995
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 12:00:00, 147.58350000000002, 0.2878500819206238, 2018-06-07 18:00:00, 147.88150000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 13:00:00, 147.6085, 0.288117378950119, 2018-06-07 19:00:00, 147.8995
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 14:00:00, 147.61849999999998, 0.2863568365573883, 2018-06-07 20:00:00, 147.399
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 15:00:00, 147.739, 0.2842422425746918, 2018-06-07 21:00:00, 147.599
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 16:00:00, 147.917, 0.2788083255290985, 2018-06-07 22:00:00, 147.286
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 17:00:00, 148.0095, 0.27072712779045105, 2018-06-07 23:00:00, 147.5795
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 18:00:00, 147.9735, 0.26544928550720215, 2018-06-08 00:00:00, 147.578
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 19:00:00, 147.886, 0.2634103298187256, 2018-06-08 01:00:00, 147.2445
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 20:00:00, 147.9085, 0.26470664143562317, 2018-06-08 02:00:00, 147.14800000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 21:00:00, 147.3945, 0.26221489906311035, 2018-06-08 03:00:00, 147.3095
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 22:00:00, 147.6015, 0.2769697904586792, 2018-06-08 04:00:00, 147.211
+base_time, current_price, predict_value, right_time, right_price
+2018-06-07 23:00:00, 147.29149999999998, 0.2697599530220032, 2018-06-08 05:00:00, 147.24450000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 00:00:00, 147.584, 0.2796531617641449, 2018-06-08 06:00:00, 147.2165
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 01:00:00, 147.58, 0.26919540762901306, 2018-06-08 07:00:00, 147.22899999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 02:00:00, 147.2405, 0.26833224296569824, 2018-06-08 08:00:00, 147.1845
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 03:00:00, 147.1535, 0.2777336537837982, 2018-06-08 09:00:00, 147.351
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 04:00:00, 147.3095, 0.2806171774864197, 2018-06-08 10:00:00, 147.276
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 05:00:00, 147.2195, 0.2757629156112671, 2018-06-08 11:00:00, 147.33249999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 08:00:00, 147.231, 0.06054652854800224, 2018-06-08 14:00:00, 147.22899999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 09:00:00, 147.211, 0.059632427990436554, 2018-06-08 15:00:00, 146.897
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 10:00:00, 147.349, 0.05996181443333626, 2018-06-08 16:00:00, 146.95350000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 11:00:00, 147.27999999999997, 0.055934082716703415, 2018-06-08 17:00:00, 146.5655
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 12:00:00, 147.3295, 0.057342130690813065, 2018-06-08 18:00:00, 146.6495
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 13:00:00, 147.1815, 0.0552506297826767, 2018-06-08 19:00:00, 146.3075
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 14:00:00, 147.2165, 0.05771557241678238, 2018-06-08 20:00:00, 146.555
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 15:00:00, 147.2215, 0.0556381419301033, 2018-06-08 21:00:00, 146.372
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 16:00:00, 146.909, 0.05479384586215019, 2018-06-08 22:00:00, 146.52100000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 17:00:00, 146.966, 0.05984263867139816, 2018-06-08 23:00:00, 146.548
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 18:00:00, 146.548, 0.05632345378398895, 2018-06-09 00:00:00, 146.721
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 19:00:00, 146.6495, 0.06186964362859726, 2018-06-09 01:00:00, 146.839
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 20:00:00, 146.29399999999998, 0.05687791109085083, 2018-06-09 02:00:00, 146.7425
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 21:00:00, 146.562, 0.06096801534295082, 2018-06-09 03:00:00, 146.8295
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 22:00:00, 146.4015, 0.052875664085149765, 2018-06-09 04:00:00, 146.7215
+base_time, current_price, predict_value, right_time, right_price
+2018-06-08 23:00:00, 146.519, 0.054513297975063324, 2018-06-09 05:00:00, 146.872
+base_time, current_price, predict_value, right_time, right_price
+2018-06-09 00:00:00, 146.54149999999998, 0.04834868013858795, 2018-06-09 05:00:00, 146.872
+base_time, current_price, predict_value, right_time, right_price
+2018-06-09 01:00:00, 146.719, 0.04602294787764549, 2018-06-09 05:00:00, 146.872
+base_time, current_price, predict_value, right_time, right_price
+2018-06-09 02:00:00, 146.839, 0.041018612682819366, 2018-06-09 05:00:00, 146.872
+base_time, current_price, predict_value, right_time, right_price
+2018-06-09 03:00:00, 146.743, 0.037821244448423386, 2018-06-09 05:00:00, 146.872
+base_time, current_price, predict_value, right_time, right_price
+2018-06-09 04:00:00, 146.8225, 0.037657614797353745, 2018-06-09 05:00:00, 146.872
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 08:00:00, 146.68349999999998, -0.03146236017346382, 2018-06-11 14:00:00, 147.1535
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 09:00:00, 146.822, -0.03385261446237564, 2018-06-11 15:00:00, 147.70749999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 10:00:00, 146.87, -0.034950271248817444, 2018-06-11 16:00:00, 147.5815
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 11:00:00, 146.88, -0.035816650837659836, 2018-06-11 17:00:00, 146.995
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 12:00:00, 147.1435, -0.0368756540119648, 2018-06-11 18:00:00, 147.089
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 13:00:00, 147.1495, -0.03590134531259537, 2018-06-11 19:00:00, 146.92849999999999
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 14:00:00, 147.26749999999998, -0.03504827246069908, 2018-06-11 20:00:00, 146.98450000000003
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 15:00:00, 147.1515, -0.03355100750923157, 2018-06-11 21:00:00, 147.041
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 16:00:00, 147.704, -0.033158160746097565, 2018-06-11 22:00:00, 147.109
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 17:00:00, 147.591, -0.02850859984755516, 2018-06-11 23:00:00, 147.195
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 18:00:00, 146.9885, -0.0253947414457798, 2018-06-12 00:00:00, 147.154
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 19:00:00, 147.096, -0.02748740278184414, 2018-06-12 01:00:00, 147.1975
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 20:00:00, 146.91899999999998, -0.02854999713599682, 2018-06-12 02:00:00, 147.1695
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 21:00:00, 146.994, -0.03022826462984085, 2018-06-12 03:00:00, 147.214
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 22:00:00, 147.041, -0.031263403594493866, 2018-06-12 04:00:00, 147.248
+base_time, current_price, predict_value, right_time, right_price
+2018-06-11 23:00:00, 147.10950000000003, -0.03144271671772003, 2018-06-12 05:00:00, 147.25
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 00:00:00, 147.197, -0.031062541529536247, 2018-06-12 06:00:00, 147.245
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 01:00:00, 147.1515, -0.029980095103383064, 2018-06-12 07:00:00, 147.3835
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 02:00:00, 147.19, -0.029402226209640503, 2018-06-12 08:00:00, 147.62
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 03:00:00, 147.16649999999998, -0.028585903346538544, 2018-06-12 09:00:00, 147.3415
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 04:00:00, 147.21300000000002, -0.028164329007267952, 2018-06-12 10:00:00, 147.4325
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 05:00:00, 147.252, -0.02744664065539837, 2018-06-12 11:00:00, 147.322
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 07:00:00, 147.2505, 0.11156599968671799, 2018-06-12 13:00:00, 147.53699999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 08:00:00, 147.381, 0.11165513098239899, 2018-06-12 14:00:00, 147.403
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 09:00:00, 147.61149999999998, 0.11053065210580826, 2018-06-12 15:00:00, 147.2995
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 10:00:00, 147.3345, 0.10925726592540741, 2018-06-12 16:00:00, 147.7835
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 11:00:00, 147.4545, 0.11293210089206696, 2018-06-12 17:00:00, 147.69650000000001
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 12:00:00, 147.32, 0.11170665919780731, 2018-06-12 18:00:00, 147.53199999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 13:00:00, 147.3625, 0.11400419473648071, 2018-06-12 19:00:00, 147.61450000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 14:00:00, 147.5195, 0.1139066144824028, 2018-06-12 20:00:00, 147.60500000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 15:00:00, 147.405, 0.11341259628534317, 2018-06-12 21:00:00, 147.543
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 16:00:00, 147.2935, 0.11603328585624695, 2018-06-12 22:00:00, 147.23649999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 17:00:00, 147.78300000000002, 0.11742747575044632, 2018-06-12 23:00:00, 147.257
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 18:00:00, 147.6995, 0.11333762109279633, 2018-06-13 00:00:00, 147.9005
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 19:00:00, 147.5215, 0.11669838428497314, 2018-06-13 01:00:00, 147.6825
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 20:00:00, 147.60899999999998, 0.11855047196149826, 2018-06-13 02:00:00, 147.71300000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 21:00:00, 147.6055, 0.11826280504465103, 2018-06-13 03:00:00, 147.5785
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 22:00:00, 147.53199999999998, 0.11949457973241806, 2018-06-13 04:00:00, 147.5935
+base_time, current_price, predict_value, right_time, right_price
+2018-06-12 23:00:00, 147.2345, 0.12078971415758133, 2018-06-13 05:00:00, 147.585
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 00:00:00, 147.262, 0.12470680475234985, 2018-06-13 06:00:00, 147.6245
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 01:00:00, 147.892, 0.12423960864543915, 2018-06-13 07:00:00, 147.66699999999997
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 02:00:00, 147.69400000000002, 0.11818782985210419, 2018-06-13 08:00:00, 147.72050000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 03:00:00, 147.7175, 0.1232319250702858, 2018-06-13 09:00:00, 147.67399999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 04:00:00, 147.5755, 0.12225423753261566, 2018-06-13 10:00:00, 147.7385
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 05:00:00, 147.5845, 0.12511633336544037, 2018-06-13 11:00:00, 147.81349999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 08:00:00, 147.6695, 0.1209377720952034, 2018-06-13 14:00:00, 147.7895
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 09:00:00, 147.7185, 0.12120875716209412, 2018-06-13 15:00:00, 147.704
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 10:00:00, 147.67399999999998, 0.12135279923677444, 2018-06-13 16:00:00, 147.6845
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 11:00:00, 147.7335, 0.12222171574831009, 2018-06-13 17:00:00, 147.399
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 12:00:00, 147.81349999999998, 0.12212730199098587, 2018-06-13 18:00:00, 147.50900000000001
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 13:00:00, 147.83749999999998, 0.12222108244895935, 2018-06-13 19:00:00, 147.3585
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 14:00:00, 147.8025, 0.12282070517539978, 2018-06-13 20:00:00, 147.3755
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 15:00:00, 147.795, 0.12402058392763138, 2018-06-13 21:00:00, 147.49149999999997
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 16:00:00, 147.704, 0.12478051334619522, 2018-06-13 22:00:00, 147.3995
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 17:00:00, 147.6855, 0.12603679299354553, 2018-06-13 23:00:00, 147.601
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 18:00:00, 147.4035, 0.12648454308509827, 2018-06-14 00:00:00, 147.715
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 19:00:00, 147.5045, 0.12915930151939392, 2018-06-14 01:00:00, 147.798
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 20:00:00, 147.35649999999998, 0.12773174047470093, 2018-06-14 02:00:00, 147.843
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 21:00:00, 147.37099999999998, 0.12914304435253143, 2018-06-14 03:00:00, 147.63299999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 22:00:00, 147.489, 0.12865345180034637, 2018-06-14 04:00:00, 147.52499999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-13 23:00:00, 147.39249999999998, 0.12791486084461212, 2018-06-14 05:00:00, 147.6005
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 00:00:00, 147.598, 0.1290334165096283, 2018-06-14 06:00:00, 147.4875
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 01:00:00, 147.71, 0.12739317119121552, 2018-06-14 07:00:00, 147.4405
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 02:00:00, 147.788, 0.12711162865161896, 2018-06-14 08:00:00, 147.522
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 04:00:00, 147.6445, 0.12713126838207245, 2018-06-14 10:00:00, 147.5145
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 05:00:00, 147.529, 0.12955869734287262, 2018-06-14 11:00:00, 147.5285
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 06:00:00, 147.6005, 0.03607665002346039, 2018-06-14 12:00:00, 147.582
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 08:00:00, 147.437, 0.03648174926638603, 2018-06-14 14:00:00, 147.3545
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 09:00:00, 147.51749999999998, 0.03632587566971779, 2018-06-14 15:00:00, 147.493
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 10:00:00, 147.51999999999998, 0.03601793199777603, 2018-06-14 16:00:00, 147.322
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 11:00:00, 147.5125, 0.03612037003040314, 2018-06-14 17:00:00, 147.8125
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 12:00:00, 147.5245, 0.03596829995512962, 2018-06-14 18:00:00, 147.7015
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 13:00:00, 147.59050000000002, 0.035834815353155136, 2018-06-14 19:00:00, 147.7475
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 14:00:00, 147.57549999999998, 0.03559952601790428, 2018-06-14 20:00:00, 147.401
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 15:00:00, 147.349, 0.035626985132694244, 2018-06-14 21:00:00, 146.9145
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 16:00:00, 147.49099999999999, 0.03649906814098358, 2018-06-14 22:00:00, 147.037
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 17:00:00, 147.322, 0.035418733954429626, 2018-06-14 23:00:00, 146.994
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 18:00:00, 147.779, 0.0366082638502121, 2018-06-15 00:00:00, 147.2475
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 19:00:00, 147.704, 0.03423258289694786, 2018-06-15 01:00:00, 146.892
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 20:00:00, 147.748, 0.03609945997595787, 2018-06-15 02:00:00, 146.8865
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 21:00:00, 147.4135, 0.03537311032414436, 2018-06-15 03:00:00, 146.8555
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 22:00:00, 146.8995, 0.03708348423242569, 2018-06-15 04:00:00, 146.863
+base_time, current_price, predict_value, right_time, right_price
+2018-06-14 23:00:00, 147.03, 0.03771837800741196, 2018-06-15 05:00:00, 146.70100000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 00:00:00, 146.99450000000002, 0.03581791743636131, 2018-06-15 06:00:00, 146.7745
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 01:00:00, 147.24349999999998, 0.03585424646735191, 2018-06-15 07:00:00, 146.6835
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 02:00:00, 146.89, 0.03402306139469147, 2018-06-15 08:00:00, 146.654
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 03:00:00, 146.887, 0.03533868491649628, 2018-06-15 09:00:00, 146.48000000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 04:00:00, 146.857, 0.033510033041238785, 2018-06-15 10:00:00, 146.577
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 05:00:00, 146.861, 0.03309944272041321, 2018-06-15 11:00:00, 146.70850000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 08:00:00, 146.7425, 0.05711900442838669, 2018-06-15 14:00:00, 146.793
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 09:00:00, 146.651, 0.05724910646677017, 2018-06-15 15:00:00, 146.652
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 10:00:00, 146.49200000000002, 0.05641757696866989, 2018-06-15 16:00:00, 146.4435
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 11:00:00, 146.575, 0.056810636073350906, 2018-06-15 17:00:00, 146.685
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 12:00:00, 146.7135, 0.055002473294734955, 2018-06-15 18:00:00, 146.827
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 13:00:00, 146.65800000000002, 0.05353414639830589, 2018-06-15 19:00:00, 147.02749999999997
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 14:00:00, 146.774, 0.05315038189291954, 2018-06-15 20:00:00, 146.954
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 15:00:00, 146.7885, 0.05150527134537697, 2018-06-15 21:00:00, 146.70600000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 16:00:00, 146.6565, 0.05089361220598221, 2018-06-15 22:00:00, 146.7355
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 17:00:00, 146.4405, 0.05092613771557808, 2018-06-15 23:00:00, 146.7885
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 18:00:00, 146.663, 0.05117325112223625, 2018-06-16 00:00:00, 146.885
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 19:00:00, 146.82850000000002, 0.048355087637901306, 2018-06-16 01:00:00, 146.897
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 20:00:00, 147.0335, 0.046892885118722916, 2018-06-16 02:00:00, 146.887
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 21:00:00, 146.9685, 0.044837817549705505, 2018-06-16 03:00:00, 146.9
+base_time, current_price, predict_value, right_time, right_price
+2018-06-15 22:00:00, 146.70850000000002, 0.04479008540511131, 2018-06-16 04:00:00, 146.872
+base_time, current_price, predict_value, right_time, right_price
+2018-06-16 00:00:00, 146.7885, 0.044137660413980484, 2018-06-16 05:00:00, 146.97
+base_time, current_price, predict_value, right_time, right_price
+2018-06-16 01:00:00, 146.885, 0.043256282806396484, 2018-06-16 05:00:00, 146.97
+base_time, current_price, predict_value, right_time, right_price
+2018-06-16 02:00:00, 146.91699999999997, 0.04204858839511871, 2018-06-16 05:00:00, 146.97
+base_time, current_price, predict_value, right_time, right_price
+2018-06-16 03:00:00, 146.8915, 0.04145551472902298, 2018-06-16 05:00:00, 146.97
+base_time, current_price, predict_value, right_time, right_price
+2018-06-16 04:00:00, 146.9015, 0.04087447747588158, 2018-06-16 05:00:00, 146.97
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 08:00:00, 146.8085, -0.002190239727497101, 2018-06-18 14:00:00, 146.63400000000001
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 09:00:00, 146.88299999999998, -0.003077529836446047, 2018-06-18 15:00:00, 146.4345
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 10:00:00, 146.63350000000003, -0.0030676028691232204, 2018-06-18 16:00:00, 146.1365
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 11:00:00, 146.4125, -0.004516287241131067, 2018-06-18 17:00:00, 146.3625
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 12:00:00, 146.501, -0.006111339200288057, 2018-06-18 18:00:00, 146.4515
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 13:00:00, 146.519, -0.0067213112488389015, 2018-06-18 19:00:00, 146.4525
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 14:00:00, 146.61700000000002, -0.0077507453970611095, 2018-06-18 20:00:00, 146.34050000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 15:00:00, 146.63600000000002, -0.008485542610287666, 2018-06-18 21:00:00, 146.288
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 16:00:00, 146.4275, -0.009551092982292175, 2018-06-18 22:00:00, 146.2245
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 17:00:00, 146.136, -0.011913256719708443, 2018-06-18 23:00:00, 146.257
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 18:00:00, 146.3625, -0.01548269297927618, 2018-06-19 00:00:00, 146.308
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 19:00:00, 146.45350000000002, -0.01699495129287243, 2018-06-19 01:00:00, 146.26600000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 20:00:00, 146.466, -0.019112112000584602, 2018-06-19 02:00:00, 146.39249999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 21:00:00, 146.343, -0.02194337174296379, 2018-06-19 03:00:00, 146.3225
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 22:00:00, 146.2855, -0.025997111573815346, 2018-06-19 04:00:00, 146.40949999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-18 23:00:00, 146.2255, -0.030682364478707314, 2018-06-19 05:00:00, 146.43599999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 00:00:00, 146.25, -0.03652673587203026, 2018-06-19 06:00:00, 146.4325
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 01:00:00, 146.30599999999998, -0.04300579056143761, 2018-06-19 07:00:00, 146.426
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 02:00:00, 146.2665, -0.05061523616313934, 2018-06-19 08:00:00, 146.01600000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 03:00:00, 146.386, -0.060805026441812515, 2018-06-19 09:00:00, 146.0765
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 04:00:00, 146.3185, -0.07175390422344208, 2018-06-19 10:00:00, 145.78699999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 05:00:00, 146.40699999999998, -0.08740027993917465, 2018-06-19 11:00:00, 145.8125
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 08:00:00, 146.426, -0.06580857187509537, 2018-06-19 14:00:00, 145.27300000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 09:00:00, 146.02249999999998, -0.06673261523246765, 2018-06-19 15:00:00, 144.9
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 10:00:00, 146.06799999999998, -0.06847846508026123, 2018-06-19 16:00:00, 144.8625
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 11:00:00, 145.78699999999998, -0.07033204287290573, 2018-06-19 17:00:00, 144.832
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 12:00:00, 145.81, -0.07283191382884979, 2018-06-19 18:00:00, 144.733
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 13:00:00, 145.6645, -0.07586994767189026, 2018-06-19 19:00:00, 144.726
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 14:00:00, 145.47050000000002, -0.07928076386451721, 2018-06-19 20:00:00, 144.6255
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 15:00:00, 145.277, -0.08303838968276978, 2018-06-19 21:00:00, 144.74450000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 16:00:00, 144.887, -0.08727503567934036, 2018-06-19 22:00:00, 144.6415
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 17:00:00, 144.8635, -0.09216579794883728, 2018-06-19 23:00:00, 144.68099999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 18:00:00, 144.8475, -0.09776664525270462, 2018-06-20 00:00:00, 144.9275
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 19:00:00, 144.7335, -0.10342219471931458, 2018-06-20 01:00:00, 144.845
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 20:00:00, 144.714, -0.10894531011581421, 2018-06-20 02:00:00, 144.87599999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 21:00:00, 144.641, -0.11428067088127136, 2018-06-20 03:00:00, 144.938
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 22:00:00, 144.7545, -0.11928590387105942, 2018-06-20 04:00:00, 144.969
+base_time, current_price, predict_value, right_time, right_price
+2018-06-19 23:00:00, 144.6465, -0.12418511509895325, 2018-06-20 05:00:00, 144.998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 00:00:00, 144.6695, -0.12866486608982086, 2018-06-20 06:00:00, 144.946
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 01:00:00, 144.9345, -0.13323669135570526, 2018-06-20 07:00:00, 144.9405
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 02:00:00, 144.837, -0.1377086341381073, 2018-06-20 08:00:00, 145.016
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 03:00:00, 144.8735, -0.1420874148607254, 2018-06-20 09:00:00, 144.7865
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 04:00:00, 144.9505, -0.14668671786785126, 2018-06-20 10:00:00, 144.923
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 05:00:00, 144.9605, -0.15143194794654846, 2018-06-20 11:00:00, 144.904
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 08:00:00, 144.9425, -0.20047959685325623, 2018-06-20 14:00:00, 145.093
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 09:00:00, 145.02300000000002, -0.21062734723091125, 2018-06-20 15:00:00, 144.9305
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 10:00:00, 144.768, -0.21979404985904694, 2018-06-20 16:00:00, 145.0625
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 11:00:00, 144.925, -0.22607097029685974, 2018-06-20 17:00:00, 144.911
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 12:00:00, 144.9035, -0.23083923757076263, 2018-06-20 18:00:00, 144.8725
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 13:00:00, 144.94, -0.2334858924150467, 2018-06-20 19:00:00, 144.8635
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 14:00:00, 144.964, -0.2331923097372055, 2018-06-20 20:00:00, 145.01600000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 15:00:00, 145.095, -0.2304837703704834, 2018-06-20 21:00:00, 145.18650000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 16:00:00, 144.9325, -0.2265426069498062, 2018-06-20 22:00:00, 145.36849999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 17:00:00, 145.07150000000001, -0.21983712911605835, 2018-06-20 23:00:00, 145.07150000000001
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 18:00:00, 144.9065, -0.213604137301445, 2018-06-21 00:00:00, 145.502
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 19:00:00, 144.882, -0.2062048465013504, 2018-06-21 01:00:00, 145.417
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 20:00:00, 144.86149999999998, -0.19856835901737213, 2018-06-21 02:00:00, 145.3535
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 21:00:00, 145.02100000000002, -0.19149981439113617, 2018-06-21 03:00:00, 145.575
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 22:00:00, 145.1895, -0.18638496100902557, 2018-06-21 04:00:00, 145.531
+base_time, current_price, predict_value, right_time, right_price
+2018-06-20 23:00:00, 145.3725, -0.18389207124710083, 2018-06-21 05:00:00, 145.3675
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 00:00:00, 145.07600000000002, -0.18411889672279358, 2018-06-21 06:00:00, 145.395
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 01:00:00, 145.5095, -0.182855024933815, 2018-06-21 07:00:00, 145.4035
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 02:00:00, 145.4195, -0.1882241815328598, 2018-06-21 08:00:00, 145.3965
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 03:00:00, 145.363, -0.1938193142414093, 2018-06-21 09:00:00, 145.38400000000001
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 04:00:00, 145.575, -0.19945290684700012, 2018-06-21 10:00:00, 145.6275
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 05:00:00, 145.529, -0.20720069110393524, 2018-06-21 11:00:00, 145.584
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 08:00:00, 145.399, -0.0937868282198906, 2018-06-21 14:00:00, 145.55149999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 09:00:00, 145.3945, -0.09518418461084366, 2018-06-21 15:00:00, 145.2545
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 10:00:00, 145.3845, -0.09500381350517273, 2018-06-21 16:00:00, 145.3245
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 11:00:00, 145.62099999999998, -0.09347698092460632, 2018-06-21 17:00:00, 144.832
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 12:00:00, 145.584, -0.09318508952856064, 2018-06-21 18:00:00, 144.752
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 13:00:00, 145.54250000000002, -0.09194191545248032, 2018-06-21 19:00:00, 145.209
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 14:00:00, 145.54500000000002, -0.08946527540683746, 2018-06-21 20:00:00, 146.083
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 15:00:00, 145.5505, -0.08618054538965225, 2018-06-21 21:00:00, 146.0455
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 16:00:00, 145.2545, -0.08238554000854492, 2018-06-21 22:00:00, 145.949
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 17:00:00, 145.324, -0.07495646923780441, 2018-06-21 23:00:00, 145.8255
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 18:00:00, 144.834, -0.06755189597606659, 2018-06-22 00:00:00, 145.826
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 19:00:00, 144.74599999999998, -0.05389785021543503, 2018-06-22 01:00:00, 145.676
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 21:00:00, 146.08499999999998, -0.02932809107005596, 2018-06-22 03:00:00, 145.61599999999999
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 22:00:00, 146.037, -0.033304739743471146, 2018-06-22 04:00:00, 145.684
+base_time, current_price, predict_value, right_time, right_price
+2018-06-21 23:00:00, 145.954, -0.03730609640479088, 2018-06-22 05:00:00, 145.6145
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 00:00:00, 145.8185, -0.040520280599594116, 2018-06-22 06:00:00, 145.55700000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 01:00:00, 145.8275, -0.04143713787198067, 2018-06-22 07:00:00, 145.58249999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 02:00:00, 145.6755, -0.04118664562702179, 2018-06-22 08:00:00, 145.659
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 03:00:00, 145.738, -0.03772830590605736, 2018-06-22 09:00:00, 145.8395
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 04:00:00, 145.6255, -0.033809319138526917, 2018-06-22 10:00:00, 145.8585
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 05:00:00, 145.6885, -0.027388768270611763, 2018-06-22 11:00:00, 145.87
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 08:00:00, 145.5845, 0.0881124809384346, 2018-06-22 14:00:00, 145.98250000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 09:00:00, 145.64249999999998, 0.09451697766780853, 2018-06-22 15:00:00, 146.018
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 10:00:00, 145.8415, 0.09928227961063385, 2018-06-22 16:00:00, 146.338
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 11:00:00, 145.8585, 0.10015583783388138, 2018-06-22 17:00:00, 146.5845
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 12:00:00, 145.8745, 0.10191204398870468, 2018-06-22 18:00:00, 146.4405
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 13:00:00, 145.867, 0.10365410149097443, 2018-06-22 19:00:00, 146.497
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 14:00:00, 145.9325, 0.10595902800559998, 2018-06-22 20:00:00, 146.329
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 15:00:00, 145.9875, 0.10673373937606812, 2018-06-22 21:00:00, 146.2715
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 16:00:00, 146.039, 0.10683448612689972, 2018-06-22 22:00:00, 146.156
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 17:00:00, 146.33350000000002, 0.10611025243997574, 2018-06-22 23:00:00, 145.849
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 18:00:00, 146.582, 0.09909535944461823, 2018-06-23 00:00:00, 145.7955
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 19:00:00, 146.4445, 0.09037093818187714, 2018-06-23 01:00:00, 145.707
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 20:00:00, 146.51299999999998, 0.08749659359455109, 2018-06-23 02:00:00, 145.81
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 21:00:00, 146.3315, 0.08372925221920013, 2018-06-23 03:00:00, 145.757
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 22:00:00, 146.26999999999998, 0.08483746647834778, 2018-06-23 04:00:00, 145.791
+base_time, current_price, predict_value, right_time, right_price
+2018-06-22 23:00:00, 146.12650000000002, 0.08633895218372345, 2018-06-23 05:00:00, 145.88799999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-23 00:00:00, 145.8505, 0.09039902687072754, 2018-06-23 05:00:00, 145.88799999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-23 01:00:00, 145.79149999999998, 0.10001961141824722, 2018-06-23 05:00:00, 145.88799999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-23 02:00:00, 145.7095, 0.10810300707817078, 2018-06-23 05:00:00, 145.88799999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-23 03:00:00, 145.8145, 0.11723590642213821, 2018-06-23 05:00:00, 145.88799999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-23 04:00:00, 145.7595, 0.12200332432985306, 2018-06-23 05:00:00, 145.88799999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 08:00:00, 145.858, 0.27025383710861206, 2018-06-25 14:00:00, 145.0575
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 09:00:00, 145.8055, 0.26953908801078796, 2018-06-25 15:00:00, 144.899
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 10:00:00, 145.35399999999998, 0.27157917618751526, 2018-06-25 16:00:00, 145.0245
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 11:00:00, 145.221, 0.29087355732917786, 2018-06-25 17:00:00, 144.96699999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 12:00:00, 145.1415, 0.30681732296943665, 2018-06-25 18:00:00, 144.9925
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 13:00:00, 145.2595, 0.32268062233924866, 2018-06-25 19:00:00, 145.216
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 14:00:00, 145.201, 0.3289699852466583, 2018-06-25 20:00:00, 145.5575
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 15:00:00, 145.0555, 0.3381198048591614, 2018-06-25 21:00:00, 145.54399999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 16:00:00, 144.897, 0.35091570019721985, 2018-06-25 22:00:00, 145.422
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 18:00:00, 144.969, 0.3718380928039551, 2018-06-26 00:00:00, 145.478
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 19:00:00, 144.9905, 0.38091161847114563, 2018-06-26 01:00:00, 145.322
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 20:00:00, 145.2165, 0.38578951358795166, 2018-06-26 02:00:00, 145.3225
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 21:00:00, 145.56900000000002, 0.37922048568725586, 2018-06-26 03:00:00, 145.33100000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 22:00:00, 145.5375, 0.3604602515697479, 2018-06-26 04:00:00, 145.83499999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-25 23:00:00, 145.41449999999998, 0.3507976233959198, 2018-06-26 05:00:00, 145.777
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 00:00:00, 145.535, 0.3481830656528473, 2018-06-26 06:00:00, 145.71550000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 01:00:00, 145.478, 0.3396512567996979, 2018-06-26 07:00:00, 145.672
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 02:00:00, 145.3175, 0.3370320498943329, 2018-06-26 08:00:00, 145.582
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 03:00:00, 145.31799999999998, 0.34095823764801025, 2018-06-26 09:00:00, 145.461
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 04:00:00, 145.3175, 0.34169915318489075, 2018-06-26 10:00:00, 145.352
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 05:00:00, 145.8175, 0.34141403436660767, 2018-06-26 11:00:00, 145.3905
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 08:00:00, 145.6745, 0.13978692889213562, 2018-06-26 14:00:00, 145.5645
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 09:00:00, 145.582, 0.13381139934062958, 2018-06-26 15:00:00, 145.587
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 10:00:00, 145.47500000000002, 0.13231244683265686, 2018-06-26 16:00:00, 145.53949999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 11:00:00, 145.358, 0.13497072458267212, 2018-06-26 17:00:00, 145.433
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 12:00:00, 145.404, 0.13960634171962738, 2018-06-26 18:00:00, 145.2185
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 13:00:00, 145.3905, 0.13888485729694366, 2018-06-26 19:00:00, 145.236
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 14:00:00, 145.4645, 0.13702410459518433, 2018-06-26 20:00:00, 145.11
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 15:00:00, 145.5695, 0.13051758706569672, 2018-06-26 21:00:00, 145.274
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 16:00:00, 145.584, 0.12016770243644714, 2018-06-26 22:00:00, 145.358
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 17:00:00, 145.535, 0.11101622134447098, 2018-06-26 23:00:00, 145.399
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 18:00:00, 145.41449999999998, 0.10580991208553314, 2018-06-27 00:00:00, 145.57549999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 19:00:00, 145.2095, 0.10582617670297623, 2018-06-27 01:00:00, 145.5215
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 20:00:00, 145.23250000000002, 0.11431087553501129, 2018-06-27 02:00:00, 145.46699999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 21:00:00, 145.099, 0.11790839582681656, 2018-06-27 03:00:00, 145.744
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 22:00:00, 145.286, 0.12599538266658783, 2018-06-27 04:00:00, 145.567
+base_time, current_price, predict_value, right_time, right_price
+2018-06-26 23:00:00, 145.349, 0.12270263582468033, 2018-06-27 05:00:00, 145.493
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 00:00:00, 145.399, 0.11660756170749664, 2018-06-27 06:00:00, 145.483
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 01:00:00, 145.5765, 0.10972721129655838, 2018-06-27 07:00:00, 145.5385
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 02:00:00, 145.501, 0.09627360105514526, 2018-06-27 08:00:00, 145.5935
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 03:00:00, 145.46249999999998, 0.08931362628936768, 2018-06-27 09:00:00, 145.4075
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 04:00:00, 145.7465, 0.08618921041488647, 2018-06-27 10:00:00, 145.2285
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 05:00:00, 145.548, 0.07253812253475189, 2018-06-27 11:00:00, 145.3095
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 08:00:00, 145.5405, 0.10562784969806671, 2018-06-27 14:00:00, 145.231
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 09:00:00, 145.5935, 0.10545866936445236, 2018-06-27 15:00:00, 145.35
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 10:00:00, 145.4125, 0.1044476106762886, 2018-06-27 16:00:00, 144.9485
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 11:00:00, 145.2255, 0.11136450618505478, 2018-06-27 17:00:00, 144.8435
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 12:00:00, 145.30450000000002, 0.12130485475063324, 2018-06-27 18:00:00, 145.21949999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 13:00:00, 145.387, 0.12389301508665085, 2018-06-27 19:00:00, 145.10500000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 14:00:00, 145.42950000000002, 0.1236891970038414, 2018-06-27 20:00:00, 145.3295
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 15:00:00, 145.2285, 0.12329570949077606, 2018-06-27 21:00:00, 145.015
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 16:00:00, 145.3585, 0.1298900842666626, 2018-06-27 22:00:00, 145.2715
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 17:00:00, 144.937, 0.12783902883529663, 2018-06-27 23:00:00, 145.2455
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 18:00:00, 144.851, 0.1446356624364853, 2018-06-28 00:00:00, 144.9755
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 19:00:00, 145.21800000000002, 0.15611107647418976, 2018-06-28 01:00:00, 145.0095
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 20:00:00, 145.10750000000002, 0.14804689586162567, 2018-06-28 02:00:00, 144.847
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 21:00:00, 145.3345, 0.15180599689483643, 2018-06-28 03:00:00, 144.675
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 22:00:00, 145.0125, 0.14229145646095276, 2018-06-28 04:00:00, 144.577
+base_time, current_price, predict_value, right_time, right_price
+2018-06-27 23:00:00, 145.26749999999998, 0.15197265148162842, 2018-06-28 05:00:00, 144.595
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 00:00:00, 145.2525, 0.14288431406021118, 2018-06-28 06:00:00, 144.595
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 01:00:00, 144.9755, 0.1413726955652237, 2018-06-28 07:00:00, 144.6245
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 02:00:00, 145.0, 0.1507807970046997, 2018-06-28 08:00:00, 144.60750000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 03:00:00, 144.8415, 0.15383149683475494, 2018-06-28 09:00:00, 144.288
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 04:00:00, 144.6845, 0.16534219682216644, 2018-06-28 10:00:00, 144.4135
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 05:00:00, 144.5885, 0.18052200973033905, 2018-06-28 11:00:00, 144.494
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 08:00:00, 144.6245, 0.1054510697722435, 2018-06-28 14:00:00, 144.30700000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 09:00:00, 144.60750000000002, 0.10919792205095291, 2018-06-28 15:00:00, 144.32049999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 10:00:00, 144.291, 0.11304361373186111, 2018-06-28 16:00:00, 144.3825
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 11:00:00, 144.4055, 0.13300922513008118, 2018-06-28 17:00:00, 144.361
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 12:00:00, 144.50900000000001, 0.13882170617580414, 2018-06-28 18:00:00, 144.44
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 13:00:00, 144.53300000000002, 0.14065542817115784, 2018-06-28 19:00:00, 144.322
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 14:00:00, 144.595, 0.141163170337677, 2018-06-28 20:00:00, 144.26749999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 15:00:00, 144.298, 0.13916365802288055, 2018-06-28 21:00:00, 143.8075
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 16:00:00, 144.3245, 0.15486937761306763, 2018-06-28 22:00:00, 144.361
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 17:00:00, 144.375, 0.16431403160095215, 2018-06-28 23:00:00, 144.51850000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 18:00:00, 144.3585, 0.16906137764453888, 2018-06-29 00:00:00, 144.535
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 19:00:00, 144.438, 0.17512603104114532, 2018-06-29 01:00:00, 144.498
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 20:00:00, 144.338, 0.1753106266260147, 2018-06-29 02:00:00, 144.5355
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 21:00:00, 144.276, 0.18404856324195862, 2018-06-29 03:00:00, 144.5625
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 22:00:00, 143.80349999999999, 0.19350947439670563, 2018-06-29 04:00:00, 144.486
+base_time, current_price, predict_value, right_time, right_price
+2018-06-28 23:00:00, 144.3725, 0.23193244636058807, 2018-06-29 05:00:00, 144.5055
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 00:00:00, 144.552, 0.22233827412128448, 2018-06-29 06:00:00, 144.4615
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 01:00:00, 144.5395, 0.2115771621465683, 2018-06-29 07:00:00, 144.4995
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 02:00:00, 144.495, 0.2032717764377594, 2018-06-29 08:00:00, 144.4685
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 03:00:00, 144.536, 0.19935300946235657, 2018-06-29 09:00:00, 144.416
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 04:00:00, 144.5525, 0.19379524886608124, 2018-06-29 10:00:00, 144.382
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 05:00:00, 144.48250000000002, 0.1884831190109253, 2018-06-29 11:00:00, 145.15699999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 08:00:00, 144.4955, 0.25561535358428955, 2018-06-29 14:00:00, 145.221
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 09:00:00, 144.47050000000002, 0.26059818267822266, 2018-06-29 15:00:00, 144.9665
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 10:00:00, 144.411, 0.2681949734687805, 2018-06-29 16:00:00, 145.065
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 11:00:00, 144.38850000000002, 0.27906084060668945, 2018-06-29 17:00:00, 145.7725
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 12:00:00, 145.15800000000002, 0.29188376665115356, 2018-06-29 18:00:00, 145.5115
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 13:00:00, 145.14600000000002, 0.2602391242980957, 2018-06-29 19:00:00, 145.34050000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 14:00:00, 145.1635, 0.24106597900390625, 2018-06-29 20:00:00, 145.50549999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 15:00:00, 145.212, 0.2234807014465332, 2018-06-29 21:00:00, 145.3725
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 16:00:00, 144.9685, 0.2062094807624817, 2018-06-29 22:00:00, 145.732
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 17:00:00, 145.0845, 0.20449700951576233, 2018-06-29 23:00:00, 146.1995
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 19:00:00, 145.515, 0.15729321539402008, 2018-06-30 01:00:00, 146.1585
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 20:00:00, 145.34750000000003, 0.13970308005809784, 2018-06-30 02:00:00, 146.16750000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 21:00:00, 145.50799999999998, 0.13024196028709412, 2018-06-30 03:00:00, 146.2385
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 22:00:00, 145.3725, 0.11466950923204422, 2018-06-30 04:00:00, 146.11450000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-29 23:00:00, 145.73250000000002, 0.10821262747049332, 2018-06-30 05:00:00, 146.20100000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-30 00:00:00, 146.208, 0.08837437629699707, 2018-06-30 05:00:00, 146.20100000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-30 01:00:00, 146.1085, 0.05760795250535011, 2018-06-30 05:00:00, 146.20100000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-30 02:00:00, 146.15800000000002, 0.03832454979419708, 2018-06-30 05:00:00, 146.20100000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-30 03:00:00, 146.1705, 0.02181115560233593, 2018-06-30 05:00:00, 146.20100000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-06-30 04:00:00, 146.24450000000002, 0.01021534577012062, 2018-06-30 05:00:00, 146.20100000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 08:00:00, 146.1805, 0.010259277187287807, 2018-07-02 14:00:00, 145.829
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 09:00:00, 146.25900000000001, 0.006201102863997221, 2018-07-02 15:00:00, 145.906
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 10:00:00, 146.211, 0.003177642822265625, 2018-07-02 16:00:00, 145.649
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 11:00:00, 146.351, 0.0030676028691232204, 2018-07-02 17:00:00, 145.9645
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 12:00:00, 146.3245, 0.0008296298910863698, 2018-07-02 18:00:00, 145.7495
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 13:00:00, 146.063, 0.001496628625318408, 2018-07-02 19:00:00, 145.8245
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 14:00:00, 145.9895, 0.006943292450159788, 2018-07-02 20:00:00, 145.5025
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 15:00:00, 145.837, 0.01146295852959156, 2018-07-02 21:00:00, 145.314
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 16:00:00, 145.92000000000002, 0.018711870536208153, 2018-07-02 22:00:00, 145.3125
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 17:00:00, 145.65550000000002, 0.02208826132118702, 2018-07-02 23:00:00, 145.3465
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 18:00:00, 145.9495, 0.030594924464821815, 2018-07-03 00:00:00, 145.414
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 19:00:00, 145.748, 0.029349634423851967, 2018-07-03 01:00:00, 145.4695
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 20:00:00, 145.8155, 0.03551335260272026, 2018-07-03 02:00:00, 145.566
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 21:00:00, 145.507, 0.03719014301896095, 2018-07-03 03:00:00, 145.515
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 22:00:00, 145.3145, 0.04637140780687332, 2018-07-03 04:00:00, 145.5745
+base_time, current_price, predict_value, right_time, right_price
+2018-07-02 23:00:00, 145.321, 0.055382441729307175, 2018-07-03 05:00:00, 145.744
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 00:00:00, 145.3295, 0.06190352514386177, 2018-07-03 06:00:00, 145.673
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 01:00:00, 145.4155, 0.06707455962896347, 2018-07-03 07:00:00, 145.664
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 02:00:00, 145.4735, 0.07053078711032867, 2018-07-03 08:00:00, 145.73000000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 03:00:00, 145.5615, 0.07305917143821716, 2018-07-03 09:00:00, 145.699
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 04:00:00, 145.519, 0.07391203939914703, 2018-07-03 10:00:00, 145.4965
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 05:00:00, 145.57, 0.07730680704116821, 2018-07-03 11:00:00, 145.56900000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 08:00:00, 145.66199999999998, 0.08044663816690445, 2018-07-03 14:00:00, 145.846
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 09:00:00, 145.7235, 0.08453269302845001, 2018-07-03 15:00:00, 145.9835
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 10:00:00, 145.6905, 0.08707037568092346, 2018-07-03 16:00:00, 146.262
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 11:00:00, 145.504, 0.0906064361333847, 2018-07-03 17:00:00, 146.3245
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 12:00:00, 145.574, 0.09747306257486343, 2018-07-03 18:00:00, 146.1685
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 13:00:00, 145.574, 0.10027728974819183, 2018-07-03 19:00:00, 146.18200000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 14:00:00, 145.5735, 0.10370668768882751, 2018-07-03 20:00:00, 146.248
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 15:00:00, 145.8625, 0.10660384595394135, 2018-07-03 21:00:00, 146.00650000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 16:00:00, 145.9855, 0.10360615700483322, 2018-07-03 22:00:00, 145.7625
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 17:00:00, 146.262, 0.09986753761768341, 2018-07-03 23:00:00, 145.769
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 18:00:00, 146.3205, 0.0912499949336052, 2018-07-04 00:00:00, 145.625
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 19:00:00, 146.15249999999997, 0.08354930579662323, 2018-07-04 01:00:00, 145.5505
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 20:00:00, 146.18, 0.07886109501123428, 2018-07-04 02:00:00, 145.679
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 21:00:00, 146.25, 0.07210788875818253, 2018-07-04 03:00:00, 145.89249999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 22:00:00, 146.015, 0.0642658993601799, 2018-07-04 04:00:00, 145.9785
+base_time, current_price, predict_value, right_time, right_price
+2018-07-03 23:00:00, 145.7895, 0.061421968042850494, 2018-07-04 05:00:00, 145.90699999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 00:00:00, 145.7785, 0.060924991965293884, 2018-07-04 06:00:00, 145.8795
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 01:00:00, 145.61599999999999, 0.05854276567697525, 2018-07-04 07:00:00, 145.7765
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 02:00:00, 145.5485, 0.05908092483878136, 2018-07-04 08:00:00, 145.692
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 03:00:00, 145.686, 0.05999398231506348, 2018-07-04 09:00:00, 145.65949999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 04:00:00, 145.8875, 0.05811527743935585, 2018-07-04 10:00:00, 145.79149999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 05:00:00, 145.974, 0.05377936363220215, 2018-07-04 11:00:00, 145.86
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 08:00:00, 145.7785, 0.0379253625869751, 2018-07-04 14:00:00, 145.748
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 09:00:00, 145.6825, 0.038625311106443405, 2018-07-04 15:00:00, 145.947
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 10:00:00, 145.657, 0.04012046009302139, 2018-07-04 16:00:00, 145.6975
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 11:00:00, 145.784, 0.0410151444375515, 2018-07-04 17:00:00, 145.9035
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 12:00:00, 145.8395, 0.03593724966049194, 2018-07-04 18:00:00, 145.93650000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 13:00:00, 145.827, 0.03137090802192688, 2018-07-04 19:00:00, 145.975
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 14:00:00, 145.801, 0.029896877706050873, 2018-07-04 20:00:00, 145.993
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 15:00:00, 145.7485, 0.029186159372329712, 2018-07-04 21:00:00, 145.95600000000002
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 16:00:00, 145.94299999999998, 0.03085365518927574, 2018-07-04 22:00:00, 146.0495
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 17:00:00, 145.7045, 0.025208033621311188, 2018-07-04 23:00:00, 146.014
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 18:00:00, 145.90550000000002, 0.03209049627184868, 2018-07-05 00:00:00, 146.12
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 19:00:00, 145.9345, 0.027647288516163826, 2018-07-05 01:00:00, 146.0985
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 20:00:00, 145.97, 0.02596880868077278, 2018-07-05 02:00:00, 146.2625
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 21:00:00, 145.9975, 0.02392430417239666, 2018-07-05 03:00:00, 146.227
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 22:00:00, 145.98250000000002, 0.02253158949315548, 2018-07-05 04:00:00, 146.204
+base_time, current_price, predict_value, right_time, right_price
+2018-07-04 23:00:00, 146.04399999999998, 0.02286403253674507, 2018-07-05 05:00:00, 146.19299999999998
+base_time, current_price, predict_value, right_time, right_price
+2018-07-05 00:00:00, 146.01, 0.019519535824656487, 2018-07-05 06:00:00, 146.1655
+Traceback (most recent call last):
+  File "../main.py", line 120, in <module>
+    raise ValueError("Complete Back Test")
+ValueError: Complete Back Test
+

@@ -254,6 +254,8 @@ class LstmAlgo(SuperAlgo):
         input_train_data = []
         for i in range(0, (learning_span-window_size)):
             temp = dataset[i:i+window_size].copy()
+            model = self.build_to_normalization(temp)
+            temp = self.change_to_normalization(model, temp)
             input_train_data.append(temp)
 
         input_train_data = np.array(input_train_data)
@@ -307,14 +309,11 @@ class LstmAlgo(SuperAlgo):
         output_normalization_dataset = self.change_to_normalization(self.output_normalization_model, output_dataframe_dataset)
         train_output_dataset = output_normalization_dataset.copy()
 
-        #print(output_normalization_dataset)
 
-        # window_sizeで分割する
+        # traindataはwindow_sizeで分割するタイミングで正規化しちゃう
         train_input_dataset = self.create_train_dataset(train_dataframe_dataset, learning_span, window_size)
-
-        # window_sizeで分割した後に正規化する
-        self.normalization_model = self.build_to_normalization(train_input_dataset)
-        train_normalization_dataset = self.change_to_normalization(self.normalization_model, train_input_dataset)
+        train_normalization_dataset = train_input_dataset.copy()
+        print(train_normalization_dataset)
 
         self.learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
         history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)

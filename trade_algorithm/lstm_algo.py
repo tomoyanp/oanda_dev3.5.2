@@ -284,15 +284,13 @@ class LstmAlgo(SuperAlgo):
         tmp_dataframe = self.get_original_dataset(target_time, table_type, span=learning_span+output_train_index)
 
         # timestamp落とす前に退避
-        #time_dataframe_dataset = tmp_dataframe["insert_time", output_train_index:].copy()
         time_dataframe_dataset = tmp_dataframe["insert_time"][(output_train_index+window_size):].copy()
 
         # 正規化したいのでtimestampを落とす
         del tmp_dataframe["insert_time"]
 
-        #train_dataframe_dataset = tmp_dataframe[:, :-output_train_index].copy()
         train_dataframe_dataset = tmp_dataframe.copy().values[:-output_train_index]
-        
+
 
         # 現在価格と予想価格の誤差にする
         tmp_result = tmp_dataframe.copy().values[(output_train_index+window_size):]
@@ -300,34 +298,32 @@ class LstmAlgo(SuperAlgo):
 
         tmp_result = tmp_result[:,0].astype(np.float32)
         tmp_order = tmp_order[:,0].astype(np.float32)
-        #print(tmp_result)
-        #print(tmp_order)
-
         output_dataframe_dataset = tmp_result - tmp_order
-        #print(output_dataframe_dataset)
 
         # 全体で正規化してモデルを取得
-        self.normalization_model = self.build_to_normalization(tmp_dataframe)
         self.output_normalization_model = self.build_to_normalization(output_dataframe_dataset)
 
         # ビルドしたモデルで正規化する
-        train_normalization_dataset = self.change_to_normalization(self.normalization_model, train_dataframe_dataset)
         output_normalization_dataset = self.change_to_normalization(self.output_normalization_model, output_dataframe_dataset)
         train_output_dataset = output_normalization_dataset.copy()
 
         #print(output_normalization_dataset)
 
         # window_sizeで分割する
-        train_input_dataset = self.create_train_dataset(train_normalization_dataset, learning_span, window_size)
+        train_input_dataset = self.create_train_dataset(train_dataframe_dataset, learning_span, window_size)
+
+        # window_sizeで分割した後に正規化する
+        self.normalization_model = self.build_to_normalization(train_input_dataset)
+        train_normalization_dataset = self.change_to_normalization(self.normalization_model, train_input_dataset)
 
         self.learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
-        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=True)
+        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
         train_predict = self.learning_model.predict(train_input_dataset)
 
         # 正規化戻し＋浮動小数点に戻して描画
         paint_train_predict = self.output_normalization_model.inverse_transform(train_predict).tolist()
         paint_train_output = self.output_normalization_model.inverse_transform(train_output_dataset).tolist()
-        
+
         ### paint predict train data
         fig, ax1 = plt.subplots(1,1)
         ax1.plot(time_dataframe_dataset, paint_train_predict, label="Predict", color="blue")
@@ -362,7 +358,7 @@ class LstmAlgo(SuperAlgo):
 
         # 正規化戻し＋浮動小数点に戻す
         result = self.output_normalization_model.inverse_transform(test_predict).tolist()
-        
+
         # 答え合わせ
 
         target_time = target_time + timedelta(hours=output_train_index)

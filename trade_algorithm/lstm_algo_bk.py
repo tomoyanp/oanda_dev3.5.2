@@ -73,7 +73,6 @@ class LstmAlgo(SuperAlgo):
             minutes = base_time.minute
             seconds = base_time.second
             current_price = self.getCurrentPrice()
-            #print(base_time)
 
 
             if hour == 6 and minutes == 0 and seconds < 10:
@@ -153,8 +152,8 @@ class LstmAlgo(SuperAlgo):
             minutes = base_time.minute
             seconds = base_time.second
 
-            if minutes == 0 and seconds < 10:
-                self.predict_value(base_time)
+            if hour == 7 and minutes == 0 and seconds < 10:
+                self.decide_predict(base_time)
 
         return trade_flag
 
@@ -273,8 +272,7 @@ class LstmAlgo(SuperAlgo):
 
     def train_save_model(self, base_time):
         window_size = 24 # 24時間単位で区切り
-        #learning_span = 24*20 # 1ヶ月分で学習
-        learning_span = 24*60 # 3ヶ月分で学習
+        learning_span = 24*20 # 1ヶ月分で学習
         output_train_index = 8 # 8時間後をラベルにする
         table_type = "1h"
         figure_filename = "figure_1h.png"
@@ -293,77 +291,52 @@ class LstmAlgo(SuperAlgo):
         #train_dataframe_dataset = tmp_dataframe[:, :-output_train_index].copy()
         train_dataframe_dataset = tmp_dataframe.copy().values[:-output_train_index]
         
+        #output_dataframe_dataset = tmp_dataframe[:, output_train_index:].copy()
+        output_dataframe_dataset = tmp_dataframe.copy().values[(output_train_index+window_size):]
 
-        # 現在価格と予想価格の誤差にする
-        tmp_result = tmp_dataframe.copy().values[(output_train_index+window_size):]
-        tmp_order = tmp_dataframe.copy().values[window_size:learning_span]
-
-        tmp_result = tmp_result[:,0].astype(np.float32)
-        tmp_order = tmp_order[:,0].astype(np.float32)
-        #print(tmp_result)
-        #print(tmp_order)
-
-        output_dataframe_dataset = tmp_result - tmp_order
-        #print(output_dataframe_dataset)
+        # 正規化を戻す際に必要
+        max_price = max(tmp_dataframe["end_price"])
+        min_price = min(tmp_dataframe["end_price"])
 
         # 全体で正規化してモデルを取得
-        self.normalization_model = self.build_to_normalization(tmp_dataframe)
-        self.output_normalization_model = self.build_to_normalization(output_dataframe_dataset)
+        normalization_model = self.build_to_normalization(tmp_dataframe)
 
         # ビルドしたモデルで正規化する
-        train_normalization_dataset = self.change_to_normalization(self.normalization_model, train_dataframe_dataset)
-        output_normalization_dataset = self.change_to_normalization(self.output_normalization_model, output_dataframe_dataset)
-        train_output_dataset = output_normalization_dataset.copy()
+        train_normalization_dataset = self.change_to_normalization(normalization_model, train_dataframe_dataset)
+        output_normalization_dataset = self.change_to_normalization(normalization_model, output_dataframe_dataset)
 
-        #print(output_normalization_dataset)
 
         # window_sizeで分割する
         train_input_dataset = self.create_train_dataset(train_normalization_dataset, learning_span, window_size)
 
-        self.learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
-        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=True)
-        train_predict = self.learning_model.predict(train_input_dataset)
+        # end_priceだけ抽出する
+        train_output_dataset = output_normalization_dataset[:,0]
 
-        # 正規化戻し＋浮動小数点に戻して描画
-        paint_train_predict = self.output_normalization_model.inverse_transform(train_predict).tolist()
-        paint_train_output = self.output_normalization_model.inverse_transform(train_output_dataset).tolist()
-        
+        print(train_input_dataset)
+        print(train_output_dataset)
+
+        print(train_input_dataset.shape)
+        print(train_output_dataset.shape)
+
+        learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
+        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=True)
+
+        train_predict = learning_model.predict(train_input_dataset)
+        paint_train_predict = []
+
+        for i in range(len(train_predict)):
+            paint_train_predict.append(train_predict[i]*(max_price-min_price)+min_price)
+
         ### paint predict train data
         fig, ax1 = plt.subplots(1,1)
         ax1.plot(time_dataframe_dataset, paint_train_predict, label="Predict", color="blue")
-        ax1.plot(time_dataframe_dataset, paint_train_output, label="Actual", color="red")
+        ax1.plot(time_dataframe_dataset, output_dataframe_dataset[:,0], label="Actual", color="red")
 
         plt.savefig(figure_filename)
 
 
-    def predict_value(self, base_time):
-        window_size = 24 # 24時間単位で区切り
-        table_type = "1h"
-        target_time = base_time - timedelta(hours=1)
-
-        tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size)
-
-        # 正規化したいのでtimestampを落とす
-        del tmp_dataframe["insert_time"]
-
-        test_dataframe_dataset = tmp_dataframe.copy().values
-
-        # ビルドしたモデルで正規化する
-        test_normalization_dataset = self.change_to_normalization(self.normalization_model, test_dataframe_dataset)
-
-        # データが1セットなので空配列に追加してndarrayに変換する
-        test_input_dataset = []
-        test_input_dataset.append(test_normalization_dataset)
-        test_input_dataset = np.array(test_input_dataset)
-
-        test_predict = self.learning_model.predict(test_input_dataset)
-
-        # 正規化戻し＋浮動小数点に戻す
-        result = self.output_normalization_model.inverse_transform(test_predict).tolist()
-        
-        print(result)
-        print("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result))
-        self.debug_logger.info("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result[0][0]))
+    def predict_model(self, base_time):
+        pass
 
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):

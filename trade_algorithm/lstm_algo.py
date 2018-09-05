@@ -339,6 +339,8 @@ class LstmAlgo(SuperAlgo):
     def predict_value(self, base_time):
         window_size = 24 # 24時間単位で区切り
         table_type = "1h"
+        output_train_index = 8 # 8時間後をラベルにする
+
         target_time = base_time - timedelta(hours=1)
 
         tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size)
@@ -361,9 +363,20 @@ class LstmAlgo(SuperAlgo):
         # 正規化戻し＋浮動小数点に戻す
         result = self.output_normalization_model.inverse_transform(test_predict).tolist()
         
+        # 答え合わせ
+
+        target_time = target_time + timedelta(hours=output_train_index)
+        sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
+        response = self.mysql_connector.select_sql(sql)
+        right_price = response[0][0]
+        right_time = response[0][1]
+        current_price = (self.ask_price + self.bid_price)/2
+
         print(result)
-        print("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result))
-        self.debug_logger.info("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result[0][0]))
+        print("%s ==> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result))
+        #self.debug_logger.info("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result[0][0]))
+        self.debug_logger.info("base_time, current_price, predict_value, right_time, right_price")
+        self.debug_logger.info("%s, %s, %s, %s, %s" % (base_time, current_price, result[0][0], right_time, right_price))
 
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):

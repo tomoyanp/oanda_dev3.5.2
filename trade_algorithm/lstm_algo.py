@@ -346,7 +346,8 @@ class LstmAlgo(SuperAlgo):
         test_dataframe_dataset = tmp_dataframe.copy().values
 
         # ビルドしたモデルで正規化する
-        test_normalization_dataset = self.change_to_normalization(self.normalization_model, test_dataframe_dataset)
+        model = self.build_to_normalization(test_dataframe_dataset)
+        test_normalization_dataset = self.change_to_normalization(model, test_dataframe_dataset)
 
         # データが1セットなので空配列に追加してndarrayに変換する
         test_input_dataset = []

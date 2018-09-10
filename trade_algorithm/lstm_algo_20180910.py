@@ -229,6 +229,8 @@ class LstmAlgo(SuperAlgo):
         lowersigma3_list.reverse()
 
 
+
+
         daily_target_time = target_time - timedelta(days=1)
         daily_train_original_sql = "select max_price, min_price, uppersigma2, lowersigma2, end_price from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, daily_target_time)
         response = self.mysql_connector.select_sql(train_original_sql)
@@ -303,74 +305,56 @@ class LstmAlgo(SuperAlgo):
 
         return model
 
-    def change_to_ptime(self, time):
-        return datetime.strptime("%Y-%m-%d %H:%M:%S", time)
 
     def train_save_model(self, base_time):
         window_size = 24 # 24時間単位で区切り
+        #learning_span = 24*20 # 1ヶ月分で学習
+        learning_span = 24*60 # 3ヶ月分で学習
         output_train_index = 8 # 8時間後をラベルにする
         table_type = "1h"
         figure_filename = "figure_1h.png"
-        start_time = "2017-02-01 00:00:00"
-        end_time = "2018-04-01 00:00:00"
-        start_ptime = self.change_to_ptime(start_time)
-        end_ptime = self.change_to_ptime(end_time)
+        target_time = base_time - timedelta(hours=1)
 
-        target_time = start_ptime
 
-        train_input_dataset = []
-        train_output_dataset = []
+        tmp_dataframe = self.get_original_dataset(target_time, table_type, span=learning_span+output_train_index)
 
-        while target_time < end_time:
+        # timestamp落とす前に退避
+        time_dataframe_dataset = tmp_dataframe["insert_time"][(output_train_index+window_size):].copy()
 
-            print(target_time)
-            # パーフェクトオーダーが出てるときだけを教師データとして入力する
-            sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
-            response = self.mysql_connector.select_sql(sql)
-            sma20 = response[0][0]
-            sma40 = response[0][1]
-            sma80 = response[0][2]
+        # 正規化したいのでtimestampを落とす
+        del tmp_dataframe["insert_time"]
 
-            if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
-                tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size)
+        train_dataframe_dataset = tmp_dataframe.copy().values[:-output_train_index]
 
-                # output_index以降の終わり値をラベルにする
-                output_target_time = target_time + timedelta(hours=output_train_index)
-                output_sql = "select end_price from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, output_target_time)
-                response = self.mysql_connector.select_sql(output_sql)
-                output_end_price = response[0][0]
 
-                # 学習データは、教師データの価格差にする
-                # tmp_dataframe["end_price"] = output_end_price - tmp_dataframe["end_price"]
+        # 現在価格と予想価格の誤差にする
+        tmp_result = tmp_dataframe.copy().values[(output_train_index+window_size):]
+        tmp_order = tmp_dataframe.copy().values[window_size:learning_span]
 
-                del tmp_dataframe["insert_time"]
-                train_np_dataset = tmp.dataframe.copy().values
-
-                train_input_dataset.append(tmp_np_dataset)
-                train_output_dataset.append(output_end_price)
-
-            target_time = target_time + timedelta(hours=1)
-
-        train_input_dataset = np.array(train_input_dataset)
-        train_output_dataset = np.array(train_output_dataset)
+        tmp_result = tmp_result[:,0].astype(np.float32)
+        tmp_order = tmp_order[:,0].astype(np.float32)
+        output_dataframe_dataset = tmp_result - tmp_order
 
         # 全体で正規化してモデルを取得
-        self.input_normalization_model = self.build_to_normalization(train_input_dataset)
-        self.output_normalization_model = self.build_to_normalization(train_output_dataset)
+        self.output_normalization_model = self.build_to_normalization(output_dataframe_dataset)
 
         # ビルドしたモデルで正規化する
-        train_input_normalization_dataset = self.change_to_normalization(self.input_normalization_model, train_input_dataset)
-        train_output_normalization_dataset = self.build_to_normalization(self.output_normalization_model, train_output_dataset)
+        output_normalization_dataset = self.change_to_normalization(self.output_normalization_model, output_dataframe_dataset)
+        train_output_dataset = output_normalization_dataset.copy()
 
-        self.learning_model = self.build_learning_model(train_input_normalization_dataset, output_size=1, neurons=50)
-        history = self.learning_model.fit(train_input_normalization_dataset, train_output_normalization_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
-        train_predict = self.learning_model.predict(train_input_normalization_dataset)
 
-        # 正規化戻し必要
+        # traindataはwindow_sizeで分割するタイミングで正規化しちゃう
+        train_input_dataset = self.create_train_dataset(train_dataframe_dataset, learning_span, window_size)
+        train_normalization_dataset = train_input_dataset.copy()
+        print(train_normalization_dataset)
 
-#        # 正規化戻し＋浮動小数点に戻して描画
-#        paint_train_predict = self.output_normalization_model.inverse_transform(train_predict).tolist()
-#        paint_train_output = self.output_normalization_model.inverse_transform(train_output_dataset).tolist()
+        self.learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
+        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
+        train_predict = self.learning_model.predict(train_input_dataset)
+
+        # 正規化戻し＋浮動小数点に戻して描画
+        paint_train_predict = self.output_normalization_model.inverse_transform(train_predict).tolist()
+        paint_train_output = self.output_normalization_model.inverse_transform(train_output_dataset).tolist()
 
         ### paint predict train data
         fig, ax1 = plt.subplots(1,1)
@@ -387,47 +371,41 @@ class LstmAlgo(SuperAlgo):
 
         target_time = base_time - timedelta(hours=1)
 
-        # パーフェクトオーダーが出てるときだけを教師データとして入力する
-        sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
+        tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size)
+
+        # 正規化したいのでtimestampを落とす
+        del tmp_dataframe["insert_time"]
+
+        test_dataframe_dataset = tmp_dataframe.copy().values
+
+        # ビルドしたモデルで正規化する
+        model = self.build_to_normalization(test_dataframe_dataset)
+        test_normalization_dataset = self.change_to_normalization(model, test_dataframe_dataset)
+
+        # データが1セットなので空配列に追加してndarrayに変換する
+        test_input_dataset = []
+        test_input_dataset.append(test_normalization_dataset)
+        test_input_dataset = np.array(test_input_dataset)
+
+        test_predict = self.learning_model.predict(test_input_dataset)
+
+        # 正規化戻し＋浮動小数点に戻す
+        result = self.output_normalization_model.inverse_transform(test_predict).tolist()
+
+        # 答え合わせ
+
+        target_time = target_time + timedelta(hours=output_train_index)
+        sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
         response = self.mysql_connector.select_sql(sql)
-        sma20 = response[0][0]
-        sma40 = response[0][1]
-        sma80 = response[0][2]
+        right_price = response[0][0]
+        right_time = response[0][1]
+        current_price = (self.ask_price + self.bid_price)/2
 
-        if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
-            tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size)
-
-            # 正規化したいのでtimestampを落とす
-            del tmp_dataframe["insert_time"]
-            test_dataframe_dataset = tmp_dataframe.copy().values
-
-            # ビルドしたモデルで正規化する
-#            model = self.build_to_normalization(test_dataframe_dataset)
-            test_normalization_dataset = self.change_to_normalization(self.input_normalization_model, test_dataframe_dataset)
-
-            # データが1セットなので空配列に追加してndarrayに変換する
-            test_input_dataset = []
-            test_input_dataset.append(test_normalization_dataset)
-            test_input_dataset = np.array(test_input_dataset)
-
-            test_predict = self.learning_model.predict(test_input_dataset)
-
-            # 正規化戻し＋浮動小数点に戻す
-            result = self.output_normalization_model.inverse_transform(test_predict).tolist()
-
-            # 答え合わせ
-            target_time = target_time + timedelta(hours=output_train_index)
-            sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
-            response = self.mysql_connector.select_sql(sql)
-            right_price = response[0][0]
-            right_time = response[0][1]
-            current_price = (self.ask_price + self.bid_price)/2
-
-            print(result)
-            print("%s ==> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result))
-            #self.debug_logger.info("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result[0][0]))
-            self.debug_logger.info("target_time, current_price, predict_value, right_time, right_price")
-            self.debug_logger.info("%s, %s, %s, %s, %s" % (target_time, current_price, result[0][0], right_time, right_price))
+        print(result)
+        print("%s ==> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result))
+        #self.debug_logger.info("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result[0][0]))
+        self.debug_logger.info("base_time, current_price, predict_value, right_time, right_price")
+        self.debug_logger.info("%s, %s, %s, %s, %s" % (base_time, current_price, result[0][0], right_time, right_price))
 
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):

@@ -20,7 +20,7 @@
 
 from super_algo import SuperAlgo
 from mysql_connector import MysqlConnector
-from datetime import timedelta
+from datetime import timedelta, datetime
 from logging import getLogger
 
 import traceback
@@ -304,7 +304,7 @@ class LstmAlgo(SuperAlgo):
         return model
 
     def change_to_ptime(self, time):
-        return datetime.strptime("%Y-%m-%d %H:%M:%S", time)
+        return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
     def train_save_model(self, base_time):
         window_size = 24 # 24時間単位で区切り
@@ -321,7 +321,7 @@ class LstmAlgo(SuperAlgo):
         train_input_dataset = []
         train_output_dataset = []
 
-        while target_time < end_time:
+        while target_time < end_ptime:
 
             print(target_time)
             # パーフェクトオーダーが出てるときだけを教師データとして入力する
@@ -344,9 +344,9 @@ class LstmAlgo(SuperAlgo):
                 # tmp_dataframe["end_price"] = output_end_price - tmp_dataframe["end_price"]
 
                 del tmp_dataframe["insert_time"]
-                train_np_dataset = tmp.dataframe.copy().values
+                train_np_dataset = tmp_dataframe.copy().values
 
-                train_input_dataset.append(tmp_np_dataset)
+                train_input_dataset.append(train_np_dataset)
                 train_output_dataset.append(output_end_price)
 
             target_time = target_time + timedelta(hours=1)

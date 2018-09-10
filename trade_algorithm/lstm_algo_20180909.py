@@ -27,7 +27,7 @@ import traceback
 
 import pandas as pd
 
-pd.set_option("display.max_colwidth", 2000)
+pd.set_option("display.max_colwidth", 1000)
 pd.set_option("display.max_columns", None)
 pd.set_option("display.max_rows", None)
 
@@ -197,7 +197,8 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# EXECUTE ORDER at %s" % base_time)
 
     def get_original_dataset(self, target_time, table_type, span):
-        train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (self.instrument, table_type, target_time, (span))
+        train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (self.instrument, table_type, target_time, (span))
+
         response = self.mysql_connector.select_sql(train_original_sql)
 
         end_price_list = []
@@ -206,8 +207,6 @@ class LstmAlgo(SuperAlgo):
         sma80_list = []
         sma100_list = []
         insert_time_list = []
-        uppersigma3_list = []
-        lowersigma3_list = []
 
         for res in response:
             end_price_list.append(res[0])
@@ -216,8 +215,6 @@ class LstmAlgo(SuperAlgo):
             sma80_list.append(res[3])
             sma100_list.append(res[4])
             insert_time_list.append(res[5])
-            uppersigma3_list.append(res[6])
-            lowersigma3_list.append(res[7])
 
         end_price_list.reverse()
         sma20_list.reverse()
@@ -225,45 +222,15 @@ class LstmAlgo(SuperAlgo):
         sma80_list.reverse()
         sma100_list.reverse()
         insert_time_list.reverse()
-        uppersigma3_list.reverse()
-        lowersigma3_list.reverse()
-
-
-
-
-        daily_target_time = target_time - timedelta(days=1)
-        daily_train_original_sql = "select max_price, min_price, uppersigma2, lowersigma2, end_price from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, daily_target_time)
-        response = self.mysql_connector.select_sql(train_original_sql)
-        daily_max_price = response[0][0]
-        daily_min_price = response[0][1]
-        daily_uppersigma2 = response[0][2]
-        daily_lowersigma2 = response[0][3]
-        daily_end_price = response[0][4]
 
         tmp_original_dataset = {"end_price": end_price_list,
                                 "sma20": sma20_list,
                                 "sma40": sma40_list,
                                 "sma80": sma80_list,
-                                "uppersigma3": uppersigma3_list,
-                                "lowersigma3": lowersigma3_list,
+                                "sma100": sma100_list,
                                 "insert_time": insert_time_list}
 
-
-
-
         tmp_dataframe = pd.DataFrame(tmp_original_dataset)
-        tmp_dataframe["sma20"] = tmp_dataframe["end_price"] - tmp_dataframe["sma20"]
-        tmp_dataframe["sma40"] = tmp_dataframe["end_price"] - tmp_dataframe["sma40"]
-        tmp_dataframe["sma80"] = tmp_dataframe["end_price"] - tmp_dataframe["sma80"]
-        tmp_dataframe["uppersigma3"] = tmp_dataframe["end_price"] - tmp_dataframe["uppersigma3"]
-        tmp_dataframe["lowersigma3"] = tmp_dataframe["end_price"] - tmp_dataframe["lowersigma3"]
-        tmp_dataframe["daily_max_price"] = tmp_dataframe["end_price"] - daily_max_price
-        tmp_dataframe["daily_min_price"] = tmp_dataframe["end_price"] - daily_min_price
-        tmp_dataframe["daily_uppersigma2"] = tmp_dataframe["end_price"] - daily_uppersigma2
-        tmp_dataframe["daily_lowersigma2"] = tmp_dataframe["end_price"] - daily_lowersigma2
-        tmp_dataframe["daily_end_price"] = tmp_dataframe["end_price"] - daily_end_price
-
-        print(tmp_dataframe)
 
         return tmp_dataframe
 

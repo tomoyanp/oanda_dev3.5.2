@@ -196,12 +196,8 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# in %s Algorithm" % self.algorithm)
         self.result_logger.info("# EXECUTE ORDER at %s" % base_time)
 
-    def get_original_dataset(self, target_time, table_type, span, direct):
-        if direct == "ASC" or direct == "asc":
-            train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time %s limit %s" % (self.instrument, table_type, target_time, direct, span)
-        else:
-            train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time %s limit %s" % (self.instrument, table_type, target_time, direct, span)
-
+    def get_original_dataset(self, target_time, table_type, span):
+        train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (self.instrument, table_type, target_time, (span))
         response = self.mysql_connector.select_sql(train_original_sql)
 
         end_price_list = []
@@ -223,15 +219,14 @@ class LstmAlgo(SuperAlgo):
             uppersigma3_list.append(res[6])
             lowersigma3_list.append(res[7])
 
-        if direct == "DESC" or direct == "desc":
-            end_price_list.reverse()
-            sma20_list.reverse()
-            sma40_list.reverse()
-            sma80_list.reverse()
-            sma100_list.reverse()
-            insert_time_list.reverse()
-            uppersigma3_list.reverse()
-            lowersigma3_list.reverse()
+        end_price_list.reverse()
+        sma20_list.reverse()
+        sma40_list.reverse()
+        sma80_list.reverse()
+        sma100_list.reverse()
+        insert_time_list.reverse()
+        uppersigma3_list.reverse()
+        lowersigma3_list.reverse()
 
 
         daily_target_time = target_time - timedelta(days=1)
@@ -342,10 +337,7 @@ class LstmAlgo(SuperAlgo):
                 print("target_time = %s" % target_time)
                 # 未来日付に変えて、教師データと一緒にまとめて取得
                 tmp_target_time = target_time + timedelta(hours=output_train_index)
-                tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
-                tmp_output_dataframe = self.get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
-
-                tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
+                tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size+output_train_index)
                 tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
 
                 del tmp_dataframe["insert_time"]
@@ -354,10 +346,10 @@ class LstmAlgo(SuperAlgo):
                 tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
                 tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
 
-                print("=========== train list ============")
-                print(tmp_time_input_dataframe)
-                print("=========== output list ============")
-                print(tmp_time_output_dataframe)
+                #print("=========== train list ============")
+                #print(tmp_time_input_dataframe)
+                #print("=========== output list ============")
+                #print(tmp_time_output_dataframe)
 
                 tmp_np_dataset = tmp_dataframe.values
                 self.train_normalization_model = self.build_to_normalization(tmp_np_dataset)

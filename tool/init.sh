@@ -7,4 +7,6 @@ mkdir ../onfile/daytime
 mkdir ../onfile/multi
 mkdir ../onfile/multi_evolv
 mkdir ../onfile/volatility
+mkdir ../onfile/lstm
+mkdir ../model
 cp /property/* ../property

@@ -24,6 +24,7 @@ from datetime import timedelta, datetime
 from logging import getLogger
 
 import traceback
+import subprocess
 
 import pandas as pd
 
@@ -40,8 +41,10 @@ from keras.models import Sequential
 from keras.layers import Activation, Dense
 from keras.layers import LSTM
 from keras.layers import Dropout
+from keras.models import model_from_json
 
 from sklearn.preprocessing import MinMaxScaler
+import json
 
 
 class LstmAlgo(SuperAlgo):
@@ -145,8 +148,9 @@ class LstmAlgo(SuperAlgo):
 
     def decideReverseStl(self, stl_flag, base_time):
         if self.order_flag:
-            pass
-
+            target_time = self.trade_time + timedelta(hours=8)
+            if base_time > target_time:
+                stl_flag = True
 
         return stl_flag
 
@@ -158,7 +162,15 @@ class LstmAlgo(SuperAlgo):
             seconds = base_time.second
 
             if minutes == 0 and seconds < 10:
-                self.predict_value(base_time)
+                predict_value = self.predict_value(base_time)
+
+                if predict_value != 0:
+                    if predict_value > self.ask_price:
+                        trade_flag = "buy"
+                        self.trade_time = base_time
+                    elif predict_value < self.bid_price:
+                        trade_flag = "sell"
+                        self.trade_time = base_time
 
         return trade_flag
 
@@ -316,112 +328,125 @@ class LstmAlgo(SuperAlgo):
         return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
     def train_save_model(self, base_time):
-        window_size = 24 # 24時間単位で区切り
-        output_train_index = 8 # 8時間後をラベルにする
-        table_type = "1h"
-        figure_filename = "figure_1h.png"
-        start_time = "2017-02-01 00:00:00"
-        end_time = "2018-04-01 00:00:00"
-        #end_time = "2017-04-01 00:00:00"
-        start_ptime = self.change_to_ptime(start_time)
-        end_ptime = self.change_to_ptime(end_time)
+        command = "ls ../model/ | grep json | wc -l"
+        out = subprocess.getoutput(command)
+        if int(out) == 0:
+            window_size = 24 # 24時間単位で区切り
+            output_train_index = 8 # 8時間後をラベルにする
+            table_type = "1h"
+            figure_filename = "figure_1h.png"
+            start_time = "2017-02-01 00:00:00"
+            end_time = "2018-04-01 00:00:00"
+            #end_time = "2017-04-01 00:00:00"
+            start_ptime = self.change_to_ptime(start_time)
+            end_ptime = self.change_to_ptime(end_time)
+    
+            target_time = start_ptime
+    
+            train_input_dataset = []
+            train_output_dataset = []
+            train_time_dataset = []
+    
+            while target_time < end_ptime:
+    
+                #print(target_time)
+    
+    
+                # パーフェクトオーダーが出てるときだけを教師データとして入力する
+                sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
+                response = self.mysql_connector.select_sql(sql)
+                sma20 = response[0][0]
+                sma40 = response[0][1]
+                sma80 = response[0][2]
+    
+    
+                if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
+                    print("target_time = %s" % target_time)
+                    # 未来日付に変えて、教師データと一緒にまとめて取得
+                    tmp_target_time = target_time + timedelta(hours=output_train_index)
+                    tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
+                    tmp_output_dataframe = self.get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
+    
+                    tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
+                    tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
+                    self.input_max_price.append(max(tmp_dataframe["end_price"]))
+                    self.input_min_price.append(min(tmp_dataframe["end_price"]))
+    
+                    del tmp_dataframe["insert_time"]
+    
+                    tmp_time_dataframe = pd.DataFrame(tmp_time_dataframe)
+                    tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
+                    tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
+    
+                    #print("=========== train list ============")
+                    #print(tmp_time_input_dataframe)
+                    #print("=========== output list ============")
+                    #print(tmp_time_output_dataframe)
+    
+                    tmp_np_dataset = tmp_dataframe.values
+                    self.train_normalization_model = self.build_to_normalization(tmp_np_dataset)
+                    tmp_np_normalization_dataset = self.change_to_normalization(self.train_normalization_model, tmp_np_dataset)
+                    tmp_dataframe = pd.DataFrame(tmp_np_normalization_dataset)
+    
+                    tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
+                    tmp_output_dataframe = tmp_dataframe.copy().iloc[-1, 0]
+    
+                    tmp_input_dataframe = tmp_input_dataframe.values
+                    #tmp_output_dataframe = tmp_output_dataframe.values
+    
+    
+                    train_time_dataset.append(tmp_time_output_dataframe)
+                    train_input_dataset.append(tmp_input_dataframe)
+                    train_output_dataset.append(tmp_output_dataframe)
+                    #print("shape = %s" % str(tmp_input_dataframe.shape))
+    
+    
+                target_time = target_time + timedelta(hours=1)
+    
+            train_input_dataset = np.array(train_input_dataset)
+            train_output_dataset = np.array(train_output_dataset)
+    
+            self.learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
+            history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
+            #history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
+            train_predict = self.learning_model.predict(train_input_dataset)
+    
+            # 正規化戻しする
+            paint_train_predict = []
+            paint_train_output = []
+    
+            for i in range(len(self.input_max_price)):
+                paint_train_predict.append((train_predict[i][0]*(self.input_max_price[i]-self.input_min_price[i])) + self.input_min_price[i])
+                paint_train_output.append((train_output_dataset[i]*(self.input_max_price[i]-self.input_min_price[i])) + self.input_min_price[i])
+    
+            ### paint predict train data
+            fig, ax1 = plt.subplots(1,1)
+            ax1.plot(train_time_dataset, paint_train_predict, label="Predict", color="blue")
+            ax1.plot(train_time_dataset, paint_train_output, label="Actual", color="red")
+    
+            plt.savefig(figure_filename)
+    
+            # モデルの保存
+            model_filename = "lstm_algo.json"
+            weight_filename = "lstm_algo.hdf5"
+            json_string = self.learning_model.to_json()
+            open(model_filename, "w").write(json_string)
+            self.learning_model.save_weights(weight_filename)
+        else:
+            print("load from model.json")
+            model_filename = "../model/lstm_algo.json"
+            weights_filename = "../model/lstm_algo.hdf5"
+            
+            json_string = open(model_filename).read()
+            self.learning_model = model_from_json(json_string)
+            self.learning_model.load_weights(weights_filename)
 
-        target_time = start_ptime
-
-        train_input_dataset = []
-        train_output_dataset = []
-        train_time_dataset = []
-
-        while target_time < end_ptime:
-
-            #print(target_time)
-
-
-            # パーフェクトオーダーが出てるときだけを教師データとして入力する
-            sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
-            response = self.mysql_connector.select_sql(sql)
-            sma20 = response[0][0]
-            sma40 = response[0][1]
-            sma80 = response[0][2]
-
-
-            if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
-                print("target_time = %s" % target_time)
-                # 未来日付に変えて、教師データと一緒にまとめて取得
-                tmp_target_time = target_time + timedelta(hours=output_train_index)
-                tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
-                tmp_output_dataframe = self.get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
-
-                tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
-                tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
-                self.input_max_price.append(max(tmp_dataframe["end_price"]))
-                self.input_min_price.append(min(tmp_dataframe["end_price"]))
-
-                del tmp_dataframe["insert_time"]
-
-                tmp_time_dataframe = pd.DataFrame(tmp_time_dataframe)
-                tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
-                tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
-
-                #print("=========== train list ============")
-                #print(tmp_time_input_dataframe)
-                #print("=========== output list ============")
-                #print(tmp_time_output_dataframe)
-
-                tmp_np_dataset = tmp_dataframe.values
-                self.train_normalization_model = self.build_to_normalization(tmp_np_dataset)
-                tmp_np_normalization_dataset = self.change_to_normalization(self.train_normalization_model, tmp_np_dataset)
-                tmp_dataframe = pd.DataFrame(tmp_np_normalization_dataset)
-
-                tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
-                tmp_output_dataframe = tmp_dataframe.copy().iloc[-1, 0]
-
-                tmp_input_dataframe = tmp_input_dataframe.values
-                #tmp_output_dataframe = tmp_output_dataframe.values
-
-
-                train_time_dataset.append(tmp_time_output_dataframe)
-                train_input_dataset.append(tmp_input_dataframe)
-                train_output_dataset.append(tmp_output_dataframe)
-                #print("shape = %s" % str(tmp_input_dataframe.shape))
-
-
-            target_time = target_time + timedelta(hours=1)
-
-        train_input_dataset = np.array(train_input_dataset)
-        train_output_dataset = np.array(train_output_dataset)
-
-        self.learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
-        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
-        #history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
-        train_predict = self.learning_model.predict(train_input_dataset)
-
-        # 正規化戻しする
-        paint_train_predict = []
-        paint_train_output = []
-
-        for i in range(len(self.input_max_price)):
-            paint_train_predict.append((train_predict[i][0]*(self.input_max_price[i]-self.input_min_price[i])) + self.input_min_price[i])
-            paint_train_output.append((train_output_dataset[i]*(self.input_max_price[i]-self.input_min_price[i])) + self.input_min_price[i])
-
-        ### paint predict train data
-        fig, ax1 = plt.subplots(1,1)
-        ax1.plot(train_time_dataset, paint_train_predict, label="Predict", color="blue")
-        ax1.plot(train_time_dataset, paint_train_output, label="Actual", color="red")
-
-        plt.savefig(figure_filename)
-
-        # モデルの保存
-        model_filename = "lstm_algo.json"
-        weight_filename = "lstm_algo.hdf5"
-        json_string = self.learning_model.to_json()
-        open(model_filename, "w").write(json_string)
-        self.learning_model.save_weights(weight_filename)
 
     def predict_value(self, base_time):
         window_size = 24 # 24時間単位で区切り
         table_type = "1h"
         output_train_index = 8 # 8時間後をラベルにする
+        predict_value = 0
 
         target_time = base_time - timedelta(hours=1)
 
@@ -471,6 +496,7 @@ class LstmAlgo(SuperAlgo):
             self.debug_logger.info("target_time, current_price, predict_value, right_time, right_price")
             self.debug_logger.info("%s, %s, %s, %s, %s" % (target_time, current_price, predict_value, right_time, right_price))
 
+        return predict_value
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):
         self.result_logger.info("# %s at %s" % (stl_method, base_time))

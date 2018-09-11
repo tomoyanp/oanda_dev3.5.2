@@ -350,7 +350,7 @@ class LstmAlgo(SuperAlgo):
                 #print(tmp_time_input_dataframe)
                 #print("=========== output list ============")
                 #print(tmp_time_output_dataframe)
-                
+
                 tmp_np_dataset = tmp_dataframe.values
                 self.train_normalization_model = self.build_to_normalization(tmp_np_dataset)
                 tmp_np_normalization_dataset = self.change_to_normalization(self.train_normalization_model, tmp_np_dataset)
@@ -406,9 +406,13 @@ class LstmAlgo(SuperAlgo):
             del tmp_dataframe["insert_time"]
             test_dataframe_dataset = tmp_dataframe.copy().values
 
-            # ビルドしたモデルで正規化する
-#            model = self.build_to_normalization(test_dataframe_dataset)
-            test_normalization_dataset = self.change_to_normalization(self.input_normalization_model, test_dataframe_dataset)
+            # 正規化を戻したいので、高値安値を押さえておく
+            self.output_max_price = max(test_dataframe_dataset["end_price"])
+            self.output_min_price = min(test_dataframe_dataset["end_price"])
+
+            # outputは別のモデルで正規化する
+            model = self.build_to_normalization(test_dataframe_dataset)
+            test_normalization_dataset = self.change_to_normalization(model, test_dataframe_dataset)
 
             # データが1セットなので空配列に追加してndarrayに変換する
             test_input_dataset = []
@@ -416,9 +420,8 @@ class LstmAlgo(SuperAlgo):
             test_input_dataset = np.array(test_input_dataset)
 
             test_predict = self.learning_model.predict(test_input_dataset)
-
-            # 正規化戻し＋浮動小数点に戻す
-            result = self.output_normalization_model.inverse_transform(test_predict).tolist()
+            predict_value = test_predict[0][0]
+            predict_value = (predict_value*(self.output_max_price-self.output_min_price))+min_price)
 
             # 答え合わせ
             target_time = target_time + timedelta(hours=output_train_index)
@@ -428,11 +431,12 @@ class LstmAlgo(SuperAlgo):
             right_time = response[0][1]
             current_price = (self.ask_price + self.bid_price)/2
 
+
             #print(result)
             #print("%s ==> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result))
             #self.debug_logger.info("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result[0][0]))
             self.debug_logger.info("target_time, current_price, predict_value, right_time, right_price")
-            self.debug_logger.info("%s, %s, %s, %s, %s" % (target_time, current_price, result[0][0], right_time, right_price))
+            self.debug_logger.info("%s, %s, %s, %s, %s" % (target_time, current_price, predict_value, right_time, right_price))
 
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):

@@ -62,6 +62,10 @@ class LstmAlgo(SuperAlgo):
         self.log_max_price = 0
         self.log_min_price = 0
         self.stl_logic = "none"
+        self.input_max_price = []
+        self.input_min_price = []
+        self.output_max_price = 0
+        self.output_min_price = 0
         self.train_save_model(base_time)
 
     # decide trade entry timing
@@ -338,6 +342,7 @@ class LstmAlgo(SuperAlgo):
             sma40 = response[0][1]
             sma80 = response[0][2]
 
+
             if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
                 print("target_time = %s" % target_time)
                 # 未来日付に変えて、教師データと一緒にまとめて取得
@@ -347,6 +352,8 @@ class LstmAlgo(SuperAlgo):
 
                 tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
                 tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
+                self.input_max_price.append(max(tmp_datafrmae["end_price"]))
+                self.input_min_price.append(min(tmp_datafrmae["end_price"]))
 
                 del tmp_dataframe["insert_time"]
 
@@ -374,7 +381,7 @@ class LstmAlgo(SuperAlgo):
                 train_input_dataset.append(tmp_input_dataframe)
                 train_output_dataset.append(tmp_output_dataframe)
                 #print("shape = %s" % str(tmp_input_dataframe.shape))
-                
+
 
             target_time = target_time + timedelta(hours=1)
 
@@ -385,19 +392,27 @@ class LstmAlgo(SuperAlgo):
         history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
         train_predict = self.learning_model.predict(train_input_dataset)
 
-        # 正規化戻し必要
+        # 正規化戻しする
+        paint_train_predict = []
+        paint_train_output = []
 
-#        # 正規化戻し＋浮動小数点に戻して描画
-#        paint_train_predict = self.output_normalization_model.inverse_transform(train_predict).tolist()
-#        paint_train_output = self.output_normalization_model.inverse_transform(train_output_dataset).tolist()
+        for i in range(len(self.input_max_price)):
+            paint_train_predict.append((train_predict[i][0]*(self.input_max_price[i]-self.input_min_price)) + self.input_min_price)
+            paint_train_output.append((train_output_dataset[i][0]*(self.input_max_price[i]-self.input_min_price)) + self.input_min_price)
 
         ### paint predict train data
-#        fig, ax1 = plt.subplots(1,1)
-#        ax1.plot(time_dataframe_dataset, paint_train_predict, label="Predict", color="blue")
-#        ax1.plot(time_dataframe_dataset, paint_train_output, label="Actual", color="red")
-#
-#        plt.savefig(figure_filename)
+        fig, ax1 = plt.subplots(1,1)
+        ax1.plot(time_dataframe_dataset, paint_train_predict, label="Predict", color="blue")
+        ax1.plot(time_dataframe_dataset, paint_train_output, label="Actual", color="red")
 
+        plt.savefig(figure_filename)
+
+        # モデルの保存
+        model_filename = "lstm_algo.json"
+        weight_filename = "lstm_algo.hdf5"
+        json_string = self.learning_model.to_json()
+        open(model_filename, "w").write(json_string)
+        model.save_weights(weight_filename)
 
     def predict_value(self, base_time):
         window_size = 24 # 24時間単位で区切り

@@ -354,10 +354,10 @@ class LstmAlgo(SuperAlgo):
                 tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
                 tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
 
-                print("=========== train list ============")
-                print(tmp_time_input_dataframe)
-                print("=========== output list ============")
-                print(tmp_time_output_dataframe)
+                #print("=========== train list ============")
+                #print(tmp_time_input_dataframe)
+                #print("=========== output list ============")
+                #print(tmp_time_output_dataframe)
 
                 tmp_np_dataset = tmp_dataframe.values
                 self.train_normalization_model = self.build_to_normalization(tmp_np_dataset)
@@ -367,17 +367,23 @@ class LstmAlgo(SuperAlgo):
                 tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
                 tmp_output_dataframe = tmp_dataframe.copy().iloc[-1, 0]
 
+                tmp_input_dataframe = tmp_input_dataframe.values
+                #tmp_output_dataframe = tmp_output_dataframe.values
+
+
                 train_input_dataset.append(tmp_input_dataframe)
                 train_output_dataset.append(tmp_output_dataframe)
+                #print("shape = %s" % str(tmp_input_dataframe.shape))
+                
 
             target_time = target_time + timedelta(hours=1)
 
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
 
-        self.learning_model = self.build_learning_model(train_input_normalization_dataset, output_size=1, neurons=50)
-        history = self.learning_model.fit(train_input_normalization_dataset, train_output_normalization_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
-        train_predict = self.learning_model.predict(train_input_normalization_dataset)
+        self.learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
+        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
+        train_predict = self.learning_model.predict(train_input_dataset)
 
         # 正規化戻し必要
 
@@ -386,11 +392,11 @@ class LstmAlgo(SuperAlgo):
 #        paint_train_output = self.output_normalization_model.inverse_transform(train_output_dataset).tolist()
 
         ### paint predict train data
-        fig, ax1 = plt.subplots(1,1)
-        ax1.plot(time_dataframe_dataset, paint_train_predict, label="Predict", color="blue")
-        ax1.plot(time_dataframe_dataset, paint_train_output, label="Actual", color="red")
-
-        plt.savefig(figure_filename)
+#        fig, ax1 = plt.subplots(1,1)
+#        ax1.plot(time_dataframe_dataset, paint_train_predict, label="Predict", color="blue")
+#        ax1.plot(time_dataframe_dataset, paint_train_output, label="Actual", color="red")
+#
+#        plt.savefig(figure_filename)
 
 
     def predict_value(self, base_time):
@@ -429,7 +435,7 @@ class LstmAlgo(SuperAlgo):
 
             test_predict = self.learning_model.predict(test_input_dataset)
             predict_value = test_predict[0][0]
-            predict_value = (predict_value*(self.output_max_price-self.output_min_price))+min_price)
+            predict_value = (predict_value*(self.output_max_price-self.output_min_price))+min_price
 
             # 答え合わせ
             target_time = target_time + timedelta(hours=output_train_index)

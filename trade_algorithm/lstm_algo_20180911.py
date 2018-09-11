@@ -261,7 +261,7 @@ class LstmAlgo(SuperAlgo):
         tmp_dataframe["daily_lowersigma2"] = tmp_dataframe["end_price"] - daily_lowersigma2
         tmp_dataframe["daily_end_price"] = tmp_dataframe["end_price"] - daily_end_price
 
-        #print(tmp_dataframe)
+        print(tmp_dataframe)
 
         return tmp_dataframe
 
@@ -323,9 +323,7 @@ class LstmAlgo(SuperAlgo):
 
         while target_time < end_ptime:
 
-            #print(target_time)
-
-
+            print(target_time)
             # パーフェクトオーダーが出てるときだけを教師データとして入力する
             sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
             response = self.mysql_connector.select_sql(sql)
@@ -334,37 +332,35 @@ class LstmAlgo(SuperAlgo):
             sma80 = response[0][2]
 
             if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
-                print("target_time = %s" % target_time)
-                # 未来日付に変えて、教師データと一緒にまとめて取得
-                tmp_target_time = target_time + timedelta(hours=output_train_index)
-                tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size+output_train_index)
-                tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
+                tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size)
+
+                # output_index以降の終わり値をラベルにする
+                output_target_time = target_time + timedelta(hours=output_train_index)
+                output_sql = "select end_price from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, output_target_time)
+                response = self.mysql_connector.select_sql(output_sql)
+                output_end_price = response[0][0]
+
+                # 学習データは、教師データの価格差にする
+                # tmp_dataframe["end_price"] = output_end_price - tmp_dataframe["end_price"]
 
                 del tmp_dataframe["insert_time"]
+                train_np_dataset = tmp_dataframe.copy().values
 
-                tmp_time_input_dataframe = tmp_time_dataframe[:window_size, :]
-                tmp_time_output_dataframe = tmp_time_dataframe[-1, 0]
-
-                print("=========== train list ============")
-                print(tmp_time_input_dataframe)
-                print("=========== output list ============")
-                print(tmp_time_output_dataframe)
-                
-                tmp_np_dataset = tmp_dataframe.values
-                self.train_normalization_model = self.build_to_normalization(tmp_np_dataset)
-                tmp_np_normalization_dataset = self.change_to_normalization(self.train_normalization_model, tmp_np_dataset)
-                tmp_dataframe = pd.DataFrame(tmp_np_normalization_dataset)
-
-                tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
-                tmp_output_dataframe = tmp_dataframe.copy().iloc[-1, 0]
-
-                train_input_dataset.append(tmp_input_dataframe.values)
-                train_output_dataset.append(tmp_output_dataframe.values)
+                train_input_dataset.append(train_np_dataset)
+                train_output_dataset.append(output_end_price)
 
             target_time = target_time + timedelta(hours=1)
 
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
+
+        # 全体で正規化してモデルを取得
+        self.input_normalization_model = self.build_to_normalization(train_input_dataset)
+        self.output_normalization_model = self.build_to_normalization(train_output_dataset)
+
+        # ビルドしたモデルで正規化する
+        train_input_normalization_dataset = self.change_to_normalization(self.input_normalization_model, train_input_dataset)
+        train_output_normalization_dataset = self.build_to_normalization(self.output_normalization_model, train_output_dataset)
 
         self.learning_model = self.build_learning_model(train_input_normalization_dataset, output_size=1, neurons=50)
         history = self.learning_model.fit(train_input_normalization_dataset, train_output_normalization_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
@@ -427,8 +423,8 @@ class LstmAlgo(SuperAlgo):
             right_time = response[0][1]
             current_price = (self.ask_price + self.bid_price)/2
 
-            #print(result)
-            #print("%s ==> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result))
+            print(result)
+            print("%s ==> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result))
             #self.debug_logger.info("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result[0][0]))
             self.debug_logger.info("target_time, current_price, predict_value, right_time, right_price")
             self.debug_logger.info("%s, %s, %s, %s, %s" % (target_time, current_price, result[0][0], right_time, right_price))

@@ -320,7 +320,8 @@ class LstmAlgo(SuperAlgo):
         output_train_index = 8 # 8時間後をラベルにする
         table_type = "1h"
         figure_filename = "figure_1h.png"
-        start_time = "2017-02-01 00:00:00"
+        #start_time = "2017-02-01 00:00:00"
+        start_time = "2018-03-01 00:00:00"
         end_time = "2018-04-01 00:00:00"
         start_ptime = self.change_to_ptime(start_time)
         end_ptime = self.change_to_ptime(end_time)
@@ -352,8 +353,8 @@ class LstmAlgo(SuperAlgo):
 
                 tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
                 tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
-                self.input_max_price.append(max(tmp_datafrmae["end_price"]))
-                self.input_min_price.append(min(tmp_datafrmae["end_price"]))
+                self.input_max_price.append(max(tmp_dataframe["end_price"]))
+                self.input_min_price.append(min(tmp_dataframe["end_price"]))
 
                 del tmp_dataframe["insert_time"]
 
@@ -389,7 +390,8 @@ class LstmAlgo(SuperAlgo):
         train_output_dataset = np.array(train_output_dataset)
 
         self.learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
-        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
+        #history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
+        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
         train_predict = self.learning_model.predict(train_input_dataset)
 
         # 正規化戻しする
@@ -397,8 +399,8 @@ class LstmAlgo(SuperAlgo):
         paint_train_output = []
 
         for i in range(len(self.input_max_price)):
-            paint_train_predict.append((train_predict[i][0]*(self.input_max_price[i]-self.input_min_price)) + self.input_min_price)
-            paint_train_output.append((train_output_dataset[i][0]*(self.input_max_price[i]-self.input_min_price)) + self.input_min_price)
+            paint_train_predict.append((train_predict[i][0]*(self.input_max_price[i]-self.input_min_price[i])) + self.input_min_price[i])
+            paint_train_output.append((train_output_dataset[i]*(self.input_max_price[i]-self.input_min_price[i])) + self.input_min_price[i])
 
         ### paint predict train data
         fig, ax1 = plt.subplots(1,1)

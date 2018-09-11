@@ -342,13 +342,14 @@ class LstmAlgo(SuperAlgo):
 
                 del tmp_dataframe["insert_time"]
 
-                tmp_time_input_dataframe = tmp_time_dataframe[:window_size, :]
-                tmp_time_output_dataframe = tmp_time_dataframe[-1, 0]
+                tmp_time_dataframe = pd.DataFrame(tmp_time_dataframe)
+                tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
+                tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
 
-                print("=========== train list ============")
-                print(tmp_time_input_dataframe)
-                print("=========== output list ============")
-                print(tmp_time_output_dataframe)
+                #print("=========== train list ============")
+                #print(tmp_time_input_dataframe)
+                #print("=========== output list ============")
+                #print(tmp_time_output_dataframe)
                 
                 tmp_np_dataset = tmp_dataframe.values
                 self.train_normalization_model = self.build_to_normalization(tmp_np_dataset)
@@ -358,8 +359,8 @@ class LstmAlgo(SuperAlgo):
                 tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
                 tmp_output_dataframe = tmp_dataframe.copy().iloc[-1, 0]
 
-                train_input_dataset.append(tmp_input_dataframe.values)
-                train_output_dataset.append(tmp_output_dataframe.values)
+                train_input_dataset.append(tmp_input_dataframe)
+                train_output_dataset.append(tmp_output_dataframe)
 
             target_time = target_time + timedelta(hours=1)
 

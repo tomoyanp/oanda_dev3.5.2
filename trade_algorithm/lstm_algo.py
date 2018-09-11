@@ -80,8 +80,8 @@ class LstmAlgo(SuperAlgo):
             #print(base_time)
 
 
-            if hour == 6 and minutes == 0 and seconds < 10:
-                self.train_save_model(base_time)
+#            if hour == 6 and minutes == 0 and seconds < 10:
+#                self.train_save_model(base_time)
 
             # if weekday == Saturday, we will have no entry.
             if weekday == 5 and hour >= 5:
@@ -320,9 +320,9 @@ class LstmAlgo(SuperAlgo):
         output_train_index = 8 # 8時間後をラベルにする
         table_type = "1h"
         figure_filename = "figure_1h.png"
-        #start_time = "2017-02-01 00:00:00"
-        start_time = "2018-03-01 00:00:00"
+        start_time = "2017-02-01 00:00:00"
         end_time = "2018-04-01 00:00:00"
+        #end_time = "2017-04-01 00:00:00"
         start_ptime = self.change_to_ptime(start_time)
         end_ptime = self.change_to_ptime(end_time)
 
@@ -330,6 +330,7 @@ class LstmAlgo(SuperAlgo):
 
         train_input_dataset = []
         train_output_dataset = []
+        train_time_dataset = []
 
         while target_time < end_ptime:
 
@@ -379,6 +380,7 @@ class LstmAlgo(SuperAlgo):
                 #tmp_output_dataframe = tmp_output_dataframe.values
 
 
+                train_time_dataset.append(tmp_time_output_dataframe)
                 train_input_dataset.append(tmp_input_dataframe)
                 train_output_dataset.append(tmp_output_dataframe)
                 #print("shape = %s" % str(tmp_input_dataframe.shape))
@@ -390,8 +392,8 @@ class LstmAlgo(SuperAlgo):
         train_output_dataset = np.array(train_output_dataset)
 
         self.learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
-        #history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
-        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
+        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
+        #history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
         train_predict = self.learning_model.predict(train_input_dataset)
 
         # 正規化戻しする
@@ -404,8 +406,8 @@ class LstmAlgo(SuperAlgo):
 
         ### paint predict train data
         fig, ax1 = plt.subplots(1,1)
-        ax1.plot(time_dataframe_dataset, paint_train_predict, label="Predict", color="blue")
-        ax1.plot(time_dataframe_dataset, paint_train_output, label="Actual", color="red")
+        ax1.plot(train_time_dataset, paint_train_predict, label="Predict", color="blue")
+        ax1.plot(train_time_dataset, paint_train_output, label="Actual", color="red")
 
         plt.savefig(figure_filename)
 
@@ -414,7 +416,7 @@ class LstmAlgo(SuperAlgo):
         weight_filename = "lstm_algo.hdf5"
         json_string = self.learning_model.to_json()
         open(model_filename, "w").write(json_string)
-        model.save_weights(weight_filename)
+        self.learning_model.save_weights(weight_filename)
 
     def predict_value(self, base_time):
         window_size = 24 # 24時間単位で区切り
@@ -431,15 +433,15 @@ class LstmAlgo(SuperAlgo):
         sma80 = response[0][2]
 
         if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
-            tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size)
+            tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
+
+            # 正規化を戻したいので、高値安値を押さえておく
+            self.output_max_price = max(tmp_dataframe["end_price"])
+            self.output_min_price = min(tmp_dataframe["end_price"])
 
             # 正規化したいのでtimestampを落とす
             del tmp_dataframe["insert_time"]
             test_dataframe_dataset = tmp_dataframe.copy().values
-
-            # 正規化を戻したいので、高値安値を押さえておく
-            self.output_max_price = max(test_dataframe_dataset["end_price"])
-            self.output_min_price = min(test_dataframe_dataset["end_price"])
 
             # outputは別のモデルで正規化する
             model = self.build_to_normalization(test_dataframe_dataset)
@@ -452,11 +454,11 @@ class LstmAlgo(SuperAlgo):
 
             test_predict = self.learning_model.predict(test_input_dataset)
             predict_value = test_predict[0][0]
-            predict_value = (predict_value*(self.output_max_price-self.output_min_price))+min_price
+            predict_value = (predict_value*(self.output_max_price-self.output_min_price))+self.output_min_price
 
             # 答え合わせ
-            target_time = target_time + timedelta(hours=output_train_index)
-            sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
+            target_right_time = target_time + timedelta(hours=output_train_index)
+            sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_right_time)
             response = self.mysql_connector.select_sql(sql)
             right_price = response[0][0]
             right_time = response[0][1]

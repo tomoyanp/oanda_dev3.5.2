@@ -156,7 +156,7 @@ class LstmAlgo(SuperAlgo):
 
 
     def decideReverseTrade(self, trade_flag, current_price, base_time):
-        if trade_flag == "pass":
+        if trade_flag == "pass" and self.order_flag == False:
             hour = base_time.hour
             minutes = base_time.minute
             seconds = base_time.second

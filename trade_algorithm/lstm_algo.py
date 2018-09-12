@@ -334,8 +334,8 @@ class LstmAlgo(SuperAlgo):
 #            output_train_index = 8 # 8時間後をラベルにする
 #            table_type = "1h"
 #            figure_filename = "figure_1h.png"
-            #start_time = "2017-02-01 00:00:00"
-            start_time = "2018-03-01 00:00:00"
+            start_time = "2017-02-01 00:00:00"
+            #start_time = "2018-03-01 00:00:00"
             end_time = "2018-04-01 00:00:00"
             #end_time = "2017-04-01 00:00:00"
             start_ptime = self.change_to_ptime(start_time)
@@ -418,8 +418,7 @@ class LstmAlgo(SuperAlgo):
             train_output_dataset = np.array(train_output_dataset)
 
             learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
-            history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
-            #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
+            history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
             #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
             train_predict = learning_model.predict(train_input_dataset)
 

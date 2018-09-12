@@ -366,9 +366,11 @@ class LstmAlgo(SuperAlgo):
                     print("target_time = %s" % target_time)
                     # 未来日付に変えて、教師データと一緒にまとめて取得
                     if table_type == "1h":
-                        tmp_target_time = target_time + timedelta(hours=output_train_index)
+#                        tmp_target_time = target_time + timedelta(hours=output_train_index)
+                        tmp_target_time = target_time - timedelta(hours=1)
                     elif table_type == "5m":
-                        tmp_target_time = target_time + timedelta(minutes=(output_train_index*5))
+#                        tmp_target_time = target_time + timedelta(minutes=(output_train_index*5))
+                        tmp_target_time = target_time + timedelta(minutes=5)
 
                     tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
                     tmp_output_dataframe = self.get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
@@ -463,7 +465,7 @@ class LstmAlgo(SuperAlgo):
         if table_type == "1h":
             target_time = base_time - timedelta(hours=1)
         elif table_type == "5m":
-            target_time = base_time - timedelta(minutes=1)
+            target_time = base_time - timedelta(minutes=5)
 
         # パーフェクトオーダーが出てるときだけを教師データとして入力する
         sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
@@ -500,7 +502,7 @@ class LstmAlgo(SuperAlgo):
             if  table_type == "1h":
                 target_right_time = target_time + timedelta(hours=output_train_index)
             elif table_type == "5m":
-                target_right_time = target_time + timedelta(hours=(output_train_index*5))
+                target_right_time = target_time + timedelta(minutes=(output_train_index*5))
 
             sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_right_time)
             response = self.mysql_connector.select_sql(sql)

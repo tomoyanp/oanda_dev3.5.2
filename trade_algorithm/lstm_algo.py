@@ -147,6 +147,7 @@ class LstmAlgo(SuperAlgo):
         if self.order_flag:
             target_time = self.trade_time + timedelta(hours=8)
             if base_time > target_time:
+                print("STL LOGIC TRUE at %s" % base_time)
                 stl_flag = True
 
         return stl_flag

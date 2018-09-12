@@ -69,8 +69,7 @@ class LstmAlgo(SuperAlgo):
         self.input_min_price = []
         self.output_max_price = 0
         self.output_min_price = 0
-        self.learning_model1h = self.train_save_model(base_time, window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h.png", model_filename="lstm_1h.json", weight_filename="lstm_1h.hdf5")
-        self.learning_model5m = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m.png", model_filename="lstm_5m.json", weight_filename="lstm_5m.hdf5")
+        self.train_save_model(base_time)
 
     # decide trade entry timing
     def decideTrade(self, base_time):
@@ -161,17 +160,15 @@ class LstmAlgo(SuperAlgo):
             seconds = base_time.second
 
             if minutes == 0 and seconds < 10:
-                predict_value1h = self.predict_value(base_time, window_size=24, table_type="1h", output_train_index=8)
-                predict_value5m = self.predict_value(base_time, window_size=8*12, table_type="5m", output_train_index=12)
+                predict_value = self.predict_value(base_time)
 
-                if predict_value1h != 0 and predict_value5m != 0:
-                    pass
-#                    if predict_value > self.ask_price:
-#                        trade_flag = "buy"
-#                        self.trade_time = base_time
-#                    elif predict_value < self.bid_price:
-#                        trade_flag = "sell"
-#                        self.trade_time = base_time
+                if predict_value != 0:
+                    if predict_value > self.ask_price:
+                        trade_flag = "buy"
+                        self.trade_time = base_time
+                    elif predict_value < self.bid_price:
+                        trade_flag = "sell"
+                        self.trade_time = base_time
 
         return trade_flag
 
@@ -328,14 +325,14 @@ class LstmAlgo(SuperAlgo):
     def change_to_ptime(self, time):
         return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
-    def train_save_model(self, base_time, window_size, output_train_index, table_type, figure_filename, model_filename, weight_filename):
-        command = "ls ../model/ | grep -e %s -e %s | wc -l" % (model_filename, weight_filename)
+    def train_save_model(self, base_time):
+        command = "ls ../model/ | grep json | wc -l"
         out = subprocess.getoutput(command)
-        if int(out) < 2:
-#            window_size = 24 # 24時間単位で区切り
-#            output_train_index = 8 # 8時間後をラベルにする
-#            table_type = "1h"
-#            figure_filename = "figure_1h.png"
+        if int(out) == 0:
+            window_size = 24 # 24時間単位で区切り
+            output_train_index = 8 # 8時間後をラベルにする
+            table_type = "1h"
+            figure_filename = "figure_1h.png"
             start_time = "2017-02-01 00:00:00"
             end_time = "2018-04-01 00:00:00"
             #end_time = "2017-04-01 00:00:00"
@@ -364,11 +361,7 @@ class LstmAlgo(SuperAlgo):
                 if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
                     print("target_time = %s" % target_time)
                     # 未来日付に変えて、教師データと一緒にまとめて取得
-                    if table_type == "1h":
-                        tmp_target_time = target_time + timedelta(hours=output_train_index)
-                    elif table_type == "5m":
-                        tmp_target_time = target_time + timedelta(minutes=(output_train_index*5))
-
+                    tmp_target_time = target_time + timedelta(hours=output_train_index)
                     tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
                     tmp_output_dataframe = self.get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
 
@@ -406,18 +399,15 @@ class LstmAlgo(SuperAlgo):
                     #print("shape = %s" % str(tmp_input_dataframe.shape))
 
 
-                if table_type == "1h":
-                    target_time = target_time + timedelta(hours=1)
-                elif table_type == "5m":
-                    target_time = target_time + timedelta(minutes=5)
+                target_time = target_time + timedelta(hours=1)
 
             train_input_dataset = np.array(train_input_dataset)
             train_output_dataset = np.array(train_output_dataset)
 
-            learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
-            history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
-            #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
-            train_predict = learning_model.predict(train_input_dataset)
+            self.learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
+            history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
+            #history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
+            train_predict = self.learning_model.predict(train_input_dataset)
 
             # 正規化戻しする
             paint_train_predict = []
@@ -435,33 +425,28 @@ class LstmAlgo(SuperAlgo):
             plt.savefig(figure_filename)
 
             # モデルの保存
-            model_filename = "../model/%s" % model_filename
-            weights_filename = "../model/%s" % weights_filename
-            json_string = learning_model.to_json()
+            model_filename = "lstm_algo.json"
+            weight_filename = "lstm_algo.hdf5"
+            json_string = self.learning_model.to_json()
             open(model_filename, "w").write(json_string)
-            learning_model.save_weights(weight_filename)
+            self.learning_model.save_weights(weight_filename)
         else:
             print("load from model.json")
-            model_filename = "../model/%s" % model_filename
-            weights_filename = "../model/%s" % weights_filename
+            model_filename = "../model/lstm_algo.json"
+            weights_filename = "../model/lstm_algo.hdf5"
 
             json_string = open(model_filename).read()
-            learning_model = model_from_json(json_string)
-            learning_model.load_weights(weights_filename)
-
-        return learning_model
+            self.learning_model = model_from_json(json_string)
+            self.learning_model.load_weights(weights_filename)
 
 
-    def predict_value(self, base_time, window_size, table_type, output_train_index):
-#        window_size = 24 # 24時間単位で区切り
-#        table_type = "1h"
-#        output_train_index = 8 # 8時間後をラベルにする
+    def predict_value(self, base_time):
+        window_size = 24 # 24時間単位で区切り
+        table_type = "1h"
+        output_train_index = 8 # 8時間後をラベルにする
         predict_value = 0
 
-        if table_type == "1h":
-            target_time = base_time - timedelta(hours=1)
-        elif table_type == "5m":
-            target_time = base_time - timedelta(minutes=1)
+        target_time = base_time - timedelta(hours=1)
 
         # パーフェクトオーダーが出てるときだけを教師データとして入力する
         sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
@@ -495,11 +480,7 @@ class LstmAlgo(SuperAlgo):
             predict_value = (predict_value*(self.output_max_price-self.output_min_price))+self.output_min_price
 
             # 答え合わせ
-            if  table_type == "1h":
-                target_right_time = target_time + timedelta(hours=output_train_index)
-            elif table_type == "5m":
-                target_right_time = target_time + timedelta(hours=(output_train_index*5))
-
+            target_right_time = target_time + timedelta(hours=output_train_index)
             sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_right_time)
             response = self.mysql_connector.select_sql(sql)
             right_price = response[0][0]
@@ -510,8 +491,8 @@ class LstmAlgo(SuperAlgo):
             #print(result)
             #print("%s ==> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result))
             #self.debug_logger.info("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result[0][0]))
-            self.debug_logger.info("table_type, target_time, current_price, predict_value, right_time, right_price")
-            self.debug_logger.info("%s, %s, %s, %s, %s, %s" % (table_type, target_time, current_price, predict_value, right_time, right_price))
+            self.debug_logger.info("target_time, current_price, predict_value, right_time, right_price")
+            self.debug_logger.info("%s, %s, %s, %s, %s" % (target_time, current_price, predict_value, right_time, right_price))
 
         return predict_value
 

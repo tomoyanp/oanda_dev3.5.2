@@ -67,8 +67,8 @@ class LstmAlgo(SuperAlgo):
         self.stl_logic = "none"
         self.output_max_price = 0
         self.output_min_price = 0
-        self.learning_model1h = self.train_save_model(base_time, window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h.png", model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5")
-        self.learning_model5m = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m.png", model_filename="lstm_5m.json", weights_filename="lstm_5m.hdf5")
+        self.learning_model1h = self.train_save_model(base_time, window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h.png", model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-03-01 00:00:00")
+        self.learning_model5m = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m.png", model_filename="lstm_5m.json", weights_filename="lstm_5m.hdf5", start_time="2018-02-01 00:00:00", end_time="2018-03-01 00:00:00")
 
     # decide trade entry timing
     def decideTrade(self, base_time):
@@ -326,7 +326,7 @@ class LstmAlgo(SuperAlgo):
     def change_to_ptime(self, time):
         return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
-    def train_save_model(self, base_time, window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename):
+    def train_save_model(self, base_time, window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time):
         command = "ls ../model/ | grep -e %s -e %s | wc -l" % (model_filename, weights_filename)
         out = subprocess.getoutput(command)
         if int(out) < 2:
@@ -335,8 +335,8 @@ class LstmAlgo(SuperAlgo):
 #            table_type = "1h"
 #            figure_filename = "figure_1h.png"
             #start_time = "2017-02-01 00:00:00"
-            start_time = "2018-03-01 00:00:00"
-            end_time = "2018-04-01 00:00:00"
+#            start_time = "2018-03-01 00:00:00"
+#            end_time = "2018-04-01 00:00:00"
             #end_time = "2017-04-01 00:00:00"
             start_ptime = self.change_to_ptime(start_time)
             end_ptime = self.change_to_ptime(end_time)

@@ -65,8 +65,6 @@ class LstmAlgo(SuperAlgo):
         self.log_max_price = 0
         self.log_min_price = 0
         self.stl_logic = "none"
-        self.input_max_price = []
-        self.input_min_price = []
         self.output_max_price = 0
         self.output_min_price = 0
         self.learning_model1h = self.train_save_model(base_time, window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h.png", model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5")
@@ -161,8 +159,8 @@ class LstmAlgo(SuperAlgo):
             seconds = base_time.second
 
             if minutes == 0 and seconds < 10:
-                predict_value1h = self.predict_value(base_time, window_size=24, table_type="1h", output_train_index=8)
-                predict_value5m = self.predict_value(base_time, window_size=8*12, table_type="5m", output_train_index=12)
+                predict_value1h = self.predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
+                predict_value5m = self.predict_value(base_time, self.learning_model5m, window_size=8*12, table_type="5m", output_train_index=12)
 
                 if predict_value1h != 0 and predict_value5m != 0:
                     pass
@@ -348,6 +346,8 @@ class LstmAlgo(SuperAlgo):
             train_input_dataset = []
             train_output_dataset = []
             train_time_dataset = []
+            input_max_price = []
+            input_min_price = []
 
             while target_time < end_ptime:
 
@@ -375,8 +375,8 @@ class LstmAlgo(SuperAlgo):
 
                     tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
                     tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
-                    self.input_max_price.append(max(tmp_dataframe["end_price"]))
-                    self.input_min_price.append(min(tmp_dataframe["end_price"]))
+                    input_max_price.append(max(tmp_dataframe["end_price"]))
+                    input_min_price.append(min(tmp_dataframe["end_price"]))
 
                     del tmp_dataframe["insert_time"]
 
@@ -390,8 +390,8 @@ class LstmAlgo(SuperAlgo):
                     #print(tmp_time_output_dataframe)
 
                     tmp_np_dataset = tmp_dataframe.values
-                    self.train_normalization_model = self.build_to_normalization(tmp_np_dataset)
-                    tmp_np_normalization_dataset = self.change_to_normalization(self.train_normalization_model, tmp_np_dataset)
+                    normalization_model = self.build_to_normalization(tmp_np_dataset)
+                    tmp_np_normalization_dataset = self.change_to_normalization(normalization_model, tmp_np_dataset)
                     tmp_dataframe = pd.DataFrame(tmp_np_normalization_dataset)
 
                     tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
@@ -425,9 +425,9 @@ class LstmAlgo(SuperAlgo):
             paint_train_predict = []
             paint_train_output = []
 
-            for i in range(len(self.input_max_price)):
-                paint_train_predict.append((train_predict[i][0]*(self.input_max_price[i]-self.input_min_price[i])) + self.input_min_price[i])
-                paint_train_output.append((train_output_dataset[i]*(self.input_max_price[i]-self.input_min_price[i])) + self.input_min_price[i])
+            for i in range(len(input_max_price)):
+                paint_train_predict.append((train_predict[i][0]*(input_max_price[i]-input_min_price[i])) + input_min_price[i])
+                paint_train_output.append((train_output_dataset[i]*(input_max_price[i]-input_min_price[i])) + input_min_price[i])
 
             ### paint predict train data
             fig, ax1 = plt.subplots(1,1)
@@ -454,7 +454,7 @@ class LstmAlgo(SuperAlgo):
         return learning_model
 
 
-    def predict_value(self, base_time, window_size, table_type, output_train_index):
+    def predict_value(self, base_time, learning_model, window_size, table_type, output_train_index):
 #        window_size = 24 # 24時間単位で区切り
 #        table_type = "1h"
 #        output_train_index = 8 # 8時間後をラベルにする
@@ -476,8 +476,8 @@ class LstmAlgo(SuperAlgo):
             tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
 
             # 正規化を戻したいので、高値安値を押さえておく
-            self.output_max_price = max(tmp_dataframe["end_price"])
-            self.output_min_price = min(tmp_dataframe["end_price"])
+            output_max_price = max(tmp_dataframe["end_price"])
+            output_min_price = min(tmp_dataframe["end_price"])
 
             # 正規化したいのでtimestampを落とす
             del tmp_dataframe["insert_time"]
@@ -492,9 +492,9 @@ class LstmAlgo(SuperAlgo):
             test_input_dataset.append(test_normalization_dataset)
             test_input_dataset = np.array(test_input_dataset)
 
-            test_predict = self.learning_model.predict(test_input_dataset)
+            test_predict = learning_model.predict(test_input_dataset)
             predict_value = test_predict[0][0]
-            predict_value = (predict_value*(self.output_max_price-self.output_min_price))+self.output_min_price
+            predict_value = (predict_value*(output_max_price-output_min_price))+output_min_price
 
             # 答え合わせ
             if  table_type == "1h":

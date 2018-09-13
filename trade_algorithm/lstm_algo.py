@@ -153,7 +153,8 @@ class LstmAlgo(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        stl_flag = self.decideReverseStl(stl_flag, base_time)
+#                        stl_flag = self.decideReverseStl(stl_flag, base_time)
+                        pass
 
             else:
                 pass
@@ -187,15 +188,14 @@ class LstmAlgo(SuperAlgo):
             seconds = base_time.second
 
             if minutes == 0 and seconds < 10:
-                #predict_value1h = self.predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
-                predict_value1h = self.predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=1)
-                predict_value5m = self.predict_value(base_time, self.learning_model5m, window_size=8*12, table_type="5m", output_train_index=12)
+                self.predict_value1h = self.predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=1)
+                self.predict_value5m = self.predict_value(base_time, self.learning_model5m, window_size=8*12, table_type="5m", output_train_index=12)
 
-                if predict_value1h != 0 and predict_value5m != 0:
-                    if predict_value1h > self.ask_price and predict_value5m > self.ask_price:
+                if self.predict_value1h != 0 and self.predict_value5m != 0:
+                    if self.predict_value1h > self.ask_price and self.predict_value5m > self.ask_price:
                         trade_flag = "buy"
                         self.trade_time = base_time
-                    elif predict_value1h < self.bid_price and predict_value5m < self.bid_price:
+                    elif self.predict_value1h < self.bid_price and self.predict_value5m < self.bid_price:
                         trade_flag = "sell"
                         self.trade_time = base_time
 #                    if predict_value > self.ask_price:
@@ -244,6 +244,10 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("#######################################################")
         self.result_logger.info("# in %s Algorithm" % self.algorithm)
         self.result_logger.info("# EXECUTE ORDER at %s" % base_time)
+        self.result_logger.info("# trade_flag=%s" % self.order_kind)
+        self.result_logger.info("# ORDER_PRICE=%s" % ((self.ask_price + self.bid_price)/2 ))
+        self.result_logger.info("# predict_value5m=%s" % self.predict_value5m)
+        self.result_logger.info("# predict_value1h=%s" % self.predict_value1h)
 
     def get_original_dataset(self, target_time, table_type, span, direct):
         if direct == "ASC" or direct == "asc":

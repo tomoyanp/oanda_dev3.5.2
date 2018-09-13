@@ -172,7 +172,7 @@ class LstmAlgo(SuperAlgo):
                 predict_value5m = self.predict_value(base_time, self.learning_model5m, window_size=8*12, table_type="5m", output_train_index=12)
 
                 if predict_value1h != 0 and predict_value5m != 0:
-                    if predict_value1h > self.ask_price and predict_vlaue5m > self.ask_price:
+                    if predict_value1h > self.ask_price and predict_value5m > self.ask_price:
                         trade_flag = "buy"
                         self.trade_time = base_time
                     elif predict_value1h < self.bid_price and predict_value5m < self.bid_price:

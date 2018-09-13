@@ -67,29 +67,9 @@ class LstmAlgo(SuperAlgo):
         self.stl_logic = "none"
         self.output_max_price = 0
         self.output_min_price = 0
-#        self.learning_model1h_morning = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_morning.png", model_filename="lstm_1h_morning.json", weights_filename="lstm_1h_morning.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
-#        self.learning_model5m_morning = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_morning.png", model_filename="lstm_5m_morning.json", weights_filename="lstm_5m_morning.hdf5", start_time="2018-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
-#
-#        self.learning_model1h_daytime = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_daytime.png", model_filename="lstm_1h_daytime.json", weights_filename="lstm_1h_daytime.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-#        self.learning_model5m_daytime = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_daytime.png", model_filename="lstm_5m_daytime.json", weights_filename="lstm_5m_daytime.hdf5", start_time="2018-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-#
-#        self.learning_model1h_night = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_night.png", model_filename="lstm_1h_night.json", weights_filename="lstm_1h_night.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
-#        self.learning_model5m_night = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_night.png", model_filename="lstm_5m_night.json", weights_filename="lstm_5m_night.hdf5", start_time="2018-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
-
-
-        self.learning_model1h_morning = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_morning.png", model_filename="lstm_1h_morning.json", weights_filename="lstm_1h_morning.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
-        self.learning_model5m_morning = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_morning.png", model_filename="lstm_5m_morning.json", weights_filename="lstm_5m_morning.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
-
-        self.learning_model1h_daytime = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_daytime.png", model_filename="lstm_1h_daytime.json", weights_filename="lstm_1h_daytime.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-        self.learning_model5m_daytime = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_daytime.png", model_filename="lstm_5m_daytime.json", weights_filename="lstm_5m_daytime.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-
-        self.learning_model1h_night = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_night.png", model_filename="lstm_1h_night.json", weights_filename="lstm_1h_night.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
-        self.learning_model5m_night = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_night.png", model_filename="lstm_5m_night.json", weights_filename="lstm_5m_night.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
-
-
-
-
-
+        #self.learning_model1h = self.train_save_model(base_time, window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h.png", model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-04-01 00:00:00")
+        self.learning_model1h = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h.png", model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-04-01 00:00:00")
+        self.learning_model5m = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m.png", model_filename="lstm_5m.json", weights_filename="lstm_5m.hdf5", start_time="2018-02-01 00:00:00", end_time="2018-04-01 00:00:00")
 
     # decide trade entry timing
     def decideTrade(self, base_time):
@@ -360,36 +340,7 @@ class LstmAlgo(SuperAlgo):
     def change_to_ptime(self, time):
         return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
-
-
-    def decideConditions(self, table_type, target_time):
-        # パーフェクトオーダーが出てるときだけを教師データとして入力する
-        sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
-        response = self.mysql_connector.select_sql(sql)
-        sma20 = response[0][0]
-        sma40 = response[0][1]
-        sma80 = response[0][2]
-        flag = False
-        if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
-            flag = True
-
-        return flag
-
-    def decideTerm(self, term, hour):
-        flag = False
-        if term == "morning":
-            if 5 <= hour < 13:
-                flag = True
-        elif term == "daytime":
-            if 13 <= hour < 21:
-                flag = True
-        elif term == "night":
-            if 21 <= hour or hour < 6:
-                flag = True
-
-        return flag
-
-    def train_save_model(self, base_time, window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time, term):
+    def train_save_model(self, base_time, window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time):
         command = "ls ../model/ | grep -e %s -e %s | wc -l" % (model_filename, weights_filename)
         out = subprocess.getoutput(command)
         if int(out) < 2:
@@ -405,90 +356,99 @@ class LstmAlgo(SuperAlgo):
             input_min_price = []
 
             while target_time < end_ptime:
-                hour = target_time.hour
 
-                if decideTerm(term, hour):
-                    if decideConditions(table_type, target_time):
-                        print("term=%s, target_time=%s" % (term, target_time))
-                        # 未来日付に変えて、教師データと一緒にまとめて取得
-                        if table_type == "1h":
-    #                        tmp_target_time = target_time + timedelta(hours=output_train_index)
-                            tmp_target_time = target_time - timedelta(hours=1)
-                        elif table_type == "5m":
-    #                        tmp_target_time = target_time + timedelta(minutes=(output_train_index*5))
-                            tmp_target_time = target_time + timedelta(minutes=5)
-
-                        tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
-                        tmp_output_dataframe = self.get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
-
-                        tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
-                        tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
-                        input_max_price.append(max(tmp_dataframe["end_price"]))
-                        input_min_price.append(min(tmp_dataframe["end_price"]))
-
-                        del tmp_dataframe["insert_time"]
-
-                        tmp_time_dataframe = pd.DataFrame(tmp_time_dataframe)
-                        tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
-                        tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
-
-                        #print("=========== train list ============")
-                        #print(tmp_time_input_dataframe)
-                        #print("=========== output list ============")
-                        #print(tmp_time_output_dataframe)
-
-                        tmp_np_dataset = tmp_dataframe.values
-                        normalization_model = self.build_to_normalization(tmp_np_dataset)
-                        tmp_np_normalization_dataset = self.change_to_normalization(normalization_model, tmp_np_dataset)
-                        tmp_dataframe = pd.DataFrame(tmp_np_normalization_dataset)
-
-                        tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
-                        tmp_output_dataframe = tmp_dataframe.copy().iloc[-1, 0]
-
-                        tmp_input_dataframe = tmp_input_dataframe.values
-                        #tmp_output_dataframe = tmp_output_dataframe.values
+                #print(target_time)
 
 
-                        train_time_dataset.append(tmp_time_output_dataframe)
-                        train_input_dataset.append(tmp_input_dataframe)
-                        train_output_dataset.append(tmp_output_dataframe)
-                        #print("shape = %s" % str(tmp_input_dataframe.shape))
+                # パーフェクトオーダーが出てるときだけを教師データとして入力する
+                sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
+                response = self.mysql_connector.select_sql(sql)
+                sma20 = response[0][0]
+                sma40 = response[0][1]
+                sma80 = response[0][2]
 
 
+                if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
+                    print("target_time = %s" % target_time)
+                    # 未来日付に変えて、教師データと一緒にまとめて取得
                     if table_type == "1h":
-                        target_time = target_time + timedelta(hours=1)
+#                        tmp_target_time = target_time + timedelta(hours=output_train_index)
+                        tmp_target_time = target_time - timedelta(hours=1)
                     elif table_type == "5m":
-                        target_time = target_time + timedelta(minutes=5)
+#                        tmp_target_time = target_time + timedelta(minutes=(output_train_index*5))
+                        tmp_target_time = target_time + timedelta(minutes=5)
 
-                train_input_dataset = np.array(train_input_dataset)
-                train_output_dataset = np.array(train_output_dataset)
+                    tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
+                    tmp_output_dataframe = self.get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
 
-                learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
-                history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
-                #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
-                train_predict = learning_model.predict(train_input_dataset)
+                    tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
+                    tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
+                    input_max_price.append(max(tmp_dataframe["end_price"]))
+                    input_min_price.append(min(tmp_dataframe["end_price"]))
 
-                # 正規化戻しする
-                paint_train_predict = []
-                paint_train_output = []
+                    del tmp_dataframe["insert_time"]
 
-                for i in range(len(input_max_price)):
-                    paint_train_predict.append((train_predict[i][0]*(input_max_price[i]-input_min_price[i])) + input_min_price[i])
-                    paint_train_output.append((train_output_dataset[i]*(input_max_price[i]-input_min_price[i])) + input_min_price[i])
+                    tmp_time_dataframe = pd.DataFrame(tmp_time_dataframe)
+                    tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
+                    tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
 
-                ### paint predict train data
-                fig, ax1 = plt.subplots(1,1)
-                ax1.plot(train_time_dataset, paint_train_predict, label="Predict", color="blue")
-                ax1.plot(train_time_dataset, paint_train_output, label="Actual", color="red")
+                    #print("=========== train list ============")
+                    #print(tmp_time_input_dataframe)
+                    #print("=========== output list ============")
+                    #print(tmp_time_output_dataframe)
 
-                plt.savefig(figure_filename)
+                    tmp_np_dataset = tmp_dataframe.values
+                    normalization_model = self.build_to_normalization(tmp_np_dataset)
+                    tmp_np_normalization_dataset = self.change_to_normalization(normalization_model, tmp_np_dataset)
+                    tmp_dataframe = pd.DataFrame(tmp_np_normalization_dataset)
 
-                # モデルの保存
-                model_filename = "../model/%s" % model_filename
-                weights_filename = "../model/%s" % weights_filename
-                json_string = learning_model.to_json()
-                open(model_filename, "w").write(json_string)
-                learning_model.save_weights(weights_filename)
+                    tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
+                    tmp_output_dataframe = tmp_dataframe.copy().iloc[-1, 0]
+
+                    tmp_input_dataframe = tmp_input_dataframe.values
+                    #tmp_output_dataframe = tmp_output_dataframe.values
+
+
+                    train_time_dataset.append(tmp_time_output_dataframe)
+                    train_input_dataset.append(tmp_input_dataframe)
+                    train_output_dataset.append(tmp_output_dataframe)
+                    #print("shape = %s" % str(tmp_input_dataframe.shape))
+
+
+                if table_type == "1h":
+                    target_time = target_time + timedelta(hours=1)
+                elif table_type == "5m":
+                    target_time = target_time + timedelta(minutes=5)
+
+            train_input_dataset = np.array(train_input_dataset)
+            train_output_dataset = np.array(train_output_dataset)
+
+            learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
+            history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
+            #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
+            train_predict = learning_model.predict(train_input_dataset)
+
+            # 正規化戻しする
+            paint_train_predict = []
+            paint_train_output = []
+
+            for i in range(len(input_max_price)):
+                paint_train_predict.append((train_predict[i][0]*(input_max_price[i]-input_min_price[i])) + input_min_price[i])
+                paint_train_output.append((train_output_dataset[i]*(input_max_price[i]-input_min_price[i])) + input_min_price[i])
+
+            ### paint predict train data
+            fig, ax1 = plt.subplots(1,1)
+            ax1.plot(train_time_dataset, paint_train_predict, label="Predict", color="blue")
+            ax1.plot(train_time_dataset, paint_train_output, label="Actual", color="red")
+
+            plt.savefig(figure_filename)
+
+            # モデルの保存
+            model_filename = "../model/%s" % model_filename
+            weights_filename = "../model/%s" % weights_filename
+            json_string = learning_model.to_json()
+            open(model_filename, "w").write(json_string)
+            learning_model.save_weights(weights_filename)
         else:
             print("load from model.json")
             model_filename = "../model/%s" % model_filename
@@ -513,7 +473,13 @@ class LstmAlgo(SuperAlgo):
             target_time = base_time - timedelta(minutes=5)
 
         # パーフェクトオーダーが出てるときだけを教師データとして入力する
-        if decideConditions(table_type, target_time):
+        sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
+        response = self.mysql_connector.select_sql(sql)
+        sma20 = response[0][0]
+        sma40 = response[0][1]
+        sma80 = response[0][2]
+
+        if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
             tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
 
             # 正規化を戻したいので、高値安値を押さえておく

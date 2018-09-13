@@ -145,10 +145,17 @@ class LstmAlgo(SuperAlgo):
 
     def decideReverseStl(self, stl_flag, base_time):
         if self.order_flag:
-            target_time = self.trade_time + timedelta(hours=8)
-            if base_time > target_time:
-                print("STL LOGIC TRUE at %s" % base_time)
-                stl_flag = True
+            hour = base_time.hour
+            minutes = base_time.minute
+            seconds = base_time.second
+
+            if minutes == 0 and seconds < 10:
+                predict_value5m = self.predict_value(base_time, self.learning_model5m, window_size=8*12, table_type="5m", output_train_index=12)
+                if predict_value5m != 0:
+                    if self.order_kind == "buy" and predict_value5m < self.ask_price:
+                        stl_flag = True
+                    elif self.order_kind == "sell" and predict_value5m > self.bid_price:
+                        stl_flag = True
 
         return stl_flag
 
@@ -165,7 +172,12 @@ class LstmAlgo(SuperAlgo):
                 predict_value5m = self.predict_value(base_time, self.learning_model5m, window_size=8*12, table_type="5m", output_train_index=12)
 
                 if predict_value1h != 0 and predict_value5m != 0:
-                    pass
+                    if predict_value1h > self.ask_price and predict_vlaue5m > self.ask_price:
+                        trade_flag = "buy"
+                        self.trade_time = base_time
+                    elif predict_value1h < self.bid_price and predict_value5m < self.bid_price:
+                        trade_flag = "sell"
+                        self.trade_time = base_time
 #                    if predict_value > self.ask_price:
 #                        trade_flag = "buy"
 #                        self.trade_time = base_time

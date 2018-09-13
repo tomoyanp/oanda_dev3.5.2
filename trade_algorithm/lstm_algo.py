@@ -67,7 +67,8 @@ class LstmAlgo(SuperAlgo):
         self.stl_logic = "none"
         self.output_max_price = 0
         self.output_min_price = 0
-        self.learning_model1h = self.train_save_model(base_time, window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h.png", model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-04-01 00:00:00")
+        #self.learning_model1h = self.train_save_model(base_time, window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h.png", model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-04-01 00:00:00")
+        self.learning_model1h = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h.png", model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-04-01 00:00:00")
         self.learning_model5m = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m.png", model_filename="lstm_5m.json", weights_filename="lstm_5m.hdf5", start_time="2018-02-01 00:00:00", end_time="2018-04-01 00:00:00")
 
     # decide trade entry timing
@@ -159,7 +160,8 @@ class LstmAlgo(SuperAlgo):
             seconds = base_time.second
 
             if minutes == 0 and seconds < 10:
-                predict_value1h = self.predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
+                #predict_value1h = self.predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
+                predict_value1h = self.predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=1)
                 predict_value5m = self.predict_value(base_time, self.learning_model5m, window_size=8*12, table_type="5m", output_train_index=12)
 
                 if predict_value1h != 0 and predict_value5m != 0:
@@ -491,9 +493,11 @@ class LstmAlgo(SuperAlgo):
 
             # 答え合わせ
             if  table_type == "1h":
-                target_right_time = target_time + timedelta(hours=output_train_index)
+#                target_right_time = target_time + timedelta(hours=output_train_index)
+                target_right_time = base_time + timedelta(hours=output_train_index)
             elif table_type == "5m":
-                target_right_time = target_time + timedelta(minutes=(output_train_index*5))
+#                target_right_time = target_time + timedelta(minutes=(output_train_index*5))
+                target_right_time = base_time + timedelta(minutes=(output_train_index*5))
 
             sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_right_time)
             response = self.mysql_connector.select_sql(sql)
@@ -506,7 +510,7 @@ class LstmAlgo(SuperAlgo):
             #print("%s ==> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result))
             #self.debug_logger.info("%s ===> %s" % (base_time.strftime("%Y-%m-%d %H:%M:%S"), result[0][0]))
             self.debug_logger.info("table_type, target_time, current_price, predict_value, right_time, right_price")
-            self.debug_logger.info("%s, %s, %s, %s, %s, %s" % (table_type, target_time, current_price, predict_value, right_time, right_price))
+            self.debug_logger.info("%s, %s, %s, %s, %s, %s" % (table_type, base_time, current_price, predict_value, target_right_time, right_price))
 
         return predict_value
 

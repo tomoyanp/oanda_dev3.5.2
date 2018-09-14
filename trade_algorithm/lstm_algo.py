@@ -420,13 +420,8 @@ class LstmAlgo(SuperAlgo):
             while target_time < end_ptime:
                 hour = target_time.hour
 
-<<<<<<< Updated upstream
-                if decideTerm(hour) == term:
-                    if decideConditions(table_type, target_time):
-=======
-                if self.decideTerm(term, hour):
+                if self.decideTerm(hour) == term:
                     if self.decideConditions(table_type, target_time):
->>>>>>> Stashed changes
                         print("term=%s, target_time=%s" % (term, target_time))
                         # 未来日付に変えて、教師データと一緒にまとめて取得
                         if table_type == "1h":
@@ -471,8 +466,6 @@ class LstmAlgo(SuperAlgo):
                         train_input_dataset.append(tmp_input_dataframe)
                         train_output_dataset.append(tmp_output_dataframe)
                         #print("shape = %s" % str(tmp_input_dataframe.shape))
-
-
                 if table_type == "1h":
                     target_time = target_time + timedelta(hours=1)
                 elif table_type == "5m":

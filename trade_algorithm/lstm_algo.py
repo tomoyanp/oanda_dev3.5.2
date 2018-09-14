@@ -420,8 +420,13 @@ class LstmAlgo(SuperAlgo):
             while target_time < end_ptime:
                 hour = target_time.hour
 
+<<<<<<< Updated upstream
                 if decideTerm(hour) == term:
                     if decideConditions(table_type, target_time):
+=======
+                if self.decideTerm(term, hour):
+                    if self.decideConditions(table_type, target_time):
+>>>>>>> Stashed changes
                         print("term=%s, target_time=%s" % (term, target_time))
                         # 未来日付に変えて、教師データと一緒にまとめて取得
                         if table_type == "1h":
@@ -468,40 +473,40 @@ class LstmAlgo(SuperAlgo):
                         #print("shape = %s" % str(tmp_input_dataframe.shape))
 
 
-                    if table_type == "1h":
-                        target_time = target_time + timedelta(hours=1)
-                    elif table_type == "5m":
-                        target_time = target_time + timedelta(minutes=5)
+                if table_type == "1h":
+                    target_time = target_time + timedelta(hours=1)
+                elif table_type == "5m":
+                    target_time = target_time + timedelta(minutes=5)
 
-                train_input_dataset = np.array(train_input_dataset)
-                train_output_dataset = np.array(train_output_dataset)
+            train_input_dataset = np.array(train_input_dataset)
+            train_output_dataset = np.array(train_output_dataset)
 
-                learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
-                history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
-                #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
-                train_predict = learning_model.predict(train_input_dataset)
+            learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
+            history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
+            #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
+            train_predict = learning_model.predict(train_input_dataset)
 
-                # 正規化戻しする
-                paint_train_predict = []
-                paint_train_output = []
+            # 正規化戻しする
+            paint_train_predict = []
+            paint_train_output = []
 
-                for i in range(len(input_max_price)):
-                    paint_train_predict.append((train_predict[i][0]*(input_max_price[i]-input_min_price[i])) + input_min_price[i])
-                    paint_train_output.append((train_output_dataset[i]*(input_max_price[i]-input_min_price[i])) + input_min_price[i])
+            for i in range(len(input_max_price)):
+                paint_train_predict.append((train_predict[i][0]*(input_max_price[i]-input_min_price[i])) + input_min_price[i])
+                paint_train_output.append((train_output_dataset[i]*(input_max_price[i]-input_min_price[i])) + input_min_price[i])
 
-                ### paint predict train data
-                fig, ax1 = plt.subplots(1,1)
-                ax1.plot(train_time_dataset, paint_train_predict, label="Predict", color="blue")
-                ax1.plot(train_time_dataset, paint_train_output, label="Actual", color="red")
+            ### paint predict train data
+            fig, ax1 = plt.subplots(1,1)
+            ax1.plot(train_time_dataset, paint_train_predict, label="Predict", color="blue")
+            ax1.plot(train_time_dataset, paint_train_output, label="Actual", color="red")
 
-                plt.savefig(figure_filename)
+            plt.savefig(figure_filename)
 
-                # モデルの保存
-                model_filename = "../model/%s" % model_filename
-                weights_filename = "../model/%s" % weights_filename
-                json_string = learning_model.to_json()
-                open(model_filename, "w").write(json_string)
-                learning_model.save_weights(weights_filename)
+            # モデルの保存
+            model_filename = "../model/%s" % model_filename
+            weights_filename = "../model/%s" % weights_filename
+            json_string = learning_model.to_json()
+            open(model_filename, "w").write(json_string)
+            learning_model.save_weights(weights_filename)
         else:
             print("load from model.json")
             model_filename = "../model/%s" % model_filename

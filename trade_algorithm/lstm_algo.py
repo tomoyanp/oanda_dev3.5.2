@@ -77,18 +77,13 @@ class LstmAlgo(SuperAlgo):
 #        self.learning_model5m_night = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_night.png", model_filename="lstm_5m_night.json", weights_filename="lstm_5m_night.hdf5", start_time="2018-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
 
 
-        self.learning_model1h_morning = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_morning.png", model_filename="lstm_1h_morning.json", weights_filename="lstm_1h_morning.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
-        self.learning_model5m_morning = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_morning.png", model_filename="lstm_5m_morning.json", weights_filename="lstm_5m_morning.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
+        self.learning_model1h_morning = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_morning.png", model_filename="lstm_1h_morning.json", weights_filename="lstm_1h_morning.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
+        self.learning_model1h_daytime = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_daytime.png", model_filename="lstm_1h_daytime.json", weights_filename="lstm_1h_daytime.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
+        self.learning_model1h_night = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_night.png", model_filename="lstm_1h_night.json", weights_filename="lstm_1h_night.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
 
-        self.learning_model1h_daytime = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_daytime.png", model_filename="lstm_1h_daytime.json", weights_filename="lstm_1h_daytime.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-        self.learning_model5m_daytime = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_daytime.png", model_filename="lstm_5m_daytime.json", weights_filename="lstm_5m_daytime.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-
-        self.learning_model1h_night = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_night.png", model_filename="lstm_1h_night.json", weights_filename="lstm_1h_night.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
-        self.learning_model5m_night = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_night.png", model_filename="lstm_5m_night.json", weights_filename="lstm_5m_night.hdf5", start_time="2018-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
-
-
-
-
+        self.learning_model5m_morning = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_morning.png", model_filename="lstm_5m_morning.json", weights_filename="lstm_5m_morning.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
+        self.learning_model5m_daytime = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_daytime.png", model_filename="lstm_5m_daytime.json", weights_filename="lstm_5m_daytime.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
+        self.learning_model5m_night = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_night.png", model_filename="lstm_5m_night.json", weights_filename="lstm_5m_night.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
 
 
     # decide trade entry timing
@@ -421,7 +416,8 @@ class LstmAlgo(SuperAlgo):
                 hour = target_time.hour
 
                 if self.decideTerm(hour) == term:
-                    if self.decideConditions(table_type, target_time):
+                    #if self.decideConditions(table_type, target_time):
+                    if self.decideConditions("1h", target_time):
                         print("term=%s, target_time=%s" % (term, target_time))
                         # 未来日付に変えて、教師データと一緒にまとめて取得
                         if table_type == "1h":
@@ -475,7 +471,7 @@ class LstmAlgo(SuperAlgo):
             train_output_dataset = np.array(train_output_dataset)
 
             learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=50)
-            history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
+            history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=10, batch_size=1, verbose=2, shuffle=False)
             #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
             train_predict = learning_model.predict(train_input_dataset)
 
@@ -524,7 +520,8 @@ class LstmAlgo(SuperAlgo):
             target_time = base_time - timedelta(minutes=5)
 
         # パーフェクトオーダーが出てるときだけを教師データとして入力する
-        if self.decideConditions(table_type, target_time):
+        #if self.decideConditions(table_type, target_time):
+        if self.decideConditions("1h", target_time):
             tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
 
             # 正規化を戻したいので、高値安値を押さえておく

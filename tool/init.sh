@@ -7,4 +7,6 @@ mkdir ../onfile/daytime
 mkdir ../onfile/multi
 mkdir ../onfile/multi_evolv
 mkdir ../onfile/volatility
-cp /home/tomoyan/master_config/property/* ../property
+mkdir ../onfile/lstm
+mkdir ../model
+cp /property/* ../property

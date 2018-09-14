@@ -2,6 +2,14 @@
 ####################################################
 # Learning and save build model
 
+import os, sys
+current_path = os.path.abspath(os.path.dirname(__file__))
+base_path = current_path + "/.."
+sys.path.append(base_path)
+sys.path.append(base_path + "/lib")
+sys.path.append(base_path + "/obj")
+sys.path.append(base_path + "/lstm_lib")
+
 from mysql_connector import MysqlConnector
 from datetime import timedelta, datetime
 from logging import getLogger
@@ -290,9 +298,9 @@ def train_save_model( base_time, window_size, output_train_index, table_type, fi
 
 
 def predict_value( base_time, learning_model, window_size, table_type, output_train_index):
-     window_size = 24 # 24時間単位で区切り
-     table_type = "1h"
-     output_train_index = 8 # 8時間後をラベルにする
+    window_size = 24 # 24時間単位で区切り
+    table_type = "1h"
+    output_train_index = 8 # 8時間後をラベルにする
     predict_value = 0
 
     if table_type == "1h":
@@ -328,10 +336,10 @@ def predict_value( base_time, learning_model, window_size, table_type, output_tr
 
         # 答え合わせ
         if  table_type == "1h":
-             target_right_time = target_time + timedelta(hours=output_train_index)
+            target_right_time = target_time + timedelta(hours=output_train_index)
             target_right_time = base_time + timedelta(hours=output_train_index)
         elif table_type == "5m":
-             target_right_time = target_time + timedelta(minutes=(output_train_index*5))
+            target_right_time = target_time + timedelta(minutes=(output_train_index*5))
             target_right_time = base_time + timedelta(minutes=(output_train_index*5))
 
         sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_right_time)

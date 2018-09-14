@@ -188,8 +188,20 @@ class LstmAlgo(SuperAlgo):
             seconds = base_time.second
 
             if minutes == 0 and seconds < 10:
-                self.predict_value1h = self.predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=1)
-                self.predict_value5m = self.predict_value(base_time, self.learning_model5m, window_size=8*12, table_type="5m", output_train_index=12)
+
+                term = self.decideTerm(hour)
+                if term == "morning":
+                    model_1h = self.learning_model1h_morning
+                    model_5m = self.learning_model5m_morning
+                elif term == "daytime":
+                    model_1h = self.learning_model1h_daytime
+                    model_5m = self.learning_model5m_daytime
+                elif term == "night":
+                    model_1h = self.learning_model1h_night
+                    model_5m = self.learning_model5m_night
+
+                self.predict_value1h = self.predict_value(base_time, model_1h, window_size=24, table_type="1h", output_train_index=1)
+                self.predict_value5m = self.predict_value(base_time, model_5m, window_size=8*12, table_type="5m", output_train_index=12)
 
                 if self.predict_value1h != 0 and self.predict_value5m != 0:
                     if self.predict_value1h > self.ask_price and self.predict_value5m > self.ask_price:
@@ -379,19 +391,16 @@ class LstmAlgo(SuperAlgo):
 
         return flag
 
-    def decideTerm(self, term, hour):
-        flag = False
-        if term == "morning":
-            if 5 <= hour < 13:
-                flag = True
-        elif term == "daytime":
-            if 13 <= hour < 21:
-                flag = True
-        elif term == "night":
-            if 21 <= hour or hour < 6:
-                flag = True
+    def decideTerm(self, hour):
+        term = None
+        if 5 <= hour < 13:
+            term = "morning"
+        if 13 <= hour < 21:
+            term = "daytime"
+        if 21 <= hour or hour < 6:
+            term = "night"
 
-        return flag
+        return term
 
     def train_save_model(self, base_time, window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time, term):
         command = "ls ../model/ | grep -e %s -e %s | wc -l" % (model_filename, weights_filename)
@@ -411,7 +420,7 @@ class LstmAlgo(SuperAlgo):
             while target_time < end_ptime:
                 hour = target_time.hour
 
-                if decideTerm(term, hour):
+                if decideTerm(hour) == term:
                     if decideConditions(table_type, target_time):
                         print("term=%s, target_time=%s" % (term, target_time))
                         # 未来日付に変えて、教師データと一緒にまとめて取得

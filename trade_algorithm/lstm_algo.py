@@ -524,7 +524,7 @@ class LstmAlgo(SuperAlgo):
             target_time = base_time - timedelta(minutes=5)
 
         # パーフェクトオーダーが出てるときだけを教師データとして入力する
-        if decideConditions(table_type, target_time):
+        if self.decideConditions(table_type, target_time):
             tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
 
             # 正規化を戻したいので、高値安値を押さえておく

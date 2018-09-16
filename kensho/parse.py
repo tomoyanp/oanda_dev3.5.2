@@ -38,18 +38,19 @@ out = out.split("\n")
 profit_list = out
 
 
-cmd = "cat %s | grep TRADE_FLAG" % filename
+cmd = "cat %s | grep -e trade_flag -e TRADE_FLAG" % filename
 out = subprocess.getoutput(cmd)
 out = out.split("\n")
 
 flag_list = out
 
+print("order_time, settle_time, hold_time, algorithm, side, profit")
 for i in range(0, len(profit_list)):
   algo = algo_list[i]
   
   order_time = order_list[i].split(" ")[4] + " " + order_list[i].split(" ")[5]
   profit = profit_list[i].split(" ")[1].split("=")[1]
-  side = flag_list[i].split(" ")[2].split("=")[1]
+  side = flag_list[i].split("=")[1]
   settle_time = settle_list[i].split("at ")[-1]
 
   order_ptime = datetime.strptime(order_time, "%Y-%m-%d %H:%M:%S")

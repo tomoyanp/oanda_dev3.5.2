@@ -117,9 +117,9 @@ class LstmAlgo(SuperAlgo):
                     pass
 
                 else:
-#                    trade_flag = self.decideReverseTrade(trade_flag, current_price, base_time)
-                    if minutes == 0 and seconds < 10:
-                        self.test_predict(base_time)
+                    trade_flag = self.decideReverseTrade(trade_flag, current_price, base_time)
+#                    if minutes == 0 and seconds < 10:
+#                        self.test_predict(base_time)
 
             if trade_flag != "pass" and self.order_flag:
                 if trade_flag == "buy" and self.order_kind == "buy":
@@ -156,7 +156,8 @@ class LstmAlgo(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        stl_flag = self.decideReverseStl(stl_flag, base_time)
+                        #stl_flag = self.decideReverseStl(stl_flag, base_time)
+                        pass
 
             else:
                 pass
@@ -214,34 +215,21 @@ class LstmAlgo(SuperAlgo):
             seconds = base_time.second
 
             if minutes == 0 and seconds < 10:
+                self.predict_value1d = predict_value(base_time, self.learning_model1d, window_size=10, table_type="day", output_train_index=1)
+                self.predict_value1h = predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
 
-                term = self.decideTerm(hour)
-                if term == "morning":
-                    model_1h = self.learning_model1h_morning
-                    model_5m = self.learning_model5m_morning
-                elif term == "daytime":
-                    model_1h = self.learning_model1h_daytime
-                    model_5m = self.learning_model5m_daytime
-                elif term == "night":
-                    model_1h = self.learning_model1h_night
-                    model_5m = self.learning_model5m_night
 
-                self.predict_value1h = self.predict_value(base_time, model_1h, window_size=24, table_type="1h", output_train_index=1)
-                self.predict_value5m = self.predict_value(base_time, model_5m, window_size=8*12, table_type="5m", output_train_index=12)
+                self.predict_value1d_before = predict_value((base_time - timedelta(days=1)), self.learning_model1d, window_size=10, table_type="day", output_train_index=1)
+                self.predict_value1h_before = predict_value((base_time - timedelta(hours=1)), self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
 
-                if self.predict_value1h != 0 and self.predict_value5m != 0:
-                    if self.predict_value1h > self.ask_price and self.predict_value5m > self.ask_price:
+
+                if self.predict_value1d != 0 and self.predict_value1h != 0:
+                    if self.predict_value1h > self.predict_value1h_before and self.predict_value1d > self.predict_value1d_before:
                         trade_flag = "buy"
                         self.trade_time = base_time
-                    elif self.predict_value1h < self.bid_price and self.predict_value5m < self.bid_price:
+                    elif self.predict_value1h < self.predict_value1h_before and self.predict_value1d < self.predict_value1d_before:
                         trade_flag = "sell"
                         self.trade_time = base_time
-#                    if predict_value > self.ask_price:
-#                        trade_flag = "buy"
-#                        self.trade_time = base_time
-#                    elif predict_value < self.bid_price:
-#                        trade_flag = "sell"
-#                        self.trade_time = base_time
 
         return trade_flag
 
@@ -284,8 +272,10 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# EXECUTE ORDER at %s" % base_time)
         self.result_logger.info("# trade_flag=%s" % self.order_kind)
         self.result_logger.info("# ORDER_PRICE=%s" % ((self.ask_price + self.bid_price)/2 ))
-        self.result_logger.info("# predict_value5m=%s" % self.predict_value5m)
+        self.result_logger.info("# predict_value1d=%s" % self.predict_value1d)
         self.result_logger.info("# predict_value1h=%s" % self.predict_value1h)
+        self.result_logger.info("# predict_value1d_before=%s" % self.predict_value1d_before)
+        self.result_logger.info("# predict_value1h_before=%s" % self.predict_value1h_before)
 
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):

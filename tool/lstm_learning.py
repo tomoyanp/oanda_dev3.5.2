@@ -2,6 +2,14 @@
 ####################################################
 # Learning and save build model
 
+import os, sys
+current_path = os.path.abspath(os.path.dirname(__file__))
+base_path = current_path + "/.."
+sys.path.append(base_path)
+sys.path.append(base_path + "/lib")
+sys.path.append(base_path + "/obj")
+sys.path.append(base_path + "/lstm_lib")
+
 from mysql_connector import MysqlConnector
 from datetime import timedelta, datetime
 from logging import getLogger
@@ -28,16 +36,16 @@ from sklearn.preprocessing import MinMaxScaler
 import json
 
 
+instrument = "GBP_JPY"
+mysql_connector = MysqlConnector()
+
 def main():
-    learning_model1h_morning = train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_morning.png", model_filename="lstm_1h_morning.json", weights_filename="lstm_1h_morning.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
-    learning_model1h_daytime = train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_daytime.png", model_filename="lstm_1h_daytime.json", weights_filename="lstm_1h_daytime.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-    learning_model1h_night = train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_night.png", model_filename="lstm_1h_night.json", weights_filename="lstm_1h_night.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
+#    learning_model1h = train_save_model(window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h.png", model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="all")
+#    learning_model5m = train_save_model(window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m.png", model_filename="lstm_5m.json", weights_filename="lstm_5m.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="all")
+    learning_model1d = train_save_model(window_size=10, output_train_index=1, table_type="day", figure_filename="figure_1d.png", model_filename="lstm_1d.json", weights_filename="lstm_1d.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="all")
 
-    learning_model5m_morning = train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_morning.png", model_filename="lstm_5m_morning.json", weights_filename="lstm_5m_morning.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
-    learning_model5m_daytime = train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_daytime.png", model_filename="lstm_5m_daytime.json", weights_filename="lstm_5m_daytime.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-    learning_model5m_night = train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_night.png", model_filename="lstm_5m_night.json", weights_filename="lstm_5m_night.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
 
-def get_original_dataset( target_time, table_type, span, direct):
+def get_original_dataset(target_time, table_type, span, direct):
     if direct == "ASC" or direct == "asc":
         train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time %s limit %s" % (instrument, table_type, target_time, direct, span)
     else:
@@ -152,8 +160,6 @@ def build_learning_model( inputs, output_size, neurons, activ_func="linear", dro
 def change_to_ptime( time):
     return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
-
-
 def decideConditions( table_type, target_time):
     # パーフェクトオーダーが出てるときだけを教師データとして入力する
     sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time)
@@ -178,7 +184,7 @@ def decideTerm( hour):
 
     return term
 
-def train_save_model( base_time, window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time, term):
+def train_save_model(window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time, term):
     command = "ls ../model/ | grep -e %s -e %s | wc -l" % (model_filename, weights_filename)
     out = subprocess.getoutput(command)
     if int(out) < 2:
@@ -196,17 +202,17 @@ def train_save_model( base_time, window_size, output_train_index, table_type, fi
         while target_time < end_ptime:
             hour = target_time.hour
 
-            if decideTerm(hour) == term:
-                #if decideConditions(table_type, target_time):
-                if decideConditions("1h", target_time):
+            if decideTerm(hour) == term or term == "all":
+                #if decideConditions("1h", target_time):
+                if 1==1:
                     print("term=%s, target_time=%s" % (term, target_time))
                     # 未来日付に変えて、教師データと一緒にまとめて取得
                     if table_type == "1h":
-#                        tmp_target_time = target_time + timedelta(hours=output_train_index)
                         tmp_target_time = target_time - timedelta(hours=1)
                     elif table_type == "5m":
-#                        tmp_target_time = target_time + timedelta(minutes=(output_train_index*5))
                         tmp_target_time = target_time + timedelta(minutes=5)
+                    elif table_type == "day":
+                        tmp_target_time = target_time + timedelta(days=1)
 
                     tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
                     tmp_output_dataframe = get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
@@ -247,6 +253,8 @@ def train_save_model( base_time, window_size, output_train_index, table_type, fi
                 target_time = target_time + timedelta(hours=1)
             elif table_type == "5m":
                 target_time = target_time + timedelta(minutes=5)
+            elif table_type == "day":
+                target_time = target_time + timedelta(days=1)
 
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
@@ -290,9 +298,9 @@ def train_save_model( base_time, window_size, output_train_index, table_type, fi
 
 
 def predict_value( base_time, learning_model, window_size, table_type, output_train_index):
-     window_size = 24 # 24時間単位で区切り
-     table_type = "1h"
-     output_train_index = 8 # 8時間後をラベルにする
+    window_size = 24 # 24時間単位で区切り
+    table_type = "1h"
+    output_train_index = 8 # 8時間後をラベルにする
     predict_value = 0
 
     if table_type == "1h":
@@ -328,10 +336,10 @@ def predict_value( base_time, learning_model, window_size, table_type, output_tr
 
         # 答え合わせ
         if  table_type == "1h":
-             target_right_time = target_time + timedelta(hours=output_train_index)
+            target_right_time = target_time + timedelta(hours=output_train_index)
             target_right_time = base_time + timedelta(hours=output_train_index)
         elif table_type == "5m":
-             target_right_time = target_time + timedelta(minutes=(output_train_index*5))
+            target_right_time = target_time + timedelta(minutes=(output_train_index*5))
             target_right_time = base_time + timedelta(minutes=(output_train_index*5))
 
         sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_right_time)
@@ -348,3 +356,6 @@ def predict_value( base_time, learning_model, window_size, table_type, output_tr
         debug_logger.info("%s, %s, %s, %s, %s, %s" % (table_type, base_time, current_price, predict_value, target_right_time, right_price))
 
     return predict_value
+
+
+main()

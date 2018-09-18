@@ -118,9 +118,9 @@ if __name__ == "__main__":
     sleep_time = 3600
 
     if mode == "test":
-        base_time = "2015-02-01 00:00:00"
+        base_time = "2018-08-01 06:00:00"
         base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
-        end_time = "2018-08-01 08:00:00"
+        end_time = "2018-09-16 00:00:00"
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
     else:
         base_time = datetime.now()

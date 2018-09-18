@@ -67,23 +67,15 @@ class LstmAlgo(SuperAlgo):
         self.stl_logic = "none"
         self.output_max_price = 0
         self.output_min_price = 0
-#        self.learning_model1h_morning = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_morning.png", model_filename="lstm_1h_morning.json", weights_filename="lstm_1h_morning.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
-#        self.learning_model5m_morning = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_morning.png", model_filename="lstm_5m_morning.json", weights_filename="lstm_5m_morning.hdf5", start_time="2018-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
-#
-#        self.learning_model1h_daytime = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_daytime.png", model_filename="lstm_1h_daytime.json", weights_filename="lstm_1h_daytime.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-#        self.learning_model5m_daytime = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_daytime.png", model_filename="lstm_5m_daytime.json", weights_filename="lstm_5m_daytime.hdf5", start_time="2018-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-#
-#        self.learning_model1h_night = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_night.png", model_filename="lstm_1h_night.json", weights_filename="lstm_1h_night.hdf5", start_time="2017-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
-#        self.learning_model5m_night = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_night.png", model_filename="lstm_5m_night.json", weights_filename="lstm_5m_night.hdf5", start_time="2018-02-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
 
 
-        self.learning_model1h_morning = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_morning.png", model_filename="lstm_1h_morning.json", weights_filename="lstm_1h_morning.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
-        self.learning_model1h_daytime = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_daytime.png", model_filename="lstm_1h_daytime.json", weights_filename="lstm_1h_daytime.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-        self.learning_model1h_night = self.train_save_model(base_time, window_size=24, output_train_index=1, table_type="1h", figure_filename="figure_1h_night.png", model_filename="lstm_1h_night.json", weights_filename="lstm_1h_night.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
+        self.learning_model1h_morning = self.train_save_model(base_time, window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h_morning.png", model_filename="lstm_1h_morning.json", weights_filename="lstm_1h_morning.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
+        self.learning_model1h_daytime = self.train_save_model(base_time, window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h_daytime.png", model_filename="lstm_1h_daytime.json", weights_filename="lstm_1h_daytime.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
+        self.learning_model1h_night = self.train_save_model(base_time, window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h_night.png", model_filename="lstm_1h_night.json", weights_filename="lstm_1h_night.hdf5", start_time="2017-03-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
 
-        self.learning_model5m_morning = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_morning.png", model_filename="lstm_5m_morning.json", weights_filename="lstm_5m_morning.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
-        self.learning_model5m_daytime = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_daytime.png", model_filename="lstm_5m_daytime.json", weights_filename="lstm_5m_daytime.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
-        self.learning_model5m_night = self.train_save_model(base_time, window_size=8*12, output_train_index=12, table_type="5m", figure_filename="figure_5m_night.png", model_filename="lstm_5m_night.json", weights_filename="lstm_5m_night.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
+        self.learning_model5m_morning = self.train_save_model(base_time, window_size=8*12, output_train_index=(12*8), table_type="5m", figure_filename="figure_5m_morning.png", model_filename="lstm_5m_morning.json", weights_filename="lstm_5m_morning.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="morning")
+        self.learning_model5m_daytime = self.train_save_model(base_time, window_size=8*12, output_train_index=(12*8), table_type="5m", figure_filename="figure_5m_daytime.png", model_filename="lstm_5m_daytime.json", weights_filename="lstm_5m_daytime.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="daytime")
+        self.learning_model5m_night = self.train_save_model(base_time, window_size=8*12, output_train_index=(12*8), table_type="5m", figure_filename="figure_5m_night.png", model_filename="lstm_5m_night.json", weights_filename="lstm_5m_night.hdf5", start_time="2017-10-01 00:00:00", end_time="2018-04-01 00:00:00", term="night")
 
 
     # decide trade entry timing
@@ -148,7 +140,8 @@ class LstmAlgo(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        stl_flag = self.decideReverseStl(stl_flag, base_time)
+#                        stl_flag = self.decideReverseStl(stl_flag, base_time)
+                        pass
 
             else:
                 pass
@@ -182,8 +175,8 @@ class LstmAlgo(SuperAlgo):
                     model_1h = self.learning_model1h_night
                     model_5m = self.learning_model5m_night
 
-                self.predict_value1h = self.predict_value(base_time, model_1h, window_size=24, table_type="1h", output_train_index=1)
-                self.predict_value5m = self.predict_value(base_time, model_5m, window_size=8*12, table_type="5m", output_train_index=12)
+                self.predict_value1h = self.predict_value(base_time, model_1h, window_size=24, table_type="1h", output_train_index=8)
+                self.predict_value5m = self.predict_value(base_time, model_5m, window_size=8*12, table_type="5m", output_train_index=(12*8))
 
                 if self.order_kind == "buy":
                     if self.predict_value5m > self.ask_price and self.predict_value1h > self.ask_price:
@@ -218,14 +211,15 @@ class LstmAlgo(SuperAlgo):
                     model_1h = self.learning_model1h_night
                     model_5m = self.learning_model5m_night
 
-                self.predict_value1h = self.predict_value(base_time, model_1h, window_size=24, table_type="1h", output_train_index=1)
-                self.predict_value5m = self.predict_value(base_time, model_5m, window_size=8*12, table_type="5m", output_train_index=12)
+                self.predict_value1h = self.predict_value(base_time, model_1h, window_size=24, table_type="1h", output_train_index=8)
+                self.predict_value5m = self.predict_value(base_time, model_5m, window_size=8*12, table_type="5m", output_train_index=(12*8))
 
+                threshold = 0.5
                 if self.predict_value1h != 0 and self.predict_value5m != 0:
-                    if self.predict_value1h > self.ask_price and self.predict_value5m > self.ask_price:
+                    if self.predict_value1h > (self.ask_price+0.5) and self.predict_value5m > self.ask_price:
                         trade_flag = "buy"
                         self.trade_time = base_time
-                    elif self.predict_value1h < self.bid_price and self.predict_value5m < self.bid_price:
+                    elif self.predict_value1h < (self.bid_price-0.5) and self.predict_value5m < self.bid_price:
                         trade_flag = "sell"
                         self.trade_time = base_time
 #                    if predict_value > self.ask_price:

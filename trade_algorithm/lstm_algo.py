@@ -76,7 +76,7 @@ class LstmAlgo(SuperAlgo):
     def test_predict(self, base_time):
         predict_value1d = predict_value(base_time, self.learning_model1d, window_size=10, table_type="day", output_train_index=1)
         predict_value1h = predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
-        predict_value5m = predict_value(base_time, self.learning_model1h, window_size=12*8, table_type="5m", output_train_index=12)
+        predict_value5m = predict_value(base_time, self.learning_model5m, window_size=12*8, table_type="5m", output_train_index=12)
 
         output_train_index = 8
         table_type = "1h"

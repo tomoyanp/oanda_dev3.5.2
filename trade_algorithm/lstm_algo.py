@@ -84,8 +84,8 @@ class LstmAlgo(SuperAlgo):
         table_type = "1h"
         sql = "select end_price, insert_time from %s_%s_TABLE where insert_time > \'%s\' order by insert_time ASC limit %s" % (self.instrument, table_type, base_time, output_train_index)
         response = self.mysql_connector.select_sql(sql)
-        right_price = response[0][0]
-        right_time = response[0][1]
+        right_price = response[-1][0]
+        right_time = response[-1][1]
 
         #right_time = datetime.strptime(right_time, "%Y-%m-%d %H:%M:%S")
         right_time = right_time + timedelta(hours=1)

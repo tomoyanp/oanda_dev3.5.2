@@ -74,7 +74,9 @@ class LstmAlgo(SuperAlgo):
         self.learning_model5m = self.load_model(model_filename="lstm_5m.json", weights_filename="lstm_5m.hdf5")
 
     def test_predict(self, base_time):
+        print("test predict")
         predict_value1d = predict_value(base_time, self.learning_model1d, window_size=10, table_type="day", output_train_index=1)
+        print("test 1h")
         predict_value1h = predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
         predict_value5m = predict_value(base_time, self.learning_model5m, window_size=12*8, table_type="5m", output_train_index=12)
 
@@ -85,7 +87,7 @@ class LstmAlgo(SuperAlgo):
         right_price = response[0][0]
         right_time = response[0][1]
 
-        right_time = datetime.strptime(right_time, "%Y-%m-%d %H:%M:%S")
+        #right_time = datetime.strptime(right_time, "%Y-%m-%d %H:%M:%S")
         right_time = right_time + timedelta(hours=1)
 
         current_price = (self.ask_price + self.bid_price) / 2

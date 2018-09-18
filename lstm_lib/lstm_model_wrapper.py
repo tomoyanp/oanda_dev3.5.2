@@ -112,6 +112,8 @@ def get_original_dataset(target_time, table_type, span, direct):
 
     #print(tmp_dataframe)
 
+    print(tmp_dataframe["insert_time"])
+
     return tmp_dataframe
 
 def build_to_normalization( dataset):
@@ -289,9 +291,9 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 
 def predict_value(base_time, learning_model, window_size, table_type, output_train_index):
-    window_size = 24 # 24時間単位で区切り
-    table_type = "1h"
-    output_train_index = 8 # 8時間後をラベルにする
+#    window_size = 24 # 24時間単位で区切り
+#    table_type = "1h"
+#    output_train_index = 8 # 8時間後をラベルにする
     predict_value = 0
 
     if table_type == "1h":
@@ -326,6 +328,7 @@ def predict_value(base_time, learning_model, window_size, table_type, output_tra
         test_input_dataset.append(test_normalization_dataset)
         test_input_dataset = np.array(test_input_dataset)
 
+        print(test_input_dataset.shape)
         test_predict = learning_model.predict(test_input_dataset)
         predict_value = test_predict[0][0]
         predict_value = (predict_value*(output_max_price-output_min_price))+output_min_price
@@ -342,13 +345,13 @@ def predict_value(base_time, learning_model, window_size, table_type, output_tra
 
         sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_right_time)
         response = mysql_connector.select_sql(sql)
-        right_price = response[0][0]
-        right_time = response[0][1]
-        current_price = (ask_price + bid_price)/2
+        #right_price = response[0][0]
+        #right_time = response[0][1]
+        #current_price = (ask_price + bid_price)/2
 
 
-        debug_logger.info("table_type, target_time, current_price, predict_value, right_time, right_price")
-        debug_logger.info("%s, %s, %s, %s, %s, %s" % (table_type, base_time, current_price, predict_value, target_right_time, right_price))
+        #debug_logger.info("table_type, target_time, current_price, predict_value, right_time, right_price")
+        #debug_logger.info("%s, %s, %s, %s, %s, %s" % (table_type, base_time, current_price, predict_value, target_right_time, right_price))
 
     return predict_value
 

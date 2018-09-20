@@ -207,6 +207,22 @@ class LstmAlgo(SuperAlgo):
 
         return stl_flag
 
+    def decideCondition(self, table_type, target_time):
+        # パーフェクトオーダーが出てるときだけを教師データとして入力する
+        sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
+        response = self.mysql_connector.select_sql(sql)
+        sma20 = response[0][0]
+        sma40 = response[0][1]
+        sma80 = response[0][2]
+        flag = "none"
+        if (sma20 > sma40 > sma80):
+            flag = "up"
+        elif (sma20 < sma40 < sma80):
+            flag = "down"
+    
+        return flag
+
+
 
     def decideReverseTrade(self, trade_flag, current_price, base_time):
         if trade_flag == "pass" and self.order_flag == False:
@@ -220,16 +236,18 @@ class LstmAlgo(SuperAlgo):
 
 
                 self.predict_value1d_before = predict_value((base_time - timedelta(days=1)), self.learning_model1d, window_size=10, table_type="day", output_train_index=1)
-                self.predict_value1h_before = predict_value((base_time - timedelta(hours=1)), self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
+                self.predict_value1h_before = predict_value((base_time - timedelta(hours=8)), self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
 
 
                 if self.predict_value1d != 0 and self.predict_value1h != 0:
                     if self.predict_value1h > self.predict_value1h_before and self.predict_value1d > self.predict_value1d_before:
-                        trade_flag = "buy"
-                        self.trade_time = base_time
+                        if self.decideCondition("1h", (base_time - timedelta(hours=1))) == "up":
+                            trade_flag = "buy"
+                            self.trade_time = base_time
                     elif self.predict_value1h < self.predict_value1h_before and self.predict_value1d < self.predict_value1d_before:
-                        trade_flag = "sell"
-                        self.trade_time = base_time
+                        if self.decideCondition("1h", (base_time - timedelta(hours=1))) == "down":
+                            trade_flag = "sell"
+                            self.trade_time = base_time
 
         return trade_flag
 
@@ -284,8 +302,6 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# self.bid_price=%s" % self.bid_price)
         self.result_logger.info("# self.log_max_price=%s" % self.log_max_price)
         self.result_logger.info("# self.log_min_price=%s" % self.log_min_price)
-        self.result_logger.info("# self.after_predict_value1h=%s" % self.predict_value1h)
-        self.result_logger.info("# self.after_predict_value5m=%s" % self.predict_value5m)
         self.result_logger.info("# self.stl_logic=%s" % self.stl_logic)
         self.result_logger.info("# STL_PRICE=%s" % stl_price)
         self.result_logger.info("# PROFIT=%s" % profit)

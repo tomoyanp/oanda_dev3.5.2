@@ -239,13 +239,16 @@ class LstmAlgo(SuperAlgo):
                 self.predict_value1h_before = predict_value((base_time - timedelta(hours=8)), self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
 
 
-                if self.predict_value1d != 0 and self.predict_value1h != 0:
-                    if self.predict_value1h > self.predict_value1h_before and self.predict_value1d > self.predict_value1d_before:
-                        if self.decideCondition("1h", (base_time - timedelta(hours=1))) == "up":
+                current_price = (self.ask_price + self.bid_price) / 2
+                difference = self.predict_value1h_before - current_price
+
+                # 予想との差分が0.5以下の場合
+                if -0.5 <= difference <= 0.5:
+                    if self.predict_value1d != 0 and self.predict_value1d_before != 0 and self.predict_value1h != 0 and self.predict_value1h_before != 0:
+                        if (self.predict_value1d - self.ask_price) >= 0.5 and self.predict_value1h_before < self.predit_value1h:
                             trade_flag = "buy"
                             self.trade_time = base_time
-                    elif self.predict_value1h < self.predict_value1h_before and self.predict_value1d < self.predict_value1d_before:
-                        if self.decideCondition("1h", (base_time - timedelta(hours=1))) == "down":
+                        elif (self.bid_price - self.predict_value1d) >= 0.5 and self.predict_value1h_before > self.predict_value1h:
                             trade_flag = "sell"
                             self.trade_time = base_time
 

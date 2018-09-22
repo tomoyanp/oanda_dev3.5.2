@@ -70,9 +70,9 @@ class LstmAlgo(SuperAlgo):
         self.output_max_price = 0
         self.output_min_price = 0
         self.trade_first_flag = ""
+        self.current_path = os.path.abspath(os.path.dirname(__file__))
         self.learning_model1d = self.load_model(model_filename="lstm_1d.json", weights_filename="lstm_1d.hdf5")
         self.learning_model1h = self.load_model(model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5")
-        self.current_path = os.path.abspath(os.path.dirname(__file__))
 #        self.learning_model5m = self.load_model(model_filename="lstm_5m.json", weights_filename="lstm_5m.hdf5")
 
     def test_predict(self, base_time):

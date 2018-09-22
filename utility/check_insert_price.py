@@ -18,6 +18,7 @@ from common import decideMarket
 from send_mail import SendMail
 import time
 
+import traceback
 
 
 # if check value is empty, insert record before 1 seconds
@@ -69,4 +70,5 @@ if __name__ == "__main__":
 
     except Exception as e:
         message = "*** insert_check.py %s is Failed ***\n" % currency
+        print(traceback.format_exc())
         print(message)

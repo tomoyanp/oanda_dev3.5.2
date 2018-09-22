@@ -37,8 +37,8 @@ env = account_data["env"]
 mysql_connector = MysqlConnector()
 now = datetime.now()
 
-start_time = "2008-04-01 00:00:00"
-end_time = "2018-09-16 00:00:00"
+start_time = "2016-01-01 00:00:00"
+end_time = "2018-09-24 00:00:00"
 
 end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
 start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")

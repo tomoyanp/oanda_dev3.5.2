@@ -72,6 +72,7 @@ class LstmAlgo(SuperAlgo):
         self.trade_first_flag = ""
         self.learning_model1d = self.load_model(model_filename="lstm_1d.json", weights_filename="lstm_1d.hdf5")
         self.learning_model1h = self.load_model(model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5")
+        self.current_path = os.path.abspath(os.path.dirname(__file__))
 #        self.learning_model5m = self.load_model(model_filename="lstm_5m.json", weights_filename="lstm_5m.hdf5")
 
     def test_predict(self, base_time):
@@ -339,8 +340,11 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# PROFIT=%s" % profit)
 
     def load_model(self, model_filename, weights_filename):
-        model_filename = "../model/%s" % model_filename
-        weights_filename = "../model/%s" % weights_filename
+        model_filename = "%s/../model/%s" % (self.current_path, model_filename)
+        weights_filename = "%s/../model/%s" % (self.current_path, weights_filename)
+
+        print(model_filename)
+        print(weights_filename)
 
         json_string = open(model_filename).read()
         learning_model = model_from_json(json_string)

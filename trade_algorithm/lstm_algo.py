@@ -250,6 +250,14 @@ class LstmAlgo(SuperAlgo):
 #                        self.trade_first_flag = "sell"
                         trade_flag = "sell"
 
+                self.debug_logger.info("#######################")
+                self.debug_logger.info("# base_time = %s" % base_time)
+                self.debug_logger.info("# current_price = %s" % ((self.ask_price + self.bid_price)/2))
+                self.debug_logger.info("# trade_flag = %s" % trade_flag)
+                self.debug_logger.info("# predict_value1d = %s" % self.predict_value1d)
+                self.debug_logger.info("# predict_value1h = %s" % self.predict_value1h)
+                self.debug_logger.info("# predict_value1d_before = %s" % self.predict_value1d_before)
+                self.debug_logger.info("# predict_value1h_before = %s" % self.predict_value1h_before)
 
 #            current_price = (self.ask_price + self.bid_price) / 2
 #

@@ -24,13 +24,13 @@ import traceback
 # if check value is empty, insert record before 1 seconds
 def follow_record(con, base_time, currency):
     base_time_bef = base_time - timedelta(seconds=1)
-    sql = "select ask_price, bid_price from %s_TABLE where insert_time = \'%s\'" % (currency, base_time_bef)
+    sql = "select ask_price, bid_price from %s_TABLE where insert_time = \'%s\'" % (currency, base_time_bef.strftime("%Y-%m-%d %H:%M:%S"))
     response = con.select_sql(sql)
 
     ask_price = response[0][0]
     bid_price = response[0][1]
 
-    sql = "insert into %s_TABLE (ask_price, bid_price, insert_time) values (%s, %s, \'%s\')" % (currency, ask_price, bid_price, base_time)
+    sql = "insert into %s_TABLE (ask_price, bid_price, insert_time) values (%s, %s, \'%s\')" % (currency, ask_price, bid_price, base_time.strftime("%Y-%m-%d %H:%M:%S"))
     con.insert_sql(sql)
 
 if __name__ == "__main__":
@@ -62,8 +62,11 @@ if __name__ == "__main__":
             if flag == False:
                 pass
             else:
-                sql = u"select insert_time from %s_TABLE where insert_time = \'%s\'" % (currency, base_time)
+                sql = u"select insert_time from %s_TABLE where insert_time = \'%s\'" % (currency, base_time.strftime("%Y-%m-%d %H:%M:%S"))
+                print(sql)
                 response = con.select_sql(sql)
+                print(response)
+                print(len(response))
                 if len(response) == 0:
                     follow_record(con, base_time, currency)
                 else:

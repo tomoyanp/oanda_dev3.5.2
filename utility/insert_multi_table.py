@@ -102,12 +102,13 @@ def insertTable(base_time, currency, connector, table_type, span):
 
         target_time = base_time - timedelta(seconds=(span-1))
         sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, uppersigma1, lowersigma1, uppersigma2, lowersigma2, uppersigma3, lowersigma3, sma20, sma40, sma80, sma100, sma200, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,  \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, uppersigma1, lowersigma1, uppersigma2, lowersigma2, uppersigma3, lowersigma3, sma20, sma40, sma80, sma100, sma200, target_time)
+        connector.insert_sql(sql)
 
     except Exception as e:
         target_time = base_time - timedelta(seconds=(span-1))
         sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, insert_time) values(%s, %s, %s, %s,  \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, target_time)
+        connector.insert_sql(sql)
 
-    connector.insert_sql(sql)
 
 if __name__ == "__main__":
     args = sys.argv

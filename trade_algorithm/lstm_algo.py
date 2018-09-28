@@ -235,11 +235,16 @@ class LstmAlgo(SuperAlgo):
             seconds = base_time.second
 
             if minutes == 0 and seconds < 10:
+            #if seconds < 10:
+                print("predict_value1d")
                 self.predict_value1d = predict_value(base_time, self.learning_model1d, window_size=10, table_type="day", output_train_index=1)
+                print("predict_value1h")
                 self.predict_value1h = predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
 
 
+                print("predict_value1d_before")
                 self.predict_value1d_before = predict_value((base_time - timedelta(days=1)), self.learning_model1d, window_size=10, table_type="day", output_train_index=1)
+                print("predict_value1h_before")
                 self.predict_value1h_before = predict_value((base_time - timedelta(hours=8)), self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
 
                 if self.predict_value1d != 0 and self.predict_value1d_before != 0 and self.predict_value1h != 0 and self.predict_value1h_before != 0:

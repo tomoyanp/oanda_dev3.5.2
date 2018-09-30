@@ -111,7 +111,11 @@ class LstmAlgo(SuperAlgo):
 
 
             # if weekday == Saturday, we will have no entry.
-            if weekday == 5 and hour >= 5:
+            #if weekday == 5 and hour >= 5:
+
+            if weekday == 4 and hour >= 22:
+                trade_flag = "pass"
+            if weekday == 5:
                 trade_flag = "pass"
 
             else:
@@ -249,11 +253,11 @@ class LstmAlgo(SuperAlgo):
 
                 if self.predict_value1d != 0 and self.predict_value1d_before != 0 and self.predict_value1h != 0 and self.predict_value1h_before != 0:
                     if self.predict_value1d_before < self.predict_value1d and self.predict_value1h_before < self.predict_value1h:
-#                        self.trade_first_flag = "buy"
-                        trade_flag = "buy"
+                        if self.ask_price < self.predict_value1h or self.ask_price < self.predict_value1d:
+                            trade_flag = "buy"
                     elif self.predict_value1d_before > self.predict_value1d and self.predict_value1h_before > self.predict_value1h:
-#                        self.trade_first_flag = "sell"
-                        trade_flag = "sell"
+                        if self.predict_value1h < self.bid_price or self.predict_value1d < self.bid_price:
+                            trade_flag = "sell"
 
                 self.debug_logger.info("#######################")
                 self.debug_logger.info("# base_time = %s" % base_time)

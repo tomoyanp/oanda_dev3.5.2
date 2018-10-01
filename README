@@ -1,0 +1,53 @@
+# install mysql
+rpm -qa | grep maria
+yum remove mariadb-libs-5.5.50-1.el7_2.x86_64
+
+yum localinstall http://dev.mysql.com/get/mysql57-community-release-el7-7.noarch.rpm
+yum install mysql mysql-devel mysql-server mysql-utilities
+
+# setup mysql
+mysqld --user=mysql --initialize
+systemctl enable mysqld.service
+systemctl start mysqld
+grep password /var/log/mysqld.log
+mysql -u root -p
+alter user root@localhost identified by 'xxxxx';
+create user tomoyan identified by 'xxxxx';
+create database oanda_db;
+use oanda_db
+grant all on oanda_db to tomoyan;
+grant all on oanda_db.* to tomoyan;
+
+sudo vim /etc/my.cnf
+### add below statement
+transaction-isolation = READ-UNCOMMITTED
+
+
+# create table
+create table GBP_JPY_TABLE(ask_price double, bid_price double, insert_time timestamp default current_timestamp primary key);
+create table GBP_JPY_1m_TABLE(start_price double, end_price double, max_price double, min_price double, uppersigma1 double default NULL, lowersigma1 double default NULL, uppersigma2 double default NULL, lowersigma2 double default NULL, uppersigma3 double default NULL, lowersigma3 double default NULL, sma20 double default NULL, sma40 double default NULL, sma80 double default NULL, sma100 double default NULL, sma200 double default NULL, insert_time timestamp not null primary key);
+create table GBP_JPY_5m_TABLE(start_price double, end_price double, max_price double, min_price double, uppersigma1 double default NULL, lowersigma1 double default NULL, uppersigma2 double default NULL, lowersigma2 double default NULL, uppersigma3 double default NULL, lowersigma3 double default NULL, sma20 double default NULL, sma40 double default NULL, sma80 double default NULL, sma100 double default NULL, sma200 double default NULL, insert_time timestamp not null primary key);
+create table GBP_JPY_1h_TABLE(start_price double, end_price double, max_price double, min_price double, uppersigma1 double default NULL, lowersigma1 double default NULL, uppersigma2 double default NULL, lowersigma2 double default NULL, uppersigma3 double default NULL, lowersigma3 double default NULL, sma20 double default NULL, sma40 double default NULL, sma80 double default NULL, sma100 double default NULL, sma200 double default NULL, insert_time timestamp not null primary key);
+create table GBP_JPY_day_TABLE(start_price double, end_price double, max_price double, min_price double, uppersigma1 double default NULL, lowersigma1 double default NULL, uppersigma2 double default NULL, lowersigma2 double default NULL, uppersigma3 double default NULL, lowersigma3 double default NULL, sma20 double default NULL, sma40 double default NULL, sma80 double default NULL, sma100 double default NULL, sma200 double default NULL, insert_time timestamp not null primary key);
+
+
+# setup python environment
+
+yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+yum install python35u-devel.x86_64 python35u-pip.noarch python35u-setuptools.noarch
+yum install python35u-tkinter.x86_64
+pip3.5 install --upgrade pip
+pip3.5 install virtualenv
+mkdir /env
+chmod -R /env
+cd /env
+virtualenv python35 --python=/bin/python3.5
+chmod -R 777 python35
+
+vim /etc/bashrc # below adding
+source /env/python35/bin/activate
+
+su - tomoyan
+pip install -r pip_package.txt
+pip install setuptools==39.1.0
+pip install -r pip_package.txt

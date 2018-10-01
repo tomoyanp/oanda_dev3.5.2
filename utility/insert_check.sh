@@ -1,4 +1,2 @@
-source /home/tomoyan/virtualenv/.python2.7/bin/activate
-source /home/tomoyan/python-2.7-env/bin/activate
-nohup python /home/tomoyan/staging/oanda_dev/utility/check_insert_price.py "GBP_JPY" > /dev/null &
-nohup python /home/tomoyan/staging/oanda_dev/utility/check_insert_price.py "USD_JPY" > /dev/null &
+source /env/python35/bin/activate
+nohup python /home/tomoyan/staging/oanda_dev3.5.2/utility/check_insert_price.py "GBP_JPY" > /var/log/product/insert_check_gbp_jpy.log &

@@ -102,12 +102,13 @@ def insertTable(base_time, currency, connector, table_type, span):
 
         target_time = base_time - timedelta(seconds=(span-1))
         sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, uppersigma1, lowersigma1, uppersigma2, lowersigma2, uppersigma3, lowersigma3, sma20, sma40, sma80, sma100, sma200, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,  \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, uppersigma1, lowersigma1, uppersigma2, lowersigma2, uppersigma3, lowersigma3, sma20, sma40, sma80, sma100, sma200, target_time)
+        connector.insert_sql(sql)
 
     except Exception as e:
         target_time = base_time - timedelta(seconds=(span-1))
         sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, insert_time) values(%s, %s, %s, %s,  \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, target_time)
+        connector.insert_sql(sql)
 
-    connector.insert_sql(sql)
 
 if __name__ == "__main__":
     args = sys.argv
@@ -118,9 +119,9 @@ if __name__ == "__main__":
     sleep_time = 3600
 
     if mode == "test":
-        base_time = "2018-08-01 06:00:00"
+        base_time = "2016-01-01 00:00:00"
         base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
-        end_time = "2018-09-16 00:00:00"
+        end_time = "2018-09-24 00:00:00"
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
     else:
         base_time = datetime.now()

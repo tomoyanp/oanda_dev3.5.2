@@ -41,6 +41,10 @@ instrument = "GBP_JPY"
 mysql_connector = MysqlConnector()
 
 def get_original_dataset(target_time, table_type, span, direct):
+    daily_target_time = target_time - timedelta(days=1)
+    target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
+    daily_target_time = daily_target_time.strftime("%Y-%m-%d %H:%M:%S")
+
     if direct == "ASC" or direct == "asc":
         train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time %s limit %s" % (instrument, table_type, target_time, direct, span)
     else:
@@ -48,6 +52,9 @@ def get_original_dataset(target_time, table_type, span, direct):
 
     response = mysql_connector.select_sql(train_original_sql)
 
+    print("#### sql ####")
+    print(train_original_sql)
+    print(target_time)
     end_price_list = []
     sma20_list = []
     sma40_list = []
@@ -78,7 +85,6 @@ def get_original_dataset(target_time, table_type, span, direct):
         lowersigma3_list.reverse()
 
 
-    daily_target_time = target_time - timedelta(days=1)
     daily_train_original_sql = "select max_price, min_price, uppersigma2, lowersigma2, end_price from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, daily_target_time)
     response = mysql_connector.select_sql(train_original_sql)
     daily_max_price = response[0][0]
@@ -260,8 +266,8 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
 
-        learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=50)
-        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=10, batch_size=1, verbose=2, shuffle=False)
+        learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=500)
+        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=100, batch_size=1, verbose=2, shuffle=False)
         #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
         train_predict = learning_model.predict(train_input_dataset)
 
@@ -328,29 +334,32 @@ def predict_value(base_time, learning_model, window_size, table_type, output_tra
         test_input_dataset.append(test_normalization_dataset)
         test_input_dataset = np.array(test_input_dataset)
 
-        print(test_input_dataset.shape)
+#        print(test_input_dataset.shape)
         test_predict = learning_model.predict(test_input_dataset)
         predict_value = test_predict[0][0]
         predict_value = (predict_value*(output_max_price-output_min_price))+output_min_price
+        print("predict_value = %s" % predict_value)
 
         # 答え合わせ
-        if  table_type == "1h":
-            target_right_time = base_time + timedelta(hours=output_train_index)
-        elif table_type == "5m":
-            target_right_time = base_time + timedelta(minutes=(output_train_index*5))
-        elif table_type == "day":
-            target_right_time = base_time + timedelta(days=output_train_index)
-        else:
-            raise
+        #if  table_type == "1h":
+        #    target_right_time = base_time + timedelta(hours=output_train_index)
+        #elif table_type == "5m":
+        #    target_right_time = base_time + timedelta(minutes=(output_train_index*5))
+        #elif table_type == "day":
+        #    target_right_time = base_time + timedelta(days=output_train_index)
+        #else:
+        #    raise
 
-        sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_right_time)
-        response = mysql_connector.select_sql(sql)
+        #sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_right_time)
+        #response = mysql_connector.select_sql(sql)
         #right_price = response[0][0]
         #right_time = response[0][1]
         #current_price = (ask_price + bid_price)/2
 
 
         #debug_logger.info("table_type, target_time, current_price, predict_value, right_time, right_price")
+        #debug_logger.info("%s, %s, %s, %s, %s, %s" % (table_type, base_time, current_price, predict_value, target_right_time, right_price))
+
         #debug_logger.info("%s, %s, %s, %s, %s, %s" % (table_type, base_time, current_price, predict_value, target_right_time, right_price))
 
     return predict_value

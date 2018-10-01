@@ -258,7 +258,13 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                         train_time_dataset.append(tmp_time_output_dataframe)
                         train_input_dataset.append(tmp_input_dataframe)
                         train_output_dataset.append(tmp_output_dataframe)
-            target_time = target_time + timedelta(minutes=5)
+                        target_time = target_time + timedelta(hours=1)
+                    else:
+                        target_time = target_time + timedelta(minutes=5)
+                else:
+                    target_time = target_time + timedelta(minutes=5)
+            else:
+                target_time = target_time + timedelta(minutes=5)
 
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)

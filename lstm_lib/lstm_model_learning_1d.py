@@ -166,17 +166,7 @@ def change_to_ptime( time):
     return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
 def decideConditions( table_type, target_time):
-    target_time = target_time - timedelta(minutes=5)
-    target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
-    sql = "select end_price, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, "5m", target_time)
-    response = mysql_connector.select_sql(sql)
-    end_price = response[0][0]
-    lowersigma3 = response[0][1]
-    flag = False
-    if end_price < lowersigma3:
-        flag = True
-
-    return flag
+    return True
 
 
 def decideTerm( hour):
@@ -212,7 +202,7 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                     if decideConditions(table_type, target_time):
                         print("term=%s, target_time=%s" % (term, target_time))
                         # 未来日付に変えて、教師データと一緒にまとめて取得
-                        tmp_target_time = target_time - timedelta(hours=1)
+                        tmp_target_time = target_time - timedelta(days=1)
                         tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
                         tmp_output_dataframe = get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
     
@@ -246,13 +236,7 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                         train_time_dataset.append(tmp_time_output_dataframe)
                         train_input_dataset.append(tmp_input_dataframe)
                         train_output_dataset.append(tmp_output_dataframe)
-                        target_time = target_time + timedelta(hours=1)
-                    else:
-                        target_time = target_time + timedelta(minutes=5)
-                else:
-                    target_time = target_time + timedelta(minutes=5)
-            else:
-                target_time = target_time + timedelta(minutes=5)
+                target_time = target_time + timedelta(days=1)
 
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
@@ -288,4 +272,4 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 
 if __name__ == "__main__":
-    learning_model1h = train_save_model(window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h_lowersigma.png", model_filename="lstm_1h_lowersigma.json", weights_filename="lstm_1h_lowersigma.hdf5", start_time="2015-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")
+    learning_model1h = train_save_model(window_size=10, output_train_index=1, table_type="day", figure_filename="figure_1d.png", model_filename="lstm_1d.json", weights_filename="lstm_1d.hdf5", start_time="2015-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")

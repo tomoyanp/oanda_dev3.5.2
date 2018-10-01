@@ -73,8 +73,8 @@ class LstmAlgo(SuperAlgo):
         self.trade_first_flag = ""
         self.current_path = os.path.abspath(os.path.dirname(__file__))
         self.learning_model1d = self.load_model(model_filename="lstm_1d.json", weights_filename="lstm_1d.hdf5")
-        self.learning_upper1h = self.load_model(model_filename="upper_1h.json", weights_filename="upper_1h.hdf5")
-        self.learning_lower1h = self.load_model(model_filename="lower_1h.json", weights_filename="lower_1h.hdf5")
+        self.learning_model1h = self.load_model(model_filename="lstm_1h.json", weights_filename="lstm_1h.hdf5")
+#        self.learning_model5m = self.load_model(model_filename="lstm_5m.json", weights_filename="lstm_5m.hdf5")
 
     def test_predict(self, base_time):
         print("test predict")
@@ -215,15 +215,16 @@ class LstmAlgo(SuperAlgo):
         return stl_flag
 
     def decideCondition(self, table_type, target_time):
-        sql = "select uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, "5m", target_time - timedelta(minutes=5))
+        # パーフェクトオーダーが出てるときだけを教師データとして入力する
+        sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
         response = self.mysql_connector.select_sql(sql)
-        uppersigma3 = response[0][0]
-        lowersigma3 = response[0][1]
-
+        sma20 = response[0][0]
+        sma40 = response[0][1]
+        sma80 = response[0][2]
         flag = "none"
-        if (self.ask_price > uppersigma3):
+        if (sma20 > sma40 > sma80):
             flag = "up"
-        elif (self.bid_price < lowersigma3):
+        elif (sma20 < sma40 < sma80):
             flag = "down"
     
         return flag
@@ -231,40 +232,75 @@ class LstmAlgo(SuperAlgo):
 
 
     def decideReverseTrade(self, trade_flag, current_price, base_time):
+#        if trade_flag == "pass" and self.order_flag == False:
         if 1 == 1:
             hour = base_time.hour
             minutes = base_time.minute
             seconds = base_time.second
-            if hour == 8 and seconds < 10:
+
+            if minutes == 0 and seconds < 10:
+            #if seconds < 10:
                 print("predict_value1d")
                 self.predict_value1d = predict_value(base_time, self.learning_model1d, window_size=10, table_type="day", output_train_index=1)
+                print("predict_value1h")
+                self.predict_value1h = predict_value(base_time, self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
 
-                if base_time.weekdays() == 1:
-                    before_target_time = base_time - timedelta(days=4)
+
                 print("predict_value1d_before")
-                self.predict_value1d_before = predict_value(before_target_time, self.learning_model1d, window_size=10, table_type="day", output_train_index=1)
+                if base_time.weekday() == 1:
+                    self.predict_value1d_before = predict_value((base_time - timedelta(days=4)), self.learning_model1d, window_size=10, table_type="day", output_train_index=1)
+                else:
+                    self.predict_value1d_before = predict_value((base_time - timedelta(days=1)), self.learning_model1d, window_size=10, table_type="day", output_train_index=1)
 
-            if minutes % 5 == 0 and seconds < 10:
-                if self.decideCondition("5m", base_time) == "up":
-                    self.predict_value = predict_value(base_time, self.learning_upper1h, window_size=24, table_type="1h", output_train_index=1)
 
-                    if self.ask_price < self.predict_value and self.predict_value1d_before < self.predict_value1d:
-                        trade_flag = "buy"
-                 
-                elif self.decideCondition("5m", base_time) == "down":
-                    self.predict_value = predict_value(base_time, self.learning_lower1h, window_size=24, table_type="1h", output_train_index=1)
+                print("predict_value1h_before")
+                self.predict_value1h_before = predict_value((base_time - timedelta(hours=8)), self.learning_model1h, window_size=24, table_type="1h", output_train_index=8)
 
-                    if self.bid_price > self.predict_value and self.predict_value1d_before > self.predict_value1d:
-                        trade_flag = "sell"
+                if self.predict_value1d != 0 and self.predict_value1d_before != 0 and self.predict_value1h != 0 and self.predict_value1h_before != 0:
+                    if self.predict_value1d_before < self.predict_value1d and self.predict_value1h_before < self.predict_value1h:
+                        if self.ask_price < self.predict_value1h or self.ask_price < self.predict_value1d:
+                            trade_flag = "buy"
+                    elif self.predict_value1d_before > self.predict_value1d and self.predict_value1h_before > self.predict_value1h:
+                        if self.predict_value1h < self.bid_price or self.predict_value1d < self.bid_price:
+                            trade_flag = "sell"
 
                 self.debug_logger.info("#######################")
                 self.debug_logger.info("# base_time = %s" % base_time)
                 self.debug_logger.info("# current_price = %s" % ((self.ask_price + self.bid_price)/2))
                 self.debug_logger.info("# trade_flag = %s" % trade_flag)
-                self.debug_logger.info("# predict_value1d_before = %s" % self.predict_value1d_before)
                 self.debug_logger.info("# predict_value1d = %s" % self.predict_value1d)
-                self.debug_logger.info("# predict_value = %s" % self.predict_value)
+                self.debug_logger.info("# predict_value1h = %s" % self.predict_value1h)
+                self.debug_logger.info("# predict_value1d_before = %s" % self.predict_value1d_before)
+                self.debug_logger.info("# predict_value1h_before = %s" % self.predict_value1h_before)
 
+#            current_price = (self.ask_price + self.bid_price) / 2
+#
+#            sql = "select uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, "5m", base_time - timedelta(minutes=5))
+#            response = self.mysql_connector.select_sql(sql)
+#
+#            self.uppersigma3 = response[0][0]
+#            self.lowersigma3 = response[0][1]
+#
+#            if self.trade_first_flag == "buy" and self.uppersigma3 < current_price:
+#                trade_flag = "buy"
+#                self.trade_time = base_time
+#            elif self.trade_first_flag == "sell" and current_price < self.lowersigma3:
+#                trade_flag = "sell"
+#                self.trade_time = base_time
+                
+
+#                current_price = (self.ask_price + self.bid_price) / 2
+#                difference = self.predict_value1h_before - current_price
+#
+#                # 予想との差分が0.5以下の場合
+#                if -0.5 <= difference <= 0.5:
+#                    if self.predict_value1d != 0 and self.predict_value1d_before != 0 and self.predict_value1h != 0 and self.predict_value1h_before != 0:
+#                        if (self.predict_value1d - self.ask_price) >= 0.5 and self.predict_value1h_before < self.predict_value1h:
+#                            trade_flag = "buy"
+#                            self.trade_time = base_time
+#                        elif (self.bid_price - self.predict_value1d) >= 0.5 and self.predict_value1h_before > self.predict_value1h:
+#                            trade_flag = "sell"
+#                            self.trade_time = base_time
 
         return trade_flag
 
@@ -308,9 +344,10 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# EXECUTE ORDER at %s" % base_time)
         self.result_logger.info("# trade_flag=%s" % self.order_kind)
         self.result_logger.info("# ORDER_PRICE=%s" % ((self.ask_price + self.bid_price)/2 ))
-        self.result_logger.info("# predict_value1d_before=%s" % self.predict_value1d_before)
         self.result_logger.info("# predict_value1d=%s" % self.predict_value1d)
-        self.result_logger.info("# predict_value=%s" % self.predict_value)
+        self.result_logger.info("# predict_value1h=%s" % self.predict_value1h)
+        self.result_logger.info("# predict_value1d_before=%s" % self.predict_value1d_before)
+        self.result_logger.info("# predict_value1h_before=%s" % self.predict_value1h_before)
 #        self.result_logger.info("# self.uppersigma3=%s" % self.uppersigma3)
 #        self.result_logger.info("# self.lowersigma3=%s" % self.lowersigma3)
 

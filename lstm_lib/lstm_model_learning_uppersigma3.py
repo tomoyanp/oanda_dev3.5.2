@@ -13,6 +13,7 @@ sys.path.append(base_path + "/lstm_lib")
 
 from mysql_connector import MysqlConnector
 from datetime import timedelta, datetime
+from common import decideMarket
 from logging import getLogger
 
 import traceback

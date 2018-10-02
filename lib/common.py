@@ -5,6 +5,22 @@ from datetime import datetime, timedelta
 import pandas as pd
 import numpy as np
 import logging
+import pytz
+
+
+def iso_jp(iso):
+    date = None
+    try:
+        date = datetime.strptime(iso, '%Y-%m-%dT%H:%M:%S.%fZ')
+        date = pytz.utc.localize(date).astimezone(pytz.timezone("Asia/Tokyo"))
+    except ValueError:
+        try:
+            date = datetime.strptime(iso, '%Y-%m-%dT%H:%M:%S.%f%z')
+            date = dt.astimezone(pytz.timezone("Asia/Tokyo"))
+        except ValueError:
+            pass
+    return date
+ 
 
 def instrument_init(instrument, base_path, config_name):
     config_path = "%s/config" % base_path

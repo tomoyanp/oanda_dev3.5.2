@@ -257,8 +257,8 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
 
-        learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=50)
-        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=10, batch_size=1, verbose=2, shuffle=False)
+        learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=200)
+        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
         #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
         train_predict = learning_model.predict(train_input_dataset)
 
@@ -288,4 +288,4 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 
 if __name__ == "__main__":
-    learning_model1h = train_save_model(window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h_lowersigma.png", model_filename="lstm_1h_lowersigma.json", weights_filename="lstm_1h_lowersigma.hdf5", start_time="2015-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")
+    learning_model1h = train_save_model(window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h_lowersigma.png", model_filename="lstm_1h_lowersigma.json", weights_filename="lstm_1h_lowersigma.hdf5", start_time="2010-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")

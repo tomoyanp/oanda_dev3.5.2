@@ -272,4 +272,4 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 
 if __name__ == "__main__":
-    learning_model1h = train_save_model(window_size=10, output_train_index=1, table_type="day", figure_filename="figure_1d.png", model_filename="lstm_1d.json", weights_filename="lstm_1d.hdf5", start_time="2015-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")
+    learning_model1h = train_save_model(window_size=10, output_train_index=1, table_type="day", figure_filename="figure_1d.png", model_filename="lstm_1d.json", weights_filename="lstm_1d.hdf5", start_time="2010-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")

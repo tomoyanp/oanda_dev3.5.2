@@ -17,3011 +17,1515 @@
 # units = 15000
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-04-03 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=148.69400000000002
-# predict_value1d=148.97169292891024
-# predict_value1h=148.78178796210884
-# predict_value1d_before=149.17703589323162
-# predict_value1h_before=149.5414739766717
-# EXECUTE stl logic SETTLEMENT at 2018-04-03 15:23:30
-# self.ask_price=149.177
-# self.bid_price=149.142
-# self.log_max_price=149.15949999999998
-# self.log_min_price=148.5015
-# self.stl_logic=none
-# STL_PRICE=149.15949999999998
-# PROFIT=-0.5060000000000002
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-04 08:00:00
+# EXECUTE ORDER at 2017-04-03 12:00:00
 # trade_flag=buy
-# ORDER_PRICE=149.7975
-# predict_value1d=149.70949914127587
-# predict_value1h=149.6400707023442
-# predict_value1d_before=148.97169292891024
-# predict_value1h_before=149.00403009819985
-# EXECUTE stl logic SETTLEMENT at 2018-04-04 17:11:20
-# self.ask_price=149.293
-# self.bid_price=149.26
-# self.log_max_price=150.1145
-# self.log_min_price=149.2765
+# ORDER_PRICE=139.6745
+# predict_value1d_before=138.15539227288963
+# predict_value1d=139.58066899383067
+# predict_value=139.74854651069643
+# EXECUTE stl logic SETTLEMENT at 2017-04-03 18:02:10
+# self.ask_price=139.192
+# self.bid_price=139.163
+# self.log_max_price=139.905
+# self.log_min_price=139.1775
 # self.stl_logic=none
-# STL_PRICE=149.2765
-# PROFIT=-0.5520000000000209
+# STL_PRICE=139.1775
+# PROFIT=-0.525999999999982
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-04-05 05:00:00
+# EXECUTE ORDER at 2017-04-03 22:45:00
 # trade_flag=buy
-# ORDER_PRICE=150.399
-# predict_value1d=149.70949914127587
-# predict_value1h=149.24602120310067
-# predict_value1d_before=148.97169292891024
-# predict_value1h_before=149.24345592492818
-# EXECUTE stl logic SETTLEMENT at 2018-04-06 08:06:10
-# self.ask_price=149.95
-# self.bid_price=149.911
-# self.log_max_price=150.685
-# self.log_min_price=149.9305
+# ORDER_PRICE=139.2705
+# predict_value1d_before=138.15539227288963
+# predict_value1d=139.58066899383067
+# predict_value=139.36339280170202
+# EXECUTE stl logic SETTLEMENT at 2017-04-03 23:54:40
+# self.ask_price=138.813
+# self.bid_price=138.784
+# self.log_max_price=139.36399999999998
+# self.log_min_price=138.7985
 # self.stl_logic=none
-# STL_PRICE=149.9305
-# PROFIT=-0.5020000000000095
+# STL_PRICE=138.7985
+# PROFIT=-0.5040000000000191
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-04-06 09:00:00
+# EXECUTE ORDER at 2017-04-04 04:25:00
 # trade_flag=buy
-# ORDER_PRICE=150.0195
-# predict_value1d=150.06271145689487
-# predict_value1h=150.35122387051584
-# predict_value1d_before=149.9932511949837
-# predict_value1h_before=150.22492309904098
-# EXECUTE stl logic SETTLEMENT at 2018-04-06 19:28:30
-# self.ask_price=150.562
-# self.bid_price=150.539
-# self.log_max_price=150.5505
-# self.log_min_price=149.93099999999998
+# ORDER_PRICE=138.50900000000001
+# predict_value1d_before=138.15539227288963
+# predict_value1d=139.58066899383067
+# predict_value=138.70047034534812
+# EXECUTE stl logic SETTLEMENT at 2017-04-04 10:03:20
+# self.ask_price=138.041
+# self.bid_price=138.011
+# self.log_max_price=138.5125
+# self.log_min_price=138.026
 # self.stl_logic=none
-# STL_PRICE=150.5505
-# PROFIT=0.5009999999999764
+# STL_PRICE=138.026
+# PROFIT=-0.5120000000000005
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-04-07 00:00:00
-# trade_flag=buy
-# ORDER_PRICE=150.85
-# predict_value1d=150.06271145689487
-# predict_value1h=150.61460001561045
-# predict_value1d_before=149.9932511949837
-# predict_value1h_before=150.26284789973496
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-04-07 05:00:00
-# self.ask_price=150.598
-# self.bid_price=150.568
-# self.log_max_price=151.0215
-# self.log_min_price=150.4235
-# self.stl_logic=none
-# STL_PRICE=150.58300000000003
-# PROFIT=-0.2939999999999827
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-10 14:00:00
-# trade_flag=buy
-# ORDER_PRICE=151.4355
-# predict_value1d=150.6294979531467
-# predict_value1h=150.99154021188616
-# predict_value1d_before=150.43350376176832
-# predict_value1h_before=150.9326885732114
-# EXECUTE stl logic SETTLEMENT at 2018-04-11 00:20:10
-# self.ask_price=151.975
-# self.bid_price=151.952
-# self.log_max_price=151.9635
-# self.log_min_price=151.255
-# self.stl_logic=none
-# STL_PRICE=151.9635
-# PROFIT=0.5029999999999859
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-11 01:00:00
-# trade_flag=buy
-# ORDER_PRICE=151.93349999999998
-# predict_value1d=150.6294979531467
-# predict_value1h=151.54057582491635
-# predict_value1d_before=150.43350376176832
-# predict_value1h_before=150.97003385919334
-# EXECUTE stl logic SETTLEMENT at 2018-04-11 20:23:30
-# self.ask_price=151.407
-# self.bid_price=151.387
-# self.log_max_price=152.2455
-# self.log_min_price=151.397
-# self.stl_logic=none
-# STL_PRICE=151.397
-# PROFIT=-0.5579999999999927
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-12 08:00:00
+# EXECUTE ORDER at 2017-04-05 06:00:00
 # trade_flag=sell
-# ORDER_PRICE=151.45850000000002
-# predict_value1d=151.2300253095925
-# predict_value1h=151.52246060818433
-# predict_value1d_before=151.57717747187615
-# predict_value1h_before=151.63698935183882
-# EXECUTE stl logic SETTLEMENT at 2018-04-12 19:50:20
-# self.ask_price=151.964
-# self.bid_price=151.939
-# self.log_max_price=151.9515
-# self.log_min_price=151.1825
-# self.stl_logic=none
-# STL_PRICE=151.9515
-# PROFIT=-0.5219999999999914
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-12 20:00:00
-# trade_flag=sell
-# ORDER_PRICE=152.0215
-# predict_value1d=151.2300253095925
-# predict_value1h=151.4369847484678
-# predict_value1d_before=151.57717747187615
-# predict_value1h_before=151.54852188372612
-# EXECUTE stl logic SETTLEMENT at 2018-04-12 22:51:20
-# self.ask_price=152.51
-# self.bid_price=152.485
-# self.log_max_price=152.4975
-# self.log_min_price=152.0215
-# self.stl_logic=none
-# STL_PRICE=152.4975
-# PROFIT=-0.5019999999999811
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-13 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=152.63150000000002
-# predict_value1d=152.25525083065034
-# predict_value1h=152.52639015567303
-# predict_value1d_before=151.2300253095925
-# predict_value1h_before=152.19959174257517
-# EXECUTE stl logic SETTLEMENT at 2018-04-13 15:27:00
-# self.ask_price=153.196
-# self.bid_price=153.164
-# self.log_max_price=153.18
-# self.log_min_price=152.5935
-# self.stl_logic=none
-# STL_PRICE=153.18
-# PROFIT=0.5149999999999864
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-13 17:00:00
-# trade_flag=buy
-# ORDER_PRICE=153.6345
-# predict_value1d=152.25525083065034
-# predict_value1h=152.73514465588332
-# predict_value1d_before=151.2300253095925
-# predict_value1h_before=152.47923795354367
-# EXECUTE stl logic SETTLEMENT at 2018-04-13 23:31:30
-# self.ask_price=153.163
-# self.bid_price=153.141
-# self.log_max_price=153.8505
-# self.log_min_price=153.152
-# self.stl_logic=none
-# STL_PRICE=153.152
-# PROFIT=-0.5049999999999955
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-14 00:00:00
-# trade_flag=buy
-# ORDER_PRICE=153.1905
-# predict_value1d=152.25525083065034
-# predict_value1h=153.38907065984606
-# predict_value1d_before=151.2300253095925
-# predict_value1h_before=152.4848019286096
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-04-14 05:00:00
-# self.ask_price=152.958
-# self.bid_price=152.932
-# self.log_max_price=153.3505
-# self.log_min_price=152.7465
-# self.stl_logic=none
-# STL_PRICE=152.945
-# PROFIT=-0.27000000000001023
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-17 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=153.5875
-# predict_value1d=153.14918647813798
-# predict_value1h=153.50067326128482
-# predict_value1d_before=152.29374130821228
-# predict_value1h_before=153.42134350299835
-# EXECUTE stl logic SETTLEMENT at 2018-04-18 00:57:10
-# self.ask_price=153.128
-# self.bid_price=153.101
-# self.log_max_price=153.755
-# self.log_min_price=153.1145
-# self.stl_logic=none
-# STL_PRICE=153.1145
-# PROFIT=-0.5020000000000095
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-18 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=153.0
-# predict_value1d=152.73762959486248
-# predict_value1h=153.02310502110421
-# predict_value1d_before=153.14918647813798
-# predict_value1h_before=153.49271925994753
-# EXECUTE stl logic SETTLEMENT at 2018-04-18 12:52:00
-# self.ask_price=153.5
-# self.bid_price=153.476
-# self.log_max_price=153.488
-# self.log_min_price=152.962
-# self.stl_logic=none
-# STL_PRICE=153.488
-# PROFIT=-0.5169999999999959
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-18 13:00:00
-# trade_flag=sell
-# ORDER_PRICE=153.501
-# predict_value1d=152.73762959486248
-# predict_value1h=153.04358215621113
-# predict_value1d_before=153.14918647813798
-# predict_value1h_before=153.06152497714757
-# EXECUTE stl logic SETTLEMENT at 2018-04-18 17:30:20
-# self.ask_price=152.842
-# self.bid_price=152.765
-# self.log_max_price=153.6295
-# self.log_min_price=152.80349999999999
-# self.stl_logic=none
-# STL_PRICE=152.80349999999999
-# PROFIT=0.6479999999999961
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-18 18:00:00
-# trade_flag=sell
-# ORDER_PRICE=152.268
-# predict_value1d=152.73762959486248
-# predict_value1h=153.03930736482144
-# predict_value1d_before=153.14918647813798
-# predict_value1h_before=153.0439761444777
-# EXECUTE stl logic SETTLEMENT at 2018-04-19 19:44:20
-# self.ask_price=152.814
-# self.bid_price=152.788
-# self.log_max_price=152.801
-# self.log_min_price=152.0235
-# self.stl_logic=none
-# STL_PRICE=152.801
-# PROFIT=-0.5629999999999882
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-19 20:00:00
-# trade_flag=sell
-# ORDER_PRICE=152.747
-# predict_value1d=152.29528864815833
-# predict_value1h=152.40354997222127
-# predict_value1d_before=152.73762959486248
-# predict_value1h_before=152.53617577040197
-# EXECUTE stl logic SETTLEMENT at 2018-04-20 02:08:20
-# self.ask_price=152.219
-# self.bid_price=152.195
-# self.log_max_price=152.96050000000002
-# self.log_min_price=152.207
-# self.stl_logic=none
-# STL_PRICE=152.207
-# PROFIT=0.5160000000000196
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-20 04:00:00
-# trade_flag=sell
-# ORDER_PRICE=151.199
-# predict_value1d=152.29528864815833
-# predict_value1h=151.81875150200725
-# predict_value1d_before=152.73762959486248
-# predict_value1h_before=152.40354997222127
-# EXECUTE stl logic SETTLEMENT at 2018-04-20 10:58:50
-# self.ask_price=151.689
-# self.bid_price=151.662
-# self.log_max_price=151.6755
-# self.log_min_price=151.125
-# self.stl_logic=none
-# STL_PRICE=151.6755
-# PROFIT=-0.5029999999999859
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-20 11:00:00
-# trade_flag=sell
-# ORDER_PRICE=151.697
-# predict_value1d=151.53738876274227
-# predict_value1h=151.49738536171614
-# predict_value1d_before=152.29528864815833
-# predict_value1h_before=152.56490357631446
-# EXECUTE stl logic SETTLEMENT at 2018-04-20 15:30:30
-# self.ask_price=151.147
-# self.bid_price=151.119
-# self.log_max_price=151.697
-# self.log_min_price=151.13299999999998
-# self.stl_logic=none
-# STL_PRICE=151.13299999999998
-# PROFIT=0.5380000000000109
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-20 18:00:00
-# trade_flag=sell
-# ORDER_PRICE=151.376
-# predict_value1d=151.53738876274227
-# predict_value1h=151.3671133246273
-# predict_value1d_before=152.29528864815833
-# predict_value1h_before=151.49591029979288
-# EXECUTE stl logic SETTLEMENT at 2018-04-21 02:04:40
-# self.ask_price=150.856
-# self.bid_price=150.83
-# self.log_max_price=151.596
-# self.log_min_price=150.84300000000002
-# self.stl_logic=none
-# STL_PRICE=150.84300000000002
-# PROFIT=0.507000000000005
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-21 03:00:00
-# trade_flag=sell
-# ORDER_PRICE=150.9735
-# predict_value1d=151.53738876274227
-# predict_value1h=151.05807640340922
-# predict_value1d_before=152.29528864815833
-# predict_value1h_before=151.47913651244343
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-04-21 05:00:00
-# self.ask_price=150.826
-# self.bid_price=150.797
-# self.log_max_price=151.0235
-# self.log_min_price=150.72000000000003
-# self.stl_logic=none
-# STL_PRICE=150.8115
-# PROFIT=0.13400000000001455
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-24 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=151.48250000000002
-# predict_value1d=151.56219747954609
-# predict_value1h=151.30926633572577
-# predict_value1d_before=151.08754006585107
-# predict_value1h_before=151.1249955765307
-# EXECUTE stl logic SETTLEMENT at 2018-04-24 21:39:30
-# self.ask_price=152.049
-# self.bid_price=152.025
-# self.log_max_price=152.037
-# self.log_min_price=151.41199999999998
-# self.stl_logic=none
-# STL_PRICE=152.037
-# PROFIT=0.5260000000000105
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-24 22:00:00
-# trade_flag=buy
-# ORDER_PRICE=152.108
-# predict_value1d=151.56219747954609
-# predict_value1h=151.75909984138607
-# predict_value1d_before=151.08754006585107
-# predict_value1h_before=151.61354997611045
-# EXECUTE stl logic SETTLEMENT at 2018-04-26 21:35:50
-# self.ask_price=152.728
-# self.bid_price=152.695
-# self.log_max_price=152.7115
-# self.log_min_price=151.68200000000002
-# self.stl_logic=none
-# STL_PRICE=152.7115
-# PROFIT=0.5759999999999934
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-27 02:00:00
-# trade_flag=buy
-# ORDER_PRICE=152.12900000000002
-# predict_value1d=152.43031654533746
-# predict_value1h=152.33518665251137
-# predict_value1d_before=152.09421720802786
-# predict_value1h_before=152.25797058635948
-# EXECUTE stl logic SETTLEMENT at 2018-04-27 17:30:20
-# self.ask_price=151.403
-# self.bid_price=151.282
-# self.log_max_price=152.3385
-# self.log_min_price=151.3425
-# self.stl_logic=none
-# STL_PRICE=151.3425
-# PROFIT=-0.86099999999999
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-27 19:00:00
-# trade_flag=sell
-# ORDER_PRICE=150.8195
-# predict_value1d=152.27439577630165
-# predict_value1h=151.76202574014664
-# predict_value1d_before=152.43031654533746
-# predict_value1h_before=152.22022646033764
-# EXECUTE stl logic SETTLEMENT at 2018-04-28 01:21:10
-# self.ask_price=150.305
-# self.bid_price=150.282
-# self.log_max_price=150.8675
-# self.log_min_price=150.2935
-# self.stl_logic=none
-# STL_PRICE=150.2935
-# PROFIT=0.5019999999999811
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-04-28 02:00:00
-# trade_flag=sell
-# ORDER_PRICE=150.296
-# predict_value1d=152.27439577630165
-# predict_value1h=150.50436795997618
-# predict_value1d_before=152.43031654533746
-# predict_value1h_before=152.2590148448348
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-04-28 05:00:00
-# self.ask_price=150.33
-# self.bid_price=150.305
-# self.log_max_price=150.39749999999998
-# self.log_min_price=150.2575
-# self.stl_logic=none
-# STL_PRICE=150.3175
-# PROFIT=-0.04600000000002069
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-01 09:00:00
-# trade_flag=sell
-# ORDER_PRICE=150.5725
-# predict_value1d=150.7335378651619
-# predict_value1h=150.48895757246015
-# predict_value1d_before=150.95532881468534
-# predict_value1h_before=150.49674407243728
-# EXECUTE stl logic SETTLEMENT at 2018-05-01 17:34:20
-# self.ask_price=150.051
-# self.bid_price=150.028
-# self.log_max_price=150.6325
-# self.log_min_price=150.03949999999998
-# self.stl_logic=none
-# STL_PRICE=150.03949999999998
-# PROFIT=0.5050000000000239
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-01 19:00:00
-# trade_flag=sell
-# ORDER_PRICE=150.19299999999998
-# predict_value1d=150.7335378651619
-# predict_value1h=150.26333049333095
-# predict_value1d_before=150.95532881468534
-# predict_value1h_before=150.57456405067444
-# EXECUTE stl logic SETTLEMENT at 2018-05-01 22:25:30
-# self.ask_price=149.679
-# self.bid_price=149.652
-# self.log_max_price=150.2235
-# self.log_min_price=149.6655
-# self.stl_logic=none
-# STL_PRICE=149.6655
-# PROFIT=0.5010000000000048
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-02 00:00:00
-# trade_flag=sell
-# ORDER_PRICE=149.247
-# predict_value1d=150.7335378651619
-# predict_value1h=149.91461319494246
-# predict_value1d_before=150.95532881468534
-# predict_value1h_before=150.60481569695472
-# EXECUTE stl logic SETTLEMENT at 2018-05-02 16:38:30
-# self.ask_price=149.738
-# self.bid_price=149.715
-# self.log_max_price=149.7265
-# self.log_min_price=149.1585
-# self.stl_logic=none
-# STL_PRICE=149.7265
-# PROFIT=-0.5020000000000095
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-02 18:00:00
-# trade_flag=sell
-# ORDER_PRICE=149.8105
-# predict_value1d=149.99774569129946
-# predict_value1h=149.54846249109505
-# predict_value1d_before=150.7335378651619
-# predict_value1h_before=149.55458334235846
-# EXECUTE stl logic SETTLEMENT at 2018-05-03 03:59:20
-# self.ask_price=149.277
-# self.bid_price=149.248
-# self.log_max_price=150.122
-# self.log_min_price=149.2625
-# self.stl_logic=none
-# STL_PRICE=149.2625
-# PROFIT=0.5200000000000102
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-03 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=149.08249999999998
-# predict_value1d=149.4621438131705
-# predict_value1h=149.4884517867267
-# predict_value1d_before=149.99774569129946
-# predict_value1h_before=149.6600837907791
-# EXECUTE stl logic SETTLEMENT at 2018-05-03 20:42:00
-# self.ask_price=148.563
-# self.bid_price=148.541
-# self.log_max_price=149.46800000000002
-# self.log_min_price=148.552
-# self.stl_logic=none
-# STL_PRICE=148.552
-# PROFIT=0.5020000000000095
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-03 21:00:00
-# trade_flag=sell
-# ORDER_PRICE=148.542
-# predict_value1d=149.4621438131705
-# predict_value1h=149.32933390802145
-# predict_value1d_before=149.99774569129946
-# predict_value1h_before=149.34948694345354
-# EXECUTE stl logic SETTLEMENT at 2018-05-03 23:38:20
-# self.ask_price=148.022
-# self.bid_price=147.999
-# self.log_max_price=148.657
-# self.log_min_price=148.01049999999998
-# self.stl_logic=none
-# STL_PRICE=148.01049999999998
-# PROFIT=0.5080000000000098
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-04 00:00:00
-# trade_flag=sell
-# ORDER_PRICE=147.6655
-# predict_value1d=149.4621438131705
-# predict_value1h=148.9374518633932
-# predict_value1d_before=149.99774569129946
-# predict_value1h_before=149.33055398492513
-# EXECUTE stl logic SETTLEMENT at 2018-05-04 01:09:00
-# self.ask_price=148.155
-# self.bid_price=148.127
-# self.log_max_price=148.14100000000002
-# self.log_min_price=147.6135
-# self.stl_logic=none
-# STL_PRICE=148.14100000000002
-# PROFIT=-0.5030000000000143
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-04 02:00:00
-# trade_flag=sell
-# ORDER_PRICE=148.2455
-# predict_value1d=149.4621438131705
-# predict_value1h=148.24897686764598
-# predict_value1d_before=149.99774569129946
-# predict_value1h_before=149.43141982248423
-# EXECUTE stl logic SETTLEMENT at 2018-05-04 17:56:40
-# self.ask_price=147.731
-# self.bid_price=147.709
-# self.log_max_price=148.394
-# self.log_min_price=147.72
-# self.stl_logic=none
-# STL_PRICE=147.72
-# PROFIT=0.5020000000000095
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-04 19:00:00
-# trade_flag=sell
-# ORDER_PRICE=147.892
-# predict_value1d=148.7367095002495
-# predict_value1h=148.22202311471105
-# predict_value1d_before=149.4621438131705
-# predict_value1h_before=148.27824396252635
-# EXECUTE stl logic SETTLEMENT at 2018-05-04 21:45:50
-# self.ask_price=147.378
-# self.bid_price=147.351
-# self.log_max_price=147.9665
-# self.log_min_price=147.3645
-# self.stl_logic=none
-# STL_PRICE=147.3645
-# PROFIT=0.5010000000000048
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-04 22:00:00
-# trade_flag=sell
-# ORDER_PRICE=147.6
-# predict_value1d=148.7367095002495
-# predict_value1h=148.09511796152592
-# predict_value1d_before=149.4621438131705
-# predict_value1h_before=148.2542929749936
-# EXECUTE stl logic SETTLEMENT at 2018-05-04 22:22:30
-# self.ask_price=147.087
-# self.bid_price=147.058
-# self.log_max_price=147.625
-# self.log_min_price=147.0725
-# self.stl_logic=none
-# STL_PRICE=147.0725
-# PROFIT=0.5020000000000095
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-04 23:00:00
-# trade_flag=sell
-# ORDER_PRICE=147.45850000000002
-# predict_value1d=148.7367095002495
-# predict_value1h=147.836419408679
-# predict_value1d_before=149.4621438131705
-# predict_value1h_before=148.27366069829466
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-05-05 05:00:00
-# self.ask_price=147.674
-# self.bid_price=147.651
-# self.log_max_price=147.8195
-# self.log_min_price=147.407
-# self.stl_logic=none
-# STL_PRICE=147.66250000000002
-# PROFIT=-0.22800000000000864
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-08 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=147.9805
-# predict_value1d=148.22429121017458
-# predict_value1h=148.1380756702423
-# predict_value1d_before=148.13801622316242
-# predict_value1h_before=147.8391373679638
-# EXECUTE stl logic SETTLEMENT at 2018-05-08 16:42:40
-# self.ask_price=147.518
-# self.bid_price=147.493
-# self.log_max_price=148.05849999999998
-# self.log_min_price=147.50549999999998
-# self.stl_logic=none
-# STL_PRICE=147.50549999999998
-# PROFIT=-0.5030000000000143
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-09 04:00:00
-# trade_flag=buy
-# ORDER_PRICE=147.603
-# predict_value1d=148.22429121017458
-# predict_value1h=147.40144012457134
-# predict_value1d_before=148.13801622316242
-# predict_value1h_before=147.39527917341888
-# EXECUTE stl logic SETTLEMENT at 2018-05-09 09:57:40
-# self.ask_price=148.16
-# self.bid_price=148.133
-# self.log_max_price=148.1465
-# self.log_min_price=147.54000000000002
-# self.stl_logic=none
-# STL_PRICE=148.1465
-# PROFIT=0.5160000000000196
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-09 10:00:00
-# trade_flag=buy
-# ORDER_PRICE=148.108
-# predict_value1d=148.26076583170894
-# predict_value1h=147.46250077989697
-# predict_value1d_before=148.22429121017458
-# predict_value1h_before=147.39482638540863
-# EXECUTE stl logic SETTLEMENT at 2018-05-09 17:56:00
-# self.ask_price=148.662
-# self.bid_price=148.638
-# self.log_max_price=148.65
-# self.log_min_price=148.0435
-# self.stl_logic=none
-# STL_PRICE=148.65
-# PROFIT=0.5159999999999911
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-09 18:00:00
-# trade_flag=buy
-# ORDER_PRICE=148.7
-# predict_value1d=148.26076583170894
-# predict_value1h=148.35751104283335
-# predict_value1d_before=148.22429121017458
-# predict_value1h_before=147.46250077989697
-# EXECUTE stl logic SETTLEMENT at 2018-05-10 16:39:30
-# self.ask_price=149.238
-# self.bid_price=149.217
-# self.log_max_price=149.22750000000002
-# self.log_min_price=148.36599999999999
-# self.stl_logic=none
-# STL_PRICE=149.22750000000002
-# PROFIT=0.5050000000000239
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-10 17:00:00
-# trade_flag=buy
-# ORDER_PRICE=148.83550000000002
-# predict_value1d=148.9537619828135
-# predict_value1h=148.91686370289327
-# predict_value1d_before=148.26076583170894
-# predict_value1h_before=148.8512754430771
-# EXECUTE stl logic SETTLEMENT at 2018-05-10 20:03:10
-# self.ask_price=148.375
-# self.bid_price=148.347
-# self.log_max_price=149.3055
-# self.log_min_price=148.361
-# self.stl_logic=none
-# STL_PRICE=148.361
-# PROFIT=-0.5010000000000048
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-10 21:00:00
-# trade_flag=buy
-# ORDER_PRICE=148.392
-# predict_value1d=148.9537619828135
-# predict_value1h=148.89669874858856
-# predict_value1d_before=148.26076583170894
-# predict_value1h_before=148.86419320446254
-# EXECUTE stl logic SETTLEMENT at 2018-05-10 22:03:20
-# self.ask_price=147.925
-# self.bid_price=147.903
-# self.log_max_price=148.392
-# self.log_min_price=147.914
-# self.stl_logic=none
-# STL_PRICE=147.914
-# PROFIT=-0.5049999999999955
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-11 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=147.9115
-# predict_value1d=148.29056666229667
-# predict_value1h=147.84970458824932
-# predict_value1d_before=148.9537619828135
-# predict_value1h_before=148.05553139442205
-# EXECUTE stl logic SETTLEMENT at 2018-05-11 19:51:50
-# self.ask_price=148.419
-# self.bid_price=148.389
-# self.log_max_price=148.404
-# self.log_min_price=147.594
-# self.stl_logic=none
-# STL_PRICE=148.404
-# PROFIT=-0.521000000000015
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-12 03:00:00
-# trade_flag=sell
-# ORDER_PRICE=148.03449999999998
-# predict_value1d=148.29056666229667
-# predict_value1h=148.14405182510615
-# predict_value1d_before=148.9537619828135
-# predict_value1h_before=148.205975946635
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-05-12 05:00:00
-# self.ask_price=148.043
-# self.bid_price=148.01
-# self.log_max_price=148.0595
-# self.log_min_price=147.9635
-# self.stl_logic=none
-# STL_PRICE=148.0265
-# PROFIT=-0.02200000000001978
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-15 07:00:00
-# trade_flag=buy
-# ORDER_PRICE=148.718
-# predict_value1d=148.7239855053127
-# predict_value1h=148.7674460761547
-# predict_value1d_before=148.42559148532152
-# predict_value1h_before=148.7661456669569
-# EXECUTE stl logic SETTLEMENT at 2018-05-16 21:53:20
-# self.ask_price=148.257
-# self.bid_price=148.234
-# self.log_max_price=149.1925
-# self.log_min_price=148.2455
-# self.stl_logic=none
-# STL_PRICE=148.2455
-# PROFIT=-0.5079999999999814
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-17 05:00:00
-# trade_flag=buy
-# ORDER_PRICE=148.8625
-# predict_value1d=148.8325224888921
-# predict_value1h=148.559411108613
-# predict_value1d_before=148.7239855053127
-# predict_value1h_before=148.50471447232366
-# EXECUTE stl logic SETTLEMENT at 2018-05-17 08:06:40
-# self.ask_price=149.438
-# self.bid_price=149.402
-# self.log_max_price=149.42
-# self.log_min_price=148.79399999999998
-# self.stl_logic=none
-# STL_PRICE=149.42
-# PROFIT=0.525999999999982
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-18 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=149.7465
-# predict_value1d=149.4229118233323
-# predict_value1h=149.5613355756402
-# predict_value1d_before=148.8036661154032
-# predict_value1h_before=149.55426911854744
-# EXECUTE stl logic SETTLEMENT at 2018-05-18 22:54:10
-# self.ask_price=149.286
-# self.bid_price=149.259
-# self.log_max_price=150.00900000000001
-# self.log_min_price=149.27249999999998
-# self.stl_logic=none
-# STL_PRICE=149.27249999999998
-# PROFIT=-0.5030000000000143
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-22 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=149.04199999999997
-# predict_value1d=149.1777990898788
-# predict_value1h=149.1814921745062
-# predict_value1d_before=149.2049744772613
-# predict_value1h_before=149.3888308316469
-# EXECUTE stl logic SETTLEMENT at 2018-05-22 16:36:10
-# self.ask_price=149.533
-# self.bid_price=149.505
-# self.log_max_price=149.519
-# self.log_min_price=148.77550000000002
-# self.stl_logic=none
-# STL_PRICE=149.519
-# PROFIT=-0.5060000000000002
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-22 17:00:00
-# trade_flag=sell
-# ORDER_PRICE=149.394
-# predict_value1d=149.1777990898788
-# predict_value1h=149.0176017035991
-# predict_value1d_before=149.2049744772613
-# predict_value1h_before=149.19488313686847
-# EXECUTE stl logic SETTLEMENT at 2018-05-22 23:46:10
-# self.ask_price=148.88
-# self.bid_price=148.853
-# self.log_max_price=149.7145
-# self.log_min_price=148.8665
-# self.stl_logic=none
-# STL_PRICE=148.8665
-# PROFIT=0.5010000000000048
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-23 09:00:00
-# trade_flag=sell
-# ORDER_PRICE=148.84300000000002
-# predict_value1d=149.0846261487007
-# predict_value1h=149.20466199558973
-# predict_value1d_before=149.1777990898788
-# predict_value1h_before=149.21451029223203
-# EXECUTE stl logic SETTLEMENT at 2018-05-23 10:38:10
-# self.ask_price=148.314
-# self.bid_price=148.288
-# self.log_max_price=148.94650000000001
-# self.log_min_price=148.301
-# self.stl_logic=none
-# STL_PRICE=148.301
-# PROFIT=0.5120000000000005
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-23 11:00:00
-# trade_flag=sell
-# ORDER_PRICE=148.299
-# predict_value1d=149.0846261487007
-# predict_value1h=149.16552858692407
-# predict_value1d_before=149.1777990898788
-# predict_value1h_before=149.31155443802476
-# EXECUTE stl logic SETTLEMENT at 2018-05-23 15:59:50
-# self.ask_price=147.782
-# self.bid_price=147.757
-# self.log_max_price=148.32150000000001
-# self.log_min_price=147.7695
-# self.stl_logic=none
-# STL_PRICE=147.7695
-# PROFIT=0.5039999999999907
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-23 17:00:00
-# trade_flag=sell
-# ORDER_PRICE=147.2165
-# predict_value1d=149.0846261487007
-# predict_value1h=148.25265288490056
-# predict_value1d_before=149.1777990898788
-# predict_value1h_before=149.20466199558973
-# EXECUTE stl logic SETTLEMENT at 2018-05-23 17:31:20
-# self.ask_price=146.658
-# self.bid_price=146.637
-# self.log_max_price=147.252
-# self.log_min_price=146.64749999999998
-# self.stl_logic=none
-# STL_PRICE=146.64749999999998
-# PROFIT=0.5450000000000159
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-23 18:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.82549999999998
-# predict_value1d=149.0846261487007
-# predict_value1h=147.9414369610548
-# predict_value1d_before=149.1777990898788
-# predict_value1h_before=149.1691251538396
-# EXECUTE stl logic SETTLEMENT at 2018-05-23 18:42:30
-# self.ask_price=146.302
-# self.bid_price=146.279
-# self.log_max_price=146.834
-# self.log_min_price=146.2905
-# self.stl_logic=none
-# STL_PRICE=146.2905
-# PROFIT=0.5109999999999957
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-23 19:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.3485
-# predict_value1d=149.0846261487007
-# predict_value1h=147.37791524100302
-# predict_value1d_before=149.1777990898788
-# predict_value1h_before=149.16552858692407
-# EXECUTE stl logic SETTLEMENT at 2018-05-23 22:28:40
-# self.ask_price=146.839
-# self.bid_price=146.818
-# self.log_max_price=146.82850000000002
-# self.log_min_price=145.965
-# self.stl_logic=none
-# STL_PRICE=146.82850000000002
-# PROFIT=-0.5029999999999859
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-23 23:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.9375
-# predict_value1d=149.0846261487007
-# predict_value1h=146.54744515323637
-# predict_value1d_before=149.1777990898788
-# predict_value1h_before=148.33414249289035
-# EXECUTE stl logic SETTLEMENT at 2018-05-24 10:30:00
-# self.ask_price=146.417
-# self.bid_price=146.387
-# self.log_max_price=147.20850000000002
-# self.log_min_price=146.402
-# self.stl_logic=none
-# STL_PRICE=146.402
-# PROFIT=0.5029999999999859
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-24 11:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.2785
-# predict_value1d=147.57487161087988
-# predict_value1h=146.59983749863505
-# predict_value1d_before=149.0846261487007
-# predict_value1h_before=146.77000409801303
-# EXECUTE stl logic SETTLEMENT at 2018-05-24 17:21:50
-# self.ask_price=146.776
-# self.bid_price=146.749
-# self.log_max_price=146.7625
-# self.log_min_price=146.1035
-# self.stl_logic=none
-# STL_PRICE=146.7625
-# PROFIT=-0.5100000000000193
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-24 18:00:00
-# trade_flag=sell
-# ORDER_PRICE=147.0865
-# predict_value1d=147.57487161087988
-# predict_value1h=146.70654012852907
-# predict_value1d_before=149.0846261487007
-# predict_value1h_before=146.8321267412901
-# EXECUTE stl logic SETTLEMENT at 2018-05-24 22:19:20
-# self.ask_price=146.563
-# self.bid_price=146.539
-# self.log_max_price=147.193
-# self.log_min_price=146.551
-# self.stl_logic=none
-# STL_PRICE=146.551
-# PROFIT=0.5110000000000241
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-24 23:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.196
-# predict_value1d=147.57487161087988
-# predict_value1h=146.808090754658
-# predict_value1d_before=149.0846261487007
-# predict_value1h_before=146.8254800288677
-# EXECUTE stl logic SETTLEMENT at 2018-05-25 10:34:40
-# self.ask_price=146.709
-# self.bid_price=146.677
-# self.log_max_price=146.69299999999998
-# self.log_min_price=145.7095
-# self.stl_logic=none
-# STL_PRICE=146.69299999999998
-# PROFIT=-0.5320000000000107
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-25 11:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.5455
-# predict_value1d=146.68278941500188
-# predict_value1h=146.2919726828337
-# predict_value1d_before=147.57487161087988
-# predict_value1h_before=146.74265253818035
-# EXECUTE stl logic SETTLEMENT at 2018-05-25 16:02:10
-# self.ask_price=146.031
-# self.bid_price=146.007
-# self.log_max_price=146.5755
-# self.log_min_price=146.019
-# self.stl_logic=none
-# STL_PRICE=146.019
-# PROFIT=0.5010000000000048
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-25 17:00:00
-# trade_flag=sell
-# ORDER_PRICE=145.9635
-# predict_value1d=146.68278941500188
-# predict_value1h=146.253662550807
-# predict_value1d_before=147.57487161087988
-# predict_value1h_before=146.38156945979597
-# EXECUTE stl logic SETTLEMENT at 2018-05-25 17:58:50
-# self.ask_price=146.464
-# self.bid_price=146.436
-# self.log_max_price=146.45
-# self.log_min_price=145.85399999999998
-# self.stl_logic=none
-# STL_PRICE=146.45
-# PROFIT=-0.5130000000000052
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-25 18:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.48950000000002
-# predict_value1d=146.68278941500188
-# predict_value1h=146.28610605961086
-# predict_value1d_before=147.57487161087988
-# predict_value1h_before=146.2907249273956
-# EXECUTE stl logic SETTLEMENT at 2018-05-25 19:56:40
-# self.ask_price=145.964
-# self.bid_price=145.938
-# self.log_max_price=146.5575
-# self.log_min_price=145.951
-# self.stl_logic=none
-# STL_PRICE=145.951
-# PROFIT=0.5130000000000052
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-25 20:00:00
-# trade_flag=sell
-# ORDER_PRICE=145.94299999999998
-# predict_value1d=146.68278941500188
-# predict_value1h=146.31029862359168
-# predict_value1d_before=147.57487161087988
-# predict_value1h_before=146.4570511761904
-# EXECUTE stl logic SETTLEMENT at 2018-05-25 22:44:10
-# self.ask_price=145.392
-# self.bid_price=145.362
-# self.log_max_price=146.097
-# self.log_min_price=145.377
-# self.stl_logic=none
-# STL_PRICE=145.377
-# PROFIT=0.5370000000000061
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-25 23:00:00
-# trade_flag=sell
-# ORDER_PRICE=145.377
-# predict_value1d=146.68278941500188
-# predict_value1h=145.8646859178543
-# predict_value1d_before=147.57487161087988
-# predict_value1h_before=146.322447506845
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-05-26 05:00:00
-# self.ask_price=145.737
-# self.bid_price=145.706
-# self.log_max_price=145.7725
-# self.log_min_price=145.374
-# self.stl_logic=none
-# STL_PRICE=145.7215
-# PROFIT=-0.38399999999998613
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-29 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.704
-# predict_value1d=145.95283690632132
-# predict_value1h=145.6383499555588
-# predict_value1d_before=145.94050062702595
-# predict_value1h_before=145.62352020582557
-# EXECUTE stl logic SETTLEMENT at 2018-05-29 10:09:30
-# self.ask_price=145.182
-# self.bid_price=145.155
-# self.log_max_price=145.711
-# self.log_min_price=145.1685
-# self.stl_logic=none
-# STL_PRICE=145.1685
-# PROFIT=-0.5620000000000118
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-29 14:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.2715
-# predict_value1d=145.95283690632132
-# predict_value1h=145.5823496262133
-# predict_value1d_before=145.94050062702595
-# predict_value1h_before=145.51170751337708
-# EXECUTE stl logic SETTLEMENT at 2018-05-29 15:25:50
-# self.ask_price=144.761
-# self.bid_price=144.734
-# self.log_max_price=145.3275
-# self.log_min_price=144.7475
-# self.stl_logic=none
-# STL_PRICE=144.7475
-# PROFIT=-0.549999999999983
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-30 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=143.9955
-# predict_value1d=144.88209029150008
-# predict_value1h=143.7519774778187
-# predict_value1d_before=145.95283690632132
-# predict_value1h_before=144.01047050386669
-# EXECUTE stl logic SETTLEMENT at 2018-05-30 15:58:20
-# self.ask_price=144.485
-# self.bid_price=144.457
-# self.log_max_price=144.471
-# self.log_min_price=143.6065
-# self.stl_logic=none
-# STL_PRICE=144.471
-# PROFIT=-0.5030000000000143
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-31 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=144.57150000000001
-# predict_value1d=145.0962925238609
-# predict_value1h=144.85256554567812
-# predict_value1d_before=144.88209029150008
-# predict_value1h_before=144.3302145961523
-# EXECUTE stl logic SETTLEMENT at 2018-05-31 17:12:30
-# self.ask_price=145.129
-# self.bid_price=145.102
-# self.log_max_price=145.1155
-# self.log_min_price=144.1325
-# self.stl_logic=none
-# STL_PRICE=145.1155
-# PROFIT=0.51400000000001
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-31 19:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.17849999999999
-# predict_value1d=145.0962925238609
-# predict_value1h=145.05111815685032
-# predict_value1d_before=144.88209029150008
-# predict_value1h_before=144.77910688471792
-# EXECUTE stl logic SETTLEMENT at 2018-05-31 22:03:20
-# self.ask_price=144.693
-# self.bid_price=144.667
-# self.log_max_price=145.31150000000002
-# self.log_min_price=144.68
-# self.stl_logic=none
-# STL_PRICE=144.68
-# PROFIT=-0.5240000000000009
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-05-31 23:00:00
-# trade_flag=buy
-# ORDER_PRICE=144.1875
-# predict_value1d=145.0962925238609
-# predict_value1h=145.10849978786706
-# predict_value1d_before=144.88209029150008
-# predict_value1h_before=144.76534029528497
-# EXECUTE stl logic SETTLEMENT at 2018-05-31 23:44:40
-# self.ask_price=144.73
-# self.bid_price=144.706
-# self.log_max_price=144.718
-# self.log_min_price=144.1875
-# self.stl_logic=none
-# STL_PRICE=144.718
-# PROFIT=0.5089999999999861
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-01 00:00:00
-# trade_flag=buy
-# ORDER_PRICE=144.5605
-# predict_value1d=145.0962925238609
-# predict_value1h=144.74740939360856
-# predict_value1d_before=144.88209029150008
-# predict_value1h_before=144.74307292079925
-# EXECUTE stl logic SETTLEMENT at 2018-06-01 16:31:20
-# self.ask_price=145.137
-# self.bid_price=145.11
-# self.log_max_price=145.1235
-# self.log_min_price=144.25799999999998
-# self.stl_logic=none
-# STL_PRICE=145.1235
-# PROFIT=0.535000000000025
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-01 17:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.075
-# predict_value1d=145.17661668863892
-# predict_value1h=144.83452387744188
-# predict_value1d_before=145.0962925238609
-# predict_value1h_before=144.77926225572824
-# EXECUTE stl logic SETTLEMENT at 2018-06-01 19:23:40
-# self.ask_price=145.615
-# self.bid_price=145.59
-# self.log_max_price=145.60250000000002
-# self.log_min_price=144.9025
-# self.stl_logic=none
-# STL_PRICE=145.60250000000002
-# PROFIT=0.5020000000000095
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-01 20:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.476
-# predict_value1d=145.17661668863892
-# predict_value1h=144.9068728427589
-# predict_value1d_before=145.0962925238609
-# predict_value1h_before=144.7921689505577
-# EXECUTE stl logic SETTLEMENT at 2018-06-01 21:43:10
-# self.ask_price=146.049
-# self.bid_price=146.023
-# self.log_max_price=146.036
-# self.log_min_price=145.45600000000002
-# self.stl_logic=none
-# STL_PRICE=146.036
-# PROFIT=0.5339999999999918
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-01 22:00:00
-# trade_flag=buy
-# ORDER_PRICE=146.0375
-# predict_value1d=145.17661668863892
-# predict_value1h=145.22337081849577
-# predict_value1d_before=145.0962925238609
-# predict_value1h_before=144.8128316795826
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-06-02 05:00:00
-# self.ask_price=146.271
-# self.bid_price=146.238
-# self.log_max_price=146.291
-# self.log_min_price=145.743
-# self.stl_logic=none
-# STL_PRICE=146.2545
-# PROFIT=0.18700000000001182
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-05 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=146.334
-# predict_value1d=146.6878471725881
-# predict_value1h=146.40985521125793
-# predict_value1d_before=146.5230211395025
-# predict_value1h_before=146.27226801997423
-# EXECUTE stl logic SETTLEMENT at 2018-06-05 17:37:50
-# self.ask_price=146.881
-# self.bid_price=146.854
-# self.log_max_price=146.8675
-# self.log_min_price=146.04399999999998
-# self.stl_logic=none
-# STL_PRICE=146.8675
-# PROFIT=0.5050000000000239
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-05 22:00:00
-# trade_flag=buy
-# ORDER_PRICE=146.667
-# predict_value1d=146.6878471725881
-# predict_value1h=146.44909469494223
-# predict_value1d_before=146.5230211395025
-# predict_value1h_before=146.416391890049
-# EXECUTE stl logic SETTLEMENT at 2018-06-06 07:15:10
-# self.ask_price=147.219
-# self.bid_price=147.186
-# self.log_max_price=147.2025
-# self.log_min_price=146.374
-# self.stl_logic=none
-# STL_PRICE=147.2025
-# PROFIT=0.5049999999999955
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-06 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=147.19549999999998
-# predict_value1d=146.7211830787957
-# predict_value1h=147.0630886477232
-# predict_value1d_before=146.6878471725881
-# predict_value1h_before=146.59234247648715
-# EXECUTE stl logic SETTLEMENT at 2018-06-06 16:05:20
-# self.ask_price=147.742
-# self.bid_price=147.714
-# self.log_max_price=147.728
-# self.log_min_price=147.1325
-# self.stl_logic=none
-# STL_PRICE=147.728
-# PROFIT=0.5010000000000048
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-06 17:00:00
-# trade_flag=buy
-# ORDER_PRICE=147.74
-# predict_value1d=146.7211830787957
-# predict_value1h=147.15033391052484
-# predict_value1d_before=146.6878471725881
-# predict_value1h_before=147.07105267855525
-# EXECUTE stl logic SETTLEMENT at 2018-06-07 20:41:10
-# self.ask_price=147.254
-# self.bid_price=147.228
-# self.log_max_price=148.11450000000002
-# self.log_min_price=147.24099999999999
-# self.stl_logic=none
-# STL_PRICE=147.24099999999999
-# PROFIT=-0.5240000000000009
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-07 21:00:00
-# trade_flag=buy
-# ORDER_PRICE=147.3945
-# predict_value1d=147.33994381952286
-# predict_value1h=147.903021058321
-# predict_value1d_before=146.7211830787957
-# predict_value1h_before=147.59429511153698
-# EXECUTE stl logic SETTLEMENT at 2018-06-08 00:37:10
-# self.ask_price=147.949
-# self.bid_price=147.924
-# self.log_max_price=147.93650000000002
-# self.log_min_price=147.0725
-# self.stl_logic=none
-# STL_PRICE=147.93650000000002
-# PROFIT=0.5169999999999959
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-08 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=147.231
-# predict_value1d=147.088758300066
-# predict_value1h=147.28895386750997
-# predict_value1d_before=147.33994381952286
-# predict_value1h_before=147.57264409685135
-# EXECUTE stl logic SETTLEMENT at 2018-06-08 16:05:10
-# self.ask_price=146.715
-# self.bid_price=146.688
-# self.log_max_price=147.441
-# self.log_min_price=146.7015
-# self.stl_logic=none
-# STL_PRICE=146.7015
-# PROFIT=0.5020000000000095
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-08 19:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.6495
-# predict_value1d=147.088758300066
-# predict_value1h=147.22524562853573
-# predict_value1d_before=147.33994381952286
-# predict_value1h_before=147.31517938931287
-# EXECUTE stl logic SETTLEMENT at 2018-06-08 21:42:50
-# self.ask_price=146.137
-# self.bid_price=146.104
-# self.log_max_price=146.8435
-# self.log_min_price=146.1205
-# self.stl_logic=none
-# STL_PRICE=146.1205
-# PROFIT=0.5010000000000048
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-08 22:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.4015
-# predict_value1d=147.088758300066
-# predict_value1h=146.6930080945939
-# predict_value1d_before=147.33994381952286
-# predict_value1h_before=147.29060966418686
-# EXECUTE stl logic SETTLEMENT at 2018-06-09 03:52:00
-# self.ask_price=146.89
-# self.bid_price=146.864
-# self.log_max_price=146.877
-# self.log_min_price=146.35899999999998
-# self.stl_logic=none
-# STL_PRICE=146.877
-# PROFIT=-0.5029999999999859
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-09 04:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.8225
-# predict_value1d=147.088758300066
-# predict_value1h=146.62778923547268
-# predict_value1d_before=147.33994381952286
-# predict_value1h_before=147.1432357802987
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-06-09 05:00:00
-# self.ask_price=146.739
-# self.bid_price=146.709
-# self.log_max_price=146.841
-# self.log_min_price=146.724
-# self.stl_logic=none
-# STL_PRICE=146.724
-# PROFIT=0.06999999999999318
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-12 07:00:00
-# trade_flag=buy
-# ORDER_PRICE=147.2505
-# predict_value1d=147.0808542033434
-# predict_value1h=147.5487497848272
-# predict_value1d_before=146.90211462771893
-# predict_value1h_before=147.49877564689515
-# EXECUTE stl logic SETTLEMENT at 2018-06-12 16:56:20
-# self.ask_price=147.803
-# self.bid_price=147.779
-# self.log_max_price=147.791
-# self.log_min_price=147.13
-# self.stl_logic=none
-# STL_PRICE=147.791
-# PROFIT=0.5039999999999907
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-13 01:00:00
-# trade_flag=buy
-# ORDER_PRICE=147.892
-# predict_value1d=147.0808542033434
-# predict_value1h=147.5393561628163
-# predict_value1d_before=146.90211462771893
-# predict_value1h_before=147.48570416086912
-# EXECUTE stl logic SETTLEMENT at 2018-06-13 17:12:40
-# self.ask_price=147.429
-# self.bid_price=147.403
-# self.log_max_price=147.9685
-# self.log_min_price=147.416
-# self.stl_logic=none
-# STL_PRICE=147.416
-# PROFIT=-0.5030000000000143
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-13 23:00:00
-# trade_flag=buy
-# ORDER_PRICE=147.39249999999998
-# predict_value1d=147.28419177353385
-# predict_value1h=147.73803727722168
-# predict_value1d_before=147.0808542033434
-# predict_value1h_before=147.71729083919524
-# EXECUTE stl logic SETTLEMENT at 2018-06-14 21:59:10
-# self.ask_price=146.931
-# self.bid_price=146.902
-# self.log_max_price=147.85
-# self.log_min_price=146.91649999999998
-# self.stl_logic=none
-# STL_PRICE=146.91649999999998
-# PROFIT=-0.5020000000000095
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-14 22:00:00
-# trade_flag=buy
-# ORDER_PRICE=146.8995
-# predict_value1d=147.2957628634572
-# predict_value1h=147.67182508718966
-# predict_value1d_before=147.28419177353385
-# predict_value1h_before=147.63350699955225
-# EXECUTE stl logic SETTLEMENT at 2018-06-15 09:52:10
-# self.ask_price=146.435
-# self.bid_price=146.405
-# self.log_max_price=147.31650000000002
-# self.log_min_price=146.42000000000002
-# self.stl_logic=none
-# STL_PRICE=146.42000000000002
-# PROFIT=-0.507000000000005
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-15 10:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.49200000000002
-# predict_value1d=146.995056992054
-# predict_value1h=146.7967602405995
-# predict_value1d_before=147.2957628634572
-# predict_value1h_before=147.22810985693334
-# EXECUTE stl logic SETTLEMENT at 2018-06-15 19:48:30
-# self.ask_price=146.989
-# self.bid_price=146.965
-# self.log_max_price=146.977
-# self.log_min_price=146.305
-# self.stl_logic=none
-# STL_PRICE=146.977
-# PROFIT=-0.5109999999999957
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-16 02:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.91699999999997
-# predict_value1d=146.995056992054
-# predict_value1h=146.83324224758147
-# predict_value1d_before=147.2957628634572
-# predict_value1h_before=146.89752928358317
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-06-16 05:00:00
-# self.ask_price=146.883
-# self.bid_price=146.856
-# self.log_max_price=146.95800000000003
-# self.log_min_price=146.8195
-# self.stl_logic=none
-# STL_PRICE=146.86950000000002
-# PROFIT=0.018999999999977035
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-19 10:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.06799999999998
-# predict_value1d=146.69894881743193
-# predict_value1h=146.16967409822345
-# predict_value1d_before=147.1561629652977
-# predict_value1h_before=146.36561827802657
-# EXECUTE stl logic SETTLEMENT at 2018-06-19 13:16:10
-# self.ask_price=145.549
-# self.bid_price=145.524
-# self.log_max_price=146.1085
-# self.log_min_price=145.5365
-# self.stl_logic=none
-# STL_PRICE=145.5365
-# PROFIT=0.5049999999999955
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-19 14:00:00
-# trade_flag=sell
-# ORDER_PRICE=145.47050000000002
-# predict_value1d=146.69894881743193
-# predict_value1h=145.97363705301285
-# predict_value1d_before=147.1561629652977
-# predict_value1h_before=146.4250662007332
-# EXECUTE stl logic SETTLEMENT at 2018-06-19 15:58:50
-# self.ask_price=144.952
-# self.bid_price=144.925
-# self.log_max_price=145.519
-# self.log_min_price=144.9385
-# self.stl_logic=none
-# STL_PRICE=144.9385
-# PROFIT=0.5039999999999907
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-19 16:00:00
-# trade_flag=sell
-# ORDER_PRICE=144.887
-# predict_value1d=146.69894881743193
-# predict_value1h=145.57402509549263
-# predict_value1d_before=147.1561629652977
-# predict_value1h_before=146.3949895877242
-# EXECUTE stl logic SETTLEMENT at 2018-06-20 22:58:10
-# self.ask_price=145.377
-# self.bid_price=145.35
-# self.log_max_price=145.3635
-# self.log_min_price=144.395
-# self.stl_logic=none
-# STL_PRICE=145.3635
-# PROFIT=-0.5030000000000143
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-21 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.399
-# predict_value1d=145.6065341725126
-# predict_value1h=145.32448022708294
-# predict_value1d_before=145.49684241200984
-# predict_value1h_before=145.08345224535464
-# EXECUTE stl logic SETTLEMENT at 2018-06-21 17:48:10
-# self.ask_price=144.927
-# self.bid_price=144.901
-# self.log_max_price=145.687
-# self.log_min_price=144.914
-# self.stl_logic=none
-# STL_PRICE=144.914
+# ORDER_PRICE=137.74200000000002
+# predict_value1d_before=139.58066899383067
+# predict_value1d=138.44497968888282
+# predict_value=137.4880043258667
+# EXECUTE stl logic SETTLEMENT at 2017-04-05 17:34:30
+# self.ask_price=138.232
+# self.bid_price=138.206
+# self.log_max_price=138.219
+# self.log_min_price=137.476
+# self.stl_logic=none
+# STL_PRICE=138.219
 # PROFIT=-0.5149999999999864
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-06-21 18:00:00
-# trade_flag=buy
-# ORDER_PRICE=144.834
-# predict_value1d=145.6065341725126
-# predict_value1h=145.46849177503586
-# predict_value1d_before=145.49684241200984
-# predict_value1h_before=145.3140849164128
-# EXECUTE stl logic SETTLEMENT at 2018-06-21 20:00:20
-# self.ask_price=145.588
-# self.bid_price=145.485
-# self.log_max_price=145.5365
-# self.log_min_price=144.6085
-# self.stl_logic=none
-# STL_PRICE=145.5365
-# PROFIT=0.6380000000000052
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-22 04:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.6255
-# predict_value1d=145.6065341725126
-# predict_value1h=145.1909240667224
-# predict_value1d_before=145.49684241200984
-# predict_value1h_before=145.00089583046736
-# EXECUTE stl logic SETTLEMENT at 2018-06-22 16:01:20
-# self.ask_price=146.196
-# self.bid_price=146.164
-# self.log_max_price=146.18
-# self.log_min_price=145.4975
-# self.stl_logic=none
-# STL_PRICE=146.18
-# PROFIT=0.525999999999982
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-22 17:00:00
-# trade_flag=buy
-# ORDER_PRICE=146.33350000000002
-# predict_value1d=145.8607170997858
-# predict_value1h=145.74519048804044
-# predict_value1d_before=145.6065341725126
-# predict_value1h_before=145.5025051956177
-# EXECUTE stl logic SETTLEMENT at 2018-06-22 23:27:20
-# self.ask_price=145.868
-# self.bid_price=145.84
-# self.log_max_price=146.653
-# self.log_min_price=145.85399999999998
-# self.stl_logic=none
-# STL_PRICE=145.85399999999998
-# PROFIT=-0.5060000000000002
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-23 00:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.8505
-# predict_value1d=145.8607170997858
-# predict_value1h=146.49898666781186
-# predict_value1d_before=145.6065341725126
-# predict_value1h_before=145.73460212546587
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-06-23 05:00:00
-# self.ask_price=145.816
-# self.bid_price=145.785
-# self.log_max_price=145.966
-# self.log_min_price=145.594
-# self.stl_logic=none
-# STL_PRICE=145.8005
-# PROFIT=-0.07800000000000296
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-26 21:00:00
+# EXECUTE ORDER at 2017-04-05 20:10:00
 # trade_flag=sell
-# ORDER_PRICE=145.099
-# predict_value1d=146.17545282351972
-# predict_value1h=145.47820348238943
-# predict_value1d_before=146.18163951787352
-# predict_value1h_before=145.6365809316635
-# EXECUTE stl logic SETTLEMENT at 2018-06-26 23:27:20
-# self.ask_price=145.591
-# self.bid_price=145.566
-# self.log_max_price=145.57850000000002
-# self.log_min_price=145.086
+# ORDER_PRICE=138.26600000000002
+# predict_value1d_before=138.44497968888282
+# predict_value1d=137.88866621649268
+# predict_value=137.96624678462746
+# EXECUTE stl logic SETTLEMENT at 2017-04-05 21:15:20
+# self.ask_price=138.805
+# self.bid_price=138.723
+# self.log_max_price=138.764
+# self.log_min_price=138.19850000000002
 # self.stl_logic=none
-# STL_PRICE=145.57850000000002
-# PROFIT=-0.5049999999999955
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-27 00:00:00
-# trade_flag=sell
-# ORDER_PRICE=145.399
-# predict_value1d=146.17545282351972
-# predict_value1h=145.52557586789132
-# predict_value1d_before=146.18163951787352
-# predict_value1h_before=145.59501306915283
-# EXECUTE stl logic SETTLEMENT at 2018-06-27 17:05:50
-# self.ask_price=144.871
-# self.bid_price=144.842
-# self.log_max_price=145.7465
-# self.log_min_price=144.8565
-# self.stl_logic=none
-# STL_PRICE=144.8565
-# PROFIT=0.5159999999999911
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-27 18:00:00
-# trade_flag=sell
-# ORDER_PRICE=144.851
-# predict_value1d=145.97169569003583
-# predict_value1h=145.2911590744257
-# predict_value1d_before=146.17545282351972
-# predict_value1h_before=145.57379116046428
-# EXECUTE stl logic SETTLEMENT at 2018-06-27 20:45:40
-# self.ask_price=145.375
-# self.bid_price=145.319
-# self.log_max_price=145.34699999999998
-# self.log_min_price=144.81799999999998
-# self.stl_logic=none
-# STL_PRICE=145.34699999999998
-# PROFIT=-0.5360000000000014
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-27 21:00:00
-# trade_flag=sell
-# ORDER_PRICE=145.3345
-# predict_value1d=145.97169569003583
-# predict_value1h=145.0506001494825
-# predict_value1d_before=146.17545282351972
-# predict_value1h_before=145.53628644502163
-# EXECUTE stl logic SETTLEMENT at 2018-06-28 02:52:50
-# self.ask_price=144.82
-# self.bid_price=144.794
-# self.log_max_price=145.3385
-# self.log_min_price=144.80700000000002
-# self.stl_logic=none
-# STL_PRICE=144.80700000000002
-# PROFIT=0.5010000000000048
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-28 05:00:00
-# trade_flag=sell
-# ORDER_PRICE=144.5885
-# predict_value1d=145.97169569003583
-# predict_value1h=144.937663310349
-# predict_value1d_before=146.17545282351972
-# predict_value1h_before=145.0506001494825
-# EXECUTE stl logic SETTLEMENT at 2018-06-28 21:09:40
-# self.ask_price=144.058
-# self.bid_price=144.033
-# self.log_max_price=144.695
-# self.log_min_price=144.0455
-# self.stl_logic=none
-# STL_PRICE=144.0455
-# PROFIT=0.5150000000000148
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-28 23:00:00
-# trade_flag=sell
-# ORDER_PRICE=144.3725
-# predict_value1d=145.0606951650977
-# predict_value1h=144.4381436729431
-# predict_value1d_before=145.97169569003583
-# predict_value1h_before=144.57622401970625
-# EXECUTE stl logic SETTLEMENT at 2018-06-29 11:37:10
-# self.ask_price=144.869
-# self.bid_price=144.826
-# self.log_max_price=144.8475
-# self.log_min_price=144.346
-# self.stl_logic=none
-# STL_PRICE=144.8475
-# PROFIT=-0.5099999999999909
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-06-29 12:00:00
-# trade_flag=sell
-# ORDER_PRICE=145.15800000000002
-# predict_value1d=144.82488312321158
-# predict_value1h=144.37831868171693
-# predict_value1d_before=145.0606951650977
-# predict_value1h_before=144.42245418190956
-# EXECUTE stl logic SETTLEMENT at 2018-06-29 17:30:20
-# self.ask_price=145.673
-# self.bid_price=145.624
-# self.log_max_price=145.6485
-# self.log_min_price=144.8945
-# self.stl_logic=none
-# STL_PRICE=145.6485
-# PROFIT=-0.5310000000000059
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-03 13:00:00
-# trade_flag=sell
-# ORDER_PRICE=145.574
-# predict_value1d=145.6915775806904
-# predict_value1h=145.84801209634543
-# predict_value1d_before=145.94060270395875
-# predict_value1h_before=145.96158758932353
-# EXECUTE stl logic SETTLEMENT at 2018-07-03 16:01:10
-# self.ask_price=146.067
-# self.bid_price=146.042
-# self.log_max_price=146.05450000000002
-# self.log_min_price=145.5145
-# self.stl_logic=none
-# STL_PRICE=146.05450000000002
-# PROFIT=-0.5060000000000002
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-03 17:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.262
-# predict_value1d=145.6915775806904
-# predict_value1h=145.78783664739132
-# predict_value1d_before=145.94060270395875
-# predict_value1h_before=146.04532510626316
-# EXECUTE stl logic SETTLEMENT at 2018-07-03 23:02:30
-# self.ask_price=145.734
-# self.bid_price=145.71
-# self.log_max_price=146.386
-# self.log_min_price=145.722
-# self.stl_logic=none
-# STL_PRICE=145.722
-# PROFIT=0.5149999999999864
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-04 03:00:00
-# trade_flag=sell
-# ORDER_PRICE=145.686
-# predict_value1d=145.6915775806904
-# predict_value1h=146.06768442630766
-# predict_value1d_before=145.94060270395875
-# predict_value1h_before=146.09604525327683
-# EXECUTE stl logic SETTLEMENT at 2018-07-05 02:04:40
-# self.ask_price=146.178
-# self.bid_price=146.153
-# self.log_max_price=146.1655
-# self.log_min_price=145.575
-# self.stl_logic=none
-# STL_PRICE=146.1655
-# PROFIT=-0.5039999999999907
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-05 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=146.1495
-# predict_value1d=145.98543556931617
-# predict_value1h=146.0259960361123
-# predict_value1d_before=145.8461708902419
-# predict_value1h_before=145.83482708662748
-# EXECUTE stl logic SETTLEMENT at 2018-07-05 18:45:50
-# self.ask_price=146.726
-# self.bid_price=146.698
-# self.log_max_price=146.712
-# self.log_min_price=145.849
-# self.stl_logic=none
-# STL_PRICE=146.712
-# PROFIT=0.5340000000000202
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-05 19:00:00
-# trade_flag=buy
-# ORDER_PRICE=146.63400000000001
-# predict_value1d=145.98543556931617
-# predict_value1h=146.37754697799681
-# predict_value1d_before=145.8461708902419
-# predict_value1h_before=146.13308908462523
-# EXECUTE stl logic SETTLEMENT at 2018-07-05 22:30:20
-# self.ask_price=146.173
-# self.bid_price=146.144
-# self.log_max_price=146.872
-# self.log_min_price=146.1585
-# self.stl_logic=none
-# STL_PRICE=146.1585
-# PROFIT=-0.5029999999999859
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-06 00:00:00
-# trade_flag=buy
-# ORDER_PRICE=146.209
-# predict_value1d=145.98543556931617
-# predict_value1h=146.6142875299454
-# predict_value1d_before=145.8461708902419
-# predict_value1h_before=146.22395336818695
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-07-07 05:00:00
-# self.ask_price=146.579
-# self.bid_price=146.547
-# self.log_max_price=146.6705
-# self.log_min_price=146.0935
-# self.stl_logic=none
-# STL_PRICE=146.563
-# PROFIT=0.32499999999998863
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-10 10:00:00
-# trade_flag=buy
-# ORDER_PRICE=147.17700000000002
-# predict_value1d=146.64831974127887
-# predict_value1h=146.75004698204995
-# predict_value1d_before=146.4824439404309
-# predict_value1h_before=146.71682018357515
-# EXECUTE stl logic SETTLEMENT at 2018-07-10 17:22:20
-# self.ask_price=147.734
-# self.bid_price=147.707
-# self.log_max_price=147.72050000000002
-# self.log_min_price=146.925
-# self.stl_logic=none
-# STL_PRICE=147.72050000000002
-# PROFIT=0.5149999999999864
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-10 18:00:00
-# trade_flag=buy
-# ORDER_PRICE=147.26600000000002
-# predict_value1d=146.64831974127887
-# predict_value1h=146.9044711686373
-# predict_value1d_before=146.4824439404309
-# predict_value1h_before=146.75004698204995
-# EXECUTE stl logic SETTLEMENT at 2018-07-12 01:30:40
-# self.ask_price=147.822
-# self.bid_price=147.788
-# self.log_max_price=147.805
-# self.log_min_price=146.812
-# self.stl_logic=none
-# STL_PRICE=147.805
-# PROFIT=0.5030000000000143
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-12 02:00:00
-# trade_flag=buy
-# ORDER_PRICE=147.93900000000002
-# predict_value1d=146.99587578821183
-# predict_value1h=147.3723043707609
-# predict_value1d_before=146.64831974127887
-# predict_value1h_before=147.2371277886033
-# EXECUTE stl logic SETTLEMENT at 2018-07-12 16:10:10
-# self.ask_price=148.485
-# self.bid_price=148.457
-# self.log_max_price=148.471
-# self.log_min_price=147.75
-# self.stl_logic=none
-# STL_PRICE=148.471
-# PROFIT=0.5029999999999859
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-12 17:00:00
-# trade_flag=buy
-# ORDER_PRICE=148.4515
-# predict_value1d=147.4711673633158
-# predict_value1h=148.23095862376692
-# predict_value1d_before=146.99587578821183
-# predict_value1h_before=147.7335059902668
-# EXECUTE stl logic SETTLEMENT at 2018-07-13 17:15:50
-# self.ask_price=147.974
-# self.bid_price=147.948
-# self.log_max_price=148.893
-# self.log_min_price=147.961
-# self.stl_logic=none
-# STL_PRICE=147.961
-# PROFIT=-0.5169999999999959
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-17 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=148.6735
-# predict_value1d=148.32305966925622
-# predict_value1h=148.93754609021545
-# predict_value1d_before=148.34680497008563
-# predict_value1h_before=148.97692777973413
-# EXECUTE stl logic SETTLEMENT at 2018-07-17 21:53:10
-# self.ask_price=148.156
-# self.bid_price=148.129
-# self.log_max_price=149.0885
-# self.log_min_price=148.14249999999998
-# self.stl_logic=none
-# STL_PRICE=148.14249999999998
-# PROFIT=0.5010000000000048
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-17 22:00:00
-# trade_flag=sell
-# ORDER_PRICE=148.2
-# predict_value1d=148.32305966925622
-# predict_value1h=148.7380906956941
-# predict_value1d_before=148.34680497008563
-# predict_value1h_before=149.09992839673163
-# EXECUTE stl logic SETTLEMENT at 2018-07-18 02:43:10
-# self.ask_price=147.654
-# self.bid_price=147.6
-# self.log_max_price=148.6445
-# self.log_min_price=147.627
-# self.stl_logic=none
-# STL_PRICE=147.627
-# PROFIT=0.5330000000000155
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-18 03:00:00
-# trade_flag=sell
-# ORDER_PRICE=148.25400000000002
-# predict_value1d=148.32305966925622
-# predict_value1h=148.43712666383385
-# predict_value1d_before=148.34680497008563
-# predict_value1h_before=149.09442626178264
-# EXECUTE stl logic SETTLEMENT at 2018-07-18 17:30:10
-# self.ask_price=147.38
-# self.bid_price=147.08
-# self.log_max_price=148.25400000000002
-# self.log_min_price=147.23000000000002
-# self.stl_logic=none
-# STL_PRICE=147.23000000000002
-# PROFIT=0.8610000000000184
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-18 19:00:00
-# trade_flag=sell
-# ORDER_PRICE=147.204
-# predict_value1d=148.0252977004051
-# predict_value1h=148.17753831386565
-# predict_value1d_before=148.32305966925622
-# predict_value1h_before=148.18660262046754
-# EXECUTE stl logic SETTLEMENT at 2018-07-19 20:19:20
-# self.ask_price=146.684
-# self.bid_price=146.657
-# self.log_max_price=147.6635
-# self.log_min_price=146.6705
-# self.stl_logic=none
-# STL_PRICE=146.6705
-# PROFIT=0.5080000000000098
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-19 21:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.71050000000002
-# predict_value1d=147.63262161615492
-# predict_value1h=146.96784229151905
-# predict_value1d_before=148.0252977004051
-# predict_value1h_before=147.41555970811845
-# EXECUTE stl logic SETTLEMENT at 2018-07-20 02:18:20
-# self.ask_price=146.197
-# self.bid_price=146.169
-# self.log_max_price=146.875
-# self.log_min_price=146.183
-# self.stl_logic=none
-# STL_PRICE=146.183
-# PROFIT=0.5010000000000048
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-20 03:00:00
-# trade_flag=sell
-# ORDER_PRICE=146.36700000000002
-# predict_value1d=147.63262161615492
-# predict_value1h=146.84731567382815
-# predict_value1d_before=148.0252977004051
-# predict_value1h_before=147.06050187945365
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-07-21 05:00:00
-# self.ask_price=146.487
-# self.bid_price=146.457
-# self.log_max_price=146.661
-# self.log_min_price=145.99450000000002
-# self.stl_logic=none
-# STL_PRICE=146.47199999999998
-# PROFIT=-0.13599999999999568
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-24 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=145.933
-# predict_value1d=146.17137101975828
-# predict_value1h=146.02032797971367
-# predict_value1d_before=146.56006943882255
-# predict_value1h_before=146.02896443161367
-# EXECUTE stl logic SETTLEMENT at 2018-07-25 10:19:40
-# self.ask_price=146.462
-# self.bid_price=146.437
-# self.log_max_price=146.4495
-# self.log_min_price=145.4755
-# self.stl_logic=none
-# STL_PRICE=146.4495
-# PROFIT=-0.5439999999999827
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-25 11:00:00
-# trade_flag=buy
-# ORDER_PRICE=146.3195
-# predict_value1d=146.3049631398916
-# predict_value1h=146.18478144532443
-# predict_value1d_before=146.17137101975828
-# predict_value1h_before=146.04152801305057
-# EXECUTE stl logic SETTLEMENT at 2018-07-25 23:42:50
-# self.ask_price=145.865
-# self.bid_price=145.779
-# self.log_max_price=146.5
-# self.log_min_price=145.822
-# self.stl_logic=none
-# STL_PRICE=145.822
+# STL_PRICE=138.764
 # PROFIT=-0.5529999999999973
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-07-26 00:00:00
+# EXECUTE ORDER at 2017-04-06 14:00:00
 # trade_flag=buy
-# ORDER_PRICE=145.8895
-# predict_value1d=146.3049631398916
-# predict_value1h=146.18602335968615
-# predict_value1d_before=146.17137101975828
-# predict_value1h_before=146.1380496173501
-# EXECUTE stl logic SETTLEMENT at 2018-07-26 04:54:50
-# self.ask_price=146.443
-# self.bid_price=146.416
-# self.log_max_price=146.42950000000002
-# self.log_min_price=145.792
+# ORDER_PRICE=137.99
+# predict_value1d_before=137.88866621649268
+# predict_value1d=138.16299519241602
+# predict_value=138.16962249588966
+# EXECUTE stl logic SETTLEMENT at 2017-04-06 23:31:00
+# self.ask_price=138.535
+# self.bid_price=138.512
+# self.log_max_price=138.5235
+# self.log_min_price=137.8
 # self.stl_logic=none
-# STL_PRICE=146.42950000000002
-# PROFIT=0.5130000000000052
+# STL_PRICE=138.5235
+# PROFIT=0.5049999999999955
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-07-26 09:00:00
-# trade_flag=buy
-# ORDER_PRICE=146.32850000000002
-# predict_value1d=146.5395375052467
-# predict_value1h=146.11786266073585
-# predict_value1d_before=146.3049631398916
-# predict_value1h_before=146.07538208895923
-# EXECUTE stl logic SETTLEMENT at 2018-07-27 00:49:40
-# self.ask_price=145.869
-# self.bid_price=145.841
-# self.log_max_price=146.404
-# self.log_min_price=145.85500000000002
-# self.stl_logic=none
-# STL_PRICE=145.85500000000002
-# PROFIT=-0.5010000000000048
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-27 01:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.89350000000002
-# predict_value1d=146.5395375052467
-# predict_value1h=146.24428464344143
-# predict_value1d_before=146.3049631398916
-# predict_value1h_before=146.15230917459726
-# EXECUTE stl logic SETTLEMENT at 2018-07-27 10:57:10
-# self.ask_price=145.431
-# self.bid_price=145.405
-# self.log_max_price=145.98149999999998
-# self.log_min_price=145.418
-# self.stl_logic=none
-# STL_PRICE=145.418
-# PROFIT=-0.5020000000000095
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-07-27 11:00:00
+# EXECUTE ORDER at 2017-04-11 01:00:00
 # trade_flag=sell
-# ORDER_PRICE=145.41649999999998
-# predict_value1d=146.1789734300971
-# predict_value1h=145.9159961335957
-# predict_value1d_before=146.5395375052467
-# predict_value1h_before=146.14068877355754
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-07-28 05:00:00
-# self.ask_price=145.522
-# self.bid_price=145.494
-# self.log_max_price=145.7065
-# self.log_min_price=145.2775
+# ORDER_PRICE=137.775
+# predict_value1d_before=138.16299519241602
+# predict_value1d=137.52472710606457
+# predict_value=137.7580705010593
+# EXECUTE stl logic SETTLEMENT at 2017-04-11 15:51:00
+# self.ask_price=137.259
+# self.bid_price=137.231
+# self.log_max_price=137.8755
+# self.log_min_price=137.245
 # self.stl_logic=none
-# STL_PRICE=145.50799999999998
-# PROFIT=-0.117999999999995
+# STL_PRICE=137.245
+# PROFIT=0.5050000000000239
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-07-31 08:00:00
+# EXECUTE ORDER at 2017-04-11 17:35:00
 # trade_flag=buy
-# ORDER_PRICE=145.84050000000002
-# predict_value1d=146.03316773429512
-# predict_value1h=145.79710340350866
-# predict_value1d_before=145.86908607479185
-# predict_value1h_before=145.6611775290966
-# EXECUTE stl logic SETTLEMENT at 2018-07-31 13:03:40
-# self.ask_price=145.42
-# self.bid_price=145.351
-# self.log_max_price=145.96699999999998
-# self.log_min_price=145.38549999999998
+# ORDER_PRICE=137.472
+# predict_value1d_before=137.52472710606457
+# predict_value1d=137.6799277018607
+# predict_value=137.68200216174125
+# EXECUTE stl logic SETTLEMENT at 2017-04-11 23:52:10
+# self.ask_price=136.927
+# self.bid_price=136.894
+# self.log_max_price=137.6865
+# self.log_min_price=136.9105
 # self.stl_logic=none
-# STL_PRICE=145.38549999999998
-# PROFIT=-0.5080000000000098
+# STL_PRICE=136.9105
+# PROFIT=-0.5910000000000082
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-07-31 16:00:00
+# EXECUTE ORDER at 2017-04-12 02:10:00
 # trade_flag=buy
-# ORDER_PRICE=145.96949999999998
-# predict_value1d=146.03316773429512
-# predict_value1h=145.80404983216525
-# predict_value1d_before=145.86908607479185
-# predict_value1h_before=145.79710340350866
-# EXECUTE stl logic SETTLEMENT at 2018-07-31 17:26:10
-# self.ask_price=146.51
-# self.bid_price=146.484
-# self.log_max_price=146.497
-# self.log_min_price=145.96949999999998
+# ORDER_PRICE=137.13850000000002
+# predict_value1d_before=137.52472710606457
+# predict_value1d=137.6799277018607
+# predict_value=137.34758148561417
+# EXECUTE stl logic SETTLEMENT at 2017-04-12 09:58:00
+# self.ask_price=136.657
+# self.bid_price=136.606
+# self.log_max_price=137.186
+# self.log_min_price=136.63150000000002
 # self.stl_logic=none
-# STL_PRICE=146.497
+# STL_PRICE=136.63150000000002
+# PROFIT=-0.5450000000000159
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2017-04-12 19:30:00
+# trade_flag=sell
+# ORDER_PRICE=136.8745
+# predict_value1d_before=137.6799277018607
+# predict_value1d=137.04460641363264
+# predict_value=136.82211217403412
+# EXECUTE stl logic SETTLEMENT at 2017-04-14 02:06:20
+# self.ask_price=136.362
+# self.bid_price=136.332
+# self.log_max_price=137.163
+# self.log_min_price=136.34699999999998
+# self.stl_logic=none
+# STL_PRICE=136.34699999999998
 # PROFIT=0.5010000000000048
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-07-31 18:00:00
+# EXECUTE ORDER at 2017-04-20 07:15:00
 # trade_flag=buy
-# ORDER_PRICE=146.65800000000002
-# predict_value1d=146.03316773429512
-# predict_value1h=146.17367389953137
-# predict_value1d_before=145.86908607479185
-# predict_value1h_before=145.82655684012173
-# EXECUTE stl logic SETTLEMENT at 2018-08-02 12:59:00
-# self.ask_price=146.197
-# self.bid_price=146.17
-# self.log_max_price=147.1465
-# self.log_min_price=146.18349999999998
+# ORDER_PRICE=139.228
+# predict_value1d_before=136.72984291476013
+# predict_value1d=139.05459891438483
+# predict_value=140.1962868760824
+# EXECUTE stl logic SETTLEMENT at 2017-04-20 16:33:20
+# self.ask_price=139.797
+# self.bid_price=139.766
+# self.log_max_price=139.7815
+# self.log_min_price=139.05
 # self.stl_logic=none
-# STL_PRICE=146.18349999999998
-# PROFIT=-0.5010000000000048
+# STL_PRICE=139.7815
+# PROFIT=0.5159999999999911
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-08-02 13:00:00
+# EXECUTE ORDER at 2017-04-20 20:05:00
 # trade_flag=sell
-# ORDER_PRICE=146.17700000000002
-# predict_value1d=146.5363126707077
-# predict_value1h=146.48638527178767
-# predict_value1d_before=146.70096009242533
-# predict_value1h_before=146.64430651247503
-# EXECUTE stl logic SETTLEMENT at 2018-08-02 20:47:00
-# self.ask_price=145.581
-# self.bid_price=145.545
-# self.log_max_price=146.3
-# self.log_min_price=145.563
+# ORDER_PRICE=139.5355
+# predict_value1d_before=139.05459891438483
+# predict_value1d=138.70417053103446
+# predict_value=139.5148092660904
+# EXECUTE stl logic SETTLEMENT at 2017-04-20 23:00:50
+# self.ask_price=140.077
+# self.bid_price=140.044
+# self.log_max_price=140.0605
+# self.log_min_price=139.4885
 # self.stl_logic=none
-# STL_PRICE=145.563
-# PROFIT=0.5810000000000173
+# STL_PRICE=140.0605
+# PROFIT=-0.5550000000000068
 #######################################################
 # in  Algorithm
-# EXECUTE ORDER at 2018-08-02 21:00:00
+# EXECUTE ORDER at 2017-04-21 02:20:00
 # trade_flag=sell
-# ORDER_PRICE=145.39600000000002
-# predict_value1d=146.5363126707077
-# predict_value1h=146.3245493080616
-# predict_value1d_before=146.70096009242533
-# predict_value1h_before=146.48638527178767
-# EXECUTE stl logic SETTLEMENT at 2018-08-03 22:07:20
-# self.ask_price=144.846
-# self.bid_price=144.817
-# self.log_max_price=145.579
-# self.log_min_price=144.8315
-# self.stl_logic=none
-# STL_PRICE=144.8315
-# PROFIT=0.5389999999999873
+# ORDER_PRICE=140.0815
+# predict_value1d_before=139.05459891438483
+# predict_value1d=138.70417053103446
+# predict_value=139.3674240178466
+# EXECUTE all over the world SETTLEMENT at 2017-04-21 14:35:00
+# self.ask_price=139.919
+# self.bid_price=139.89
+# self.log_max_price=140.221
+# self.log_min_price=139.73250000000002
+# self.stl_logic=allovertheworld settlement
+# STL_PRICE=139.90449999999998
+# PROFIT=0.14699999999999136
 #######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-04 00:00:00
-# trade_flag=sell
-# ORDER_PRICE=144.72449999999998
-# predict_value1d=145.6850874827653
-# predict_value1h=144.82318721652032
-# predict_value1d_before=146.5363126707077
-# predict_value1h_before=145.5111137112677
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-08-04 05:00:00
-# self.ask_price=144.649
-# self.bid_price=144.619
-# self.log_max_price=144.84550000000002
-# self.log_min_price=144.613
-# self.stl_logic=none
-# STL_PRICE=144.63400000000001
-# PROFIT=0.06299999999998818
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-07 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=144.14749999999998
-# predict_value1d=144.5312726662159
-# predict_value1h=144.29777120161057
-# predict_value1d_before=145.0287402153909
-# predict_value1h_before=144.48799341225626
-# EXECUTE stl logic SETTLEMENT at 2018-08-08 16:16:40
-# self.ask_price=143.628
-# self.bid_price=143.604
-# self.log_max_price=144.43349999999998
-# self.log_min_price=143.61599999999999
-# self.stl_logic=none
-# STL_PRICE=143.61599999999999
-# PROFIT=0.5030000000000143
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-08 17:00:00
-# trade_flag=sell
-# ORDER_PRICE=143.42849999999999
-# predict_value1d=144.33738042229413
-# predict_value1h=143.9365788129568
-# predict_value1d_before=144.5312726662159
-# predict_value1h_before=144.05218652260305
-# EXECUTE stl logic SETTLEMENT at 2018-08-08 19:31:50
-# self.ask_price=142.897
-# self.bid_price=142.871
-# self.log_max_price=143.45850000000002
-# self.log_min_price=142.88400000000001
-# self.stl_logic=none
-# STL_PRICE=142.88400000000001
-# PROFIT=0.521000000000015
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-08 20:00:00
-# trade_flag=sell
-# ORDER_PRICE=142.84
-# predict_value1d=144.33738042229413
-# predict_value1h=143.25184372891485
-# predict_value1d_before=144.5312726662159
-# predict_value1h_before=144.14703381967544
-# EXECUTE stl logic SETTLEMENT at 2018-08-09 18:44:00
-# self.ask_price=143.334
-# self.bid_price=143.309
-# self.log_max_price=143.32150000000001
-# self.log_min_price=142.3655
-# self.stl_logic=none
-# STL_PRICE=143.32150000000001
-# PROFIT=-0.507000000000005
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-09 20:00:00
-# trade_flag=sell
-# ORDER_PRICE=143.20600000000002
-# predict_value1d=143.4926962471008
-# predict_value1h=142.8306420521289
-# predict_value1d_before=144.33738042229413
-# predict_value1h_before=142.85946552678942
-# EXECUTE stl logic SETTLEMENT at 2018-08-10 00:10:40
-# self.ask_price=142.685
-# self.bid_price=142.662
-# self.log_max_price=143.324
-# self.log_min_price=142.6735
-# self.stl_logic=none
-# STL_PRICE=142.6735
-# PROFIT=0.5080000000000098
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-10 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=142.5045
-# predict_value1d=142.95346452147513
-# predict_value1h=142.70755414184927
-# predict_value1d_before=143.4926962471008
-# predict_value1h_before=142.9826795786619
-# EXECUTE stl logic SETTLEMENT at 2018-08-10 15:17:00
-# self.ask_price=141.955
-# self.bid_price=141.909
-# self.log_max_price=142.5595
-# self.log_min_price=141.93200000000002
-# self.stl_logic=none
-# STL_PRICE=141.93200000000002
-# PROFIT=0.5349999999999966
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-10 16:00:00
-# trade_flag=sell
-# ORDER_PRICE=141.9995
-# predict_value1d=142.95346452147513
-# predict_value1h=142.54228576517107
-# predict_value1d_before=143.4926962471008
-# predict_value1h_before=142.70755414184927
-# EXECUTE stl logic SETTLEMENT at 2018-08-10 16:39:20
-# self.ask_price=141.396
-# self.bid_price=141.368
-# self.log_max_price=141.9995
-# self.log_min_price=141.382
-# self.stl_logic=none
-# STL_PRICE=141.382
-# PROFIT=0.5860000000000127
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-10 17:00:00
-# trade_flag=sell
-# ORDER_PRICE=141.23250000000002
-# predict_value1d=142.95346452147513
-# predict_value1h=142.44973590308427
-# predict_value1d_before=143.4926962471008
-# predict_value1h_before=142.68553437447548
-# EXECUTE stl logic SETTLEMENT at 2018-08-10 18:14:30
-# self.ask_price=141.718
-# self.bid_price=141.689
-# self.log_max_price=141.7035
-# self.log_min_price=141.19150000000002
-# self.stl_logic=none
-# STL_PRICE=141.7035
-# PROFIT=-0.5019999999999811
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-10 19:00:00
-# trade_flag=sell
-# ORDER_PRICE=141.81349999999998
-# predict_value1d=142.95346452147513
-# predict_value1h=141.7347472166121
-# predict_value1d_before=143.4926962471008
-# predict_value1h_before=142.58219715239107
-# EXECUTE stl logic SETTLEMENT at 2018-08-10 22:27:00
-# self.ask_price=141.259
-# self.bid_price=141.231
-# self.log_max_price=141.8915
-# self.log_min_price=141.245
-# self.stl_logic=none
-# STL_PRICE=141.245
-# PROFIT=0.5420000000000016
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-10 23:00:00
-# trade_flag=sell
-# ORDER_PRICE=141.149
-# predict_value1d=142.95346452147513
-# predict_value1h=141.79104099458456
-# predict_value1d_before=143.4926962471008
-# predict_value1h_before=142.54698105338215
-# EXECUTE stl logic SETTLEMENT at 2018-08-11 04:19:10
-# self.ask_price=141.643
-# self.bid_price=141.608
-# self.log_max_price=141.6255
-# self.log_min_price=141.022
-# self.stl_logic=none
-# STL_PRICE=141.6255
-# PROFIT=-0.507000000000005
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-14 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=141.32
-# predict_value1d=141.88077008340508
-# predict_value1h=141.43448053312304
-# predict_value1d_before=142.2210549545586
-# predict_value1h_before=141.4389300687313
-# EXECUTE stl logic SETTLEMENT at 2018-08-14 15:18:30
-# self.ask_price=141.815
-# self.bid_price=141.785
-# self.log_max_price=141.8
-# self.log_min_price=141.0895
-# self.stl_logic=none
-# STL_PRICE=141.8
-# PROFIT=-0.5089999999999861
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-15 02:00:00
-# trade_flag=sell
-# ORDER_PRICE=141.23000000000002
-# predict_value1d=141.88077008340508
-# predict_value1h=141.90051417914034
-# predict_value1d_before=142.2210549545586
-# predict_value1h_before=141.9419702295959
-# EXECUTE stl logic SETTLEMENT at 2018-08-15 16:17:30
-# self.ask_price=141.723
-# self.bid_price=141.694
-# self.log_max_price=141.70850000000002
-# self.log_min_price=141.162
-# self.stl_logic=none
-# STL_PRICE=141.70850000000002
-# PROFIT=-0.5060000000000002
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-15 18:00:00
-# trade_flag=sell
-# ORDER_PRICE=141.469
-# predict_value1d=141.86342190480232
-# predict_value1h=141.55078551962973
-# predict_value1d_before=141.88077008340508
-# predict_value1h_before=142.12918174803258
-# EXECUTE stl logic SETTLEMENT at 2018-08-15 20:29:40
-# self.ask_price=140.95
-# self.bid_price=140.922
-# self.log_max_price=141.584
-# self.log_min_price=140.93599999999998
-# self.stl_logic=none
-# STL_PRICE=140.93599999999998
-# PROFIT=0.507000000000005
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-15 21:00:00
-# trade_flag=sell
-# ORDER_PRICE=141.031
-# predict_value1d=141.86342190480232
-# predict_value1h=141.42266471254825
-# predict_value1d_before=141.88077008340508
-# predict_value1h_before=142.13671688827876
-# EXECUTE stl logic SETTLEMENT at 2018-08-15 22:22:20
-# self.ask_price=140.51
-# self.bid_price=140.486
-# self.log_max_price=141.106
-# self.log_min_price=140.498
-# self.stl_logic=none
-# STL_PRICE=140.498
-# PROFIT=0.5090000000000146
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-15 23:00:00
-# trade_flag=sell
-# ORDER_PRICE=140.3435
-# predict_value1d=141.86342190480232
-# predict_value1h=141.04040911746023
-# predict_value1d_before=141.88077008340508
-# predict_value1h_before=142.1383433701992
-# EXECUTE stl logic SETTLEMENT at 2018-08-16 10:35:30
-# self.ask_price=140.863
-# self.bid_price=140.834
-# self.log_max_price=140.8485
-# self.log_min_price=139.9105
-# self.stl_logic=none
-# STL_PRICE=140.8485
-# PROFIT=-0.5339999999999918
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-16 11:00:00
-# trade_flag=sell
-# ORDER_PRICE=140.8295
-# predict_value1d=141.11596548628808
-# predict_value1h=140.34657554557919
-# predict_value1d_before=141.86342190480232
-# predict_value1h_before=140.35659205278753
-# EXECUTE stl logic SETTLEMENT at 2018-08-17 01:17:00
-# self.ask_price=141.319
-# self.bid_price=141.292
-# self.log_max_price=141.3055
-# self.log_min_price=140.493
-# self.stl_logic=none
-# STL_PRICE=141.3055
-# PROFIT=-0.5029999999999859
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-17 08:00:00
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-04-21 14:35:00
 # trade_flag=buy
-# ORDER_PRICE=141.0595
-# predict_value1d=141.37596892231704
-# predict_value1h=140.89968271827698
-# predict_value1d_before=141.11596548628808
-# predict_value1h_before=140.72431141638756
-# EXECUTE stl logic SETTLEMENT at 2018-08-17 18:23:20
-# self.ask_price=140.587
-# self.bid_price=140.561
-# self.log_max_price=141.167
-# self.log_min_price=140.574
+# ORDER_PRICE=139.90449999999998
+# predict_value1d_before=138.70417053103446
+# predict_value1d=139.4572140007019
+# predict_value=140.1281626237035
+# EXECUTE stl logic SETTLEMENT at 2017-04-21 19:36:00
+# self.ask_price=139.438
+# self.bid_price=139.409
+# self.log_max_price=140.1445
+# self.log_min_price=139.4235
 # self.stl_logic=none
-# STL_PRICE=140.574
-# PROFIT=-0.5139999999999816
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-21 11:00:00
-# trade_flag=buy
-# ORDER_PRICE=141.019
-# predict_value1d=141.43588219904902
-# predict_value1h=141.0116529850364
-# predict_value1d_before=141.40880171251297
-# predict_value1h_before=141.0109247493744
-# EXECUTE stl logic SETTLEMENT at 2018-08-21 19:41:00
-# self.ask_price=141.559
-# self.bid_price=141.535
-# self.log_max_price=141.547
-# self.log_min_price=140.947
-# self.stl_logic=none
-# STL_PRICE=141.547
-# PROFIT=0.5020000000000095
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-21 20:00:00
-# trade_flag=buy
-# ORDER_PRICE=141.514
-# predict_value1d=141.43588219904902
-# predict_value1h=141.20630936411024
-# predict_value1d_before=141.40880171251297
-# predict_value1h_before=141.02931846028568
-# EXECUTE stl logic SETTLEMENT at 2018-08-21 22:52:40
-# self.ask_price=142.065
-# self.bid_price=142.036
-# self.log_max_price=142.0505
-# self.log_min_price=141.432
-# self.stl_logic=none
-# STL_PRICE=142.0505
-# PROFIT=0.5090000000000146
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-21 23:00:00
-# trade_flag=buy
-# ORDER_PRICE=142.106
-# predict_value1d=141.43588219904902
-# predict_value1h=141.51265026813746
-# predict_value1d_before=141.40880171251297
-# predict_value1h_before=141.15755223894118
-# EXECUTE stl logic SETTLEMENT at 2018-08-22 03:15:00
-# self.ask_price=142.659
-# self.bid_price=142.631
-# self.log_max_price=142.64499999999998
-# self.log_min_price=141.89249999999998
-# self.stl_logic=none
-# STL_PRICE=142.64499999999998
-# PROFIT=0.5120000000000005
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-22 04:00:00
-# trade_flag=buy
-# ORDER_PRICE=142.45749999999998
-# predict_value1d=141.43588219904902
-# predict_value1h=142.2497418439388
-# predict_value1d_before=141.40880171251297
-# predict_value1h_before=141.20630936411024
-# EXECUTE stl logic SETTLEMENT at 2018-08-23 19:49:50
-# self.ask_price=143.012
-# self.bid_price=142.985
-# self.log_max_price=142.9985
-# self.log_min_price=142.0065
-# self.stl_logic=none
-# STL_PRICE=142.9985
-# PROFIT=0.5150000000000148
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-23 21:00:00
-# trade_flag=buy
-# ORDER_PRICE=142.7715
-# predict_value1d=142.46520515716077
-# predict_value1h=142.55918464392423
-# predict_value1d_before=142.25111101841927
-# predict_value1h_before=142.54831926351787
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-08-25 05:00:00
-# self.ask_price=142.872
-# self.bid_price=142.842
-# self.log_max_price=143.2355
-# self.log_min_price=142.43349999999998
-# self.stl_logic=none
-# STL_PRICE=142.85700000000003
-# PROFIT=0.05700000000001637
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-28 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=143.2415
-# predict_value1d=142.8974066308141
-# predict_value1h=142.8476628961861
-# predict_value1d_before=142.65934434580802
-# predict_value1h_before=142.75608830922843
-# EXECUTE stl logic SETTLEMENT at 2018-08-29 22:57:50
-# self.ask_price=143.812
-# self.bid_price=143.781
-# self.log_max_price=143.7965
-# self.log_min_price=142.832
-# self.stl_logic=none
-# STL_PRICE=143.7965
-# PROFIT=0.5229999999999961
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-29 23:00:00
-# trade_flag=sell
-# ORDER_PRICE=144.513
-# predict_value1d=142.85274287620186
-# predict_value1h=143.24703881549834
-# predict_value1d_before=142.8974066308141
-# predict_value1h_before=143.3163760496974
-# EXECUTE stl logic SETTLEMENT at 2018-08-29 23:45:30
-# self.ask_price=145.001
-# self.bid_price=144.975
-# self.log_max_price=144.988
-# self.log_min_price=144.2785
-# self.stl_logic=none
-# STL_PRICE=144.988
-# PROFIT=-0.5099999999999909
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-30 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.5135
-# predict_value1d=144.85212088078262
-# predict_value1h=145.28898009583352
-# predict_value1d_before=142.85274287620186
-# predict_value1h_before=144.42915892767905
-# EXECUTE stl logic SETTLEMENT at 2018-08-30 17:30:00
-# self.ask_price=145.036
-# self.bid_price=145.002
-# self.log_max_price=145.687
-# self.log_min_price=145.019
-# self.stl_logic=none
-# STL_PRICE=145.019
-# PROFIT=-0.5269999999999868
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-31 14:00:00
-# trade_flag=sell
-# ORDER_PRICE=144.4775
-# predict_value1d=144.32852517420054
-# predict_value1h=144.90863020461796
-# predict_value1d_before=144.85212088078262
-# predict_value1h_before=144.93231944654883
-# EXECUTE stl logic SETTLEMENT at 2018-08-31 16:22:40
-# self.ask_price=143.941
-# self.bid_price=143.915
-# self.log_max_price=144.6925
-# self.log_min_price=143.928
-# self.stl_logic=none
-# STL_PRICE=143.928
-# PROFIT=0.5209999999999866
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-31 17:00:00
-# trade_flag=sell
-# ORDER_PRICE=144.2865
-# predict_value1d=144.32852517420054
-# predict_value1h=144.90377682626246
-# predict_value1d_before=144.85212088078262
-# predict_value1h_before=144.99576347734035
-# EXECUTE stl logic SETTLEMENT at 2018-08-31 20:36:30
-# self.ask_price=143.741
-# self.bid_price=143.717
-# self.log_max_price=144.2865
-# self.log_min_price=143.729
-# self.stl_logic=none
-# STL_PRICE=143.729
-# PROFIT=0.5319999999999823
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-08-31 21:00:00
-# trade_flag=sell
-# ORDER_PRICE=143.8745
-# predict_value1d=144.32852517420054
-# predict_value1h=144.35829394078254
-# predict_value1d_before=144.85212088078262
-# predict_value1h_before=144.95269457402827
-# weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-09-01 05:00:00
-# self.ask_price=144.049
-# self.bid_price=144.019
-# self.log_max_price=144.218
-# self.log_min_price=143.5195
-# self.stl_logic=none
-# STL_PRICE=144.034
-# PROFIT=-0.1839999999999975
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-04 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=143.0115
-# predict_value1d=143.56106186801193
-# predict_value1h=143.23361551743744
-# predict_value1d_before=144.16045903861524
-# predict_value1h_before=143.339600261271
-# EXECUTE stl logic SETTLEMENT at 2018-09-05 09:59:30
-# self.ask_price=143.51
-# self.bid_price=143.486
-# self.log_max_price=143.498
-# self.log_min_price=142.59699999999998
-# self.stl_logic=none
-# STL_PRICE=143.498
-# PROFIT=-0.5149999999999864
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-05 10:00:00
-# trade_flag=buy
-# ORDER_PRICE=143.4955
-# predict_value1d=143.65982768163084
-# predict_value1h=143.1386140924096
-# predict_value1d_before=143.56106186801193
-# predict_value1h_before=142.99791191101076
-# EXECUTE stl logic SETTLEMENT at 2018-09-05 15:53:00
-# self.ask_price=143.033
-# self.bid_price=143.006
-# self.log_max_price=143.685
-# self.log_min_price=143.0195
-# self.stl_logic=none
-# STL_PRICE=143.0195
-# PROFIT=-0.5049999999999955
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-05 16:00:00
-# trade_flag=buy
-# ORDER_PRICE=142.9955
-# predict_value1d=143.65982768163084
-# predict_value1h=143.37367757999897
-# predict_value1d_before=143.56106186801193
-# predict_value1h_before=143.1289085163772
-# EXECUTE stl logic SETTLEMENT at 2018-09-05 22:05:50
-# self.ask_price=143.705
-# self.bid_price=143.647
-# self.log_max_price=143.676
-# self.log_min_price=142.666
-# self.stl_logic=none
-# STL_PRICE=143.676
-# PROFIT=0.6389999999999816
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-06 00:00:00
-# trade_flag=buy
-# ORDER_PRICE=144.57999999999998
-# predict_value1d=143.65982768163084
-# predict_value1h=144.66405509245396
-# predict_value1d_before=143.56106186801193
-# predict_value1h_before=143.37367757999897
-# EXECUTE stl logic SETTLEMENT at 2018-09-06 00:23:10
-# self.ask_price=143.981
-# self.bid_price=143.869
-# self.log_max_price=144.6125
-# self.log_min_price=143.925
-# self.stl_logic=none
-# STL_PRICE=143.925
-# PROFIT=-0.7239999999999895
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-06 01:00:00
-# trade_flag=buy
-# ORDER_PRICE=143.83249999999998
-# predict_value1d=143.65982768163084
-# predict_value1h=144.55075176906587
-# predict_value1d_before=143.56106186801193
-# predict_value1h_before=143.2733881891966
-# EXECUTE stl logic SETTLEMENT at 2018-09-07 00:12:40
-# self.ask_price=143.361
-# self.bid_price=143.335
-# self.log_max_price=144.2315
-# self.log_min_price=143.348
-# self.stl_logic=none
-# STL_PRICE=143.348
-# PROFIT=-0.5109999999999957
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-07 08:00:00
-# trade_flag=sell
-# ORDER_PRICE=143.0755
-# predict_value1d=143.63421441304683
-# predict_value1h=143.29572439843417
-# predict_value1d_before=144.14769715538623
-# predict_value1h_before=144.40881916886568
-# EXECUTE stl logic SETTLEMENT at 2018-09-07 18:52:00
-# self.ask_price=143.577
-# self.bid_price=143.55
-# self.log_max_price=143.5635
-# self.log_min_price=142.6165
-# self.stl_logic=none
-# STL_PRICE=143.5635
-# PROFIT=-0.5149999999999864
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-11 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=144.77550000000002
-# predict_value1d=144.739458062768
-# predict_value1h=144.68429775664208
-# predict_value1d_before=143.7177104603052
-# predict_value1h_before=144.61806126493218
-# EXECUTE stl logic SETTLEMENT at 2018-09-11 12:52:30
-# self.ask_price=145.323
-# self.bid_price=145.296
-# self.log_max_price=145.3095
-# self.log_min_price=144.7255
-# self.stl_logic=none
-# STL_PRICE=145.3095
-# PROFIT=0.5079999999999814
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-11 13:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.314
-# predict_value1d=144.739458062768
-# predict_value1h=144.95396027475596
-# predict_value1d_before=143.7177104603052
-# predict_value1h_before=144.71244689118862
-# EXECUTE stl logic SETTLEMENT at 2018-09-11 16:17:50
-# self.ask_price=145.922
-# self.bid_price=145.844
-# self.log_max_price=145.88299999999998
-# self.log_min_price=145.21499999999997
-# self.stl_logic=none
-# STL_PRICE=145.88299999999998
-# PROFIT=0.5180000000000007
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-11 17:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.738
-# predict_value1d=144.739458062768
-# predict_value1h=145.1011759009957
-# predict_value1d_before=143.7177104603052
-# predict_value1h_before=144.6763861622214
-# EXECUTE stl logic SETTLEMENT at 2018-09-11 17:47:30
-# self.ask_price=145.035
-# self.bid_price=144.954
-# self.log_max_price=145.8485
-# self.log_min_price=144.99450000000002
-# self.stl_logic=none
-# STL_PRICE=144.99450000000002
-# PROFIT=-0.7959999999999923
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-11 18:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.2625
-# predict_value1d=144.739458062768
-# predict_value1h=145.3460506196022
-# predict_value1d_before=143.7177104603052
-# predict_value1h_before=144.65853084784746
-# EXECUTE stl logic SETTLEMENT at 2018-09-11 20:58:50
-# self.ask_price=144.777
-# self.bid_price=144.738
-# self.log_max_price=145.286
-# self.log_min_price=144.7575
-# self.stl_logic=none
-# STL_PRICE=144.7575
-# PROFIT=-0.5440000000000111
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-11 21:00:00
-# trade_flag=buy
-# ORDER_PRICE=144.9085
-# predict_value1d=144.739458062768
-# predict_value1h=145.26701254695655
-# predict_value1d_before=143.7177104603052
-# predict_value1h_before=144.95396027475596
-# EXECUTE stl logic SETTLEMENT at 2018-09-11 21:03:40
-# self.ask_price=144.402
-# self.bid_price=144.316
-# self.log_max_price=144.9085
-# self.log_min_price=144.35899999999998
-# self.stl_logic=none
-# STL_PRICE=144.35899999999998
-# PROFIT=-0.6059999999999945
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-11 22:00:00
-# trade_flag=buy
-# ORDER_PRICE=144.6395
-# predict_value1d=144.739458062768
-# predict_value1h=145.14616218781472
-# predict_value1d_before=143.7177104603052
-# predict_value1h_before=144.9257493575215
-# EXECUTE stl logic SETTLEMENT at 2018-09-11 23:15:50
-# self.ask_price=145.196
-# self.bid_price=145.173
-# self.log_max_price=145.1845
-# self.log_min_price=144.601
-# self.stl_logic=none
-# STL_PRICE=145.1845
-# PROFIT=0.5200000000000102
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-12 00:00:00
-# trade_flag=buy
-# ORDER_PRICE=144.892
-# predict_value1d=144.739458062768
-# predict_value1h=145.03391439592838
-# predict_value1d_before=143.7177104603052
-# predict_value1h_before=144.8727610940933
-# EXECUTE stl logic SETTLEMENT at 2018-09-12 05:17:50
-# self.ask_price=145.451
-# self.bid_price=145.419
-# self.log_max_price=145.435
-# self.log_min_price=144.877
-# self.stl_logic=none
-# STL_PRICE=145.435
-# PROFIT=0.5130000000000052
-#######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-12 08:00:00
-# trade_flag=buy
-# ORDER_PRICE=145.34500000000003
-# predict_value1d=145.1563072988987
-# predict_value1h=145.31213409495354
-# predict_value1d_before=144.739458062768
-# predict_value1h_before=145.03391439592838
-# EXECUTE stl logic SETTLEMENT at 2018-09-12 19:58:30
-# self.ask_price=144.876
-# self.bid_price=144.85
-# self.log_max_price=145.4245
-# self.log_min_price=144.863
-# self.stl_logic=none
-# STL_PRICE=144.863
+# STL_PRICE=139.4235
 # PROFIT=-0.5100000000000193
 #######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-13 04:00:00
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-04-24 14:10:00
 # trade_flag=buy
-# ORDER_PRICE=145.22
-# predict_value1d=145.1563072988987
-# predict_value1h=145.0784542915523
-# predict_value1d_before=144.739458062768
-# predict_value1h_before=145.06062675604224
-# EXECUTE stl logic SETTLEMENT at 2018-09-13 20:03:00
-# self.ask_price=145.774
-# self.bid_price=145.736
-# self.log_max_price=145.755
-# self.log_min_price=145.0245
+# ORDER_PRICE=140.97050000000002
+# predict_value1d_before=138.70417053103446
+# predict_value1d=139.05693634176254
+# predict_value=141.01410574686528
+# EXECUTE stl logic SETTLEMENT at 2017-04-24 23:41:40
+# self.ask_price=140.49
+# self.bid_price=140.463
+# self.log_max_price=141.402
+# self.log_min_price=140.4765
 # self.stl_logic=none
-# STL_PRICE=145.755
-# PROFIT=0.5019999999999811
+# STL_PRICE=140.4765
+# PROFIT=-0.5240000000000009
 #######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-14 08:00:00
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-04-25 02:15:00
 # trade_flag=buy
-# ORDER_PRICE=146.897
-# predict_value1d=146.27158000144362
-# predict_value1h=146.5222977745533
-# predict_value1d_before=144.99588567745687
-# predict_value1h_before=145.93002835109831
-# EXECUTE stl logic SETTLEMENT at 2018-09-14 20:49:20
-# self.ask_price=146.422
-# self.bid_price=146.396
-# self.log_max_price=147.014
-# self.log_min_price=146.409
+# ORDER_PRICE=140.524
+# predict_value1d_before=138.70417053103446
+# predict_value1d=139.05693634176254
+# predict_value=140.79744942218065
+# EXECUTE stl logic SETTLEMENT at 2017-04-25 15:18:00
+# self.ask_price=141.079
+# self.bid_price=141.043
+# self.log_max_price=141.061
+# self.log_min_price=140.0595
 # self.stl_logic=none
-# STL_PRICE=146.409
-# PROFIT=-0.5170000000000243
+# STL_PRICE=141.061
+# PROFIT=0.5040000000000191
 #######################################################
-# in  Algorithm
-# EXECUTE ORDER at 2018-09-15 00:00:00
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-04-26 09:10:00
 # trade_flag=buy
-# ORDER_PRICE=146.57850000000002
-# predict_value1d=146.27158000144362
-# predict_value1h=146.60573266650738
-# predict_value1d_before=144.99588567745687
-# predict_value1h_before=146.59525787204504
+# ORDER_PRICE=142.6695
+# predict_value1d_before=139.69007901877166
+# predict_value1d=141.47240570735931
+# predict_value=142.72663114464282
+# EXECUTE stl logic SETTLEMENT at 2017-04-26 21:39:40
+# self.ask_price=143.237
+# self.bid_price=143.21
+# self.log_max_price=143.2235
+# self.log_min_price=142.3605
+# self.stl_logic=none
+# STL_PRICE=143.2235
+# PROFIT=0.5190000000000055
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-04-28 12:15:00
+# trade_flag=buy
+# ORDER_PRICE=143.572
+# predict_value1d_before=141.36603979843855
+# predict_value1d=142.22919273328782
+# predict_value=143.75369408142566
+# EXECUTE stl logic SETTLEMENT at 2017-04-28 17:13:50
+# self.ask_price=144.127
+# self.bid_price=144.1
+# self.log_max_price=144.1135
+# self.log_min_price=143.3555
+# self.stl_logic=none
+# STL_PRICE=144.1135
+# PROFIT=0.5049999999999955
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-01 09:05:00
+# trade_flag=buy
+# ORDER_PRICE=144.03699999999998
+# predict_value1d_before=141.36603979843855
+# predict_value1d=142.86581207180024
+# predict_value=144.27561744737625
+# EXECUTE stl logic SETTLEMENT at 2017-05-01 15:32:50
+# self.ask_price=144.602
+# self.bid_price=144.567
+# self.log_max_price=144.5845
+# self.log_min_price=143.9115
+# self.stl_logic=none
+# STL_PRICE=144.5845
+# PROFIT=0.5090000000000146
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-02 00:50:00
+# trade_flag=buy
+# ORDER_PRICE=144.463
+# predict_value1d_before=141.36603979843855
+# predict_value1d=142.86581207180024
+# predict_value=144.5417802026272
+# EXECUTE stl logic SETTLEMENT at 2017-05-02 06:01:40
+# self.ask_price=144.172
+# self.bid_price=143.972
+# self.log_max_price=144.5115
+# self.log_min_price=144.0625
+# self.stl_logic=none
+# STL_PRICE=144.072
+# PROFIT=-0.5089999999999861
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-02 07:20:00
+# trade_flag=buy
+# ORDER_PRICE=144.18650000000002
+# predict_value1d_before=141.36603979843855
+# predict_value1d=142.86581207180024
+# predict_value=144.37517404776813
+# EXECUTE stl logic SETTLEMENT at 2017-05-02 17:30:20
+# self.ask_price=144.784
+# self.bid_price=144.725
+# self.log_max_price=144.7545
+# self.log_min_price=144.1775
+# self.stl_logic=none
+# STL_PRICE=144.7545
+# PROFIT=0.5139999999999816
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-03 16:00:00
+# trade_flag=buy
+# ORDER_PRICE=144.7985
+# predict_value1d_before=142.62583673369886
+# predict_value1d=143.35901782774923
+# predict_value=144.99974691593647
+# EXECUTE stl logic SETTLEMENT at 2017-05-03 23:19:10
+# self.ask_price=145.35
+# self.bid_price=145.322
+# self.log_max_price=145.336
+# self.log_min_price=144.745
+# self.stl_logic=none
+# STL_PRICE=145.336
+# PROFIT=0.5039999999999907
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-05 06:25:00
+# trade_flag=buy
+# ORDER_PRICE=145.388
+# predict_value1d_before=143.35901782774923
+# predict_value1d=143.38822825014591
+# predict_value=145.4471341264844
+# EXECUTE stl logic SETTLEMENT at 2017-05-05 12:51:50
+# self.ask_price=144.926
+# self.bid_price=144.89
+# self.log_max_price=145.5815
+# self.log_min_price=144.908
+# self.stl_logic=none
+# STL_PRICE=144.908
+# PROFIT=-0.5200000000000102
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-05 14:40:00
+# trade_flag=buy
+# ORDER_PRICE=145.0555
+# predict_value1d_before=143.38822825014591
+# predict_value1d=143.69664419144394
+# predict_value=145.47416024941208
+# EXECUTE stl logic SETTLEMENT at 2017-05-05 21:22:40
+# self.ask_price=145.599
+# self.bid_price=145.573
+# self.log_max_price=145.586
+# self.log_min_price=144.88600000000002
+# self.stl_logic=none
+# STL_PRICE=145.586
+# PROFIT=0.5030000000000143
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-08 14:10:00
+# trade_flag=buy
+# ORDER_PRICE=146.2175
+# predict_value1d_before=143.38822825014591
+# predict_value1d=144.55039854526518
+# predict_value=146.60581969785687
+# EXECUTE stl logic SETTLEMENT at 2017-05-08 19:12:20
+# self.ask_price=145.749
+# self.bid_price=145.724
+# self.log_max_price=146.3845
+# self.log_min_price=145.73649999999998
+# self.stl_logic=none
+# STL_PRICE=145.73649999999998
+# PROFIT=-0.507000000000005
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-08 22:00:00
+# trade_flag=buy
+# ORDER_PRICE=146.127
+# predict_value1d_before=143.38822825014591
+# predict_value1d=144.55039854526518
+# predict_value=146.37365499490497
+# EXECUTE stl logic SETTLEMENT at 2017-05-09 09:28:30
+# self.ask_price=146.688
+# self.bid_price=146.655
+# self.log_max_price=146.67149999999998
+# self.log_min_price=145.803
+# self.stl_logic=none
+# STL_PRICE=146.67149999999998
+# PROFIT=0.5150000000000148
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-10 09:35:00
+# trade_flag=buy
+# ORDER_PRICE=147.4615
+# predict_value1d_before=144.6726036528349
+# predict_value1d=145.50630493307114
+# predict_value=147.6823534333706
+# EXECUTE stl logic SETTLEMENT at 2017-05-10 16:00:50
+# self.ask_price=147.997
+# self.bid_price=147.976
+# self.log_max_price=147.9865
+# self.log_min_price=147.205
+# self.stl_logic=none
+# STL_PRICE=147.9865
+# PROFIT=0.5020000000000095
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-10 23:50:00
+# trade_flag=buy
+# ORDER_PRICE=147.4975
+# predict_value1d_before=144.6726036528349
+# predict_value1d=145.50630493307114
+# predict_value=147.77248528560995
+# EXECUTE stl logic SETTLEMENT at 2017-05-11 20:00:20
+# self.ask_price=146.875
+# self.bid_price=146.788
+# self.log_max_price=147.994
+# self.log_min_price=146.8315
+# self.stl_logic=none
+# STL_PRICE=146.8315
+# PROFIT=-0.7199999999999989
+#######################################################
+# in  by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-12 05:25:00
+# trade_flag=buy
+# ORDER_PRICE=146.822
+# predict_value1d_before=145.50630493307114
+# predict_value1d=145.78465115725993
+# predict_value=146.90737840288878
+# EXECUTE all over the world SETTLEMENT at 2017-05-12 11:00:00
+# self.ask_price=146.672
+# self.bid_price=146.637
+# self.log_max_price=146.82799999999997
+# self.log_min_price=146.60500000000002
+# self.stl_logic=allovertheworld settlement
+# STL_PRICE=146.65449999999998
+# PROFIT=-0.1980000000000075
+#######################################################
+# in  by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-12 11:00:00
+# trade_flag=sell
+# ORDER_PRICE=146.65449999999998
+# predict_value1d_before=145.78465115725993
+# predict_value1d=145.04802705347538
+# predict_value=146.48906668806077
+# EXECUTE stl logic SETTLEMENT at 2017-05-12 16:36:40
+# self.ask_price=146.122
+# self.bid_price=146.099
+# self.log_max_price=146.708
+# self.log_min_price=146.1105
+# self.stl_logic=none
+# STL_PRICE=146.1105
+# PROFIT=0.5149999999999864
+#######################################################
+# in  by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-15 18:20:00
+# trade_flag=sell
+# ORDER_PRICE=146.78
+# predict_value1d_before=145.78465115725993
+# predict_value1d=144.8422157959938
+# predict_value=146.56357893943786
+# EXECUTE all over the world SETTLEMENT at 2017-05-16 09:05:00
+# self.ask_price=146.671
+# self.bid_price=146.645
+# self.log_max_price=146.83550000000002
+# self.log_min_price=146.3265
+# self.stl_logic=allovertheworld settlement
+# STL_PRICE=146.65800000000002
+# PROFIT=0.09700000000000841
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-16 09:05:00
+# trade_flag=buy
+# ORDER_PRICE=146.65800000000002
+# predict_value1d_before=144.8422157959938
+# predict_value1d=145.6356294184923
+# predict_value=146.8167446537018
+# EXECUTE stl logic SETTLEMENT at 2017-05-16 18:30:30
+# self.ask_price=146.151
+# self.bid_price=146.122
+# self.log_max_price=147.11950000000002
+# self.log_min_price=146.1365
+# self.stl_logic=none
+# STL_PRICE=146.1365
+# PROFIT=-0.5489999999999782
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-19 02:40:00
+# trade_flag=sell
+# ORDER_PRICE=144.01350000000002
+# predict_value1d_before=145.09567147099972
+# predict_value1d=142.8562682366371
+# predict_value=143.97336595065892
+# EXECUTE all over the world SETTLEMENT at 2017-05-19 12:50:00
+# self.ask_price=144.143
+# self.bid_price=144.116
+# self.log_max_price=144.44299999999998
+# self.log_min_price=143.82850000000002
+# self.stl_logic=allovertheworld settlement
+# STL_PRICE=144.1295
+# PROFIT=-0.14699999999999136
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-19 12:50:00
+# trade_flag=buy
+# ORDER_PRICE=144.1295
+# predict_value1d_before=142.8562682366371
+# predict_value1d=143.2699163581729
+# predict_value=144.22573056083917
+# EXECUTE stl logic SETTLEMENT at 2017-05-19 16:29:40
+# self.ask_price=144.674
+# self.bid_price=144.645
+# self.log_max_price=144.6595
+# self.log_min_price=144.00650000000002
+# self.stl_logic=none
+# STL_PRICE=144.6595
+# PROFIT=0.5020000000000095
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-22 09:10:00
+# trade_flag=buy
+# ORDER_PRICE=144.90449999999998
+# predict_value1d_before=142.8562682366371
+# predict_value1d=143.97949940615894
+# predict_value=144.92841558647154
+# EXECUTE stl logic SETTLEMENT at 2017-05-22 16:31:40
+# self.ask_price=144.444
+# self.bid_price=144.42
+# self.log_max_price=145.0925
+# self.log_min_price=144.432
+# self.stl_logic=none
+# STL_PRICE=144.432
+# PROFIT=-0.5010000000000048
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-23 05:35:00
+# trade_flag=buy
+# ORDER_PRICE=144.65699999999998
+# predict_value1d_before=142.8562682366371
+# predict_value1d=143.97949940615894
+# predict_value=144.77355153003333
+# EXECUTE stl logic SETTLEMENT at 2017-05-23 07:46:50
+# self.ask_price=144.219
+# self.bid_price=144.162
+# self.log_max_price=144.7265
+# self.log_min_price=144.1905
+# self.stl_logic=none
+# STL_PRICE=144.1905
+# PROFIT=-0.5099999999999909
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-25 07:15:00
+# trade_flag=buy
+# ORDER_PRICE=144.769
+# predict_value1d_before=144.04754287442566
+# predict_value1d=144.21504161652922
+# predict_value=144.8472684954405
+# EXECUTE stl logic SETTLEMENT at 2017-05-25 17:29:20
+# self.ask_price=145.358
+# self.bid_price=145.318
+# self.log_max_price=145.33800000000002
+# self.log_min_price=144.6845
+# self.stl_logic=none
+# STL_PRICE=145.33800000000002
+# PROFIT=0.5250000000000057
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-26 00:10:00
+# trade_flag=buy
+# ORDER_PRICE=144.9355
+# predict_value1d_before=144.21504161652922
+# predict_value1d=144.29417609268427
+# predict_value=145.16630934917927
+# EXECUTE stl logic SETTLEMENT at 2017-05-26 08:28:30
+# self.ask_price=144.475
+# self.bid_price=144.44
+# self.log_max_price=144.956
+# self.log_min_price=144.45749999999998
+# self.stl_logic=none
+# STL_PRICE=144.45749999999998
+# PROFIT=-0.507000000000005
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-05-31 05:55:00
+# trade_flag=buy
+# ORDER_PRICE=142.506
+# predict_value1d_before=142.6894620870948
+# predict_value1d=142.88447284181416
+# predict_value=142.542984847337
+# EXECUTE stl logic SETTLEMENT at 2017-05-31 06:33:30
+# self.ask_price=142.116
+# self.bid_price=142.024
+# self.log_max_price=142.591
+# self.log_min_price=142.07
+# self.stl_logic=none
+# STL_PRICE=142.07
+# PROFIT=-0.5039999999999907
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-02 14:20:00
+# trade_flag=buy
+# ORDER_PRICE=143.836
+# predict_value1d_before=142.97901520352065
+# predict_value1d=143.4597657738477
+# predict_value=143.87798411977292
+# EXECUTE stl logic SETTLEMENT at 2017-06-02 18:02:40
+# self.ask_price=143.373
+# self.bid_price=143.347
+# self.log_max_price=143.836
+# self.log_min_price=143.36
+# self.stl_logic=none
+# STL_PRICE=143.36
+# PROFIT=-0.5039999999999907
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-06 02:25:00
+# trade_flag=sell
+# ORDER_PRICE=142.642
+# predict_value1d_before=142.97901520352065
+# predict_value1d=142.63098447787763
+# predict_value=142.58904478657246
+# EXECUTE stl logic SETTLEMENT at 2017-06-06 10:12:20
+# self.ask_price=142.098
+# self.bid_price=142.069
+# self.log_max_price=142.6705
+# self.log_min_price=142.08350000000002
+# self.stl_logic=none
+# STL_PRICE=142.08350000000002
+# PROFIT=0.5319999999999823
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-07 15:30:00
+# trade_flag=sell
+# ORDER_PRICE=141.22899999999998
+# predict_value1d_before=142.7669438135624
+# predict_value1d=141.5587901735306
+# predict_value=141.1882803788036
+# EXECUTE stl logic SETTLEMENT at 2017-06-07 22:35:40
+# self.ask_price=141.726
+# self.bid_price=141.707
+# self.log_max_price=141.7165
+# self.log_min_price=140.7605
+# self.stl_logic=none
+# STL_PRICE=141.7165
+# PROFIT=-0.5109999999999957
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-08 07:55:00
+# trade_flag=sell
+# ORDER_PRICE=142.2125
+# predict_value1d_before=142.7669438135624
+# predict_value1d=141.5587901735306
+# predict_value=141.929557387352
+# EXECUTE all over the world SETTLEMENT at 2017-06-08 16:00:00
+# self.ask_price=142.189
+# self.bid_price=142.161
+# self.log_max_price=142.584
+# self.log_min_price=141.76600000000002
+# self.stl_logic=allovertheworld settlement
+# STL_PRICE=142.175
+# PROFIT=0.0030000000000143245
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-08 16:00:00
+# trade_flag=buy
+# ORDER_PRICE=142.175
+# predict_value1d_before=141.5587901735306
+# predict_value1d=142.15790019906314
+# predict_value=142.26040438759327
+# EXECUTE stl logic SETTLEMENT at 2017-06-08 18:11:00
+# self.ask_price=142.76
+# self.bid_price=142.732
+# self.log_max_price=142.74599999999998
+# self.log_min_price=142.13549999999998
+# self.stl_logic=none
+# STL_PRICE=142.74599999999998
+# PROFIT=0.5430000000000064
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-09 10:20:00
+# trade_flag=buy
+# ORDER_PRICE=140.58350000000002
+# predict_value1d_before=142.15790019906314
+# predict_value1d=142.33498193234206
+# predict_value=141.51254439809918
+# EXECUTE stl logic SETTLEMENT at 2017-06-09 14:25:10
+# self.ask_price=140.115
+# self.bid_price=140.079
+# self.log_max_price=141.07600000000002
+# self.log_min_price=140.097
+# self.stl_logic=none
+# STL_PRICE=140.097
+# PROFIT=-0.525999999999982
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-09 19:20:00
+# trade_flag=buy
+# ORDER_PRICE=140.849
+# predict_value1d_before=142.15790019906314
+# predict_value1d=142.33498193234206
+# predict_value=140.94104123653472
+# EXECUTE stl logic SETTLEMENT at 2017-06-10 03:01:20
+# self.ask_price=140.38
+# self.bid_price=140.351
+# self.log_max_price=141.123
+# self.log_min_price=140.3655
+# self.stl_logic=none
+# STL_PRICE=140.3655
+# PROFIT=-0.5120000000000005
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-12 08:25:00
+# trade_flag=sell
+# ORDER_PRICE=140.46
+# predict_value1d_before=142.15790019906314
+# predict_value1d=140.8454313110262
+# predict_value=140.4094439703226
+# EXECUTE stl logic SETTLEMENT at 2017-06-12 18:17:20
+# self.ask_price=139.937
+# self.bid_price=139.914
+# self.log_max_price=140.80349999999999
+# self.log_min_price=139.9255
+# self.stl_logic=none
+# STL_PRICE=139.9255
+# PROFIT=0.5039999999999907
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-13 23:55:00
+# trade_flag=sell
+# ORDER_PRICE=139.91899999999998
+# predict_value1d_before=140.8454313110262
+# predict_value1d=139.52911061768233
+# predict_value=139.53011200499535
+# EXECUTE stl logic SETTLEMENT at 2017-06-14 01:41:40
+# self.ask_price=140.407
+# self.bid_price=140.382
+# self.log_max_price=140.3945
+# self.log_min_price=139.91899999999998
+# self.stl_logic=none
+# STL_PRICE=140.3945
+# PROFIT=-0.5010000000000048
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-14 02:45:00
+# trade_flag=sell
+# ORDER_PRICE=140.17849999999999
+# predict_value1d_before=140.8454313110262
+# predict_value1d=139.52911061768233
+# predict_value=139.6449885017276
+# EXECUTE all over the world SETTLEMENT at 2017-06-14 13:55:00
+# self.ask_price=140.364
+# self.bid_price=140.336
+# self.log_max_price=140.4315
+# self.log_min_price=140.142
+# self.stl_logic=allovertheworld settlement
+# STL_PRICE=140.35000000000002
+# PROFIT=-0.19700000000000273
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-14 13:55:00
+# trade_flag=buy
+# ORDER_PRICE=140.35000000000002
+# predict_value1d_before=139.52911061768233
+# predict_value1d=140.2367327157855
+# predict_value=140.36515127444267
+# EXECUTE stl logic SETTLEMENT at 2017-06-14 16:34:10
+# self.ask_price=140.908
+# self.bid_price=140.886
+# self.log_max_price=140.897
+# self.log_min_price=140.24349999999998
+# self.stl_logic=none
+# STL_PRICE=140.897
+# PROFIT=0.5219999999999914
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-15 03:40:00
+# trade_flag=buy
+# ORDER_PRICE=139.82799999999997
+# predict_value1d_before=139.52911061768233
+# predict_value1d=140.2367327157855
+# predict_value=140.40658666792513
+# EXECUTE stl logic SETTLEMENT at 2017-06-15 16:12:10
+# self.ask_price=139.366
+# self.bid_price=139.336
+# self.log_max_price=139.99
+# self.log_min_price=139.351
+# self.stl_logic=none
+# STL_PRICE=139.351
+# PROFIT=-0.5069999999999766
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-16 08:25:00
+# trade_flag=buy
+# ORDER_PRICE=141.463
+# predict_value1d_before=139.7786269542873
+# predict_value1d=141.13771177291872
+# predict_value=141.6748183655739
+# EXECUTE stl logic SETTLEMENT at 2017-06-16 10:57:50
+# self.ask_price=142.009
+# self.bid_price=141.983
+# self.log_max_price=141.99599999999998
+# self.log_min_price=141.4185
+# self.stl_logic=none
+# STL_PRICE=141.99599999999998
+# PROFIT=0.5020000000000095
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-19 08:55:00
+# trade_flag=buy
+# ORDER_PRICE=141.7425
+# predict_value1d_before=139.7786269542873
+# predict_value1d=141.26717206537722
+# predict_value=141.7800430741459
+# EXECUTE stl logic SETTLEMENT at 2017-06-19 16:31:10
+# self.ask_price=142.325
+# self.bid_price=142.294
+# self.log_max_price=142.3095
+# self.log_min_price=141.651
+# self.stl_logic=none
+# STL_PRICE=142.3095
+# PROFIT=0.5360000000000014
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-22 18:05:00
+# trade_flag=buy
+# ORDER_PRICE=140.7305
+# predict_value1d_before=140.4817700636387
+# predict_value1d=140.76525068759918
+# predict_value=140.80360525198282
+# EXECUTE stl logic SETTLEMENT at 2017-06-23 09:44:40
+# self.ask_price=141.267
+# self.bid_price=141.244
+# self.log_max_price=141.25549999999998
+# self.log_min_price=140.5655
+# self.stl_logic=none
+# STL_PRICE=141.25549999999998
+# PROFIT=0.5010000000000048
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-27 01:45:00
+# trade_flag=buy
+# ORDER_PRICE=142.001
+# predict_value1d_before=140.76525068759918
+# predict_value1d=141.15896611347796
+# predict_value=142.14515114688874
+# EXECUTE stl logic SETTLEMENT at 2017-06-27 10:37:30
+# self.ask_price=142.546
+# self.bid_price=142.522
+# self.log_max_price=142.534
+# self.log_min_price=141.97
+# self.stl_logic=none
+# STL_PRICE=142.534
+# PROFIT=0.5099999999999909
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-28 13:25:00
+# trade_flag=buy
+# ORDER_PRICE=143.7645
+# predict_value1d_before=141.9042115098834
+# predict_value1d=143.1553748476505
+# predict_value=143.81615065515038
+# EXECUTE stl logic SETTLEMENT at 2017-06-28 17:20:30
+# self.ask_price=143.306
+# self.bid_price=143.277
+# self.log_max_price=144.003
+# self.log_min_price=143.29149999999998
+# self.stl_logic=none
+# STL_PRICE=143.29149999999998
+# PROFIT=-0.5010000000000048
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-29 07:10:00
+# trade_flag=buy
+# ORDER_PRICE=145.1995
+# predict_value1d_before=141.9042115098834
+# predict_value1d=143.1553748476505
+# predict_value=145.23494762682915
+# EXECUTE stl logic SETTLEMENT at 2017-06-29 16:01:00
+# self.ask_price=145.794
+# self.bid_price=145.765
+# self.log_max_price=145.77949999999998
+# self.log_min_price=145.1735
+# self.stl_logic=none
+# STL_PRICE=145.77949999999998
+# PROFIT=0.5449999999999875
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-30 05:05:00
+# trade_flag=buy
+# ORDER_PRICE=145.772
+# predict_value1d_before=143.1553748476505
+# predict_value1d=144.11610148561
+# predict_value=146.3347567357123
+# EXECUTE stl logic SETTLEMENT at 2017-06-30 18:00:10
+# self.ask_price=145.313
+# self.bid_price=145.27
+# self.log_max_price=145.9235
+# self.log_min_price=145.29149999999998
+# self.stl_logic=none
+# STL_PRICE=145.29149999999998
+# PROFIT=-0.5139999999999816
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-06-30 21:35:00
+# trade_flag=buy
+# ORDER_PRICE=145.49200000000002
+# predict_value1d_before=144.11610148561
+# predict_value1d=144.6547933986187
+# predict_value=145.99881050133706
+# EXECUTE stl logic SETTLEMENT at 2017-07-01 00:59:40
+# self.ask_price=146.051
+# self.bid_price=146.023
+# self.log_max_price=146.03699999999998
+# self.log_min_price=145.262
+# self.stl_logic=none
+# STL_PRICE=146.03699999999998
+# PROFIT=0.5180000000000007
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-03 12:50:00
+# trade_flag=buy
+# ORDER_PRICE=146.2455
+# predict_value1d_before=144.11610148561
+# predict_value1d=145.00360395622252
+# predict_value=146.30866370546818
+# EXECUTE stl logic SETTLEMENT at 2017-07-03 16:40:10
+# self.ask_price=146.788
+# self.bid_price=146.762
+# self.log_max_price=146.775
+# self.log_min_price=146.12650000000002
+# self.stl_logic=none
+# STL_PRICE=146.775
+# PROFIT=0.5020000000000095
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-04 04:55:00
+# trade_flag=buy
+# ORDER_PRICE=146.787
+# predict_value1d_before=144.11610148561
+# predict_value1d=145.00360395622252
+# predict_value=146.8087021957636
+# EXECUTE stl logic SETTLEMENT at 2017-07-04 14:18:50
+# self.ask_price=146.325
+# self.bid_price=146.297
+# self.log_max_price=146.8775
+# self.log_min_price=146.31099999999998
+# self.stl_logic=none
+# STL_PRICE=146.31099999999998
+# PROFIT=-0.5020000000000095
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-05 02:05:00
+# trade_flag=buy
+# ORDER_PRICE=146.356
+# predict_value1d_before=145.00360395622252
+# predict_value1d=145.21840336799622
+# predict_value=146.44188863271475
+# EXECUTE all over the world SETTLEMENT at 2017-07-05 21:20:00
+# self.ask_price=146.603
+# self.bid_price=146.575
+# self.log_max_price=146.79149999999998
+# self.log_min_price=146.027
+# self.stl_logic=allovertheworld settlement
+# STL_PRICE=146.589
+# PROFIT=0.2039999999999793
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-05 21:20:00
+# trade_flag=sell
+# ORDER_PRICE=146.589
+# predict_value1d_before=145.21840336799622
+# predict_value1d=144.98070638656617
+# predict_value=146.56418855404854
+# EXECUTE all over the world SETTLEMENT at 2017-07-06 14:20:00
+# self.ask_price=146.37
+# self.bid_price=146.34
+# self.log_max_price=146.7645
+# self.log_min_price=146.0615
+# self.stl_logic=allovertheworld settlement
+# STL_PRICE=146.35500000000002
+# PROFIT=0.20499999999998408
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-06 14:20:00
+# trade_flag=buy
+# ORDER_PRICE=146.35500000000002
+# predict_value1d_before=144.98070638656617
+# predict_value1d=145.16622796058655
+# predict_value=146.45345837834478
+# EXECUTE stl logic SETTLEMENT at 2017-07-06 18:53:50
+# self.ask_price=147.269
+# self.bid_price=147.225
+# self.log_max_price=147.247
+# self.log_min_price=146.3535
+# self.stl_logic=none
+# STL_PRICE=147.247
+# PROFIT=0.8549999999999898
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-07 09:05:00
+# trade_flag=buy
+# ORDER_PRICE=146.8135
+# predict_value1d_before=145.16622796058655
+# predict_value1d=145.4161136893034
+# predict_value=146.83653392881155
+# EXECUTE stl logic SETTLEMENT at 2017-07-07 10:46:40
+# self.ask_price=147.368
+# self.bid_price=147.34
+# self.log_max_price=147.35399999999998
+# self.log_min_price=146.77100000000002
+# self.stl_logic=none
+# STL_PRICE=147.35399999999998
+# PROFIT=0.5120000000000005
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-07 21:40:00
+# trade_flag=buy
+# ORDER_PRICE=146.88549999999998
+# predict_value1d_before=145.16622796058655
+# predict_value1d=145.4161136893034
+# predict_value=147.05022161144018
 # weekend stl logic
-# EXECUTE stl logic SETTLEMENT at 2018-09-15 05:00:00
-# self.ask_price=146.32
-# self.bid_price=146.29
-# self.log_max_price=146.728
-# self.log_min_price=146.265
+# EXECUTE stl logic SETTLEMENT at 2017-07-08 05:00:00
+# self.ask_price=146.803
+# self.bid_price=146.774
+# self.log_max_price=147.06900000000002
+# self.log_min_price=146.4975
 # self.stl_logic=none
-# STL_PRICE=146.305
-# PROFIT=-0.3020000000000209
+# STL_PRICE=146.7885
+# PROFIT=-0.12899999999999068
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-10 09:40:00
+# trade_flag=buy
+# ORDER_PRICE=147.01749999999998
+# predict_value1d_before=145.16622796058655
+# predict_value1d=145.30673314034937
+# predict_value=147.1290568844974
+# EXECUTE stl logic SETTLEMENT at 2017-07-11 16:39:10
+# self.ask_price=147.581
+# self.bid_price=147.556
+# self.log_max_price=147.5685
+# self.log_min_price=146.7665
+# self.stl_logic=none
+# STL_PRICE=147.5685
+# PROFIT=0.5250000000000057
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-12 05:45:00
+# trade_flag=buy
+# ORDER_PRICE=146.3595
+# predict_value1d_before=145.30673314034937
+# predict_value1d=145.54712870919704
+# predict_value=146.87306091237068
+# EXECUTE stl logic SETTLEMENT at 2017-07-12 11:20:10
+# self.ask_price=145.886
+# self.bid_price=145.854
+# self.log_max_price=146.451
+# self.log_min_price=145.87
+# self.stl_logic=none
+# STL_PRICE=145.87
+# PROFIT=-0.518999999999977
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-13 04:35:00
+# trade_flag=sell
+# ORDER_PRICE=145.803
+# predict_value1d_before=145.54712870919704
+# predict_value1d=145.22343239581585
+# predict_value=145.76822181327643
+# EXECUTE stl logic SETTLEMENT at 2017-07-13 09:04:30
+# self.ask_price=146.327
+# self.bid_price=146.29
+# self.log_max_price=146.30849999999998
+# self.log_min_price=145.75099999999998
+# self.stl_logic=none
+# STL_PRICE=146.30849999999998
+# PROFIT=-0.5349999999999966
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-13 19:00:00
+# trade_flag=sell
+# ORDER_PRICE=146.03
+# predict_value1d_before=145.22343239581585
+# predict_value1d=145.1358993345499
+# predict_value=146.01039714938403
+# EXECUTE stl logic SETTLEMENT at 2017-07-13 21:26:30
+# self.ask_price=146.52
+# self.bid_price=146.494
+# self.log_max_price=146.507
+# self.log_min_price=145.8675
+# self.stl_logic=none
+# STL_PRICE=146.507
+# PROFIT=-0.5030000000000143
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-14 00:50:00
+# trade_flag=sell
+# ORDER_PRICE=146.4675
+# predict_value1d_before=145.22343239581585
+# predict_value1d=145.1358993345499
+# predict_value=146.17559684395792
+# EXECUTE stl logic SETTLEMENT at 2017-07-14 10:00:50
+# self.ask_price=146.965
+# self.bid_price=146.927
+# self.log_max_price=146.946
+# self.log_min_price=146.3945
+# self.stl_logic=none
+# STL_PRICE=146.946
+# PROFIT=-0.5109999999999957
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-14 20:15:00
+# trade_flag=buy
+# ORDER_PRICE=146.935
+# predict_value1d_before=145.1358993345499
+# predict_value1d=145.7061917822361
+# predict_value=146.95993156433104
+# EXECUTE stl logic SETTLEMENT at 2017-07-14 21:30:20
+# self.ask_price=146.329
+# self.bid_price=146.217
+# self.log_max_price=146.935
+# self.log_min_price=146.27300000000002
+# self.stl_logic=none
+# STL_PRICE=146.27300000000002
+# PROFIT=-0.7309999999999945
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-17 21:45:00
+# trade_flag=buy
+# ORDER_PRICE=147.049
+# predict_value1d_before=145.1358993345499
+# predict_value1d=146.2785631093979
+# predict_value=147.3516932439804
+# EXECUTE stl logic SETTLEMENT at 2017-07-18 17:30:20
+# self.ask_price=146.534
+# self.bid_price=146.483
+# self.log_max_price=147.506
+# self.log_min_price=146.5085
+# self.stl_logic=none
+# STL_PRICE=146.5085
+# PROFIT=-0.5790000000000077
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-20 08:35:00
+# trade_flag=sell
+# ORDER_PRICE=145.647
+# predict_value1d_before=145.4631678953171
+# predict_value1d=145.1451859405041
+# predict_value=145.58469505760073
+# EXECUTE stl logic SETTLEMENT at 2017-07-20 14:57:20
+# self.ask_price=146.142
+# self.bid_price=146.113
+# self.log_max_price=146.1275
+# self.log_min_price=145.572
+# self.stl_logic=none
+# STL_PRICE=146.1275
+# PROFIT=-0.5109999999999957
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-21 15:45:00
+# trade_flag=sell
+# ORDER_PRICE=145.09449999999998
+# predict_value1d_before=145.1451859405041
+# predict_value1d=144.5567652242184
+# predict_value=144.98735968394578
+# EXECUTE stl logic SETTLEMENT at 2017-07-21 22:35:00
+# self.ask_price=144.575
+# self.bid_price=144.551
+# self.log_max_price=145.314
+# self.log_min_price=144.563
+# self.stl_logic=none
+# STL_PRICE=144.563
+# PROFIT=0.5080000000000098
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-24 08:40:00
+# trade_flag=sell
+# ORDER_PRICE=144.36
+# predict_value1d_before=145.1451859405041
+# predict_value1d=143.8834158308208
+# predict_value=144.28674244768172
+# EXECUTE stl logic SETTLEMENT at 2017-07-24 23:57:10
+# self.ask_price=144.855
+# self.bid_price=144.835
+# self.log_max_price=144.845
+# self.log_min_price=144.042
+# self.stl_logic=none
+# STL_PRICE=144.845
+# PROFIT=-0.5079999999999814
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-25 05:05:00
+# trade_flag=sell
+# ORDER_PRICE=144.7475
+# predict_value1d_before=145.1451859405041
+# predict_value1d=143.8834158308208
+# predict_value=144.47141943390668
+# EXECUTE stl logic SETTLEMENT at 2017-07-25 20:24:30
+# self.ask_price=145.283
+# self.bid_price=145.26
+# self.log_max_price=145.2715
+# self.log_min_price=144.473
+# self.stl_logic=none
+# STL_PRICE=145.2715
+# PROFIT=-0.546999999999997
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-07-26 03:05:00
+# trade_flag=buy
+# ORDER_PRICE=145.643
+# predict_value1d_before=143.8834158308208
+# predict_value1d=144.5710081196725
+# predict_value=145.83510757827761
+# EXECUTE stl logic SETTLEMENT at 2017-07-26 23:58:20
+# self.ask_price=146.192
+# self.bid_price=146.171
+# self.log_max_price=146.1815
+# self.log_min_price=145.523
+# self.stl_logic=none
+# STL_PRICE=146.1815
+# PROFIT=0.5159999999999911
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-01 13:35:00
+# trade_flag=buy
+# ORDER_PRICE=145.67399999999998
+# predict_value1d_before=145.08837273412942
+# predict_value1d=145.31706909763813
+# predict_value=145.71513353237512
+# EXECUTE stl logic SETTLEMENT at 2017-08-02 13:00:50
+# self.ask_price=146.24
+# self.bid_price=146.206
+# self.log_max_price=146.223
+# self.log_min_price=145.4615
+# self.stl_logic=none
+# STL_PRICE=146.223
+# PROFIT=0.5180000000000007
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-03 02:50:00
+# trade_flag=buy
+# ORDER_PRICE=146.26749999999998
+# predict_value1d_before=145.31706909763813
+# predict_value1d=145.32433334112167
+# predict_value=146.2837419614196
+# EXECUTE stl logic SETTLEMENT at 2017-08-03 20:00:30
+# self.ask_price=145.771
+# self.bid_price=145.688
+# self.log_max_price=146.78949999999998
+# self.log_min_price=145.72949999999997
+# self.stl_logic=none
+# STL_PRICE=145.72949999999997
+# PROFIT=-0.5900000000000034
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-07 14:35:00
+# trade_flag=sell
+# ORDER_PRICE=144.52100000000002
+# predict_value1d_before=145.97672724080087
+# predict_value1d=144.44735763645173
+# predict_value=144.49602848386763
+# EXECUTE stl logic SETTLEMENT at 2017-08-08 19:48:10
+# self.ask_price=143.975
+# self.bid_price=143.947
+# self.log_max_price=144.715
+# self.log_min_price=143.961
+# self.stl_logic=none
+# STL_PRICE=143.961
+# PROFIT=0.5320000000000107
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-09 20:20:00
+# trade_flag=sell
+# ORDER_PRICE=142.69549999999998
+# predict_value1d_before=144.4429337436855
+# predict_value1d=143.48946883642674
+# predict_value=142.67074008253962
+# EXECUTE stl logic SETTLEMENT at 2017-08-10 05:57:10
+# self.ask_price=143.187
+# self.bid_price=143.137
+# self.log_max_price=143.163
+# self.log_min_price=142.2905
+# self.stl_logic=none
+# STL_PRICE=143.162
+# PROFIT=-0.5020000000000095
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-11 17:05:00
+# trade_flag=sell
+# ORDER_PRICE=141.56650000000002
+# predict_value1d_before=143.29596172088384
+# predict_value1d=141.96715424466134
+# predict_value=141.536215436697
+# weekend stl logic
+# EXECUTE stl logic SETTLEMENT at 2017-08-12 05:00:00
+# self.ask_price=142.012
+# self.bid_price=141.98
+# self.log_max_price=142.0165
+# self.log_min_price=141.26350000000002
+# self.stl_logic=none
+# STL_PRICE=141.99599999999998
+# PROFIT=-0.45599999999998886
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-15 21:15:00
+# trade_flag=buy
+# ORDER_PRICE=142.261
+# predict_value1d_before=142.15946485224367
+# predict_value1d=142.2337173551023
+# predict_value=142.286538984254
+# EXECUTE stl logic SETTLEMENT at 2017-08-16 16:30:00
+# self.ask_price=142.804
+# self.bid_price=142.778
+# self.log_max_price=142.791
+# self.log_min_price=141.977
+# self.stl_logic=none
+# STL_PRICE=142.791
+# PROFIT=0.5049999999999955
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-17 00:05:00
+# trade_flag=buy
+# ORDER_PRICE=142.60950000000003
+# predict_value1d_before=142.2337173551023
+# predict_value1d=142.44052006873488
+# predict_value=142.90179020142554
+# EXECUTE stl logic SETTLEMENT at 2017-08-17 02:49:30
+# self.ask_price=142.141
+# self.bid_price=142.115
+# self.log_max_price=142.60950000000003
+# self.log_min_price=142.128
+# self.stl_logic=none
+# STL_PRICE=142.128
+# PROFIT=-0.507000000000005
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-21 09:15:00
+# trade_flag=sell
+# ORDER_PRICE=140.66
+# predict_value1d_before=142.18969976723196
+# predict_value1d=140.81851644375922
+# predict_value=140.63657552808525
+# EXECUTE stl logic SETTLEMENT at 2017-08-21 16:03:20
+# self.ask_price=140.142
+# self.bid_price=140.119
+# self.log_max_price=140.8085
+# self.log_min_price=140.13049999999998
+# self.stl_logic=none
+# STL_PRICE=140.13049999999998
+# PROFIT=0.5039999999999907
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-22 08:45:00
+# trade_flag=sell
+# ORDER_PRICE=140.46699999999998
+# predict_value1d_before=140.81851644375922
+# predict_value1d=140.80331260579823
+# predict_value=140.42084942805766
+# EXECUTE stl logic SETTLEMENT at 2017-08-22 10:01:20
+# self.ask_price=140.957
+# self.bid_price=140.929
+# self.log_max_price=140.94299999999998
+# self.log_min_price=140.464
+# self.stl_logic=none
+# STL_PRICE=140.94299999999998
+# PROFIT=-0.5049999999999955
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-22 14:15:00
+# trade_flag=sell
+# ORDER_PRICE=140.73250000000002
+# predict_value1d_before=140.81851644375922
+# predict_value1d=140.80331260579823
+# predict_value=140.24462683328986
+# EXECUTE stl logic SETTLEMENT at 2017-08-22 19:15:50
+# self.ask_price=140.21
+# self.bid_price=140.183
+# self.log_max_price=140.899
+# self.log_min_price=140.19650000000001
+# self.stl_logic=none
+# STL_PRICE=140.19650000000001
+# PROFIT=0.5099999999999909
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-23 12:05:00
+# trade_flag=sell
+# ORDER_PRICE=140.38600000000002
+# predict_value1d_before=140.80331260579823
+# predict_value1d=140.69757609310744
+# predict_value=140.3586949852407
+# EXECUTE stl logic SETTLEMENT at 2017-08-23 20:45:00
+# self.ask_price=139.854
+# self.bid_price=139.829
+# self.log_max_price=140.5285
+# self.log_min_price=139.8415
+# self.stl_logic=none
+# STL_PRICE=139.8415
+# PROFIT=0.5169999999999959
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-24 22:30:00
+# trade_flag=sell
+# ORDER_PRICE=140.14249999999998
+# predict_value1d_before=140.69757609310744
+# predict_value1d=139.67088507765533
+# predict_value=139.50839844267068
+# EXECUTE stl logic SETTLEMENT at 2017-08-25 19:03:30
+# self.ask_price=140.638
+# self.bid_price=140.615
+# self.log_max_price=140.62650000000002
+# self.log_min_price=139.8225
+# self.stl_logic=none
+# STL_PRICE=140.62650000000002
+# PROFIT=-0.507000000000005
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-28 14:45:00
+# trade_flag=buy
+# ORDER_PRICE=140.6845
+# predict_value1d_before=139.67088507765533
+# predict_value1d=140.78760904049128
+# predict_value=140.7869722495079
+# EXECUTE stl logic SETTLEMENT at 2017-08-28 21:35:00
+# self.ask_price=141.228
+# self.bid_price=141.202
+# self.log_max_price=141.215
+# self.log_min_price=140.5245
+# self.stl_logic=none
+# STL_PRICE=141.215
+# PROFIT=0.5039999999999907
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-29 14:15:00
+# trade_flag=buy
+# ORDER_PRICE=140.9135
+# predict_value1d_before=140.78760904049128
+# predict_value1d=141.13649595969915
+# predict_value=141.25854142045972
+# EXECUTE stl logic SETTLEMENT at 2017-08-29 18:28:20
+# self.ask_price=140.445
+# self.bid_price=140.415
+# self.log_max_price=141.0925
+# self.log_min_price=140.43
+# self.stl_logic=none
+# STL_PRICE=140.43
+# PROFIT=-0.5120000000000005
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-08-30 00:05:00
+# trade_flag=buy
+# ORDER_PRICE=140.8875
+# predict_value1d_before=140.78760904049128
+# predict_value1d=141.13649595969915
+# predict_value=141.09841965341568
+# EXECUTE stl logic SETTLEMENT at 2017-08-30 03:10:30
+# self.ask_price=141.452
+# self.bid_price=141.426
+# self.log_max_price=141.439
+# self.log_min_price=140.7905
+# self.stl_logic=none
+# STL_PRICE=141.439
+# PROFIT=0.525999999999982
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-09-01 02:55:00
+# trade_flag=buy
+# ORDER_PRICE=142.12900000000002
+# predict_value1d_before=141.5848486135304
+# predict_value1d=142.2418766822815
+# predict_value=142.25810098797083
+# EXECUTE all over the world SETTLEMENT at 2017-09-01 11:15:00
+# self.ask_price=142.402
+# self.bid_price=142.375
+# self.log_max_price=142.56900000000002
+# self.log_min_price=142.053
+# self.stl_logic=allovertheworld settlement
+# STL_PRICE=142.3885
+# PROFIT=0.23199999999999932
+#######################################################
+# in  by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld by allovertheworld Algorithm
+# EXECUTE ORDER at 2017-09-01 11:15:00
+# trade_flag=sell
+# ORDER_PRICE=142.3885
+# predict_value1d_before=142.2418766822815
+# predict_value1d=141.97741751527786
+# predict_value=142.06520866671204

@@ -11,7 +11,7 @@ sys.path.append(current_path + "/obj")
 sys.path.append(current_path + "/lib")
 
 from mysql_connector import MysqlConnector
-from oanda_wrapper import OandaWrapper
+from oandapy import oandapy
 from price_obj import PriceObj
 from datetime import datetime, timedelta
 from common import decideMarket, account_init, iso_jp
@@ -43,7 +43,7 @@ if __name__ == "__main__":
             else:
 
                 response = oanda.get_prices(instruments=currency)
-                parsed_prices = response["prices"][0]:
+                parsed_prices = response["prices"][0]
                 iso_time = parsed_prices["time"]
                 insert_time = iso_jp(iso_time)
                 insert_time = insert_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -51,7 +51,7 @@ if __name__ == "__main__":
                 ask_price = parsed_prices["ask"]
                 bid_price = parsed_prices["bid"]
 
-                sql = u"insert into %s_TABLE(ask_price, bid_price, insert_time) values(%s, %s, %s)" % (currency, ask_price, bid_price, insert_time)
+                sql = u"insert into %s_TABLE(ask_price, bid_price, insert_time) values(%s, %s, \'%s\')" % (currency, ask_price, bid_price, insert_time)
                 print(sql)
                 con.insert_sql(sql)
 

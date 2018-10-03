@@ -72,20 +72,19 @@ class LstmAlgo(SuperAlgo):
         self.output_min_price = 0
         self.trade_first_flag = ""
         self.current_path = os.path.abspath(os.path.dirname(__file__))
-        self.learning_model1d = self.load_model(model_filename="lstm_1d.json", weights_filename="lstm_1d.hdf5")
-        self.learning_upper1h = self.load_model(model_filename="lstm_1h_uppersigma.json", weights_filename="lstm_1h_uppersigma.hdf5")
-        self.learning_lower1h = self.load_model(model_filename="lstm_1h_lowersigma.json", weights_filename="lstm_1h_lowersigma.hdf5")
+#        self.learning_model1d = self.load_model(model_filename="lstm_1d.json", weights_filename="lstm_1d.hdf5")
+#        self.learning_upper1h = self.load_model(model_filename="lstm_1h_uppersigma.json", weights_filename="lstm_1h_uppersigma.hdf5")
+#        self.learning_lower1h = self.load_model(model_filename="lstm_1h_lowersigma.json", weights_filename="lstm_1h_lowersigma.hdf5")
+        self.learning_model = self.load_model(model_filename="shortterm_1h.json", weights_filename="shortterm_1h.hdf5")
+        
 
-        self.predict_value1d = predict_value(base_time, self.learning_model1d, window_size=20, table_type="day", output_train_index=1)
-        if base_time.weekday() == 0:
-            before_target_time = base_time - timedelta(days=4)
-            self.predict_value1d_before = predict_value(before_target_time, self.learning_model1d, window_size=20, table_type="day", output_train_index=1)
-        else:
-            before_target_time = base_time - timedelta(days=1)
-            self.predict_value1d_before = predict_value(before_target_time, self.learning_model1d, window_size=20, table_type="day", output_train_index=1)
-
-
-
+#        self.predict_value1d = predict_value(base_time, self.learning_model1d, window_size=20, table_type="day", output_train_index=1)
+#        if base_time.weekday() == 0:
+#            before_target_time = base_time - timedelta(days=4)
+#            self.predict_value1d_before = predict_value(before_target_time, self.learning_model1d, window_size=20, table_type="day", output_train_index=1)
+#        else:
+#            before_target_time = base_time - timedelta(days=1)
+#            self.predict_value1d_before = predict_value(before_target_time, self.learning_model1d, window_size=20, table_type="day", output_train_index=1)
 
     def test_predict(self, base_time):
         print("test predict")
@@ -135,7 +134,7 @@ class LstmAlgo(SuperAlgo):
 
                 else:
 #                    trade_flag = self.decideReverseTrade(trade_flag, current_price, base_time)
-                    if minutes == 0 and seconds < 10:
+                    if minutes % 5 == 0 and seconds < 10:
                         self.test_predict(base_time)
 
             if trade_flag != "pass" and self.order_flag:

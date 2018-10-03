@@ -1,0 +1,4 @@
+learning at 8:00 o'clock to 12:00 price
+1h model window_size 200, output_train_index 4hour
+1d model window_size 20, output_train_index 4hour
+learning span is 2010-03-01 to 2017-04-01

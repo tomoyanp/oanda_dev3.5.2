@@ -75,7 +75,7 @@ class LstmAlgo(SuperAlgo):
 #        self.learning_model1d = self.load_model(model_filename="lstm_1d.json", weights_filename="lstm_1d.hdf5")
 #        self.learning_upper1h = self.load_model(model_filename="lstm_1h_uppersigma.json", weights_filename="lstm_1h_uppersigma.hdf5")
 #        self.learning_lower1h = self.load_model(model_filename="lstm_1h_lowersigma.json", weights_filename="lstm_1h_lowersigma.hdf5")
-        self.learning_model = self.load_model(model_filename="shortterm_1h.json", weights_filename="shortterm_1h.hdf5")
+        self.learning_model = self.load_model(model_filename="eight_oclock_1h.json", weights_filename="eight_oclock_1h.hdf5")
         
 
 #        self.predict_value1d = predict_value(base_time, self.learning_model1d, window_size=20, table_type="day", output_train_index=1)
@@ -87,32 +87,33 @@ class LstmAlgo(SuperAlgo):
 #            self.predict_value1d_before = predict_value(before_target_time, self.learning_model1d, window_size=20, table_type="day", output_train_index=1)
 
     def test_predict(self, base_time):
-        print("test predict")
-        current_price = (self.ask_price + self.bid_price) / 2
+        hour = base_time.hour
+        minutes = base_time.minute
+        second = base_time.second
 
-        predict_value1h = predict_value(base_time, self.learning_model, window_size=20, table_type="1h", output_train_index=1)
+        if hour == 8 and minutes == 0 and seconds < 10:
+            predict_value1h = predict_value(base_time, self.learning_model, window_size=20, table_type="1h", output_train_index=1)
 
-        sql = "select uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, "5m", base_time - timedelta(minutes=5))
-        response = self.mysql_connector.select_sql(sql)
-        uppersigma3_5m = response[0][0]
-        lowersigma3_5m = response[0][1]
+            sql = "select uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, "5m", base_time - timedelta(minutes=5))
+            response = self.mysql_connector.select_sql(sql)
+            uppersigma3_5m = response[0][0]
+            lowersigma3_5m = response[0][1]
 
-        sql = "select uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, "1h", base_time - timedelta(hours=1))
-        response = self.mysql_connector.select_sql(sql)
-        uppersigma3_1h = response[0][0]
-        lowersigma3_1h = response[0][1]
+            sql = "select uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, "1h", base_time - timedelta(hours=1))
+            response = self.mysql_connector.select_sql(sql)
+            uppersigma3_1h = response[0][0]
+            lowersigma3_1h = response[0][1]
 
 
-        output_train_index = 1
-        table_type = "1h"
-        sql = "select ask_price, bid_price, insert_time from %s_TABLE where insert_time >= \'%s\' order by insert_time asc limit 1" % (self.instrument, base_time + timedelta(hours=output_train_index))
-        response = self.mysql_connector.select_sql(sql)
-        right_price = (response[0][0] + response[0][1]) / 2
-        right_time = response[0][2]
+            output_train_index = 4
+            sql = "select ask_price, bid_price, insert_time from %s_TABLE where insert_time >= \'%s\' order by insert_time asc limit 1" % (self.instrument, base_time + timedelta(hours=output_train_index))
+            response = self.mysql_connector.select_sql(sql)
+            right_price = (response[0][0] + response[0][1]) / 2
+            right_time = response[0][2]
 
-        self.result_logger.info("current time, current price, 5m_uppersigma3, 5m_lowersigma3, 1h_uppersigma3, 1h_lowersigma3, 1h predict value, right time, right price")
-        self.result_logger.info("%s, %s, %s, %s, %s, %s, %s, %s, %s" % (base_time, current_price, uppersigma3_5m, lowersigma3_5m, uppersigma3_1h, lowersigma3_1h, predict_value1h, right_time, right_price))
-
+            self.result_logger.info("current time, current price, 5m_uppersigma3, 5m_lowersigma3, 1h_uppersigma3, 1h_lowersigma3, 1h predict value, right time, right price")
+            self.result_logger.info("%s, %s, %s, %s, %s, %s, %s, %s, %s" % (base_time, current_price, uppersigma3_5m, lowersigma3_5m, uppersigma3_1h, lowersigma3_1h, predict_value1h, right_time, right_price))
+        
     # decide trade entry timing
     def decideTrade(self, base_time):
         trade_flag = "pass"
@@ -140,8 +141,7 @@ class LstmAlgo(SuperAlgo):
 
                 else:
 #                    trade_flag = self.decideReverseTrade(trade_flag, current_price, base_time)
-                    if minutes % 5 == 0 and seconds < 10:
-                        self.test_predict(base_time)
+                     self.test_predict(base_time)
 
             if trade_flag != "pass" and self.order_flag:
                 if trade_flag == "buy" and self.order_kind == "buy":

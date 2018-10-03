@@ -174,10 +174,14 @@ def change_to_ptime( time):
     return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
 def decideConditions( table_type, target_time):
+    target_time = target_time - timedelta(minutes=5)
+    target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
+    sql = "select end_price, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, "5m", target_time)
+    response = mysql_connector.select_sql(sql)
+    end_price = response[0][0]
+    lowersigma3 = response[0][1]
     flag = False
-    if target_time.hour == 8 and target_time.minute == 0:
-        print("###########################")
-        print(target_time)
+    if end_price < lowersigma3:
         flag = True
 
     return flag
@@ -213,8 +217,8 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
             hour = target_time.hour
             if decideMarket(target_time):
                 if decideTerm(hour) == term or term == "all":
-                    if decideConditions(table_type, target_time):
-                    #if 1==1:
+                    #if decideConditions(table_type, target_time):
+                    if 1==1:
                         print("term=%s, target_time=%s" % (term, target_time))
                         # 未来日付に変えて、教師データと一緒にまとめて取得
                         tmp_target_time = target_time - timedelta(hours=1)
@@ -288,4 +292,4 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 
 if __name__ == "__main__":
-    learning_model1h = train_save_model(window_size=200, output_train_index=4, table_type="1h", figure_filename="eight_oclock.png", model_filename="eight_oclock_1h.json", weights_filename="eight_oclock_1h.hdf5", start_time="2010-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")
+    learning_model1h = train_save_model(window_size=200, output_train_index=8, table_type="1h", figure_filename="figure_1h_endprice_only.png", model_filename="longterm_1h.json", weights_filename="longterm_1h.hdf5", start_time="2010-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")

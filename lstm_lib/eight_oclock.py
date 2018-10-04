@@ -288,4 +288,4 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 
 if __name__ == "__main__":
-    learning_model1h = train_save_model(window_size=200, output_train_index=4, table_type="1h", figure_filename="eight_oclock.png", model_filename="eight_oclock_1h.json", weights_filename="eight_oclock_1h.hdf5", start_time="2010-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")
+    learning_model1h = train_save_model(window_size=24, output_train_index=4, table_type="1h", figure_filename="eight_oclock.png", model_filename="eight_oclock_1h_windowsize24.json", weights_filename="eight_oclock_1h_windowsize24.hdf5", start_time="2010-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")

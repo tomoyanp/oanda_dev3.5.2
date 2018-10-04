@@ -76,6 +76,7 @@ class LstmAlgo(SuperAlgo):
 #        self.learning_upper1h = self.load_model(model_filename="lstm_1h_uppersigma.json", weights_filename="lstm_1h_uppersigma.hdf5")
 #        self.learning_lower1h = self.load_model(model_filename="lstm_1h_lowersigma.json", weights_filename="lstm_1h_lowersigma.hdf5")
         self.learning_model_1h = self.load_model(model_filename="eight_oclock_1h.json", weights_filename="eight_oclock_1h.hdf5")
+        self.learning_model_1h_short = self.load_model(model_filename="eight_oclock_1h_windowsize24.json", weights_filename="eight_oclock_1h_windowsize24.hdf5")
         self.learning_model_1d = self.load_model(model_filename="eight_oclock_1d.json", weights_filename="eight_oclock_1d.hdf5")
         
 
@@ -90,10 +91,12 @@ class LstmAlgo(SuperAlgo):
     def test_predict(self, base_time):
         hour = base_time.hour
         minutes = base_time.minute
-        second = base_time.second
+        seconds = base_time.second
 
         if hour == 8 and minutes == 0 and seconds < 10:
+            current_price = (self.ask_price + self.bid_price) / 2
             predict_value1h = predict_value(base_time, self.learning_model_1h, window_size=200, table_type="1h", output_train_index=4)
+            predict_value1h_short = predict_value(base_time, self.learning_model_1h_short, window_size=24, table_type="1h", output_train_index=4)
             predict_value1d = predict_value(base_time, self.learning_model_1d, window_size=20, table_type="day", output_train_index=4)
 
             sql = "select uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, "5m", base_time - timedelta(minutes=5))
@@ -113,8 +116,8 @@ class LstmAlgo(SuperAlgo):
             right_price = (response[0][0] + response[0][1]) / 2
             right_time = response[0][2]
 
-            self.result_logger.info("current time, current price, 5m_uppersigma3, 5m_lowersigma3, 1h_uppersigma3, 1h_lowersigma3, 1h predict value 1h, predict value 1d, right time, right price")
-            self.result_logger.info("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s" % (base_time, current_price, uppersigma3_5m, lowersigma3_5m, uppersigma3_1h, lowersigma3_1h, predict_value1h, predict_value1d, right_time, right_price))
+            self.result_logger.info("current time, current price, 5m_uppersigma3, 5m_lowersigma3, 1h_uppersigma3, 1h_lowersigma3, 1h predict value short, 1h predict value long, predict value 1d, right time, right price")
+            self.result_logger.info("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s" % (base_time, current_price, uppersigma3_5m, lowersigma3_5m, uppersigma3_1h, lowersigma3_1h, predict_value1h_short, predict_value1h, predict_value1d, right_time, right_price))
         
     # decide trade entry timing
     def decideTrade(self, base_time):

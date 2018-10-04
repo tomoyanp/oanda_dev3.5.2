@@ -42,6 +42,68 @@ instrument = sys.argv[0]
 instrument = "GBP_JPY"
 mysql_connector = MysqlConnector()
 
+def get_original_dataset_1h(target_time, table_type, span, direct):
+    target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    if direct == "ASC" or direct == "asc":
+        train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time %s limit %s" % (instrument, "1h", target_time, direct, span)
+    else:
+        train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time %s limit %s" % (instrument, table_type, target_time, direct, span)
+
+    response = mysql_connector.select_sql(train_original_sql)
+
+    print("#### sql ####")
+    print(train_original_sql)
+    print(target_time)
+    end_price_list = []
+    sma20_list = []
+    sma40_list = []
+    sma80_list = []
+    sma100_list = []
+    insert_time_list = []
+    uppersigma3_list = []
+    lowersigma3_list = []
+
+    for res in response:
+        end_price_list.append(res[0])
+        sma20_list.append(res[1])
+        sma40_list.append(res[2])
+        sma80_list.append(res[3])
+        sma100_list.append(res[4])
+        insert_time_list.append(res[5])
+        uppersigma3_list.append(res[6])
+        lowersigma3_list.append(res[7])
+
+    if direct == "DESC" or direct == "desc":
+        end_price_list.reverse()
+        sma20_list.reverse()
+        sma40_list.reverse()
+        sma80_list.reverse()
+        sma100_list.reverse()
+        insert_time_list.reverse()
+        uppersigma3_list.reverse()
+        lowersigma3_list.reverse()
+
+
+    tmp_original_dataset = {"end_price": end_price_list,
+                            "sma20": sma20_list,
+                            "sma40": sma40_list,
+                            "sma80": sma80_list,
+                            "uppersigma3": uppersigma3_list,
+                            "lowersigma3": lowersigma3_list,
+                            "insert_time": insert_time_list}
+
+
+
+    tmp_dataframe = pd.DataFrame(tmp_original_dataset)
+
+    print(tmp_dataframe["insert_time"])
+
+    return tmp_dataframe
+
+
+
+
 def get_original_dataset(target_time, table_type, span, direct):
     daily_target_time = target_time - timedelta(days=1)
     target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -219,7 +281,8 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                         # 未来日付に変えて、教師データと一緒にまとめて取得
                         tmp_target_time = target_time - timedelta(hours=1)
                         tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
-                        tmp_output_dataframe = get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
+                        #tmp_output_dataframe = get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
+                        tmp_output_dataframe = get_original_dataset_1h(target_time, table_type, span=output_train_index, direct="ASC")
     
                         tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
                         tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
@@ -288,4 +351,4 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 
 if __name__ == "__main__":
-    learning_model1h = train_save_model(window_size=24, output_train_index=4, table_type="1h", figure_filename="eight_oclock.png", model_filename="eight_oclock_1h_windowsize24.json", weights_filename="eight_oclock_1h_windowsize24.hdf5", start_time="2010-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")
+    learning_model1h = train_save_model(window_size=20, output_train_index=4, table_type="day", figure_filename="eight_oclock.png", model_filename="eight_oclock_1d.json", weights_filename="eight_oclock_1d.hdf5", start_time="2010-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")

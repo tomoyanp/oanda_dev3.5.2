@@ -7,6 +7,13 @@ import numpy as np
 import logging
 import pytz
 
+def jp_utc(local_time):
+    date = None
+    utc = pytz.utc
+    date = utc.normalize(local_time.astimezone(utc))
+
+    return date
+ 
 
 def iso_jp(iso):
     date = None

@@ -39,7 +39,25 @@ def iso_jp(iso):
         except ValueError:
             pass
     return date
+
+def jp_utc(local_time):
+    date = None
+    utc = pytz.utc
+    date = utc.normalize(local_time.astimezone(utc))
+
+    return date
+
+
+# 1分前の値を取得しないと確定値ではない
+### memomemo
+#{'candles': [{'time': '2018-10-04T15:30:00.000000Z', 'lowAsk': 148.225, 'openBid': 148.223, 'closeAsk': 148.314, 'closeBid': 148.286, 'volume': 110, 'complete': True, 'openAsk': 148.247, 'highAsk': 148.317, 'lowBid': 148.199, 'highBid': 148.289}], 'instrument': 'GBP_JPY', 'granularity': 'M1'}5
  
+test_time = "2018-10-05 01:25:00"
+print(test_time)
+test_time = datetime.strptime(test_time, "%Y-%m-%d %H:%M:%S")
+test_time = test_time - timedelta(hours=9)
+test_time = test_time.strftime("%Y-%m-%dT%H:%M:%S")
+print(test_time)
 
 # 通貨
 instrument = "GBP_JPY"
@@ -48,26 +66,26 @@ oanda = oandapy.API(environment=env, access_token=token)
 #response = oanda.get_account(account_id)
 
 #response = oanda.get_transaction_history(account_id)
-#response = oanda.get_history(
-#    instrument="GBP_JPY",
-#    start="2018-01-02T10:00:00",
-#    granularity="S5",
-#    candleFormat="midpoint"
-#)
+response = oanda.get_history(
+    instrument="GBP_JPY",
+    start=test_time,
+    granularity="M1",
+    count=1
+)
 
-#print("get_history")
-#print(response)
 
-response = oanda.get_prices(instruments="GBP_JPY")
-
-for res in response["prices"]:
-    iso_time = res["time"]
-    insert_time = iso_jp(iso_time)
-    insert_time = insert_time.strftime("%Y-%m-%d %H:%M:%S")
-    print(insert_time)
-
-print("current_price")
 print(response)
+print(iso_jp(response["candles"][0]["time"]))
+#response = oanda.get_prices(instruments="GBP_JPY")
+#
+#for res in response["prices"]:
+#    iso_time = res["time"]
+#    insert_time = iso_jp(iso_time)
+#    insert_time = insert_time.strftime("%Y-%m-%d %H:%M:%S")
+#    print(insert_time)
+#
+#print("current_price")
+#print(response)
 
 #time.sleep(1)
 #

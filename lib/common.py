@@ -8,11 +8,14 @@ import logging
 import pytz
 
 def jp_utc(local_time):
-    date = None
-    utc = pytz.utc
-    date = utc.normalize(local_time.astimezone(utc))
+#    local_time = pytz.utc.localize(local_time).astimezone(pytz.timezone("Asia/Tokyo"))
+#    print(local_time)
+#    utc = pytz.utc
+#    date = utc.normalize(local_time.astimezone(utc))
+    local_time = datetime.strptime(local_time, "%Y-%m-%d %H:%M:%S")
+    utc_time = local_time - timedelta(hours=9)
 
-    return date
+    return utc_time
  
 
 def iso_jp(iso):

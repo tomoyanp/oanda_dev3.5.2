@@ -55,6 +55,12 @@ def insert_table(base_time, currency, con, table_type):
             granularity = "H5"
             start_time = base_time - timedelta(hours=1)
             flag = True
+    elif table_type == "1h":
+        if hours == 7 and minutes == 0 and seconds < 10:
+            granularity = "D1"
+            start_time = base_time - timedelta(days=1)
+            flag = True
+
 
     start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
     start_time = jp_utc(start_time)
@@ -89,13 +95,17 @@ def insert_table(base_time, currency, con, table_type):
 
     if table_type == "1m":
         if seconds < 10:
-            insert_time = insert_time + timedelta(minutes=2)
+            insert_time = insert_time + timedelta(minutes=1)
     elif table_type == "5m":
         if minutes % 5 == 0 and seconds < 10:
-            insert_time = insert_time + timedelta(minutes=10)
+            insert_time = insert_time + timedelta(minutes=5)
     elif table_type == "1h":
         if minutes == 0 and seconds < 10:
-            insert_time = insert_time + timedelta(hours=2)
+            insert_time = insert_time + timedelta(hours=1)
+    elif table_type == "1h":
+        if hours == 7 and minutes == 0 and seconds < 10:
+            insert_time = insert_time + timedelta(days=1)
+
 
     return insert_time
 
@@ -106,12 +116,12 @@ if __name__ == "__main__":
     table_type = args[2].strip()
     mode = args[3].strip()
     con = MysqlConnector()
-    polling_time = 5
+    polling_time = 10
 
     if mode == "test":
-        base_time = "2016-01-01 00:00:00"
+        base_time = "2008-01-01 00:00:00"
         base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
-        end_time = "2018-09-24 00:00:00"
+        end_time = "2018-10-01 00:00:00"
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
     else:
         base_time = datetime.now()
@@ -145,4 +155,5 @@ if __name__ == "__main__":
                 break
 
         except Exception as e:
+            base_time = base_time + timedelta(seconds=polling_time)
             print(e.args)

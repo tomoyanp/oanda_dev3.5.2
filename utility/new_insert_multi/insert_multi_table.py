@@ -4,7 +4,7 @@
 import sys
 import os
 current_path = os.path.abspath(os.path.dirname(__file__))
-current_path = current_path + "/.."
+current_path = current_path + "/../.."
 sys.path.append(current_path)
 sys.path.append(current_path + "/trade_algorithm")
 sys.path.append(current_path + "/obj")
@@ -12,6 +12,7 @@ sys.path.append(current_path + "/lib")
 
 from mysql_connector import MysqlConnector
 from oanda_wrapper import OandaWrapper
+from oandapy import oandapy
 from price_obj import PriceObj
 from datetime import datetime, timedelta
 from common import decideMarket, account_init, iso_jp, jp_utc
@@ -57,6 +58,7 @@ def insert_table(base_time, currency, con, table_type):
 
     start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
     start_time = jp_utc(start_time)
+    start_time = start_time.strftime("%Y-%m-%dT%H:%M:%S")
 
     if flag:
         response = oanda.get_history(
@@ -66,9 +68,9 @@ def insert_table(base_time, currency, con, table_type):
             count=count
         )
 
-        for res in response["candles"]:
+        for candle in response["candles"]:
             open_ask_price = candle["openAsk"]
-            open_bid_price = candle["openbid"]
+            open_bid_price = candle["openBid"]
             close_ask_price = candle["closeAsk"]
             close_bid_price = candle["closeBid"]
             high_ask_price = candle["highAsk"]
@@ -77,20 +79,23 @@ def insert_table(base_time, currency, con, table_type):
             low_bid_price = candle["lowBid"]
             insert_time = candle["time"]
             insert_time = iso_jp(insert_time)
+            insert_time = insert_time.strftime("%Y-%m-%d %H:%M:%S")
 
-            sql = "insert into %s_%s_TABLE(open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time values(%s, %s, %s, %s, %s, %s, %s, %s, \'%s\')" % (open_ask_price, open_bid_price, close_ask_price, close_bid_price, high_ask_price, high_bid_price, low_ask_price, low_bid_price, insert_time)
+            sql = "insert into %s_%s_TABLE(open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, \'%s\')" % (currency, table_type, open_ask_price, open_bid_price, close_ask_price, close_bid_price, high_ask_price, high_bid_price, low_ask_price, low_bid_price, insert_time)
+            print(sql)
             con.insert_sql(sql)
 
+    insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 
     if table_type == "1m":
         if seconds < 10:
-            insert_time = insert_time + timedelta(minutes=1)
+            insert_time = insert_time + timedelta(minutes=2)
     elif table_type == "5m":
         if minutes % 5 == 0 and seconds < 10:
-            insert_time = insert_time + timedelta(minutes=5)
+            insert_time = insert_time + timedelta(minutes=10)
     elif table_type == "1h":
         if minutes == 0 and seconds < 10:
-            insert_time = insert_time + timedelta(hours=1)
+            insert_time = insert_time + timedelta(hours=2)
 
     return insert_time
 
@@ -101,7 +106,6 @@ if __name__ == "__main__":
     table_type = args[2].strip()
     mode = args[3].strip()
     con = MysqlConnector()
-    oanda = 
     polling_time = 5
 
     if mode == "test":

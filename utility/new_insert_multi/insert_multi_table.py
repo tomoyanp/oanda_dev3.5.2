@@ -52,7 +52,7 @@ def insert_table(base_time, currency, con, table_type):
             flag = True
     elif table_type == "1h":
         if minutes == 0 and seconds < 10:
-            granularity = "H5"
+            granularity = "H1"
             start_time = base_time - timedelta(hours=1)
             flag = True
     elif table_type == "day":

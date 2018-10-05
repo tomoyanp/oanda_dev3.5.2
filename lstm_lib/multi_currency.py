@@ -45,76 +45,77 @@ def get_original_dataset(target_time, table_type, span, direct):
     daily_target_time = daily_target_time.strftime("%Y-%m-%d %H:%M:%S")
 
     if direct == "ASC" or direct == "asc":
-        print("######## Result SQL ###########")
-        usdjpy_price_list = []
-        eurusd_price_list = []
-        gbpusd_price_list = []
-        insert_time_list = []
-
-
-        train_original_sql = "select ask_price, bid_price, insert_time from USD_JPY_TABLE where insert_time >= \'%s\' order by insert_time %s limit %s" % (target_time, direct, span)
-
-        response = mysql_connector.select_sql(train_original_sql)
-        for res in response:
-            usdjpy_price_list.append(((res[0] + res[1])/2))
-            insert_time_list.append(res[2])
-
-        train_original_sql = "select ask_price, bid_price from EUR_USD_TABLE where insert_time >= \'%s\' order by insert_time %s limit %s" % (target_time, direct, span)
-
-        response = mysql_connector.select_sql(train_original_sql)
-        for res in response:
-            eurusd_price_list.append(((res[0] + res[1])/2))
-
-        train_original_sql = "select ask_price, bid_price from GBP_USD_TABLE where insert_time >= \'%s\' order by insert_time %s limit %s" % (target_time, direct, span)
-
-        response = mysql_connector.select_sql(train_original_sql)
-        for res in response:
-            gbpusd_price_list.append(((res[0] + res[1])/2))
-
-        tmp_original_dataset = {"usdjpy_price": usdjpy_price_list,
-                                "eurusd_price": eurusd_price_list,
-                                "gbpusd_price": gbpusd_price_list,
-                                "insert_time": insert_time_list}
-
-
-
+        where_statement = "insert_time >= \'%s\'" % target_time
     else:
-        print("######## Learning SQL ###########")
-        usdjpy_price_list = []
-        eurusd_price_list = []
-        gbpusd_price_list = []
-        insert_time_list = []
+        where_statement = "insert_time < \'%s\'" % target_time
+
+    print("######## Result SQL ###########")
+    usdjpy_price_list = []
+    eurusd_price_list = []
+    gbpusd_price_list = []
+    cadusd_price_list = []
+    audusd_price_list = []
+    insert_time_list = []
 
 
-        train_original_sql = "select ask_price, bid_price, insert_time from USD_JPY_TABLE where insert_time < \'%s\' order by insert_time %s limit %s" % (target_time, direct, span)
+    train_original_sql = "select close_ask, insert_time from USD_JPY_%s_TABLE where %s order by insert_time %s limit %s" % (table_type, where_statement, direct, span)
 
-        response = mysql_connector.select_sql(train_original_sql)
-        for res in response:
-            usdjpy_price_list.append(((res[0] + res[1])/2))
-            insert_time_list.append(res[2])
+    response = mysql_connector.select_sql(train_original_sql)
+    for res in response:
+        usdjpy_price_list.append(res[0])
+        insert_time_list.append(res[1])
 
-        train_original_sql = "select ask_price, bid_price from EUR_USD_TABLE where insert_time < \'%s\' order by insert_time %s limit %s" % (target_time, direct, span)
+    train_original_sql = "select close_ask from EUR_USD_%s_TABLE where %s order by insert_time %s limit %s" % (table_type, where_statement, direct, span)
 
-        response = mysql_connector.select_sql(train_original_sql)
-        for res in response:
-            eurusd_price_list.append(((res[0] + res[1])/2))
+    response = mysql_connector.select_sql(train_original_sql)
+    for res in response:
+        eurusd_price_list.append(res[0])
 
-        train_original_sql = "select ask_price, bid_price from GBP_USD_TABLE where insert_time < \'%s\' order by insert_time %s limit %s" % (target_time, direct, span)
+    train_original_sql = "select close_ask from GBP_USD_%s_TABLE where %s order by insert_time %s limit %s" % (table_type, where_statement, direct, span)
 
-        response = mysql_connector.select_sql(train_original_sql)
-        for res in response:
-            gbpusd_price_list.append(((res[0] + res[1])/2))
+    response = mysql_connector.select_sql(train_original_sql)
+    for res in response:
+        gbpusd_price_list.append(res[0])
 
+    train_original_sql = "select close_ask from USD_CAD_%s_TABLE where %s order by insert_time %s limit %s" % (table_type, where_statement, direct, span)
+
+    response = mysql_connector.select_sql(train_original_sql)
+    for res in response:
+        cadusd_price_list.append(res[0])
+
+    train_original_sql = "select close_ask from AUD_USD_%s_TABLE where %s order by insert_time %s limit %s" % (table_type, where_statement, direct, span)
+
+    response = mysql_connector.select_sql(train_original_sql)
+    for res in response:
+        audusd_price_list.append(res[0])
+
+
+    if direct == "ASC" or direct == "asc":
+        pass
+    else:
         usdjpy_price_list.reverse()
         eurusd_price_list.reverse()
         gbpusd_price_list.reverse()
+        cadusd_price_list.reverse()
+        audusd_price_list.reverse()
         insert_time_list.reverse()
 
-        tmp_original_dataset = {"usdjpy_price": usdjpy_price_list,
-                                "eurusd_price": eurusd_price_list,
-                                "gbpusd_price": gbpusd_price_list,
-                                "insert_time": insert_time_list}
 
+#    print(usdjpy_price_list)   
+#    print(eurusd_price_list)
+#    print(gbpusd_price_list)
+#    print(cadusd_price_list)
+#    print(audusd_price_list)
+#    print(insert_time_list)
+
+    tmp_original_dataset = {
+        "usdjpy_price": usdjpy_price_list,
+        "eurusd_price": eurusd_price_list,
+        "gbpusd_price": gbpusd_price_list,
+        "cadusd_price": cadusd_price_list,
+        "audusd_price": audusd_price_list,
+        "insert_time": insert_time_list
+    }
 
 
     tmp_dataframe = pd.DataFrame(tmp_original_dataset)
@@ -194,6 +195,8 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         input_max_price = []
         input_min_price = []
 
+        predict_currency = "usdjpy_price"
+
         while target_time < end_ptime:
             hour = target_time.hour
             if decideMarket(target_time):
@@ -211,8 +214,8 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 #                        input_max_price.append(max(tmp_dataframe["end_price"]))
 #                        input_min_price.append(min(tmp_dataframe["end_price"]))
 
-                        input_max_price.append(max(tmp_dataframe["usdjpy_price"]))
-                        input_min_price.append(min(tmp_dataframe["usdjpy_price"]))
+                        input_max_price.append(max(tmp_dataframe[predict_currency]))
+                        input_min_price.append(min(tmp_dataframe[predict_currency]))
     
                         del tmp_dataframe["insert_time"]
     
@@ -241,7 +244,7 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                         train_input_dataset.append(tmp_input_dataframe)
                         train_output_dataset.append(tmp_output_dataframe)
 
-            target_time = target_time + timedelta(hours=1)
+            target_time = target_time + timedelta(minutes=5)
 
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
@@ -277,4 +280,4 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 
 if __name__ == "__main__":
-    learning_model1h = train_save_model(window_size=300, output_train_index=60, table_type="1h", figure_filename="multi_currency.png", model_filename="multi_currency.json", weights_filename="multi_currency.hdf5", start_time="2008-04-02 00:00:00", end_time="2008-09-01 00:00:00", term="all")
+    learning_model1h = train_save_model(window_size=10, output_train_index=6, table_type="5m", figure_filename="multi_currency.png", model_filename="multi_currency.json", weights_filename="multi_currency.hdf5", start_time="2008-04-01 00:00:00", end_time="2010-04-01 00:00:00", term="all")

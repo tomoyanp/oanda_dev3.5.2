@@ -150,10 +150,12 @@ def decide_market(base_time, table_type):
 
     sql = "select * from %s_%s_TABLE where insert_time = \'%s\'" % (instruments, table_type, base_time)
     response = mysql_connector.select_sql(sql)
+    #print(response)
     if len(response) == 0:
         flag = False
 
-    return False
+    
+    return flag
 
 
 def train_save_model(window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time, term):
@@ -234,6 +236,8 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
 
+        print(train_input_dataset.shape)
+        print(train_output_dataset.shape)
         learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=200)
         history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
         #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)

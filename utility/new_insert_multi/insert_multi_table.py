@@ -52,21 +52,21 @@ def insert_table(base_time, currency, con, table_type):
             flag = True
     elif table_type == "1h":
         if minutes == 0 and seconds < 10:
-            granularity = "H5"
+            granularity = "H1"
             start_time = base_time - timedelta(hours=1)
             flag = True
-    elif table_type == "1h":
-        if hours == 7 and minutes == 0 and seconds < 10:
-            granularity = "D1"
+    elif table_type == "day":
+        if hour == 7 and minutes == 0 and seconds < 10:
+            granularity = "D"
             start_time = base_time - timedelta(days=1)
             flag = True
 
 
-    start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
-    start_time = jp_utc(start_time)
-    start_time = start_time.strftime("%Y-%m-%dT%H:%M:%S")
 
     if flag:
+        start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
+        start_time = jp_utc(start_time)
+        start_time = start_time.strftime("%Y-%m-%dT%H:%M:%S")
         response = oanda.get_history(
             instrument=currency,
             start=start_time,
@@ -91,20 +91,24 @@ def insert_table(base_time, currency, con, table_type):
             print(sql)
             con.insert_sql(sql)
 
-    insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
+    if flag == False:
+        insert_time = base_time
+    else:
+        insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 
-    if table_type == "1m":
-        if seconds < 10:
-            insert_time = insert_time + timedelta(minutes=1)
-    elif table_type == "5m":
-        if minutes % 5 == 0 and seconds < 10:
-            insert_time = insert_time + timedelta(minutes=5)
-    elif table_type == "1h":
-        if minutes == 0 and seconds < 10:
-            insert_time = insert_time + timedelta(hours=1)
-    elif table_type == "1h":
-        if hours == 7 and minutes == 0 and seconds < 10:
-            insert_time = insert_time + timedelta(days=1)
+    if flag:
+        if table_type == "1m":
+            if seconds < 10:
+                insert_time = insert_time + timedelta(minutes=1)
+        elif table_type == "5m":
+            if minutes % 5 == 0 and seconds < 10:
+                insert_time = insert_time + timedelta(minutes=5)
+        elif table_type == "1h":
+            if minutes == 0 and seconds < 10:
+                insert_time = insert_time + timedelta(hours=1)
+        elif table_type == "day":
+            if hour == 7 and minutes == 0 and seconds < 10:
+                insert_time = insert_time + timedelta(days=1)
 
 
     return insert_time

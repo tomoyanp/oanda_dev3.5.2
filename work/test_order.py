@@ -66,16 +66,20 @@ oanda = oandapy.API(environment=env, access_token=token)
 #response = oanda.get_account(account_id)
 
 #response = oanda.get_transaction_history(account_id)
-response = oanda.get_history(
-    instrument="GBP_JPY",
-    start=test_time,
-    granularity="M1",
-    count=1
-)
+
+#response = oanda.get_history(
+#    instrument=["GBP_JPY", "USD_JPY"],
+#    start=test_time,
+#    granularity="M1",
+#    count=1
+#)
 
 
-print(response)
-print(iso_jp(response["candles"][0]["time"]))
+response = oanda.get_instruments(account_id)
+for res in response["instruments"]:
+    print(res["instrument"])
+#print(response)
+#print(iso_jp(response["candles"][0]["time"]))
 #response = oanda.get_prices(instruments="GBP_JPY")
 #
 #for res in response["prices"]:

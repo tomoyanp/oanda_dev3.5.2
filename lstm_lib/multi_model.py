@@ -38,6 +38,8 @@ from sklearn.preprocessing import MinMaxScaler
 import json
 
 mysql_connector = MysqlConnector()
+instruments = sys.argv[1]
+#print(instruments)
 
 def get_original_dataset(target_time, table_type, span, direct):
     target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -53,7 +55,7 @@ def get_original_dataset(target_time, table_type, span, direct):
     insert_time_list = []
 
 
-    train_original_sql = "select close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time from USD_JPY_%s_TABLE where %s order by insert_time %s limit %s" % (table_type, where_statement, direct, span)
+    train_original_sql = "select close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time from %s_%s_TABLE where %s order by insert_time %s limit %s" % (instruments, table_type, where_statement, direct, span)
     response = mysql_connector.select_sql(train_original_sql)
 
 
@@ -61,7 +63,7 @@ def get_original_dataset(target_time, table_type, span, direct):
         close_price_list.append((res[0]+res[1])/2)
         high_price_list.append((res[2]+res[3])/2)
         low_price_list.append((res[4]+res[5])/2)
-        insert_time_list.append((res[4]+res[5])/2)
+        insert_time_list.append(res[6])
 
     if direct == "ASC" or direct == "asc":
         pass
@@ -70,7 +72,8 @@ def get_original_dataset(target_time, table_type, span, direct):
         high_price_list.reverse()
         low_price_list.reverse()
         insert_time_list.reverse()
-
+        print("#########################")
+        print(insert_time_list[0])
 
     tmp_original_dataset = {
         "close_price": close_price_list,
@@ -82,7 +85,7 @@ def get_original_dataset(target_time, table_type, span, direct):
 
     tmp_dataframe = pd.DataFrame(tmp_original_dataset)
 
-    print(tmp_dataframe)
+    #print(tmp_dataframe)
     return tmp_dataframe
 
 def build_to_normalization( dataset):
@@ -176,7 +179,7 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                 if decideTerm(hour) == term or term == "all":
                     if decideConditions(table_type, target_time):
                     #if 1==1:
-                        print("term=%s, target_time=%s" % (term, target_time))
+                        #print("term=%s, target_time=%s" % (term, target_time))
                         # 未来日付に変えて、教師データと一緒にまとめて取得
                         tmp_target_time = target_time - timedelta(hours=1)
                         tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
@@ -201,7 +204,7 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                         #print("=========== output list ============")
                         #print(tmp_time_output_dataframe)
     
-                        print(tmp_dataframe)
+                        #print(tmp_dataframe)
                         tmp_np_dataset = tmp_dataframe.values
                         normalization_model = build_to_normalization(tmp_np_dataset)
                         tmp_np_normalization_dataset = change_to_normalization(normalization_model, tmp_np_dataset)
@@ -262,7 +265,7 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 
 if __name__ == "__main__":
-    instruments = sys.argv[1]
+#    instruments = sys.argv[1]
     start_time = "2017-07-01 00:00:00"
     end_time = "2018-07-01 00:00:00"
     table_type = "1h"
@@ -271,16 +274,4 @@ if __name__ == "__main__":
     output_train_index = 8
     filename = "%s_%s" % (model_name, instruments)
     learning_model1h = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
-
-
-
-
-
-
-
-
-
-
-
-
 

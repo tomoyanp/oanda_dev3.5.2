@@ -141,6 +141,18 @@ def decideTerm( hour):
 
     return term
 
+
+def decide_market(base_time, table_type):
+    flag = True
+
+    sql = "select * from %s_%s_TABLE where insert_time = \'%s\'" % (instruments, table_type, base_time)
+    response = mysql_connector.select_sql(sql)
+    if len(response) == 0:
+        flag = False
+
+    return False
+
+
 def train_save_model(window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time, term):
     command = "ls ../model/ | grep -e %s -e %s | wc -l" % (model_filename, weights_filename)
     out = subprocess.getoutput(command)
@@ -156,11 +168,11 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         input_max_price = []
         input_min_price = []
 
-        predict_currency = "usdjpy_price"
+        predict_currency = "close_price"
 
         while target_time < end_ptime:
             hour = target_time.hour
-            if decideMarket(target_time):
+            if decide_market(target_time, table_type):
                 if decideTerm(hour) == term or term == "all":
                     if decideConditions(table_type, target_time):
                     #if 1==1:
@@ -205,7 +217,16 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                         train_input_dataset.append(tmp_input_dataframe)
                         train_output_dataset.append(tmp_output_dataframe)
 
-            target_time = target_time + timedelta(minutes=5)
+            if table_type == "1m":
+                target_time = target_time + timedelta(minutes=1)
+            elif table_type == "5m":
+                target_time = target_time + timedelta(minutes=5)
+            elif table_type == "1h":
+                target_time = target_time + timedelta(hours=1)
+            elif table_type == "day":
+                target_time = target_time + timedelta(days=1)
+            else:
+                raise
 
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)

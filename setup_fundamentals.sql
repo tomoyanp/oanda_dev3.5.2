@@ -1,0 +1,1 @@
+create table FUNDAMENTALS_TABLE(insert_time timestamp, short_title char(10) character set utf8, title longtext character set utf8, body longtext character set utf8, primary key(insert_time, short_title));

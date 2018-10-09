@@ -72,52 +72,81 @@ class LstmAlgo(SuperAlgo):
         self.output_min_price = 0
         self.trade_first_flag = ""
         self.current_path = os.path.abspath(os.path.dirname(__file__))
-#        self.learning_model1d = self.load_model(model_filename="lstm_1d.json", weights_filename="lstm_1d.hdf5")
-#        self.learning_upper1h = self.load_model(model_filename="lstm_1h_uppersigma.json", weights_filename="lstm_1h_uppersigma.hdf5")
-#        self.learning_lower1h = self.load_model(model_filename="lstm_1h_lowersigma.json", weights_filename="lstm_1h_lowersigma.hdf5")
-        self.learning_model_1h = self.load_model(model_filename="eight_oclock_1h.json", weights_filename="eight_oclock_1h.hdf5")
-        self.learning_model_1h_short = self.load_model(model_filename="eight_oclock_1h_windowsize24.json", weights_filename="eight_oclock_1h_windowsize24.hdf5")
-        self.learning_model_1d = self.load_model(model_filename="eight_oclock_1d.json", weights_filename="eight_oclock_1d.hdf5")
+        self.usdjpy_model = self.load_model(model_filename="usd_jpy.json", weights_filename="usd_jpy.hdf5")
+        self.eurjpy_model = self.load_model(model_filename="eur_jpy.json", weights_filename="eur_jpy.hdf5")
+        self.eurusd_model = self.load_model(model_filename="eur_usd.json", weights_filename="eur_usd.hdf5")
+        self.gbpusd_model = self.load_model(model_filename="gbp_usd.json", weights_filename="gbp_usd.hdf5")
+        self.gbpjpy_model = self.load_model(model_filename="gbp_jpy.json", weights_filename="gbp_jpy.hdf5")
         
 
-#        self.predict_value1d = predict_value(base_time, self.learning_model1d, window_size=20, table_type="day", output_train_index=1)
-#        if base_time.weekday() == 0:
-#            before_target_time = base_time - timedelta(days=4)
-#            self.predict_value1d_before = predict_value(before_target_time, self.learning_model1d, window_size=20, table_type="day", output_train_index=1)
-#        else:
-#            before_target_time = base_time - timedelta(days=1)
-#            self.predict_value1d_before = predict_value(before_target_time, self.learning_model1d, window_size=20, table_type="day", output_train_index=1)
 
     def test_predict(self, base_time):
         hour = base_time.hour
         minutes = base_time.minute
         seconds = base_time.second
 
-        if hour == 8 and minutes == 0 and seconds < 10:
-            current_price = (self.ask_price + self.bid_price) / 2
-            predict_value1h = predict_value(base_time, self.learning_model_1h, window_size=200, table_type="1h", output_train_index=4)
-            predict_value1h_short = predict_value(base_time, self.learning_model_1h_short, window_size=24, table_type="1h", output_train_index=4)
-            predict_value1d = predict_value(base_time, self.learning_model_1d, window_size=20, table_type="day", output_train_index=4)
-
-            sql = "select uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, "5m", base_time - timedelta(minutes=5))
+        if minutes == 0 and seconds < 10:
+            right_string = "close_price"
+            window_size = 24
+            output_train_index = 8
+            table_type = "1h"
+           
+            instruments = "USD_JPY"
+            usdjpy_predict = predict_value(base_time, self.usdjpy_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments)
+            sql = "select close_ask, close_bid, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, base_time - timedelta(hours=1))
             response = self.mysql_connector.select_sql(sql)
-            uppersigma3_5m = response[0][0]
-            lowersigma3_5m = response[0][1]
+            usdjpy_current_price = (response[0][0] + response[0][1]) / 2
+            current_time = response[0][2]
 
-            sql = "select uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, "1h", base_time - timedelta(hours=1))
+
+            sql = "select close_ask, close_bid, insert_time from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time asc limit %s" % (instruments, table_type, base_time - timedelta(hours=1), output_train_index)
             response = self.mysql_connector.select_sql(sql)
-            uppersigma3_1h = response[0][0]
-            lowersigma3_1h = response[0][1]
+            usdjpy_right_price = (response[-1][0] + response[-1][1]) / 2
+            right_time = response[-1][2]
 
 
-            output_train_index = 4
-            sql = "select ask_price, bid_price, insert_time from %s_TABLE where insert_time >= \'%s\' order by insert_time asc limit 1" % (self.instrument, base_time + timedelta(hours=output_train_index))
+            instruments = "EUR_USD"
+            eurusd_predict = predict_value(base_time, self.eurusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments)
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, base_time - timedelta(hours=1))
             response = self.mysql_connector.select_sql(sql)
-            right_price = (response[0][0] + response[0][1]) / 2
-            right_time = response[0][2]
+            eurusd_current_price = (response[0][0] + response[0][1]) / 2
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time asc limit %s" % (instruments, table_type, base_time - timedelta(hours=1), output_train_index)
+            response = self.mysql_connector.select_sql(sql)
+            eurusd_right_price = (response[-1][0] + response[-1][1]) / 2
 
-            self.result_logger.info("current time, current price, 5m_uppersigma3, 5m_lowersigma3, 1h_uppersigma3, 1h_lowersigma3, 1h predict value short, 1h predict value long, predict value 1d, right time, right price")
-            self.result_logger.info("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s" % (base_time, current_price, uppersigma3_5m, lowersigma3_5m, uppersigma3_1h, lowersigma3_1h, predict_value1h_short, predict_value1h, predict_value1d, right_time, right_price))
+
+            instruments = "GBP_USD"
+            gbpusd_predict = predict_value(base_time, self.gbpusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments)
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, base_time - timedelta(hours=1))
+            response = self.mysql_connector.select_sql(sql)
+            gbpusd_current_price = (response[0][0] + response[0][1]) / 2
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time asc limit %s" % (instruments, table_type, base_time - timedelta(hours=1), output_train_index)
+            response = self.mysql_connector.select_sql(sql)
+            gbpusd_right_price = (response[-1][0] + response[-1][1]) / 2
+
+
+            instruments = "GBP_JPY"
+            gbpjpy_predict = predict_value(base_time, self.gbpusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments)
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, base_time - timedelta(hours=1))
+            response = self.mysql_connector.select_sql(sql)
+            gbpjpy_current_price = (response[0][0] + response[0][1]) / 2
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time asc limit %s" % (instruments, table_type, base_time - timedelta(hours=1), output_train_index)
+            response = self.mysql_connector.select_sql(sql)
+            gbpjpy_right_price = (response[-1][0] + response[-1][1]) / 2
+
+
+            instruments = "EUR_JPY"
+            eurjpy_predict = predict_value(base_time, self.eurjpy_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments)
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, base_time - timedelta(hours=1))
+            response = self.mysql_connector.select_sql(sql)
+            eurjpy_current_price = (response[0][0] + response[0][1]) / 2
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time asc limit %s" % (instruments, table_type, base_time - timedelta(hours=1), output_train_index)
+            response = self.mysql_connector.select_sql(sql)
+            eurjpy_right_price = (response[-1][0] + response[-1][1]) / 2
+
+
+            self.result_logger.info("base_time, current_time, right_time, usdjpy current price, usdjpy predict price, usdjpy right price, eurusd current price, eurusd predict price, eurusd right price, gbpusd current price, gbpusd predict price, gbpusd right price, gbpjpy current price, gbpjpy predict price, gbpjpy right price, eurjpy current price, eurjpy predict price, eurjpy right price")
+            self.result_logger.info("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s" % (base_time, current_time, right_time, usdjpy_current_price, usdjpy_predict, usdjpy_right_price, eurusd_current_price, eurusd_predict, eurusd_right_price, gbpusd_current_price, gbpusd_predict, gbpusd_right_price, gbpjpy_current_price, gbpjpy_predict, gbpjpy_right_price, eurjpy_current_price, eurjpy_predict, eurjpy_right_price))
         
     # decide trade entry timing
     def decideTrade(self, base_time):

@@ -36,186 +36,55 @@ from sklearn.preprocessing import MinMaxScaler
 import json
 
 
-instrument = sys.argv[0]
-instrument = "GBP_JPY"
 mysql_connector = MysqlConnector()
 
 
-def get_original_dataset(target_time, table_type, span, direct):
-    daily_target_time = target_time - timedelta(days=1)
+def get_original_dataset(target_time, table_type, span, direct, instruments):
     target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
-    daily_target_time = daily_target_time.strftime("%Y-%m-%d %H:%M:%S")
 
     if direct == "ASC" or direct == "asc":
-        train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time %s limit %s" % (instrument, table_type, target_time, direct, span)
+        where_statement = "insert_time >= \'%s\'" % target_time
     else:
-        train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time %s limit %s" % (instrument, table_type, target_time, direct, span)
+        where_statement = "insert_time < \'%s\'" % target_time
 
+    close_price_list = []
+    high_price_list = []
+    low_price_list = []
+    insert_time_list = []
+
+
+    train_original_sql = "select close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time from %s_%s_TABLE where %s order by insert_time %s limit %s" % (instruments, table_type, where_statement, direct, span)
     response = mysql_connector.select_sql(train_original_sql)
 
-    print("#### sql ####")
-    print(train_original_sql)
-    print(target_time)
-    end_price_list = []
-    sma20_list = []
-    sma40_list = []
-    sma80_list = []
-    sma100_list = []
-    insert_time_list = []
-    uppersigma3_list = []
-    lowersigma3_list = []
 
     for res in response:
-        end_price_list.append(res[0])
-        sma20_list.append(res[1])
-        sma40_list.append(res[2])
-        sma80_list.append(res[3])
-        sma100_list.append(res[4])
-        insert_time_list.append(res[5])
-        uppersigma3_list.append(res[6])
-        lowersigma3_list.append(res[7])
+        close_price_list.append((res[0]+res[1])/2)
+        high_price_list.append((res[2]+res[3])/2)
+        low_price_list.append((res[4]+res[5])/2)
+        insert_time_list.append(res[6])
 
-    if direct == "DESC" or direct == "desc":
-        end_price_list.reverse()
-        sma20_list.reverse()
-        sma40_list.reverse()
-        sma80_list.reverse()
-        sma100_list.reverse()
+    if direct == "ASC" or direct == "asc":
+        pass
+    else:
+        close_price_list.reverse()
+        high_price_list.reverse()
+        low_price_list.reverse()
         insert_time_list.reverse()
-        uppersigma3_list.reverse()
-        lowersigma3_list.reverse()
+        print("#########################")
+        print(insert_time_list[0])
 
-
-    daily_train_original_sql = "select max_price, min_price, uppersigma2, lowersigma2, end_price from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, daily_target_time)
-    response = mysql_connector.select_sql(train_original_sql)
-    daily_max_price = response[0][0]
-    daily_min_price = response[0][1]
-    daily_uppersigma2 = response[0][2]
-    daily_lowersigma2 = response[0][3]
-    daily_end_price = response[0][4]
-
-#    tmp_original_dataset = {"end_price": end_price_list,
-#                            "sma20": sma20_list,
-#                            "sma40": sma40_list,
-#                            "sma80": sma80_list,
-#                            "uppersigma3": uppersigma3_list,
-#                            "lowersigma3": lowersigma3_list,
-#                            "insert_time": insert_time_list}
-
-    tmp_original_dataset = {"end_price": end_price_list,
-                            "sma20": sma20_list,
-                            "sma40": sma40_list,
-                            "sma80": sma80_list,
-                            "uppersigma3": uppersigma3_list,
-                            "lowersigma3": lowersigma3_list,
-                            "insert_time": insert_time_list}
-
+    tmp_original_dataset = {
+        "close_price": close_price_list,
+        "high_price": high_price_list,
+        "low_price": low_price_list,
+        "insert_time": insert_time_list
+    }
 
 
     tmp_dataframe = pd.DataFrame(tmp_original_dataset)
 
-#    tmp_dataframe["sma20"] = tmp_dataframe["end_price"] - tmp_dataframe["sma20"]
-#    tmp_dataframe["sma40"] = tmp_dataframe["end_price"] - tmp_dataframe["sma40"]
-#    tmp_dataframe["sma80"] = tmp_dataframe["end_price"] - tmp_dataframe["sma80"]
-#    tmp_dataframe["uppersigma3"] = tmp_dataframe["end_price"] - tmp_dataframe["uppersigma3"]
-#    tmp_dataframe["lowersigma3"] = tmp_dataframe["end_price"] - tmp_dataframe["lowersigma3"]
-#    tmp_dataframe["daily_max_price"] = tmp_dataframe["end_price"] - daily_max_price
-#    tmp_dataframe["daily_min_price"] = tmp_dataframe["end_price"] - daily_min_price
-#    tmp_dataframe["daily_uppersigma2"] = tmp_dataframe["end_price"] - daily_uppersigma2
-#    tmp_dataframe["daily_lowersigma2"] = tmp_dataframe["end_price"] - daily_lowersigma2
-#    tmp_dataframe["daily_end_price"] = tmp_dataframe["end_price"] - daily_end_price
-
-    #print(tmp_dataframe)
-
-    print(tmp_dataframe["insert_time"])
-
     return tmp_dataframe
 
-
-
-
-
-#def get_original_dataset(target_time, table_type, span, direct):
-#    daily_target_time = target_time - timedelta(days=1)
-#    target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
-#    daily_target_time = daily_target_time.strftime("%Y-%m-%d %H:%M:%S")
-#
-#    if direct == "ASC" or direct == "asc":
-#        train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time %s limit %s" % (instrument, table_type, target_time, direct, span)
-#    else:
-#        train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time %s limit %s" % (instrument, table_type, target_time, direct, span)
-#
-#    response = mysql_connector.select_sql(train_original_sql)
-#
-#    print("#### sql ####")
-#    print(train_original_sql)
-#    print(target_time)
-#    end_price_list = []
-#    sma20_list = []
-#    sma40_list = []
-#    sma80_list = []
-#    sma100_list = []
-#    insert_time_list = []
-#    uppersigma3_list = []
-#    lowersigma3_list = []
-#
-#    for res in response:
-#        end_price_list.append(res[0])
-#        sma20_list.append(res[1])
-#        sma40_list.append(res[2])
-#        sma80_list.append(res[3])
-#        sma100_list.append(res[4])
-#        insert_time_list.append(res[5])
-#        uppersigma3_list.append(res[6])
-#        lowersigma3_list.append(res[7])
-#
-#    if direct == "DESC" or direct == "desc":
-#        end_price_list.reverse()
-#        sma20_list.reverse()
-#        sma40_list.reverse()
-#        sma80_list.reverse()
-#        sma100_list.reverse()
-#        insert_time_list.reverse()
-#        uppersigma3_list.reverse()
-#        lowersigma3_list.reverse()
-#
-#
-#    daily_train_original_sql = "select max_price, min_price, uppersigma2, lowersigma2, end_price from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, daily_target_time)
-#    response = mysql_connector.select_sql(train_original_sql)
-#    daily_max_price = response[0][0]
-#    daily_min_price = response[0][1]
-#    daily_uppersigma2 = response[0][2]
-#    daily_lowersigma2 = response[0][3]
-#    daily_end_price = response[0][4]
-#
-#    tmp_original_dataset = {"end_price": end_price_list,
-#                            "sma20": sma20_list,
-#                            "sma40": sma40_list,
-#                            "sma80": sma80_list,
-#                            "uppersigma3": uppersigma3_list,
-#                            "lowersigma3": lowersigma3_list,
-#                            "insert_time": insert_time_list}
-#
-#
-#
-#
-#    tmp_dataframe = pd.DataFrame(tmp_original_dataset)
-#    tmp_dataframe["sma20"] = tmp_dataframe["end_price"] - tmp_dataframe["sma20"]
-#    tmp_dataframe["sma40"] = tmp_dataframe["end_price"] - tmp_dataframe["sma40"]
-#    tmp_dataframe["sma80"] = tmp_dataframe["end_price"] - tmp_dataframe["sma80"]
-#    tmp_dataframe["uppersigma3"] = tmp_dataframe["end_price"] - tmp_dataframe["uppersigma3"]
-#    tmp_dataframe["lowersigma3"] = tmp_dataframe["end_price"] - tmp_dataframe["lowersigma3"]
-#    tmp_dataframe["daily_max_price"] = tmp_dataframe["end_price"] - daily_max_price
-#    tmp_dataframe["daily_min_price"] = tmp_dataframe["end_price"] - daily_min_price
-#    tmp_dataframe["daily_uppersigma2"] = tmp_dataframe["end_price"] - daily_uppersigma2
-#    tmp_dataframe["daily_lowersigma2"] = tmp_dataframe["end_price"] - daily_lowersigma2
-#    tmp_dataframe["daily_end_price"] = tmp_dataframe["end_price"] - daily_end_price
-#
-#    #print(tmp_dataframe)
-#
-#    print(tmp_dataframe["insert_time"])
-#
-#    return tmp_dataframe
 
 def build_to_normalization( dataset):
     tmp_df = pd.DataFrame(dataset)
@@ -391,10 +260,7 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
     return learning_model
 
 
-def predict_value(base_time, learning_model, window_size, table_type, output_train_index):
-#    window_size = 24 # 24時間単位で区切り
-#    table_type = "1h"
-#    output_train_index = 8 # 8時間後をラベルにする
+def predict_value(base_time, learning_model, window_size, table_type, output_train_index, instruments, right_string):
     predict_value = 0
 
     if table_type == "1h":
@@ -407,14 +273,12 @@ def predict_value(base_time, learning_model, window_size, table_type, output_tra
         raise
 
     # パーフェクトオーダーが出てるときだけを教師データとして入力する
-    #if decideConditions(table_type, target_time):
-#    if decideConditions("1h", target_time):
     if 1==1:
-        tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
+        tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC", instruments)
 
         # 正規化を戻したいので、高値安値を押さえておく
-        output_max_price = max(tmp_dataframe["end_price"])
-        output_min_price = min(tmp_dataframe["end_price"])
+        output_max_price = max(tmp_dataframe[right_string])
+        output_min_price = min(tmp_dataframe[right_string])
 
         # 正規化したいのでtimestampを落とす
         del tmp_dataframe["insert_time"]
@@ -429,33 +293,10 @@ def predict_value(base_time, learning_model, window_size, table_type, output_tra
         test_input_dataset.append(test_normalization_dataset)
         test_input_dataset = np.array(test_input_dataset)
 
-#        print(test_input_dataset.shape)
         test_predict = learning_model.predict(test_input_dataset)
         predict_value = test_predict[0][0]
         predict_value = (predict_value*(output_max_price-output_min_price))+output_min_price
-        print("predict_value = %s" % predict_value)
 
-        # 答え合わせ
-        #if  table_type == "1h":
-        #    target_right_time = base_time + timedelta(hours=output_train_index)
-        #elif table_type == "5m":
-        #    target_right_time = base_time + timedelta(minutes=(output_train_index*5))
-        #elif table_type == "day":
-        #    target_right_time = base_time + timedelta(days=output_train_index)
-        #else:
-        #    raise
-
-        #sql = "select end_price, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_right_time)
-        #response = mysql_connector.select_sql(sql)
-        #right_price = response[0][0]
-        #right_time = response[0][1]
-        #current_price = (ask_price + bid_price)/2
-
-
-        #debug_logger.info("table_type, target_time, current_price, predict_value, right_time, right_price")
-        #debug_logger.info("%s, %s, %s, %s, %s, %s" % (table_type, base_time, current_price, predict_value, target_right_time, right_price))
-
-        #debug_logger.info("%s, %s, %s, %s, %s, %s" % (table_type, base_time, current_price, predict_value, target_right_time, right_price))
 
     return predict_value
 

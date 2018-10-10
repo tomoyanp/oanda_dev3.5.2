@@ -280,7 +280,7 @@ class LstmAlgo(SuperAlgo):
         minutes = base_time.minute
         seconds = base_time.second
 
-        if minutes == 0 and 0 < seconds <= 10 and self.order_flag == False:
+        if minutes == 0 and 0 < seconds <= 10:
             right_string = "close_price"
             window_size = 24
             output_train_index = 8
@@ -300,52 +300,31 @@ class LstmAlgo(SuperAlgo):
             instruments = "GBP_JPY"
             gbpjpy_predict = predict_value(target_time, self.gbpusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
+            index = 0
+            before_target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
+            before_target_time = datetime.strptime(before_target_time, "%Y-%m-%d %H:%M:%S")
+            while True:
+                sql = "select * from USD_JPY_1h_TABLE where insert_time = \'%s\' order by insert_time desc limit 1" % before_target_time.strftime("%Y-%m-%d %H:%M:%S")
+                response = self.mysql_connector.select_sql(sql)
+                if len(response) > 0:
+                    index = index + 1
+                if index == output_train_index:
+                    break
+                before_target_time = before_target_time - timedelta(hours=1)
+            
+                print("before=%s" % before_target_time.strftime("%Y-%m-%d %H:%M:%S"))
+           
             instruments = "USD_JPY"
-            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
-            response = self.mysql_connector.select_sql(sql)
-            usdjpy_predict_before = (response[0][0] + response[0][1]) / 2
+            usdjpy_predict_before = predict_value(before_target_time, self.usdjpy_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
             instruments = "EUR_USD"
-            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
-            response = self.mysql_connector.select_sql(sql)
-            eurusd_predict_before = (response[0][0] + response[0][1]) / 2
+            eurusd_predict_before = predict_value(before_target_time, self.eurusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
             instruments = "GBP_USD"
-            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
-            response = self.mysql_connector.select_sql(sql)
-            gbpusd_predict_before = (response[0][0] + response[0][1]) / 2
+            gbpusd_predict_before = predict_value(before_target_time, self.gbpusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
             instruments = "GBP_JPY"
-            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
-            response = self.mysql_connector.select_sql(sql)
-            gbpjpy_predict_before = (response[0][0] + response[0][1]) / 2
-
-
-#            index = 0
-#            before_target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
-#            before_target_time = datetime.strptime(before_target_time, "%Y-%m-%d %H:%M:%S")
-#            while True:
-#                sql = "select * from USD_JPY_1h_TABLE where insert_time = \'%s\' order by insert_time desc limit 1" % before_target_time.strftime("%Y-%m-%d %H:%M:%S")
-#                response = self.mysql_connector.select_sql(sql)
-#                if len(response) > 0:
-#                    index = index + 1
-#                if index == output_train_index:
-#                    break
-#                before_target_time = before_target_time - timedelta(hours=1)
-#            
-#                print("before=%s" % before_target_time.strftime("%Y-%m-%d %H:%M:%S"))
-#           
-#            instruments = "USD_JPY"
-#            usdjpy_predict_before = predict_value(before_target_time, self.usdjpy_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-#
-#            instruments = "EUR_USD"
-#            eurusd_predict_before = predict_value(before_target_time, self.eurusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-#
-#            instruments = "GBP_USD"
-#            gbpusd_predict_before = predict_value(before_target_time, self.gbpusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-#
-#            instruments = "GBP_JPY"
-#            gbpjpy_predict_before = predict_value(before_target_time, self.gbpusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+            gbpjpy_predict_before = predict_value(before_target_time, self.gbpusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
 
             if usdjpy_predict_before < usdjpy_predict and eurusd_predict_before < eurusd_predict and gbpusd_predict_before < gbpusd_predict and gbpjpy_predict_before < gbpjpy_predict:

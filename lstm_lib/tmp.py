@@ -1,6 +1,7 @@
 # coding: utf-8
 ####################################################
 # Learning and save build model
+# if 5m end_price greater than uppersigma3_5m, Do learning
 
 import os, sys
 current_path = os.path.abspath(os.path.dirname(__file__))
@@ -12,6 +13,7 @@ sys.path.append(base_path + "/lstm_lib")
 
 from mysql_connector import MysqlConnector
 from datetime import timedelta, datetime
+from common import decideMarket
 from logging import getLogger
 
 import traceback
@@ -35,11 +37,11 @@ from keras.models import model_from_json
 from sklearn.preprocessing import MinMaxScaler
 import json
 
-
 mysql_connector = MysqlConnector()
+instruments = sys.argv[1]
+#print(instruments)
 
-
-def get_original_dataset(target_time, table_type, span, direct, instruments):
+def get_original_dataset(target_time, table_type, span, direct):
     target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
 
     if direct == "ASC" or direct == "asc":
@@ -83,8 +85,8 @@ def get_original_dataset(target_time, table_type, span, direct, instruments):
 
     tmp_dataframe = pd.DataFrame(tmp_original_dataset)
 
+    #print(tmp_dataframe)
     return tmp_dataframe
-
 
 def build_to_normalization( dataset):
     tmp_df = pd.DataFrame(dataset)
@@ -116,6 +118,9 @@ def create_train_dataset( dataset, learning_span, window_size):
 
 def build_learning_model( inputs, output_size, neurons, activ_func="linear", dropout=0.25, loss="mae", optimizer="adam"):
     model = Sequential()
+    print(inputs.shape)
+    print(inputs.shape[1])
+    print(inputs.shape[2])
     model.add(LSTM(neurons, input_shape=(inputs.shape[1], inputs.shape[2])))
     model.add(Dropout(dropout))
     model.add(Dense(units=output_size))
@@ -128,17 +133,8 @@ def change_to_ptime( time):
     return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
 def decideConditions( table_type, target_time):
-    # パーフェクトオーダーが出てるときだけを教師データとして入力する
-    sql = "select sma20, sma40, sma80 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time)
-    response = mysql_connector.select_sql(sql)
-    sma20 = response[0][0]
-    sma40 = response[0][1]
-    sma80 = response[0][2]
-    flag = False
-    if (sma20 > sma40 > sma80) or (sma20 < sma40 < sma80):
-        flag = True
+    return True
 
-    return flag
 
 def decideTerm( hour):
     term = None
@@ -150,6 +146,20 @@ def decideTerm( hour):
         term = "night"
 
     return term
+
+
+def decide_market(base_time, table_type):
+    flag = True
+
+    sql = "select * from %s_%s_TABLE where insert_time = \'%s\'" % (instruments, table_type, base_time)
+    response = mysql_connector.select_sql(sql)
+    #print(response)
+    if len(response) == 0:
+        flag = False
+
+    
+    return flag
+
 
 def train_save_model(window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time, term):
     command = "ls ../model/ | grep -e %s -e %s | wc -l" % (model_filename, weights_filename)
@@ -166,62 +176,61 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         input_max_price = []
         input_min_price = []
 
+        predict_currency = "close_price"
+
         while target_time < end_ptime:
             hour = target_time.hour
-
-            if decideTerm(hour) == term or term == "all":
-                #if decideConditions("1h", target_time):
-                if 1==1:
-                    print("term=%s, target_time=%s" % (term, target_time))
-                    # 未来日付に変えて、教師データと一緒にまとめて取得
-                    if table_type == "1h":
+            if decide_market(target_time, table_type):
+                if decideTerm(hour) == term or term == "all":
+                    if decideConditions(table_type, target_time):
+                    #if 1==1:
+                        #print("term=%s, target_time=%s" % (term, target_time))
+                        # 未来日付に変えて、教師データと一緒にまとめて取得
                         tmp_target_time = target_time - timedelta(hours=1)
-                    elif table_type == "5m":
-                        tmp_target_time = target_time + timedelta(minutes=5)
-                    elif table_type == "day":
-                        tmp_target_time = target_time + timedelta(days=1)
-                    else:
-                        raise
+                        tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
+                        tmp_output_dataframe = get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
+    
+                        tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
+                        tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
+#                        input_max_price.append(max(tmp_dataframe["end_price"]))
+#                        input_min_price.append(min(tmp_dataframe["end_price"]))
 
-                    tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
-                    tmp_output_dataframe = get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
+                        input_max_price.append(max(tmp_dataframe[predict_currency]))
+                        input_min_price.append(min(tmp_dataframe[predict_currency]))
+    
+                        del tmp_dataframe["insert_time"]
+    
+                        tmp_time_dataframe = pd.DataFrame(tmp_time_dataframe)
+                        tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
+                        tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
+    
+                        #print("=========== train list ============")
+                        #print(tmp_time_input_dataframe)
+                        #print("=========== output list ============")
+                        #print(tmp_time_output_dataframe)
+    
+                        #print(tmp_dataframe)
+                        tmp_np_dataset = tmp_dataframe.values
+                        normalization_model = build_to_normalization(tmp_np_dataset)
+                        tmp_np_normalization_dataset = change_to_normalization(normalization_model, tmp_np_dataset)
+                        tmp_dataframe = pd.DataFrame(tmp_np_normalization_dataset)
+    
+                        tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
+                        tmp_output_dataframe = tmp_dataframe.copy().iloc[-1, 0]
+    
+                        tmp_input_dataframe = tmp_input_dataframe.values
+    
+    
+                        train_time_dataset.append(tmp_time_output_dataframe)
+                        train_input_dataset.append(tmp_input_dataframe)
+                        train_output_dataset.append(tmp_output_dataframe)
 
-                    tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
-                    tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
-                    input_max_price.append(max(tmp_dataframe["end_price"]))
-                    input_min_price.append(min(tmp_dataframe["end_price"]))
-
-                    del tmp_dataframe["insert_time"]
-
-                    tmp_time_dataframe = pd.DataFrame(tmp_time_dataframe)
-                    tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
-                    tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
-
-                    #print("=========== train list ============")
-                    #print(tmp_time_input_dataframe)
-                    #print("=========== output list ============")
-                    #print(tmp_time_output_dataframe)
-
-                    tmp_np_dataset = tmp_dataframe.values
-                    normalization_model = build_to_normalization(tmp_np_dataset)
-                    tmp_np_normalization_dataset = change_to_normalization(normalization_model, tmp_np_dataset)
-                    tmp_dataframe = pd.DataFrame(tmp_np_normalization_dataset)
-
-                    tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
-                    tmp_output_dataframe = tmp_dataframe.copy().iloc[-1, 0]
-
-                    tmp_input_dataframe = tmp_input_dataframe.values
-                    #tmp_output_dataframe = tmp_output_dataframe.values
-
-
-                    train_time_dataset.append(tmp_time_output_dataframe)
-                    train_input_dataset.append(tmp_input_dataframe)
-                    train_output_dataset.append(tmp_output_dataframe)
-                    #print("shape = %s" % str(tmp_input_dataframe.shape))
-            if table_type == "1h":
-                target_time = target_time + timedelta(hours=1)
+            if table_type == "1m":
+                target_time = target_time + timedelta(minutes=1)
             elif table_type == "5m":
                 target_time = target_time + timedelta(minutes=5)
+            elif table_type == "1h":
+                target_time = target_time + timedelta(hours=1)
             elif table_type == "day":
                 target_time = target_time + timedelta(days=1)
             else:
@@ -230,8 +239,10 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
 
-        learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=500)
-        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=100, batch_size=1, verbose=2, shuffle=False)
+        print(train_input_dataset.shape)
+        print(train_output_dataset.shape)
+        learning_model = build_learning_model(train_input_dataset, output_size=3, neurons=200)
+        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
         #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
         train_predict = learning_model.predict(train_input_dataset)
 
@@ -260,43 +271,14 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
     return learning_model
 
 
-def predict_value(base_time, learning_model, window_size, table_type, output_train_index, instruments, right_string):
-    predict_value = 0
-
-    if table_type == "1h":
-        target_time = base_time - timedelta(hours=1)
-    elif table_type == "5m":
-        target_time = base_time - timedelta(minutes=5)
-    elif table_type == "day":
-        target_time = base_time - timedelta(days=1)
-    else:
-        raise
-
-    # パーフェクトオーダーが出てるときだけを教師データとして入力する
-    if 1==1:
-        tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC", instruments=instruments)
-
-        # 正規化を戻したいので、高値安値を押さえておく
-        output_max_price = max(tmp_dataframe[right_string])
-        output_min_price = min(tmp_dataframe[right_string])
-
-        # 正規化したいのでtimestampを落とす
-        del tmp_dataframe["insert_time"]
-        test_dataframe_dataset = tmp_dataframe.copy().values
-
-        # outputは別のモデルで正規化する
-        model = build_to_normalization(test_dataframe_dataset)
-        test_normalization_dataset = change_to_normalization(model, test_dataframe_dataset)
-
-        # データが1セットなので空配列に追加してndarrayに変換する
-        test_input_dataset = []
-        test_input_dataset.append(test_normalization_dataset)
-        test_input_dataset = np.array(test_input_dataset)
-
-        test_predict = learning_model.predict(test_input_dataset)
-        predict_value = test_predict[0][0]
-        predict_value = (predict_value*(output_max_price-output_min_price))+output_min_price
-
-
-    return predict_value
+if __name__ == "__main__":
+#    instruments = sys.argv[1]
+    start_time = "2018-06-01 00:00:00"
+    end_time = "2018-07-01 00:00:00"
+    table_type = "1h"
+    model_name = "multi_model"
+    window_size = 24
+    output_train_index = 8
+    filename = "%s_%s" % (model_name, instruments)
+    learning_model1h = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
 

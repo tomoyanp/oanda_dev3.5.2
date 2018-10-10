@@ -59,7 +59,7 @@ class SuperAlgo(object):
         self.trade_id = trade_id
 
     def setPrice(self, base_time):
-        sql = "select ask_price, bid_price, insert_time from %s_TABLE where insert_time <= \'%s\' order by insert_time DESC limit 1" % (self.instrument, base_time)
+        sql = "select close_ask, close_bid, insert_time from %s_1m_TABLE where insert_time <= \'%s\' order by insert_time DESC limit 1" % (self.instrument, base_time - timedelta(minutes=1))
         response = self.mysql_connector.select_sql(sql)
         self.ask_price = response[0][0]
         self.bid_price = response[0][1]

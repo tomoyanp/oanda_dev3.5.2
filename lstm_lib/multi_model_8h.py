@@ -148,7 +148,7 @@ def decideTerm( hour):
 def decide_market(base_time, table_type):
     flag = True
 
-    sql = "select * from %s_%s_TABLE where insert_time = \'%s\'" % (instruments, table_type, base_time)
+    sql = "select * from %s_1h_TABLE where insert_time = \'%s\'" % (instruments, table_type, base_time)
     response = mysql_connector.select_sql(sql)
     #print(response)
     if len(response) == 0:
@@ -228,6 +228,10 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                 target_time = target_time + timedelta(minutes=5)
             elif table_type == "1h":
                 target_time = target_time + timedelta(hours=1)
+            elif table_type == "3h":
+                target_time = target_time + timedelta(hours=3)
+            elif table_type == "8h":
+                target_time = target_time + timedelta(hours=8)
             elif table_type == "day":
                 target_time = target_time + timedelta(days=1)
             else:
@@ -272,7 +276,7 @@ if __name__ == "__main__":
 #    instruments = sys.argv[1]
     start_time = "2017-07-01 00:00:00"
     end_time = "2018-07-01 00:00:00"
-    table_type = "3h"
+    table_type = "8h"
     model_name = "multi_model"
     window_size = 10
     output_train_index = 1

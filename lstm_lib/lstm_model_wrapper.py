@@ -265,6 +265,10 @@ def predict_value(base_time, learning_model, window_size, table_type, output_tra
 
     if table_type == "1h":
         target_time = base_time - timedelta(hours=1)
+    elif table_type == "3h":
+        target_time = base_time - timedelta(hours=3)
+    elif table_type == "8h":
+        target_time = base_time - timedelta(hours=8)
     elif table_type == "5m":
         target_time = base_time - timedelta(minutes=5)
     elif table_type == "day":

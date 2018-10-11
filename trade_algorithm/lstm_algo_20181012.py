@@ -72,24 +72,12 @@ class LstmAlgo(SuperAlgo):
         self.output_min_price = 0
         self.trade_first_flag = ""
         self.current_path = os.path.abspath(os.path.dirname(__file__))
+        self.usdjpy_model = self.load_model(model_filename="multi_model_USD_JPY.json", weights_filename="multi_model_USD_JPY.hdf5")
+        self.eurjpy_model = self.load_model(model_filename="multi_model_EUR_JPY.json", weights_filename="multi_model_EUR_JPY.hdf5")
+        self.eurusd_model = self.load_model(model_filename="multi_model_EUR_USD.json", weights_filename="multi_model_EUR_USD.hdf5")
+        self.gbpusd_model = self.load_model(model_filename="multi_model_GBP_USD.json", weights_filename="multi_model_GBP_USD.hdf5")
+        self.gbpjpy_model = self.load_model(model_filename="multi_model_GBP_JPY.json", weights_filename="multi_model_GBP_JPY.hdf5")
         
-        self.usdjpy_1hmodel = self.load_model(model_filename="multi_model_USD_JPY_1h.json", weights_filename="multi_model_USD_JPY_1h.hdf5")
-        self.usdjpy_3hmodel = self.load_model(model_filename="multi_model_USD_JPY_3h.json", weights_filename="multi_model_USD_JPY_3h.hdf5")
-        self.usdjpy_8hmodel = self.load_model(model_filename="multi_model_USD_JPY_8h.json", weights_filename="multi_model_USD_JPY_8h.hdf5")
-
-        self.eurusd_1hmodel = self.load_model(model_filename="multi_model_EUR_USD_1h.json", weights_filename="multi_model_EUR_USD_1h.hdf5")
-        self.eurusd_3hmodel = self.load_model(model_filename="multi_model_EUR_USD_3h.json", weights_filename="multi_model_EUR_USD_3h.hdf5")
-        self.eurusd_8hmodel = self.load_model(model_filename="multi_model_EUR_USD_8h.json", weights_filename="multi_model_EUR_USD_8h.hdf5")
-
-        self.gbpusd_1hmodel = self.load_model(model_filename="multi_model_GBP_USD_1h.json", weights_filename="multi_model_GBP_USD_1h.hdf5")
-        self.gbpusd_3hmodel = self.load_model(model_filename="multi_model_GBP_USD_3h.json", weights_filename="multi_model_GBP_USD_3h.hdf5")
-        self.gbpusd_8hmodel = self.load_model(model_filename="multi_model_GBP_USD_8h.json", weights_filename="multi_model_GBP_USD_8h.hdf5")
-
-        self.gbpjpy_1hmodel = self.load_model(model_filename="multi_model_GBP_JPY_1h.json", weights_filename="multi_model_GBP_JPY_1h.hdf5")
-        self.gbpjpy_3hmodel = self.load_model(model_filename="multi_model_GBP_JPY_3h.json", weights_filename="multi_model_GBP_JPY_3h.hdf5")
-        self.gbpjpy_8hmodel = self.load_model(model_filename="multi_model_GBP_JPY_8h.json", weights_filename="multi_model_GBP_JPY_8h.hdf5")
-
-
 
     def test_predict(self, base_time):
         hour = base_time.hour
@@ -287,145 +275,125 @@ class LstmAlgo(SuperAlgo):
         return flag
 
 
-    def get_model(self, table_type, instruments):
-        model = None
-        if table_type == "1h" and instruments == "USD_JPY":
-            model = self.usdjpy_1hmodel
-        elif table_type == "3h" and instruments == "USD_JPY":
-            model = self.usdjpy_3hmodel
-        elif table_type == "8h" and instruments == "USD_JPY":
-            model = self.usdjpy_8hmodel
-
-        elif table_type == "1h" and instruments == "EUR_USD":
-            model = self.eurusd_1hmodel
-        elif table_type == "3h" and instruments == "EUR_USD":
-            model = self.eurusd_3hmodel
-        elif table_type == "8h" and instruments == "EUR_USD":
-            model = self.eurusd_8hmodel
-
-        elif table_type == "1h" and instruments == "GBP_USD":
-            model = self.gbpusd_1hmodel
-        elif table_type == "3h" and instruments == "GBP_USD":
-            model = self.gbpusd_3hmodel
-        elif table_type == "8h" and instruments == "GBP_USD":
-            model = self.gbpusd_8hmodel
-
-        elif table_type == "1h" and instruments == "GBP_JPY":
-            model = self.gbpjpy_1hmodel
-        elif table_type == "3h" and instruments == "GBP_JPY":
-            model = self.gbpjpy_3hmodel
-        elif table_type == "8h" and instruments == "GBP_JPY":
-            model = self.gbpjpy_8hmodel
-        else:
-            raise
-
-        return model
-
-    def multi_predict(self, table_type, target_time):
-        right_string = "close_price"
-        window_size = 10 
-        output_train_index = 1
-
-        instruments = "USD_JPY"
-        usdjpy = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-
-        instruments = "EUR_USD"
-        eurusd = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-
-        instruments = "GBP_USD"
-        gbpusd = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-
-        instruments = "GBP_JPY"
-        gbpjpy = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-
-        return usdjpy, eurusd, gbpusd, gbpjpy
-
-
-    def set_current_price(self, target_time):
-        table_type = "1h"
-        instruments = "USD_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
-        response = self.mysql_connector.select_sql(sql)
-        self.usdjpy_current_price = (response[0][0] + response[0][1]) / 2
-
-        instruments = "EUR_USD"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
-        response = self.mysql_connector.select_sql(sql)
-        self.eurusd_current_price = (response[0][0] + response[0][1]) / 2
-
-        instruments = "GBP_USD"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
-        response = self.mysql_connector.select_sql(sql)
-        self.gbpusd_current_price = (response[0][0] + response[0][1]) / 2
-
-        instruments = "GBP_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
-        response = self.mysql_connector.select_sql(sql)
-        self.gbpjpy_current_price = (response[0][0] + response[0][1]) / 2
-
-
 
     def decideReverseTrade(self, trade_flag, current_price, base_time):
         minutes = base_time.minute
         seconds = base_time.second
 
         if minutes == 0 and 0 < seconds <= 10 and self.order_flag == False:
-            target_time = base_time
-            self.set_current_price(target_time)
-            
-
+            right_string = "close_price"
+            window_size = 24
+            output_train_index = 8
             table_type = "1h"
-            self.usdjpy1h, self.eurusd1h, self.gbpusd1h, self.gbpjpy1h = self.multi_predict(table_type, target_time)
+            target_time = base_time
+           
+             
+            instruments = "USD_JPY"
+            usdjpy_predict = predict_value(target_time, self.usdjpy_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
-            table_type = "3h"
-            self.usdjpy3h, self.eurusd3h, self.gbpusd3h, self.gbpjpy3h = self.multi_predict(table_type, target_time)
+            instruments = "EUR_USD"
+            eurusd_predict = predict_value(target_time, self.eurusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
-            table_type = "8h"
-            self.usdjpy8h, self.eurusd8h, self.gbpusd8h, self.gbpjpy8h = self.multi_predict(table_type, target_time)
+            instruments = "GBP_USD"
+            gbpusd_predict = predict_value(target_time, self.gbpusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
-            trade1h_flag = ""
-            trade3h_flag = ""
-            trade8h_flag = ""
+            instruments = "GBP_JPY"
+            gbpjpy_predict = predict_value(target_time, self.gbpusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
-            if self.usdjpy_current_price < self.usdjpy1h and self.eurusd_current_price < self.eurusd1h and self.gbpusd_current_price < self.gbpusd1h and self.gbpjpy_current_price < self.gbpjpy1h:
-                trade1h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy1h and self.eurusd_current_price > self.eurusd1h and self.gbpusd_current_price > self.gbpusd1h and self.gbpjpy_current_price > self.gbpjpy1h:
-                trade1h_flag = "sell"
+            instruments = "USD_JPY"
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
+            response = self.mysql_connector.select_sql(sql)
+            usdjpy_predict_before = (response[0][0] + response[0][1]) / 2
+
+            instruments = "EUR_USD"
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
+            response = self.mysql_connector.select_sql(sql)
+            eurusd_predict_before = (response[0][0] + response[0][1]) / 2
+
+            instruments = "GBP_USD"
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
+            response = self.mysql_connector.select_sql(sql)
+            gbpusd_predict_before = (response[0][0] + response[0][1]) / 2
+
+            instruments = "GBP_JPY"
+            sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
+            response = self.mysql_connector.select_sql(sql)
+            gbpjpy_predict_before = (response[0][0] + response[0][1]) / 2
 
 
-            if self.usdjpy_current_price < self.usdjpy3h and self.eurusd_current_price < self.eurusd3h and self.gbpusd_current_price < self.gbpusd3h and self.gbpjpy_current_price < self.gbpjpy3h:
-                trade3h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy3h and self.eurusd_current_price > self.eurusd3h and self.gbpusd_current_price > self.gbpusd3h and self.gbpjpy_current_price > self.gbpjpy3h:
-                trade3h_flag = "sell"
+#            index = 0
+#            before_target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
+#            before_target_time = datetime.strptime(before_target_time, "%Y-%m-%d %H:%M:%S")
+#            while True:
+#                sql = "select * from USD_JPY_1h_TABLE where insert_time = \'%s\' order by insert_time desc limit 1" % before_target_time.strftime("%Y-%m-%d %H:%M:%S")
+#                response = self.mysql_connector.select_sql(sql)
+#                if len(response) > 0:
+#                    index = index + 1
+#                if index == output_train_index:
+#                    break
+#                before_target_time = before_target_time - timedelta(hours=1)
+#            
+#                print("before=%s" % before_target_time.strftime("%Y-%m-%d %H:%M:%S"))
+#           
+#            instruments = "USD_JPY"
+#            usdjpy_predict_before = predict_value(before_target_time, self.usdjpy_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+#
+#            instruments = "EUR_USD"
+#            eurusd_predict_before = predict_value(before_target_time, self.eurusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+#
+#            instruments = "GBP_USD"
+#            gbpusd_predict_before = predict_value(before_target_time, self.gbpusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+#
+#            instruments = "GBP_JPY"
+#            gbpjpy_predict_before = predict_value(before_target_time, self.gbpusd_model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
-            if self.usdjpy_current_price < self.usdjpy8h and self.eurusd_current_price < self.eurusd8h and self.gbpusd_current_price < self.gbpusd8h and self.gbpjpy_current_price < self.gbpjpy8h:
-                trade8h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy8h and self.eurusd_current_price > self.eurusd8h and self.gbpusd_current_price > self.gbpusd8h and self.gbpjpy_current_price > self.gbpjpy8h:
-                trade8h_flag = "sell"
 
-
-            if trade1h_flag == trade3h_flag == trade8h_flag == "buy":
+            if usdjpy_predict_before < usdjpy_predict and eurusd_predict_before < eurusd_predict and gbpusd_predict_before < gbpusd_predict and gbpjpy_predict_before < gbpjpy_predict:
                 trade_flag = "buy"
-            elif trade1h_flag == trade3h_flag == trade8h_flag == "sell":
+            elif usdjpy_predict_before > usdjpy_predict and eurusd_predict_before > eurusd_predict and gbpusd_predict_before > gbpusd_predict and gbpjpy_predict_before > gbpjpy_predict:
                 trade_flag = "sell"
 
 
-            self.debug_logger.info("# usdjpy=%s" % self.usdjpy_current_price)
-            self.debug_logger.info("# usdjpy1h=%s" % self.usdjpy1h)
-            self.debug_logger.info("# usdjpy3h=%s" % self.usdjpy3h)
-            self.debug_logger.info("# usdjpy8h=%s" % self.usdjpy8h)
-            self.debug_logger.info("# eurusd=%s" % self.eurusd_current_price)
-            self.debug_logger.info("# eurusd1h=%s" % self.eurusd1h)
-            self.debug_logger.info("# eurusd3h=%s" % self.eurusd3h)
-            self.debug_logger.info("# eurusd8h=%s" % self.eurusd8h)
-            self.debug_logger.info("# gbpusd=%s" % self.gbpusd_current_price)
-            self.debug_logger.info("# gbpusd1h=%s" % self.gbpusd1h)
-            self.debug_logger.info("# gbpusd3h=%s" % self.gbpusd3h)
-            self.debug_logger.info("# gbpusd8h=%s" % self.gbpusd8h)
-            self.debug_logger.info("# gbpjpy=%s" % self.gbpjpy_current_price)
-            self.debug_logger.info("# gbpjpy1h=%s" % self.gbpjpy1h)
-            self.debug_logger.info("# gbpjpy3h=%s" % self.gbpjpy3h)
-            self.debug_logger.info("# gbpjpy8h=%s" % self.gbpjpy8h)
+            if trade_flag != "pass" and self.order_flag:
+                if trade_flag == "buy" and self.order_kind == "buy":
+                    trade_flag = "pass"
+                elif trade_flag == "sell" and self.order_kind == "sell":
+                    trade_flag = "pass"
+                else:
+                    pass
+                
+    
+            if trade_flag == "buy" or trade_flag == "sell":
+                self.result_logger.info("#######################################################")
+                self.result_logger.info("# EXECUTE ORDER at %s" % base_time)
+                self.result_logger.info("# target_time at %s" % target_time)
+                #self.result_logger.info("# before_target_time at %s" % before_target_time)
+                self.result_logger.info("# trade_flag=%s" % trade_flag)
+                self.result_logger.info("# ORDER_PRICE=%s" % ((self.ask_price + self.bid_price)/2 ))
+                self.result_logger.info("# usdjpy_bef=%s" % usdjpy_predict_before)
+                self.result_logger.info("# usdjpy=%s" % usdjpy_predict)
+                self.result_logger.info("# eurusd_bef=%s" % eurusd_predict_before)
+                self.result_logger.info("# eurusd=%s" % eurusd_predict)
+                self.result_logger.info("# gbpusd_bef=%s" % gbpusd_predict_before)
+                self.result_logger.info("# gbpusd=%s" % gbpusd_predict)
+                self.result_logger.info("# gbpjpy_bef=%s" % gbpjpy_predict_before)
+                self.result_logger.info("# gbpjpy=%s" % gbpjpy_predict)
+            else:
+                self.debug_logger.info("#######################################################")
+                self.debug_logger.info("# base_time=%s" % base_time)
+                self.debug_logger.info("# target_time at %s" % target_time)
+                #self.debug_logger.info("# before_target_time at %s" % before_target_time)
+                self.debug_logger.info("# trade_flag=%s" % trade_flag)
+                self.debug_logger.info("# ORDER_PRICE=%s" % ((self.ask_price + self.bid_price)/2 ))
+                self.debug_logger.info("# usdjpy_bef=%s" % usdjpy_predict_before)
+                self.debug_logger.info("# usdjpy=%s" % usdjpy_predict)
+                self.debug_logger.info("# eurusd_bef=%s" % eurusd_predict_before)
+                self.debug_logger.info("# eurusd=%s" % eurusd_predict)
+                self.debug_logger.info("# gbpusd_bef=%s" % gbpusd_predict_before)
+                self.debug_logger.info("# gbpusd=%s" % gbpusd_predict)
+                self.debug_logger.info("# gbpjpy_bef=%s" % gbpjpy_predict_before)
+                self.debug_logger.info("# gbpjpy=%s" % gbpjpy_predict)
+
 
         return trade_flag
 
@@ -464,29 +432,20 @@ class LstmAlgo(SuperAlgo):
 
 
     def entryLogWrite(self, base_time):
-        self.result_logger.info("#######################################################")
-        self.result_logger.info("# in %s Algorithm" % self.algorithm)
-        self.result_logger.info("# EXECUTE ORDER at %s" % base_time)
-        self.result_logger.info("# trade_flag=%s" % self.order_kind)
-        self.result_logger.info("# ORDER_PRICE=%s" % ((self.ask_price + self.bid_price)/2 ))
-        self.result_logger.info("# usdjpy=%s" % self.usdjpy_current_price)
-        self.result_logger.info("# usdjpy1h=%s" % self.usdjpy1h)
-        self.result_logger.info("# usdjpy3h=%s" % self.usdjpy3h)
-        self.result_logger.info("# usdjpy8h=%s" % self.usdjpy8h)
-        self.result_logger.info("# eurusd=%s" % self.eurusd_current_price)
-        self.result_logger.info("# eurusd1h=%s" % self.eurusd1h)
-        self.result_logger.info("# eurusd3h=%s" % self.eurusd3h)
-        self.result_logger.info("# eurusd8h=%s" % self.eurusd8h)
-        self.result_logger.info("# gbpusd=%s" % self.gbpusd_current_price)
-        self.result_logger.info("# gbpusd1h=%s" % self.gbpusd1h)
-        self.result_logger.info("# gbpusd3h=%s" % self.gbpusd3h)
-        self.result_logger.info("# gbpusd8h=%s" % self.gbpusd8h)
-        self.result_logger.info("# gbpjpy=%s" % self.gbpjpy_current_price)
-        self.result_logger.info("# gbpjpy1h=%s" % self.gbpjpy1h)
-        self.result_logger.info("# gbpjpy3h=%s" % self.gbpjpy3h)
-        self.result_logger.info("# gbpjpy8h=%s" % self.gbpjpy8h)
-
-
+#        self.result_logger.info("#######################################################")
+#        self.result_logger.info("# in %s Algorithm" % self.algorithm)
+#        self.result_logger.info("# EXECUTE ORDER at %s" % base_time)
+#        self.result_logger.info("# trade_flag=%s" % self.order_kind)
+#        self.result_logger.info("# ORDER_PRICE=%s" % ((self.ask_price + self.bid_price)/2 ))
+#        self.result_logger.info("# usdjpy_bef=%s" % self.predict_value1d_before)
+#        self.result_logger.info("# usdjpy=%s" % self.predict_value1d)
+#        self.result_logger.info("# eurusd_bef=%s" % self.predict_value)
+#        self.result_logger.info("# eurusd=%s" % self.predict_value)
+#        self.result_logger.info("# gbpusd_bef=%s" % self.predict_value)
+#        self.result_logger.info("# gbpusd=%s" % self.predict_value)
+#        self.result_logger.info("# gbpjpy_bef=%s" % self.predict_value)
+#        self.result_logger.info("# gbpjpy=%s" % self.predict_value)
+        pass
 
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):

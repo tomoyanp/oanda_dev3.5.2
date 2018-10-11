@@ -275,7 +275,7 @@ if __name__ == "__main__":
     table_type = "1h"
     model_name = "multi_model"
     window_size = 10
-    output_train_index = 8
+    output_train_index = 1
     filename = "%s_%s" % (model_name, instruments)
     learning_model1h = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
 

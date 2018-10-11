@@ -272,10 +272,10 @@ if __name__ == "__main__":
 #    instruments = sys.argv[1]
     start_time = "2017-07-01 00:00:00"
     end_time = "2018-07-01 00:00:00"
-    table_type = "1h"
+    table_type = "3h"
     model_name = "multi_model"
     window_size = 10
     output_train_index = 1
-    filename = "%s_%s" % (model_name, instruments)
+    filename = "%s_%s_%s" % (model_name, instruments, table_type)
     learning_model1h = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
 

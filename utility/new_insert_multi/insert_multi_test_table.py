@@ -43,7 +43,7 @@ def insert_table(base_time, currency, con, table_type):
     elif table_type == "day":
         granularity = "D"
 
-    start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
+    start_time = base_time.strftime("%Y-%m-%d %H:%M:%S")
     start_time = jp_utc(start_time)
     start_time = start_time.strftime("%Y-%m-%dT%H:%M:%S")
     response = oanda.get_history(
@@ -68,7 +68,11 @@ def insert_table(base_time, currency, con, table_type):
 
         sql = "insert into %s_%s_TABLE(open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, \'%s\')" % (currency, table_type, open_ask_price, open_bid_price, close_ask_price, close_bid_price, high_ask_price, high_bid_price, low_ask_price, low_bid_price, insert_time)
         print(sql)
-        con.insert_sql(sql)
+        try:
+            con.insert_sql(sql)
+
+        except Exception as e:
+            print(e.args)
 
     return insert_time
 
@@ -85,9 +89,10 @@ if __name__ == "__main__":
 
     while True:
         try:
-            now = datetime.now()
             base_time = insert_table(base_time, currency, con, table_type)
 
+            if type(base_time) is str:
+                base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
             if base_time > end_time:
                 break
 

@@ -52,7 +52,7 @@ def jp_utc(local_time):
 ### memomemo
 #{'candles': [{'time': '2018-10-04T15:30:00.000000Z', 'lowAsk': 148.225, 'openBid': 148.223, 'closeAsk': 148.314, 'closeBid': 148.286, 'volume': 110, 'complete': True, 'openAsk': 148.247, 'highAsk': 148.317, 'lowBid': 148.199, 'highBid': 148.289}], 'instrument': 'GBP_JPY', 'granularity': 'M1'}5
  
-test_time = "2018-02-01 00:00:00"
+test_time = "2018-10-01 00:00:00"
 print(test_time)
 test_time = datetime.strptime(test_time, "%Y-%m-%d %H:%M:%S")
 test_time = test_time - timedelta(hours=9)
@@ -70,7 +70,7 @@ oanda = oandapy.API(environment=env, access_token=token)
 response = oanda.get_history(
     instrument=["GBP_JPY", "USD_JPY"],
     start=test_time,
-    granularity="H8",
+    granularity="H3",
     count=10
 )
 

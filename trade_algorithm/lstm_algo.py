@@ -404,12 +404,18 @@ class LstmAlgo(SuperAlgo):
                 trade8h_flag = "sell"
 
 
-            if trade1h_flag == trade3h_flag == trade8h_flag == "buy":
+            #if trade1h_flag == trade3h_flag == trade8h_flag == "buy":
+            #    trade_flag = "buy"
+            #elif trade1h_flag == trade3h_flag == trade8h_flag == "sell":
+            #    trade_flag = "sell"
+            if trade1h_flag == trade3h_flag == "buy":
                 trade_flag = "buy"
-            elif trade1h_flag == trade3h_flag == trade8h_flag == "sell":
+            elif trade1h_flag == trade3h_flag == "sell":
                 trade_flag = "sell"
 
 
+            self.debug_logger.info("###############################")
+            self.debug_logger.info("# base_time=%s" % base_time)
             self.debug_logger.info("# usdjpy=%s" % self.usdjpy_current_price)
             self.debug_logger.info("# usdjpy1h=%s" % self.usdjpy1h)
             self.debug_logger.info("# usdjpy3h=%s" % self.usdjpy3h)

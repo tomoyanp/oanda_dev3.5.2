@@ -1,0 +1,1228 @@
+#########################
+# ../main.py GBP_JPY demo lstm trendreverse_test test 
+# enable_time = ['00:00:00', '01:00:00', '02:00:00', '03:00:00', '08:00:00', '09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00', '21:00:00', '22:00:00', '23:00:00']
+# enable_time_mode = off
+# ex_stlmode = on
+# first_trail_mode = on
+# second_trail_mode = on
+# sleep_time = 10
+# stl_sleep_ltime = 0
+# stl_sleep_time = 10
+# stl_sleep_vtime = 0
+# stl_time_width = 720000
+# stop_loss = 0.5
+# take_profit = 0.5
+# time_width = 720000
+# trade_sleep_time = 60
+# units = 15000
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-02 19:00:10
+# trade_flag=buy
+# ORDER_PRICE=145.75
+# usdjpy=110.833
+# usdjpy1h=110.88011833560466
+# usdjpy3h=110.8931790459156
+# usdjpy8h=110.68585055589675
+# eurusd=1.164015
+# eurusd1h=1.1646002366162835
+# eurusd3h=1.1651668942028284
+# eurusd8h=1.1650354906082152
+# gbpusd=1.3150300000000001
+# gbpusd1h=1.3176499943804743
+# gbpusd3h=1.316564065628648
+# gbpusd8h=1.31772702947855
+# gbpjpy=145.75
+# gbpjpy1h=145.82487258052828
+# gbpjpy3h=146.10499475109577
+# gbpjpy8h=145.77443109720943
+# EXECUTE stl logic SETTLEMENT at 2018-07-02 22:02:10
+# self.ask_price=145.28
+# self.bid_price=145.251
+# self.log_max_price=145.83350000000002
+# self.log_min_price=145.2655
+# self.stl_logic=none
+# STL_PRICE=145.2655
+# PROFIT=-0.5109999999999957
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-03 00:00:10
+# trade_flag=buy
+# ORDER_PRICE=145.3275
+# usdjpy=110.742
+# usdjpy1h=110.76420789086818
+# usdjpy3h=110.87210760569573
+# usdjpy8h=110.66215353751183
+# eurusd=1.16052
+# eurusd1h=1.1618446562767029
+# eurusd3h=1.1624331953510643
+# eurusd8h=1.1639680273818969
+# gbpusd=1.312345
+# gbpusd1h=1.3128353642774373
+# gbpusd3h=1.3141904862551392
+# gbpusd8h=1.3121926871994138
+# gbpjpy=145.3275
+# gbpjpy1h=145.42865421676635
+# gbpjpy3h=145.52784922707824
+# gbpjpy8h=145.55791755405068
+# EXECUTE stl logic SETTLEMENT at 2018-07-03 10:09:10
+# self.ask_price=145.871
+# self.bid_price=145.846
+# self.log_max_price=145.8585
+# self.log_min_price=145.289
+# self.stl_logic=none
+# STL_PRICE=145.8585
+# PROFIT=0.5039999999999907
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-03 11:00:10
+# trade_flag=buy
+# ORDER_PRICE=145.506
+# usdjpy=110.854
+# usdjpy1h=110.91221363660694
+# usdjpy3h=110.88771592751145
+# usdjpy8h=110.78917674934864
+# eurusd=1.1631
+# eurusd1h=1.1636436389660836
+# eurusd3h=1.1643068486630916
+# eurusd8h=1.1641687367820739
+# gbpusd=1.31259
+# gbpusd1h=1.312757695465088
+# gbpusd3h=1.3140812927181273
+# gbpusd8h=1.3165196039915086
+# gbpjpy=145.506
+# gbpjpy1h=145.5999679005146
+# gbpjpy3h=145.65831198094784
+# gbpjpy8h=145.73678520995378
+# EXECUTE stl logic SETTLEMENT at 2018-07-03 15:55:10
+# self.ask_price=146.049
+# self.bid_price=146.024
+# self.log_max_price=146.0365
+# self.log_min_price=145.40949999999998
+# self.stl_logic=none
+# STL_PRICE=146.0365
+# PROFIT=0.5030000000000143
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-03 16:00:10
+# trade_flag=sell
+# ORDER_PRICE=145.9835
+# usdjpy=111.05250000000001
+# usdjpy1h=110.98822213065625
+# usdjpy3h=111.00309580659867
+# usdjpy8h=110.73151957958936
+# eurusd=1.164585
+# eurusd1h=1.1641888057780265
+# eurusd3h=1.1635952558791638
+# eurusd8h=1.1632398490089177
+# gbpusd=1.3145099999999998
+# gbpusd1h=1.313524153575897
+# gbpusd3h=1.3129508436617257
+# gbpusd8h=1.3155139690035582
+# gbpjpy=145.9835
+# gbpjpy1h=145.86127736976744
+# gbpjpy3h=145.8152034306824
+# gbpjpy8h=145.736685249269
+# EXECUTE stl logic SETTLEMENT at 2018-07-05 15:01:10
+# self.ask_price=146.482
+# self.bid_price=146.455
+# self.log_max_price=146.4685
+# self.log_min_price=145.49
+# self.stl_logic=none
+# STL_PRICE=146.4685
+# PROFIT=-0.5099999999999909
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-05 19:00:10
+# trade_flag=sell
+# ORDER_PRICE=146.632
+# usdjpy=110.686
+# usdjpy1h=110.61283056116105
+# usdjpy3h=110.58117747303844
+# usdjpy8h=110.55232651059329
+# eurusd=1.1687949999999998
+# eurusd1h=1.168543831334114
+# eurusd3h=1.1685561738580466
+# eurusd8h=1.164804438921809
+# gbpusd=1.324795
+# gbpusd1h=1.324338186817169
+# gbpusd3h=1.322581917886734
+# gbpusd8h=1.3219628780576587
+# gbpjpy=146.632
+# gbpjpy1h=146.61944779288768
+# gbpjpy3h=146.28520036441088
+# gbpjpy8h=145.82737540584804
+# EXECUTE stl logic SETTLEMENT at 2018-07-05 22:37:10
+# self.ask_price=146.115
+# self.bid_price=146.088
+# self.log_max_price=146.87
+# self.log_min_price=146.1015
+# self.stl_logic=none
+# STL_PRICE=146.1015
+# PROFIT=0.5049999999999955
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-11 05:00:10
+# trade_flag=sell
+# ORDER_PRICE=147.699
+# usdjpy=111.2755
+# usdjpy1h=111.22030369114876
+# usdjpy3h=111.17208746170998
+# usdjpy8h=111.11202944481373
+# eurusd=1.1746699999999999
+# eurusd1h=1.174080788924694
+# eurusd3h=1.1740936633771657
+# eurusd8h=1.170677300105691
+# gbpusd=1.3273000000000001
+# gbpusd1h=1.3267112531477212
+# gbpusd3h=1.323415868022442
+# gbpusd8h=1.3310974126559496
+# gbpjpy=147.699
+# gbpjpy1h=147.67137508106234
+# gbpjpy3h=147.42089234161378
+# gbpjpy8h=147.6050413991213
+# EXECUTE stl logic SETTLEMENT at 2018-07-11 07:12:10
+# self.ask_price=147.173
+# self.bid_price=147.136
+# self.log_max_price=147.7765
+# self.log_min_price=147.15449999999998
+# self.stl_logic=none
+# STL_PRICE=147.15449999999998
+# PROFIT=0.5099999999999909
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-12 17:00:10
+# trade_flag=sell
+# ORDER_PRICE=148.454
+# usdjpy=112.3355
+# usdjpy1h=112.2968101658821
+# usdjpy3h=112.21933878636361
+# usdjpy8h=112.02621698975564
+# eurusd=1.168455
+# eurusd1h=1.168374343676567
+# eurusd3h=1.1682584787499903
+# eurusd8h=1.1681333144122361
+# gbpusd=1.3214899999999998
+# gbpusd1h=1.321414490109682
+# gbpusd3h=1.3199662109035255
+# gbpusd8h=1.3239666209056973
+# gbpjpy=148.454
+# gbpjpy1h=148.39161140015722
+# gbpjpy3h=148.11749348565937
+# gbpjpy8h=148.1835226328373
+# EXECUTE stl logic SETTLEMENT at 2018-07-13 17:40:10
+# self.ask_price=147.905
+# self.bid_price=147.879
+# self.log_max_price=148.89249999999998
+# self.log_min_price=147.892
+# self.stl_logic=none
+# STL_PRICE=147.892
+# PROFIT=0.5360000000000014
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-13 19:00:10
+# trade_flag=buy
+# ORDER_PRICE=147.72500000000002
+# usdjpy=112.47399999999999
+# usdjpy1h=112.62972348940372
+# usdjpy3h=112.67691584426164
+# usdjpy8h=112.48313694930077
+# eurusd=1.163525
+# eurusd1h=1.1638154076695444
+# eurusd3h=1.1655545453727245
+# eurusd8h=1.1658352884036303
+# gbpusd=1.3133249999999999
+# gbpusd1h=1.3134783329647781
+# gbpusd3h=1.317798124691248
+# gbpusd8h=1.3184540705728531
+# gbpjpy=147.72500000000002
+# gbpjpy1h=147.9891852800548
+# gbpjpy3h=148.2400862312317
+# gbpjpy8h=148.44582486599683
+# EXECUTE stl logic SETTLEMENT at 2018-07-13 22:39:10
+# self.ask_price=148.273
+# self.bid_price=148.244
+# self.log_max_price=148.2585
+# self.log_min_price=147.7145
+# self.stl_logic=none
+# STL_PRICE=148.2585
+# PROFIT=0.5049999999999955
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-16 10:00:10
+# trade_flag=sell
+# ORDER_PRICE=148.87400000000002
+# usdjpy=112.4795
+# usdjpy1h=112.41650961136818
+# usdjpy3h=112.36947512072325
+# usdjpy8h=112.363135222435
+# eurusd=1.168445
+# eurusd1h=1.1682269739049673
+# eurusd3h=1.167861391735077
+# eurusd8h=1.169271023439467
+# gbpusd=1.323525
+# gbpusd1h=1.3231701099273563
+# gbpusd3h=1.321874928613901
+# gbpusd8h=1.3227182911229134
+# gbpjpy=148.87400000000002
+# gbpjpy1h=148.77491159999371
+# gbpjpy3h=148.71451376485825
+# gbpjpy8h=148.85262111473082
+# EXECUTE stl logic SETTLEMENT at 2018-07-17 21:50:10
+# self.ask_price=148.264
+# self.bid_price=148.241
+# self.log_max_price=149.31599999999997
+# self.log_min_price=148.2525
+# self.stl_logic=none
+# STL_PRICE=148.2525
+# PROFIT=0.5960000000000036
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-19 21:00:10
+# trade_flag=buy
+# ORDER_PRICE=146.713
+# usdjpy=112.9545
+# usdjpy1h=113.00706471061706
+# usdjpy3h=112.95994702041149
+# usdjpy8h=112.77119075280429
+# eurusd=1.16004
+# eurusd1h=1.160083715134561
+# eurusd3h=1.161214520434141
+# eurusd8h=1.1637714435728639
+# gbpusd=1.298905
+# gbpusd1h=1.2993661801964045
+# gbpusd3h=1.301019812657088
+# gbpusd8h=1.3042801037538052
+# gbpjpy=146.713
+# gbpjpy1h=146.8035125915706
+# gbpjpy3h=146.92945732159913
+# gbpjpy8h=147.54651777210833
+# EXECUTE stl logic SETTLEMENT at 2018-07-20 02:16:10
+# self.ask_price=146.214
+# self.bid_price=146.182
+# self.log_max_price=146.87099999999998
+# self.log_min_price=146.19799999999998
+# self.stl_logic=none
+# STL_PRICE=146.19799999999998
+# PROFIT=-0.5430000000000064
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-24 10:00:10
+# trade_flag=buy
+# ORDER_PRICE=145.71699999999998
+# usdjpy=111.231
+# usdjpy1h=111.38265594506262
+# usdjpy3h=111.30446927696467
+# usdjpy8h=111.66916427978873
+# eurusd=1.16929
+# eurusd1h=1.1694027273261547
+# eurusd3h=1.1696449348127842
+# eurusd8h=1.1675660807341337
+# gbpusd=1.309985
+# gbpusd1h=1.310156473672539
+# gbpusd3h=1.3108897647804023
+# gbpusd8h=1.3110807432836293
+# gbpjpy=145.71699999999998
+# gbpjpy1h=145.87312716466187
+# gbpjpy3h=145.94488712947071
+# gbpjpy8h=145.98075889891388
+# EXECUTE stl logic SETTLEMENT at 2018-07-25 01:14:10
+# self.ask_price=146.273
+# self.bid_price=146.245
+# self.log_max_price=146.25900000000001
+# self.log_min_price=145.473
+# self.stl_logic=none
+# STL_PRICE=146.25900000000001
+# PROFIT=0.5130000000000052
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-25 03:00:10
+# trade_flag=buy
+# ORDER_PRICE=146.0455
+# usdjpy=111.15950000000001
+# usdjpy1h=111.17113257241249
+# usdjpy3h=111.232129450351
+# usdjpy8h=111.29252493189274
+# eurusd=1.168115
+# eurusd1h=1.1688723774655163
+# eurusd3h=1.1695985727906226
+# eurusd8h=1.1697326444339753
+# gbpusd=1.3137850000000002
+# gbpusd1h=1.3146602740967273
+# gbpusd3h=1.3147026210093498
+# gbpusd8h=1.3141481676787137
+# gbpjpy=146.0455
+# gbpjpy1h=146.07838523864746
+# gbpjpy3h=146.06710677802562
+# gbpjpy8h=145.81671201211213
+# EXECUTE stl logic SETTLEMENT at 2018-07-27 09:55:10
+# self.ask_price=145.627
+# self.bid_price=145.527
+# self.log_max_price=146.522
+# self.log_min_price=145.577
+# self.stl_logic=none
+# STL_PRICE=145.577
+# PROFIT=-0.5320000000000107
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-27 11:00:10
+# trade_flag=buy
+# ORDER_PRICE=145.4185
+# usdjpy=110.97149999999999
+# usdjpy1h=111.06191239392757
+# usdjpy3h=111.12696239492298
+# usdjpy8h=111.08832470184565
+# eurusd=1.1644800000000002
+# eurusd1h=1.164550972737968
+# eurusd3h=1.1655399064083396
+# eurusd8h=1.1661412136660514
+# gbpusd=1.310445
+# gbpusd1h=1.3105486207938193
+# gbpusd3h=1.311220802861452
+# gbpusd8h=1.3121149241185188
+# gbpjpy=145.4185
+# gbpjpy1h=145.61748513641953
+# gbpjpy3h=145.80326866823435
+# gbpjpy8h=145.92431657750902
+# weekend stl logic
+# EXECUTE stl logic SETTLEMENT at 2018-07-28 05:00:00
+# self.ask_price=145.524
+# self.bid_price=145.496
+# self.log_max_price=145.6995
+# self.log_min_price=145.29149999999998
+# self.stl_logic=none
+# STL_PRICE=145.51
+# PROFIT=0.0660000000000025
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-30 10:00:10
+# trade_flag=sell
+# ORDER_PRICE=145.55450000000002
+# usdjpy=111.02199999999999
+# usdjpy1h=110.97929196929933
+# usdjpy3h=110.98561868619919
+# usdjpy8h=110.97159941130877
+# eurusd=1.166045
+# eurusd1h=1.1659423031139373
+# eurusd3h=1.165603129169047
+# eurusd8h=1.166150172972381
+# gbpusd=1.311045
+# gbpusd1h=1.3109960016256572
+# gbpusd3h=1.3110087746480108
+# gbpusd8h=1.3106033119146527
+# gbpjpy=145.55450000000002
+# gbpjpy1h=145.54482529744507
+# gbpjpy3h=145.5033103169948
+# gbpjpy8h=145.62675825529547
+# EXECUTE stl logic SETTLEMENT at 2018-07-31 13:09:10
+# self.ask_price=146.067
+# self.bid_price=146.028
+# self.log_max_price=146.0475
+# self.log_min_price=145.474
+# self.stl_logic=none
+# STL_PRICE=146.0475
+# PROFIT=-0.5260000000000105
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-31 14:00:10
+# trade_flag=sell
+# ORDER_PRICE=145.8195
+# usdjpy=111.0455
+# usdjpy1h=111.02365752017498
+# usdjpy3h=111.00311193832755
+# usdjpy8h=110.94736174070836
+# eurusd=1.1716199999999999
+# eurusd1h=1.1713851861155031
+# eurusd3h=1.1700904367685316
+# eurusd8h=1.1716066758316754
+# gbpusd=1.3131249999999999
+# gbpusd1h=1.3130005801820754
+# gbpusd3h=1.3130196640706062
+# gbpusd8h=1.3138923056718708
+# gbpjpy=145.8195
+# gbpjpy1h=145.79455330717565
+# gbpjpy3h=145.73154632902146
+# gbpjpy8h=145.80274332910778
+# EXECUTE stl logic SETTLEMENT at 2018-07-31 16:33:10
+# self.ask_price=146.343
+# self.bid_price=146.315
+# self.log_max_price=146.329
+# self.log_min_price=145.8195
+# self.stl_logic=none
+# STL_PRICE=146.329
+# PROFIT=-0.542999999999978
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-07-31 18:00:10
+# trade_flag=sell
+# ORDER_PRICE=146.65550000000002
+# usdjpy=111.53999999999999
+# usdjpy1h=111.50711530154943
+# usdjpy3h=111.48079935419558
+# usdjpy8h=110.94736174070836
+# eurusd=1.17253
+# eurusd1h=1.172173110833764
+# eurusd3h=1.1711149824264646
+# eurusd8h=1.1716066758316754
+# gbpusd=1.3148499999999999
+# gbpusd1h=1.3139847210776805
+# gbpusd3h=1.3145515062522888
+# gbpusd8h=1.3138923056718708
+# gbpjpy=146.65550000000002
+# gbpjpy1h=146.49756125435235
+# gbpjpy3h=146.47306893122197
+# gbpjpy8h=145.80274332910778
+# EXECUTE stl logic SETTLEMENT at 2018-08-01 16:23:10
+# self.ask_price=147.151
+# self.bid_price=147.127
+# self.log_max_price=147.139
+# self.log_min_price=146.527
+# self.stl_logic=none
+# STL_PRICE=147.139
+# PROFIT=-0.5090000000000146
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-02 01:00:10
+# trade_flag=buy
+# ORDER_PRICE=146.57600000000002
+# usdjpy=111.73349999999999
+# usdjpy1h=111.85563220399618
+# usdjpy3h=111.91708269697428
+# usdjpy8h=111.77007900071143
+# eurusd=1.16652
+# eurusd1h=1.1670957969009876
+# eurusd3h=1.1678542863194645
+# eurusd8h=1.1689116416341065
+# gbpusd=1.3117999999999999
+# gbpusd1h=1.3119736861896516
+# gbpusd3h=1.3120265876966715
+# gbpusd8h=1.314120167297125
+# gbpjpy=146.57600000000002
+# gbpjpy1h=146.96922226449848
+# gbpjpy3h=146.93256101530793
+# gbpjpy8h=146.8789216127396
+# EXECUTE stl logic SETTLEMENT at 2018-08-02 15:26:10
+# self.ask_price=146.115
+# self.bid_price=146.086
+# self.log_max_price=146.6805
+# self.log_min_price=146.1005
+# self.stl_logic=none
+# STL_PRICE=146.1005
+# PROFIT=-0.5039999999999907
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-02 19:00:10
+# trade_flag=buy
+# ORDER_PRICE=145.863
+# usdjpy=111.511
+# usdjpy1h=111.55753120994568
+# usdjpy3h=111.56143582725524
+# usdjpy8h=111.6651570289731
+# eurusd=1.1614
+# eurusd1h=1.1623982025541364
+# eurusd3h=1.1647559821015596
+# eurusd8h=1.1649237207639218
+# gbpusd=1.3080150000000001
+# gbpusd1h=1.3080851728995146
+# gbpusd3h=1.3115352897942067
+# gbpusd8h=1.3110054732568563
+# gbpjpy=145.863
+# gbpjpy1h=145.96476648831367
+# gbpjpy3h=146.0970418935269
+# gbpjpy8h=146.50790039277078
+# EXECUTE stl logic SETTLEMENT at 2018-08-02 20:51:10
+# self.ask_price=145.28
+# self.bid_price=145.247
+# self.log_max_price=146.2105
+# self.log_min_price=145.26350000000002
+# self.stl_logic=none
+# STL_PRICE=145.26350000000002
+# PROFIT=-0.6289999999999907
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-02 21:00:10
+# trade_flag=buy
+# ORDER_PRICE=145.3985
+# usdjpy=111.4485
+# usdjpy1h=111.47218173506856
+# usdjpy3h=111.52982958141713
+# usdjpy8h=111.6651570289731
+# eurusd=1.161715
+# eurusd1h=1.1623207375234366
+# eurusd3h=1.1627489698046447
+# eurusd8h=1.1649237207639218
+# gbpusd=1.3045749999999998
+# gbpusd1h=1.306903447060585
+# gbpusd3h=1.3086002860128878
+# gbpusd8h=1.3110054732568563
+# gbpjpy=145.3985
+# gbpjpy1h=145.72660526907444
+# gbpjpy3h=145.72061685560644
+# gbpjpy8h=146.50790039277078
+# EXECUTE stl logic SETTLEMENT at 2018-08-03 22:07:10
+# self.ask_price=144.92
+# self.bid_price=144.891
+# self.log_max_price=145.5765
+# self.log_min_price=144.9055
+# self.stl_logic=none
+# STL_PRICE=144.9055
+# PROFIT=-0.5190000000000055
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-06 18:00:10
+# trade_flag=buy
+# ORDER_PRICE=144.183
+# usdjpy=111.221
+# usdjpy1h=111.24638124734162
+# usdjpy3h=111.22768097564577
+# usdjpy8h=111.34467494368553
+# eurusd=1.1558000000000002
+# eurusd1h=1.1558918968155234
+# eurusd3h=1.1562784913355113
+# eurusd8h=1.1571826796853542
+# gbpusd=1.2963900000000002
+# gbpusd1h=1.2974150050395727
+# gbpusd3h=1.3011659611219166
+# gbpusd8h=1.3001092673053594
+# gbpjpy=144.183
+# gbpjpy1h=144.35124810147286
+# gbpjpy3h=144.686123541072
+# gbpjpy8h=144.92608723837137
+# EXECUTE stl logic SETTLEMENT at 2018-08-08 15:48:10
+# self.ask_price=143.691
+# self.bid_price=143.666
+# self.log_max_price=144.433
+# self.log_min_price=143.67849999999999
+# self.stl_logic=none
+# STL_PRICE=143.67849999999999
+# PROFIT=-0.5300000000000011
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-08 17:00:10
+# trade_flag=buy
+# ORDER_PRICE=143.4305
+# usdjpy=110.947
+# usdjpy1h=111.05225828802585
+# usdjpy3h=111.23132630366086
+# usdjpy8h=111.36455628108978
+# eurusd=1.160985
+# eurusd1h=1.1610978966143728
+# eurusd3h=1.1612763499921561
+# eurusd8h=1.1620699301499129
+# gbpusd=1.2927499999999998
+# gbpusd1h=1.2936506896209716
+# gbpusd3h=1.2952802908110619
+# gbpusd8h=1.2934637799544633
+# gbpjpy=143.4305
+# gbpjpy1h=143.6594919618368
+# gbpjpy3h=144.1765447662771
+# gbpjpy8h=144.29515344430507
+# EXECUTE stl logic SETTLEMENT at 2018-08-08 19:31:10
+# self.ask_price=142.945
+# self.bid_price=142.921
+# self.log_max_price=143.46050000000002
+# self.log_min_price=142.933
+# self.stl_logic=none
+# STL_PRICE=142.933
+# PROFIT=-0.5220000000000198
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-08 20:00:10
+# trade_flag=buy
+# ORDER_PRICE=142.838
+# usdjpy=111.046
+# usdjpy1h=111.05454435706139
+# usdjpy3h=111.14501810130477
+# usdjpy8h=111.36455628108978
+# eurusd=1.15953
+# eurusd1h=1.1602830154302717
+# eurusd3h=1.1605168982675673
+# eurusd8h=1.1620699301499129
+# gbpusd=1.28633
+# gbpusd1h=1.2912631205770373
+# gbpusd3h=1.2942978053480387
+# gbpusd8h=1.2934637799544633
+# gbpjpy=142.838
+# gbpjpy1h=143.1454110750407
+# gbpjpy3h=143.6287252331972
+# gbpjpy8h=144.29515344430507
+# EXECUTE stl logic SETTLEMENT at 2018-08-09 19:13:10
+# self.ask_price=143.384
+# self.bid_price=143.36
+# self.log_max_price=143.372
+# self.log_min_price=142.3815
+# self.stl_logic=none
+# STL_PRICE=143.372
+# PROFIT=0.5100000000000193
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-10 14:00:10
+# trade_flag=buy
+# ORDER_PRICE=142.0745
+# usdjpy=110.7935
+# usdjpy1h=110.86095286786556
+# usdjpy3h=110.9284019395262
+# usdjpy8h=110.85223786218464
+# eurusd=1.151635
+# eurusd1h=1.15219088459
+# eurusd3h=1.1531244504070282
+# eurusd8h=1.1524070762386918
+# gbpusd=1.282385
+# gbpusd1h=1.2828946877479552
+# gbpusd3h=1.2833972896414994
+# gbpusd8h=1.2852759616833924
+# gbpjpy=142.0745
+# gbpjpy1h=142.3112658996582
+# gbpjpy3h=142.50552034045756
+# gbpjpy8h=142.37087231242657
+# EXECUTE stl logic SETTLEMENT at 2018-08-10 16:13:10
+# self.ask_price=141.602
+# self.bid_price=141.576
+# self.log_max_price=142.252
+# self.log_min_price=141.589
+# self.stl_logic=none
+# STL_PRICE=141.589
+# PROFIT=-0.5120000000000005
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-10 17:00:10
+# trade_flag=buy
+# ORDER_PRICE=141.2305
+# usdjpy=110.67099999999999
+# usdjpy1h=110.86112542963028
+# usdjpy3h=110.96376811936499
+# usdjpy8h=110.85223786218464
+# eurusd=1.14655
+# eurusd1h=1.1470822023975848
+# eurusd3h=1.1525095764505864
+# eurusd8h=1.1524070762386918
+# gbpusd=1.276105
+# gbpusd1h=1.279014721326828
+# gbpusd3h=1.2822415998695789
+# gbpusd8h=1.2852759616833924
+# gbpjpy=141.2305
+# gbpjpy1h=141.93181849879028
+# gbpjpy3h=142.32710623024406
+# gbpjpy8h=142.37087231242657
+# EXECUTE stl logic SETTLEMENT at 2018-08-10 18:15:10
+# self.ask_price=141.816
+# self.bid_price=141.788
+# self.log_max_price=141.80200000000002
+# self.log_min_price=141.20600000000002
+# self.stl_logic=none
+# STL_PRICE=141.80200000000002
+# PROFIT=0.5400000000000205
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-10 23:00:10
+# trade_flag=buy
+# ORDER_PRICE=141.152
+# usdjpy=110.775
+# usdjpy1h=110.82008529347182
+# usdjpy3h=110.89824521437288
+# usdjpy8h=110.98884529089928
+# eurusd=1.14242
+# eurusd1h=1.145239710854292
+# eurusd3h=1.1482470824651418
+# eurusd8h=1.1466251806154846
+# gbpusd=1.2742499999999999
+# gbpusd1h=1.275918716758266
+# gbpusd3h=1.2787849403977394
+# gbpusd8h=1.2796989141340553
+# gbpjpy=141.152
+# gbpjpy1h=141.45297914777694
+# gbpjpy3h=141.72019167110324
+# gbpjpy8h=141.98951740913094
+# EXECUTE stl logic SETTLEMENT at 2018-08-11 04:22:10
+# self.ask_price=141.699
+# self.bid_price=141.669
+# self.log_max_price=141.68400000000003
+# self.log_min_price=141.03699999999998
+# self.stl_logic=none
+# STL_PRICE=141.68400000000003
+# PROFIT=0.5030000000000143
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-13 10:00:10
+# trade_flag=buy
+# ORDER_PRICE=140.8465
+# usdjpy=110.48599999999999
+# usdjpy1h=110.54560688328742
+# usdjpy3h=110.69782775865495
+# usdjpy8h=110.99830273735523
+# eurusd=1.13781
+# eurusd1h=1.1389611825156212
+# eurusd3h=1.141143920493126
+# eurusd8h=1.1421647825376688
+# gbpusd=1.274745
+# gbpusd1h=1.2754822680452467
+# gbpusd3h=1.2760068416020276
+# gbpusd8h=1.2785406784983724
+# gbpjpy=140.8465
+# gbpjpy1h=141.14618645763397
+# gbpjpy3h=141.32242753560095
+# gbpjpy8h=141.95320874937624
+# EXECUTE stl logic SETTLEMENT at 2018-08-13 16:34:10
+# self.ask_price=140.365
+# self.bid_price=140.339
+# self.log_max_price=140.914
+# self.log_min_price=140.352
+# self.stl_logic=none
+# STL_PRICE=140.352
+# PROFIT=-0.521000000000015
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-13 23:00:10
+# trade_flag=sell
+# ORDER_PRICE=141.797
+# usdjpy=110.918
+# usdjpy1h=110.85405563282967
+# usdjpy3h=110.59307763266564
+# usdjpy8h=110.8036869442463
+# eurusd=1.14279
+# eurusd1h=1.1421366116952896
+# eurusd3h=1.1403461580389738
+# eurusd8h=1.1430719100119173
+# gbpusd=1.2783799999999998
+# gbpusd1h=1.2771246612671017
+# gbpusd3h=1.2749738463705778
+# gbpusd8h=1.2774888902637362
+# gbpjpy=141.797
+# gbpjpy1h=141.63119122070074
+# gbpjpy3h=141.0975260579288
+# gbpjpy8h=141.38617976239325
+# EXECUTE stl logic SETTLEMENT at 2018-08-14 00:35:10
+# self.ask_price=141.248
+# self.bid_price=141.224
+# self.log_max_price=141.82350000000002
+# self.log_min_price=141.236
+# self.stl_logic=none
+# STL_PRICE=141.236
+# PROFIT=0.5360000000000014
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-14 11:00:10
+# trade_flag=sell
+# ORDER_PRICE=141.4335
+# usdjpy=110.78
+# usdjpy1h=110.75326719021798
+# usdjpy3h=110.58131426715852
+# usdjpy8h=110.69371627813577
+# eurusd=1.140805
+# eurusd1h=1.1405138270285726
+# eurusd3h=1.1398285403069854
+# eurusd8h=1.1381039485938846
+# gbpusd=1.276675
+# gbpusd1h=1.2761528797465562
+# gbpusd3h=1.275256306259781
+# gbpusd8h=1.2754692664629221
+# gbpjpy=141.4335
+# gbpjpy1h=141.34416088730097
+# gbpjpy3h=141.2887835109234
+# gbpjpy8h=141.31189383044838
+# EXECUTE stl logic SETTLEMENT at 2018-08-14 15:29:10
+# self.ask_price=141.947
+# self.bid_price=141.92
+# self.log_max_price=141.93349999999998
+# self.log_min_price=141.34050000000002
+# self.stl_logic=none
+# STL_PRICE=141.93349999999998
+# PROFIT=-0.5279999999999916
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-14 16:00:10
+# trade_flag=sell
+# ORDER_PRICE=142.1015
+# usdjpy=111.044
+# usdjpy1h=110.96043126320839
+# usdjpy3h=110.79594553542137
+# usdjpy8h=110.68308813604712
+# eurusd=1.142475
+# eurusd1h=1.1421667918762564
+# eurusd3h=1.1397212543380262
+# eurusd8h=1.140798186789453
+# gbpusd=1.2796750000000001
+# gbpusd1h=1.2787132782936097
+# gbpusd3h=1.2760160632249713
+# gbpusd8h=1.2761403847563266
+# gbpjpy=142.1015
+# gbpjpy1h=141.83245604389904
+# gbpjpy3h=141.38725754392146
+# gbpjpy8h=141.88870557639004
+# EXECUTE stl logic SETTLEMENT at 2018-08-14 20:38:10
+# self.ask_price=141.575
+# self.bid_price=141.549
+# self.log_max_price=142.4085
+# self.log_min_price=141.562
+# self.stl_logic=none
+# STL_PRICE=141.562
+# PROFIT=0.51400000000001
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-15 01:00:10
+# trade_flag=buy
+# ORDER_PRICE=141.293
+# usdjpy=110.932
+# usdjpy1h=110.9901036698222
+# usdjpy3h=110.95683419865371
+# usdjpy8h=110.82541937494278
+# eurusd=1.1351149999999999
+# eurusd1h=1.1377676775169372
+# eurusd3h=1.138903192076236
+# eurusd8h=1.1390642861124127
+# gbpusd=1.2736450000000001
+# gbpusd1h=1.2754037992735208
+# gbpusd3h=1.2773977708244324
+# gbpusd8h=1.2770154357901216
+# gbpjpy=141.293
+# gbpjpy1h=141.46485864797236
+# gbpjpy3h=141.36656917506454
+# gbpjpy8h=142.03836846524476
+# EXECUTE stl logic SETTLEMENT at 2018-08-15 21:41:10
+# self.ask_price=140.822
+# self.bid_price=140.795
+# self.log_max_price=141.767
+# self.log_min_price=140.80849999999998
+# self.stl_logic=none
+# STL_PRICE=140.80849999999998
+# PROFIT=-0.5120000000000005
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-15 22:00:10
+# trade_flag=buy
+# ORDER_PRICE=140.767
+# usdjpy=110.8735
+# usdjpy1h=110.98919347134233
+# usdjpy3h=110.99521345360576
+# usdjpy8h=110.45463287405668
+# eurusd=1.1316000000000002
+# eurusd1h=1.1319157372817399
+# eurusd3h=1.13362930549562
+# eurusd8h=1.1332938428183645
+# gbpusd=1.2696100000000001
+# gbpusd1h=1.2703268748268486
+# gbpusd3h=1.2708667182368785
+# gbpusd8h=1.2714765979641678
+# gbpjpy=140.767
+# gbpjpy1h=141.08114537012577
+# gbpjpy3h=141.28245618873834
+# gbpjpy8h=140.90391251778604
+# EXECUTE stl logic SETTLEMENT at 2018-08-15 23:02:10
+# self.ask_price=140.244
+# self.bid_price=140.218
+# self.log_max_price=140.767
+# self.log_min_price=140.231
+# self.stl_logic=none
+# STL_PRICE=140.231
+# PROFIT=-0.561000000000007
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-16 00:00:10
+# trade_flag=buy
+# ORDER_PRICE=139.913
+# usdjpy=110.4435
+# usdjpy1h=110.65334882287681
+# usdjpy3h=110.66561909365655
+# usdjpy8h=110.45463287405668
+# eurusd=1.1311499999999999
+# eurusd1h=1.1322376694709062
+# eurusd3h=1.1324601040124893
+# eurusd8h=1.1332938428183645
+# gbpusd=1.266815
+# gbpusd1h=1.2681006187775732
+# gbpusd3h=1.2693959671580792
+# gbpusd8h=1.2714765979641678
+# gbpjpy=139.913
+# gbpjpy1h=140.43137184095383
+# gbpjpy3h=140.44647626641392
+# gbpjpy8h=140.90391251778604
+# EXECUTE stl logic SETTLEMENT at 2018-08-16 00:10:10
+# self.ask_price=140.615
+# self.bid_price=140.584
+# self.log_max_price=140.5995
+# self.log_min_price=139.913
+# self.stl_logic=none
+# STL_PRICE=140.5995
+# PROFIT=0.6589999999999918
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-16 11:00:10
+# trade_flag=sell
+# ORDER_PRICE=140.8315
+# usdjpy=110.781
+# usdjpy1h=110.76263255131245
+# usdjpy3h=110.751638504982
+# usdjpy8h=110.64240181370079
+# eurusd=1.13696
+# eurusd1h=1.1363960699641704
+# eurusd3h=1.1342284403949976
+# eurusd8h=1.134219250625819
+# gbpusd=1.27121
+# gbpusd1h=1.2703678683188557
+# gbpusd3h=1.269555996092558
+# gbpusd8h=1.270508745518774
+# gbpjpy=140.8315
+# gbpjpy1h=140.7025786614418
+# gbpjpy3h=140.4958721777797
+# gbpjpy8h=140.58393853461743
+# EXECUTE stl logic SETTLEMENT at 2018-08-17 21:09:10
+# self.ask_price=140.313
+# self.bid_price=140.289
+# self.log_max_price=141.303
+# self.log_min_price=140.301
+# self.stl_logic=none
+# STL_PRICE=140.301
+# PROFIT=0.5060000000000002
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-21 13:00:10
+# trade_flag=sell
+# ORDER_PRICE=141.3295
+# usdjpy=110.12950000000001
+# usdjpy1h=110.1194163223505
+# usdjpy3h=110.05166576500238
+# usdjpy8h=110.30143764775991
+# eurusd=1.152445
+# eurusd1h=1.1520959386062621
+# eurusd3h=1.1511938754880429
+# eurusd8h=1.1496877697873116
+# gbpusd=1.283275
+# gbpusd1h=1.2821790650725364
+# gbpusd3h=1.2820566378831864
+# gbpusd8h=1.279050252673626
+# gbpjpy=141.3295
+# gbpjpy1h=141.24108337593077
+# gbpjpy3h=141.11394520545005
+# gbpjpy8h=140.7820388946533
+# EXECUTE stl logic SETTLEMENT at 2018-08-21 22:33:10
+# self.ask_price=141.833
+# self.bid_price=141.807
+# self.log_max_price=141.82
+# self.log_min_price=141.1375
+# self.stl_logic=none
+# STL_PRICE=141.82
+# PROFIT=-0.5159999999999911
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-21 23:00:10
+# trade_flag=sell
+# ORDER_PRICE=142.108
+# usdjpy=110.4575
+# usdjpy1h=110.41453117358684
+# usdjpy3h=110.04931039229037
+# usdjpy8h=110.47357210096716
+# eurusd=1.152345
+# eurusd1h=1.152091333551407
+# eurusd3h=1.1497233761113883
+# eurusd8h=1.151544958690703
+# gbpusd=1.286505
+# gbpusd1h=1.285095622626841
+# gbpusd3h=1.2809375620764494
+# gbpusd8h=1.2820810796558857
+# gbpjpy=142.108
+# gbpjpy1h=141.880095084548
+# gbpjpy3h=141.31597651696202
+# gbpjpy8h=141.58274173974993
+# EXECUTE stl logic SETTLEMENT at 2018-08-22 03:14:10
+# self.ask_price=142.613
+# self.bid_price=142.585
+# self.log_max_price=142.599
+# self.log_min_price=141.89249999999998
+# self.stl_logic=none
+# STL_PRICE=142.599
+# PROFIT=-0.5180000000000007
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-27 09:00:10
+# trade_flag=sell
+# ORDER_PRICE=143.10250000000002
+# usdjpy=111.29400000000001
+# usdjpy1h=111.28566346192359
+# usdjpy3h=111.28132340660692
+# usdjpy8h=111.25612732470034
+# eurusd=1.16451
+# eurusd1h=1.163905006300807
+# eurusd3h=1.1638644343411921
+# eurusd8h=1.1583576838749647
+# gbpusd=1.28578
+# gbpusd1h=1.2852814688125254
+# gbpusd3h=1.285261085150242
+# gbpusd8h=1.2858666283458473
+# gbpjpy=143.10250000000002
+# gbpjpy1h=143.06378025865556
+# gbpjpy3h=143.0413380864859
+# gbpjpy8h=142.9653467428088
+# EXECUTE stl logic SETTLEMENT at 2018-08-27 15:53:10
+# self.ask_price=142.569
+# self.bid_price=142.543
+# self.log_max_price=143.1195
+# self.log_min_price=142.55599999999998
+# self.stl_logic=none
+# STL_PRICE=142.55599999999998
+# PROFIT=0.5200000000000102
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-28 09:00:10
+# trade_flag=sell
+# ORDER_PRICE=143.339
+# usdjpy=111.136
+# usdjpy1h=111.11005957192182
+# usdjpy3h=111.12875647565723
+# usdjpy8h=111.14373100829124
+# eurusd=1.168455
+# eurusd1h=1.1682323400714993
+# eurusd3h=1.1679089875030517
+# eurusd8h=1.1681797392022608
+# gbpusd=1.2898049999999999
+# gbpusd1h=1.2890430342006685
+# gbpusd3h=1.2894489251607655
+# gbpusd8h=1.287655756354332
+# gbpjpy=143.339
+# gbpjpy1h=143.2741354968548
+# gbpjpy3h=143.225218367517
+# gbpjpy8h=143.2246050311923
+# EXECUTE stl logic SETTLEMENT at 2018-08-29 22:58:10
+# self.ask_price=143.872
+# self.bid_price=143.814
+# self.log_max_price=143.84300000000002
+# self.log_min_price=142.82999999999998
+# self.stl_logic=none
+# STL_PRICE=143.84300000000002
+# PROFIT=-0.5450000000000159
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-29 23:00:10
+# trade_flag=sell
+# ORDER_PRICE=144.51
+# usdjpy=111.4455
+# usdjpy1h=111.40802810719609
+# usdjpy3h=111.2690749733448
+# usdjpy8h=111.36083603799342
+# eurusd=1.16896
+# eurusd1h=1.1678786996999384
+# eurusd3h=1.166851018478498
+# eurusd8h=1.1669656864741444
+# gbpusd=1.29672
+# gbpusd1h=1.2941040256094933
+# gbpusd3h=1.2880924549435078
+# gbpusd8h=1.289953197542429
+# gbpjpy=144.51
+# gbpjpy1h=144.11592781305313
+# gbpjpy3h=143.24813231888413
+# gbpjpy8h=143.35081313967703
+# EXECUTE stl logic SETTLEMENT at 2018-08-29 23:58:10
+# self.ask_price=145.094
+# self.bid_price=145.066
+# self.log_max_price=145.07999999999998
+# self.log_min_price=144.2825
+# self.stl_logic=none
+# STL_PRICE=145.07999999999998
+# PROFIT=-0.6059999999999945
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-30 00:00:10
+# trade_flag=sell
+# ORDER_PRICE=145.1495
+# usdjpy=111.66550000000001
+# usdjpy1h=111.55859962308408
+# usdjpy3h=111.56714838659764
+# usdjpy8h=111.36083603799342
+# eurusd=1.16934
+# eurusd1h=1.1688622795248031
+# eurusd3h=1.1681809414057434
+# eurusd8h=1.1669656864741444
+# gbpusd=1.29981
+# gbpusd1h=1.2968462325412033
+# gbpusd3h=1.2983152184951305
+# gbpusd8h=1.289953197542429
+# gbpjpy=145.1495
+# gbpjpy1h=144.82251236528157
+# gbpjpy3h=144.83953088736533
+# gbpjpy8h=143.35081313967703
+# EXECUTE stl logic SETTLEMENT at 2018-08-30 07:01:10
+# self.ask_price=145.637
+# self.bid_price=145.579
+# self.log_max_price=145.608
+# self.log_min_price=144.9935
+# self.stl_logic=none
+# STL_PRICE=145.608
+# PROFIT=-0.5010000000000048
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-30 09:00:10
+# trade_flag=sell
+# ORDER_PRICE=145.58999999999997
+# usdjpy=111.684
+# usdjpy1h=111.66316527190804
+# usdjpy3h=111.6157977605462
+# usdjpy8h=111.70123724365236
+# eurusd=1.17092
+# eurusd1h=1.170766961684227
+# eurusd3h=1.1696997894701362
+# eurusd8h=1.1716724022197722
+# gbpusd=1.30358
+# gbpusd1h=1.3025062139177321
+# gbpusd3h=1.3024798216152191
+# gbpusd8h=1.3004623855739832
+# gbpjpy=145.58999999999997
+# gbpjpy1h=145.4289125253558
+# gbpjpy3h=145.55028222262857
+# gbpjpy8h=145.58731976175306
+# EXECUTE stl logic SETTLEMENT at 2018-08-30 17:30:10
+# self.ask_price=144.994
+# self.bid_price=144.96
+# self.log_max_price=145.66750000000002
+# self.log_min_price=144.977
+# self.stl_logic=none
+# STL_PRICE=144.977
+# PROFIT=0.5809999999999889
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-31 08:00:10
+# trade_flag=buy
+# ORDER_PRICE=144.4205
+# usdjpy=111.0205
+# usdjpy1h=111.09701027435064
+# usdjpy3h=111.12574168035387
+# usdjpy8h=111.10729719346762
+# eurusd=1.1662599999999999
+# eurusd1h=1.1670158923995495
+# eurusd3h=1.1663750290416182
+# eurusd8h=1.1672699408565461
+# gbpusd=1.3009249999999999
+# gbpusd1h=1.3011442706096172
+# gbpusd3h=1.3012634057110548
+# gbpusd8h=1.3011209815120697
+# gbpjpy=144.4205
+# gbpjpy1h=144.49795313854514
+# gbpjpy3h=144.5647252371311
+# gbpjpy8h=144.67525865679977
+# EXECUTE stl logic SETTLEMENT at 2018-08-31 16:23:10
+# self.ask_price=143.963
+# self.bid_price=143.935
+# self.log_max_price=144.6945
+# self.log_min_price=143.949
+# self.stl_logic=none
+# STL_PRICE=143.949
+# PROFIT=-0.5010000000000048
+#######################################################
+# in  Algorithm
+# EXECUTE ORDER at 2018-08-31 21:00:10
+# trade_flag=buy
+# ORDER_PRICE=143.877
+# usdjpy=110.7775
+# usdjpy1h=110.81934514823556
+# usdjpy3h=110.8803670886159
+# usdjpy8h=111.19962934118509
+# eurusd=1.165135
+# eurusd1h=1.167360592085123
+# eurusd3h=1.1663375365528466
+# eurusd8h=1.167293423808515
+# gbpusd=1.298805
+# gbpusd1h=1.3008563648414613
+# gbpusd3h=1.3013343160915374
+# gbpusd8h=1.3029243141674995
+# gbpjpy=143.877
+# gbpjpy1h=144.0187999957204
+# gbpjpy3h=144.0712392343283
+# gbpjpy8h=144.85295766568183

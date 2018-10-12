@@ -148,7 +148,7 @@ def decideTerm( hour):
 def decide_market(base_time, table_type):
     flag = True
 
-    sql = "select * from %s_1h_TABLE where insert_time = \'%s\'" % (instruments, table_type, base_time)
+    sql = "select * from %s_1h_TABLE where insert_time = \'%s\'" % (instruments, base_time)
     response = mysql_connector.select_sql(sql)
     #print(response)
     if len(response) == 0:

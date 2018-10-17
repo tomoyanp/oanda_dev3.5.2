@@ -4,7 +4,7 @@
 import sys
 import os
 current_path = os.path.abspath(os.path.dirname(__file__))
-current_path = current_path + "/.."
+current_path = current_path + "/../.."
 sys.path.append(current_path)
 sys.path.append(current_path + "/trade_algorithm")
 sys.path.append(current_path + "/obj")
@@ -12,116 +12,120 @@ sys.path.append(current_path + "/lib")
 
 from mysql_connector import MysqlConnector
 from oanda_wrapper import OandaWrapper
+from oandapy import oandapy
 from price_obj import PriceObj
 from datetime import datetime, timedelta
-from common import decideMarket
+from common import decideMarket, account_init, iso_jp, jp_utc
 from get_indicator import getBollingerWrapper
 import time
 
+account_data = account_init("production", current_path)
+account_id = account_data["account_id"]
+token = account_data["token"]
+env = account_data["env"]
+
+oanda = oandapy.API(environment=env, access_token=token)
+ 
+# python insert_multi_table.py instrument table_type mode
+
+def insert_table(base_time, currency, con, table_type):
+    hour = base_time.hour
+    minutes = base_time.minute
+    seconds = base_time.second
 
 
-def insertTable(base_time, currency, connector, table_type, span):
-    sql = u"select ask_price, bid_price from %s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (currency, base_time, span)
-    response = connector.select_sql(sql)
+    if mode == "test":
+        count=5000
+    elif mode == "production":
+        count=1
 
-    ask_price_list = []
-    bid_price_list = []
-    for res in response:
-        ask_price_list.append(res[0])
-        bid_price_list.append(res[1])
-
-    ask_price_list.reverse()
-    bid_price_list.reverse()
-
-    start_price = (ask_price_list[0] + bid_price_list[0]) / 2
-    end_price = (ask_price_list[-1] + bid_price_list[-1]) / 2
-    max_price = (max(ask_price_list) + max(bid_price_list)) / 2
-    min_price = (min(ask_price_list) + min(bid_price_list)) / 2
-
-
-    try:
-        window_size = 21
-        length = 1
-        sigma_valiable = 1
-        data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
-        uppersigma1 = data_set["upper_sigmas"][-1]
-        lowersigma1 = data_set["lower_sigmas"][-1]
-
-        if uppersigma1 != uppersigma1: raise ValueError 
-        if lowersigma1 != lowersigma1: raise ValueError 
-
-        sigma_valiable = 2
-        data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
-        uppersigma2 = data_set["upper_sigmas"][-1]
-        lowersigma2 = data_set["lower_sigmas"][-1]
-
-        if uppersigma2 != uppersigma2: raise ValueError 
-        if lowersigma2 != lowersigma2: raise ValueError 
-
-        sigma_valiable = 3
-        data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
-        uppersigma3 = data_set["upper_sigmas"][-1]
-        lowersigma3 = data_set["lower_sigmas"][-1]
+    flag = False
+    if table_type == "1m":
+        if seconds < 10:
+            granularity = "M1"
+            start_time = base_time - timedelta(minutes=1)
+            flag = True
+    elif table_type == "5m":
+        if minutes % 5 == 0 and seconds < 10:
+            granularity = "M5"
+            start_time = base_time - timedelta(minutes=5)
+            flag = True
+    elif table_type == "1h":
+        if minutes == 0 and seconds < 10:
+            granularity = "H1"
+            start_time = base_time - timedelta(hours=1)
+            flag = True
+    elif table_type == "day":
+        if hour == 7 and minutes == 0 and seconds < 10:
+            granularity = "D"
+            start_time = base_time - timedelta(days=1)
+            flag = True
 
 
-        if uppersigma3 != uppersigma3: raise ValueError 
-        if lowersigma3 != lowersigma3: raise ValueError 
 
-        # compute simple moving average
-        window_size = 20
-        data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
-        sma20 = data_set["base_lines"][-1]
+    if flag:
+        start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
+        start_time = jp_utc(start_time)
+        start_time = start_time.strftime("%Y-%m-%dT%H:%M:%S")
+        response = oanda.get_history(
+            instrument=currency,
+            start=start_time,
+            granularity=granularity,
+            count=count
+        )
+
+        for candle in response["candles"]:
+            open_ask_price = candle["openAsk"]
+            open_bid_price = candle["openBid"]
+            close_ask_price = candle["closeAsk"]
+            close_bid_price = candle["closeBid"]
+            high_ask_price = candle["highAsk"]
+            high_bid_price = candle["highBid"]
+            low_ask_price = candle["lowAsk"]
+            low_bid_price = candle["lowBid"]
+            insert_time = candle["time"]
+            insert_time = iso_jp(insert_time)
+            insert_time = insert_time.strftime("%Y-%m-%d %H:%M:%S")
+
+            sql = "insert into %s_%s_TABLE(open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, \'%s\')" % (currency, table_type, open_ask_price, open_bid_price, close_ask_price, close_bid_price, high_ask_price, high_bid_price, low_ask_price, low_bid_price, insert_time)
+            print(sql)
+            con.insert_sql(sql)
+
+    if flag == False:
+        insert_time = base_time
+    else:
+        insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
+
+    if flag:
+        if table_type == "1m":
+            if seconds < 10:
+                insert_time = insert_time + timedelta(minutes=1)
+        elif table_type == "5m":
+            if minutes % 5 == 0 and seconds < 10:
+                insert_time = insert_time + timedelta(minutes=5)
+        elif table_type == "1h":
+            if minutes == 0 and seconds < 10:
+                insert_time = insert_time + timedelta(hours=1)
+        elif table_type == "day":
+            if hour == 7 and minutes == 0 and seconds < 10:
+                insert_time = insert_time + timedelta(days=1)
 
 
-        if sma20 != sma20: raise ValueError 
-
-        window_size = 40
-        data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
-        sma40 = data_set["base_lines"][-1]
-
-        if sma40 != sma40: raise ValueError 
-
-        window_size = 80
-        data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
-        sma80 = data_set["base_lines"][-1]
-
-        if sma80 != sma80: raise ValueError 
-
-        window_size = 100
-        data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
-        sma100 = data_set["base_lines"][-1]
-
-        if sma100 != sma100: raise ValueError 
-
-        window_size = 200
-        data_set = getBollingerWrapper(base_time, currency, table_type, window_size, connector, sigma_valiable, length)
-        sma200 = data_set["base_lines"][-1]
-
-
-        if sma200 != sma200: raise ValueError 
-
-        target_time = base_time - timedelta(seconds=(span-1))
-        sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, uppersigma1, lowersigma1, uppersigma2, lowersigma2, uppersigma3, lowersigma3, sma20, sma40, sma80, sma100, sma200, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,  \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, uppersigma1, lowersigma1, uppersigma2, lowersigma2, uppersigma3, lowersigma3, sma20, sma40, sma80, sma100, sma200, target_time)
-        connector.insert_sql(sql)
-
-    except Exception as e:
-        target_time = base_time - timedelta(seconds=(span-1))
-        sql = u"insert into %s_%s_TABLE(start_price, end_price, max_price, min_price, insert_time) values(%s, %s, %s, %s,  \'%s\')" % (currency, table_type, start_price, end_price, max_price, min_price, target_time)
-        connector.insert_sql(sql)
+    return insert_time
 
 
 if __name__ == "__main__":
     args = sys.argv
     currency = args[1].strip()
-    mode = args[2].strip()
+    table_type = args[2].strip()
+    mode = args[3].strip()
     con = MysqlConnector()
-    polling_time = 0.5
-    sleep_time = 3600
+    polling_time = 10
 
     if mode == "test":
-        base_time = "2016-01-01 00:00:00"
+        base_time = "2008-01-01 00:00:00"
         base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
-        end_time = "2018-09-24 00:00:00"
+        end_time = "2018-10-01 00:00:00"
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
     else:
         base_time = datetime.now()
@@ -130,7 +134,8 @@ if __name__ == "__main__":
     while True:
         try:
             now = datetime.now()
-            flag = decideMarket(base_time)
+#            flag = decideMarket(base_time)
+            flag = True
 
             if flag == False:
                 pass
@@ -143,23 +148,16 @@ if __name__ == "__main__":
                     if mode == "test":
                         break
                     else:
-                        time.sleep(1)
-                        base_time = base_time - timedelta(seconds=1)
-
+                        time.sleep(polling_time)
+                        base_time = base_time - timedelta(seconds=polling_time)
                 else:
-                    if seconds == 59:
-                        insertTable(base_time, currency, con, table_type="1m", span=60)
-                    if seconds == 59 and minutes % 5 == 4:
-                        insertTable(base_time, currency, con, table_type="5m", span=300)
-                    if seconds == 59 and minutes == 59:
-                        insertTable(base_time, currency, con, table_type="1h", span=3600)
-                    if seconds == 59 and minutes == 59 and hour == 5:
-                        insertTable(base_time, currency, con, table_type="day", span=(3600*24))
+                    base_time = insert_table(base_time, currency, con, table_type)
 
-            base_time = base_time + timedelta(seconds=1)
+            base_time = base_time + timedelta(seconds=polling_time)
 
             if mode == "test" and base_time > end_time:
                 break
 
         except Exception as e:
+            base_time = base_time + timedelta(seconds=polling_time)
             print(e.args)

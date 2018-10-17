@@ -410,35 +410,30 @@ class LstmAlgo(SuperAlgo):
             trade3h_flag = ""
             trade8h_flag = ""
 
-
-            if self.usdjpy_current_price < self.usdjpy1h and self.eurusd_current_price < self.eurusd1h:
+            if self.usdjpy_current_price < self.usdjpy1h and self.eurusd_current_price < self.eurusd1h and self.eurjpy_current_price < self.eurjpy1h:
                 trade1h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy1h and self.eurusd_current_price > self.eurusd1h:
+            if self.usdjpy_current_price > self.usdjpy1h and self.eurusd_current_price > self.eurusd1h and self.eurjpy_current_price > self.eurjpy1h:
                 trade1h_flag = "sell"
 
-            if self.usdjpy_current_price < self.usdjpy3h and self.eurusd_current_price < self.eurusd3h:
+            if self.usdjpy_current_price < self.usdjpy3h and self.eurusd_current_price < self.eurusd3h and self.eurjpy_current_price < self.eurjpy3h:
                 trade3h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy3h and self.eurusd_current_price > self.eurusd3h:
+            if self.usdjpy_current_price > self.usdjpy3h and self.eurusd_current_price > self.eurusd3h and self.eurjpy_current_price > self.eurjpy3h:
                 trade3h_flag = "sell"
 
-            if self.usdjpy_current_price < self.usdjpy8h and self.eurusd_current_price < self.eurusd8h:
+            if self.usdjpy_current_price < self.usdjpy8h and self.eurusd_current_price < self.eurusd8h and self.eurjpy_current_price < self.eurjpy8h:
                 trade8h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy8h and self.eurusd_current_price > self.eurusd8h:
+            if self.usdjpy_current_price > self.usdjpy8h and self.eurusd_current_price > self.eurusd8h and self.eurjpy_current_price > self.eurjpy8h:
                 trade8h_flag = "sell"
 
 
-
-            if trade1h_flag == trade3h_flag == trade8h_flag == "buy":
+#            if trade1h_flag == trade3h_flag == trade8h_flag == "buy":
+#                trade_flag = "buy"
+#            elif trade1h_flag == trade3h_flag == trade8h_flag == "sell":
+#                trade_flag = "sell"
+            if trade1h_flag == trade3h_flag == "buy":
                 self.first_trade_flag = "buy"
-                self.first_trade_time = base_time
-            elif trade1h_flag == trade3h_flag == trade8h_flag == "sell":
+            elif trade1h_flag == trade3h_flag == "sell":
                 self.first_trade_flag = "sell"
-                self.first_trade_time = base_time
-
-#            if trade1h_flag == trade3h_flag == "buy":
-#                self.first_trade_flag = "buy"
-#            elif trade1h_flag == trade3h_flag == "sell":
-#                self.first_trade_flag = "sell"
 
             self.debug_logger.info("###############################")
             self.debug_logger.info("# base_time=%s" % base_time)
@@ -472,18 +467,9 @@ class LstmAlgo(SuperAlgo):
             self.current_price = (response[0][0]+response[0][1])/2
 
             if self.current_price > self.upper_sigma1h and self.first_trade_flag == "buy":
-                if self.usdjpy_current_price < self.usdjpy8h and self.eurusd_current_price < self.eurusd8h:
-                    trade_flag = "buy"
-                else:
-                    self.first_trade_flag = ""
-
+                trade_flag = "buy"
             elif self.current_price < self.lower_sigma1h and self.first_trade_flag == "sell":
-                if self.usdjpy_current_price > self.usdjpy8h and self.eurusd_current_price > self.eurusd8h:
-                    trade_flag = "sell"
-                else:
-                    self.first_trade_flag = ""
-
-
+                trade_flag = "sell"
 
             self.debug_logger.info("# current_price=%s" % self.current_price)
             self.debug_logger.info("# upper_sigma1h=%s" % self.upper_sigma1h)
@@ -506,7 +492,7 @@ class LstmAlgo(SuperAlgo):
 
     def setBollinger(self, base_time):
         window_size = 21
-        table_type = "5m"
+        table_type = "1h"
         sigma_valiable = 3
         target_time = base_time - timedelta(hours=1)
         sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (self.instrument, table_type, target_time, window_size)
@@ -551,7 +537,6 @@ class LstmAlgo(SuperAlgo):
     def entryLogWrite(self, base_time):
         self.result_logger.info("#######################################################")
         self.result_logger.info("# in %s Algorithm" % self.algorithm)
-        self.result_logger.info("# first trade time at %s" % self.first_trade_time)
         self.result_logger.info("# EXECUTE ORDER at %s" % base_time)
         self.result_logger.info("# trade_flag=%s" % self.order_kind)
         self.result_logger.info("# ORDER_PRICE=%s" % ((self.ask_price + self.bid_price)/2 ))

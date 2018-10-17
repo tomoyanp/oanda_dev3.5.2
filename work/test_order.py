@@ -51,13 +51,13 @@ def jp_utc(local_time):
 # 1分前の値を取得しないと確定値ではない
 ### memomemo
 #{'candles': [{'time': '2018-10-04T15:30:00.000000Z', 'lowAsk': 148.225, 'openBid': 148.223, 'closeAsk': 148.314, 'closeBid': 148.286, 'volume': 110, 'complete': True, 'openAsk': 148.247, 'highAsk': 148.317, 'lowBid': 148.199, 'highBid': 148.289}], 'instrument': 'GBP_JPY', 'granularity': 'M1'}5
- 
-test_time = "2018-10-01 00:00:00"
-print(test_time)
+
+#test_time = datetime.now()
+test_time = "2018-10-17 22:00:00"
 test_time = datetime.strptime(test_time, "%Y-%m-%d %H:%M:%S")
+print(test_time)
 test_time = test_time - timedelta(hours=9)
 test_time = test_time.strftime("%Y-%m-%dT%H:%M:%S")
-print(test_time)
 
 # 通貨
 instrument = "GBP_JPY"
@@ -68,14 +68,14 @@ oanda = oandapy.API(environment=env, access_token=token)
 #response = oanda.get_transaction_history(account_id)
 
 response = oanda.get_history(
-    instrument=["GBP_JPY", "USD_JPY"],
+    instrument=["USD_JPY"],
     start=test_time,
-    granularity="H3",
-    count=10
+    granularity="H1",
+    count=1
 )
 
 for res in response["candles"]:
-    print(res)
+    print(res['closeAsk'])
 
 #response = oanda.get_instruments(account_id)
 #for res in response["instruments"]:

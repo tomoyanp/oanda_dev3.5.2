@@ -46,7 +46,7 @@ from keras.models import model_from_json
 
 from sklearn.preprocessing import MinMaxScaler
 from lstm_model_wrapper import predict_value
-from common import get_sma
+from common import getBollingerDataSet
 
 import json
 
@@ -427,6 +427,7 @@ class LstmAlgo(SuperAlgo):
                 trade8h_flag = "sell"
 
 
+
             if trade1h_flag == trade3h_flag == trade8h_flag == "buy":
                 self.first_trade_flag = "buy"
                 self.first_trade_time = base_time
@@ -434,19 +435,60 @@ class LstmAlgo(SuperAlgo):
                 self.first_trade_flag = "sell"
                 self.first_trade_time = base_time
 
-        if self.first_trade_flag != "" and minutes % 5 == 0 and 5 < seconds < 15:
-            self.usdjpy_sma = get_sma(instrument="USD_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector):
-            self.eurusd_sma = get_sma(instrument="EUR_USD", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector):
-            self.eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector):
-        
-            if self.first_trade_flag == "buy":
-                if self.usdjpy_current_price > self.usdjpy_sma and self.eurusd_current_price > self.eurusd_sma and self.eurjpy_current_price > self.eurjpy_sma:
+#            if trade1h_flag == trade3h_flag == "buy":
+#                self.first_trade_flag = "buy"
+#            elif trade1h_flag == trade3h_flag == "sell":
+#                self.first_trade_flag = "sell"
+
+            self.debug_logger.info("###############################")
+            self.debug_logger.info("# base_time=%s" % base_time)
+            self.debug_logger.info("# usdjpy=%s" % self.usdjpy_current_price)
+            self.debug_logger.info("# usdjpy1h=%s" % self.usdjpy1h)
+            self.debug_logger.info("# usdjpy3h=%s" % self.usdjpy3h)
+            self.debug_logger.info("# usdjpy8h=%s" % self.usdjpy8h)
+            self.debug_logger.info("# eurusd=%s" % self.eurusd_current_price)
+            self.debug_logger.info("# eurusd1h=%s" % self.eurusd1h)
+            self.debug_logger.info("# eurusd3h=%s" % self.eurusd3h)
+            self.debug_logger.info("# eurusd8h=%s" % self.eurusd8h)
+            self.debug_logger.info("# gbpusd=%s" % self.gbpusd_current_price)
+            self.debug_logger.info("# gbpusd1h=%s" % self.gbpusd1h)
+            self.debug_logger.info("# gbpusd3h=%s" % self.gbpusd3h)
+            self.debug_logger.info("# gbpusd8h=%s" % self.gbpusd8h)
+            self.debug_logger.info("# gbpjpy=%s" % self.gbpjpy_current_price)
+            self.debug_logger.info("# gbpjpy1h=%s" % self.gbpjpy1h)
+            self.debug_logger.info("# gbpjpy3h=%s" % self.gbpjpy3h)
+            self.debug_logger.info("# gbpjpy8h=%s" % self.gbpjpy8h)
+            self.debug_logger.info("# eurjpy=%s" % self.eurjpy_current_price)
+            self.debug_logger.info("# eurjpy1h=%s" % self.eurjpy1h)
+            self.debug_logger.info("# eurjpy3h=%s" % self.eurjpy3h)
+            self.debug_logger.info("# eurjpy8h=%s" % self.eurjpy8h)
+
+            self.setBollinger(base_time)
+
+        if 0 < seconds <= 10 and self.order_flag == False and self.first_trade_flag != "":
+            target_time = base_time - timedelta(minutes=1)
+            sql = "select close_ask, close_bid from %s_1m_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, target_time)
+            response = self.mysql_connector.select_sql(sql)
+            self.current_price = (response[0][0]+response[0][1])/2
+
+            if self.current_price > self.upper_sigma1h and self.first_trade_flag == "buy":
+                if self.usdjpy_current_price < self.usdjpy8h and self.eurusd_current_price < self.eurusd8h:
                     trade_flag = "buy"
-            elif self.first_trade_flag == "sell":
-                if self.usdjpy_current_price < self.usdjpy_sma and self.eurusd_current_price < self.eurusd_sma and self.eurjpy_current_price < self.eurjpy_sma:
+                else:
+                    self.first_trade_flag = ""
+
+            elif self.current_price < self.lower_sigma1h and self.first_trade_flag == "sell":
+                if self.usdjpy_current_price > self.usdjpy8h and self.eurusd_current_price > self.eurusd8h:
                     trade_flag = "sell"
-            else:
-                raise
+                else:
+                    self.first_trade_flag = ""
+
+
+
+            self.debug_logger.info("# current_price=%s" % self.current_price)
+            self.debug_logger.info("# upper_sigma1h=%s" % self.upper_sigma1h)
+            self.debug_logger.info("# lower_sigma1h=%s" % self.lower_sigma1h)
+        
 
         return trade_flag
 
@@ -533,12 +575,11 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# eurjpy1h=%s" % self.eurjpy1h)
         self.result_logger.info("# eurjpy3h=%s" % self.eurjpy3h)
         self.result_logger.info("# eurjpy8h=%s" % self.eurjpy8h)
-        self.result_logger.info("# usdjpy_sma=%s" % self.usdjpy_sma) 
-        self.result_logger.info("# eurusd_sma=%s" % self.eurusd_sma) 
-        self.result_logger.info("# eurjpy_sma=%s" % self.eurjpy_sma) 
         self.result_logger.info("# current_price=%s" % self.current_price)
         self.result_logger.info("# upper_sigma1h=%s" % self.upper_sigma1h)
         self.result_logger.info("# lower_sigma1h=%s" % self.lower_sigma1h)
+
+
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):
         self.result_logger.info("# %s at %s" % (stl_method, base_time))

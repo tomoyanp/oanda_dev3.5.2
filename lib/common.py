@@ -31,6 +31,45 @@ def iso_jp(iso):
             pass
     return date
  
+def change_basetime(base_time, table_type):
+    if table_type == "1m":
+        target_time = base_time - timedelta(minutes=1)
+    elif table_type == "5m":
+        target_time = base_time - timedelta(minutes=5)
+    elif table_type == "1h":
+        target_time = base_time - timedelta(hours=1)
+    elif table_type == "3h":
+        target_time = base_time - timedelta(hours=3)
+    elif table_type == "8h":
+        target_time = base_time - timedelta(hours=8)
+    elif table_type == "day":
+        target_time = base_time - timedelta(days=1)
+
+    return target_time
+
+def get_sma(instrument, base_time, table_type, length, con):
+    target_time = change_basetime(base_time, table_type)
+    sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (instrument, table_type, target_time, length)
+
+    response = con.select_sql(sql)
+    ask = []
+    bid = []
+
+    for res in response:
+        ask.append(res[0])
+        bid.append(res[1])
+
+    ask.reverse()
+    bid.reverse()
+
+    ask = np.array(ask)
+    bid = np.array(bid)
+
+    middle = (ask + bid) / 2
+    sma = np.average(middle)
+
+    return sma
+    
 
 def instrument_init(instrument, base_path, config_name):
     config_path = "%s/config" % base_path

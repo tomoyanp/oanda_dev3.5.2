@@ -46,7 +46,6 @@ from keras.models import model_from_json
 
 from sklearn.preprocessing import MinMaxScaler
 from lstm_model_wrapper import predict_value
-from common import getBollingerDataSet
 
 import json
 
@@ -71,7 +70,7 @@ class LstmAlgo(SuperAlgo):
         self.stl_logic = "none"
         self.output_max_price = 0
         self.output_min_price = 0
-        self.first_trade_flag = ""
+        self.trade_first_flag = ""
         self.current_path = os.path.abspath(os.path.dirname(__file__))
         
         self.usdjpy_1hmodel = self.load_model(model_filename="multi_model_USD_JPY_1h.json", weights_filename="multi_model_USD_JPY_1h.hdf5")
@@ -89,11 +88,6 @@ class LstmAlgo(SuperAlgo):
         self.gbpjpy_1hmodel = self.load_model(model_filename="multi_model_GBP_JPY_1h.json", weights_filename="multi_model_GBP_JPY_1h.hdf5")
         self.gbpjpy_3hmodel = self.load_model(model_filename="multi_model_GBP_JPY_3h.json", weights_filename="multi_model_GBP_JPY_3h.hdf5")
         self.gbpjpy_8hmodel = self.load_model(model_filename="multi_model_GBP_JPY_8h.json", weights_filename="multi_model_GBP_JPY_8h.hdf5")
-
-        self.eurjpy_1hmodel = self.load_model(model_filename="multi_model_EUR_JPY_1h.json", weights_filename="multi_model_EUR_JPY_1h.hdf5")
-        self.eurjpy_3hmodel = self.load_model(model_filename="multi_model_EUR_JPY_3h.json", weights_filename="multi_model_EUR_JPY_3h.hdf5")
-        self.eurjpy_8hmodel = self.load_model(model_filename="multi_model_EUR_JPY_8h.json", weights_filename="multi_model_EUR_JPY_8h.hdf5")
-
 
 
 
@@ -322,15 +316,6 @@ class LstmAlgo(SuperAlgo):
             model = self.gbpjpy_3hmodel
         elif table_type == "8h" and instruments == "GBP_JPY":
             model = self.gbpjpy_8hmodel
-
-        elif table_type == "1h" and instruments == "EUR_JPY":
-            model = self.eurjpy_1hmodel
-        elif table_type == "3h" and instruments == "EUR_JPY":
-            model = self.eurjpy_3hmodel
-        elif table_type == "8h" and instruments == "EUR_JPY":
-            model = self.eurjpy_8hmodel
- 
-
         else:
             raise
 
@@ -353,11 +338,7 @@ class LstmAlgo(SuperAlgo):
         instruments = "GBP_JPY"
         gbpjpy = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
-        instruments = "EUR_JPY"
-        eurjpy = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-
-
-        return usdjpy, eurusd, gbpusd, gbpjpy, eurjpy
+        return usdjpy, eurusd, gbpusd, gbpjpy
 
 
     def set_current_price(self, target_time):
@@ -382,10 +363,6 @@ class LstmAlgo(SuperAlgo):
         response = self.mysql_connector.select_sql(sql)
         self.gbpjpy_current_price = (response[0][0] + response[0][1]) / 2
 
-        instruments = "EUR_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
-        response = self.mysql_connector.select_sql(sql)
-        self.eurjpy_current_price = (response[0][0] + response[0][1]) / 2
 
 
     def decideReverseTrade(self, trade_flag, current_price, base_time):
@@ -398,47 +375,44 @@ class LstmAlgo(SuperAlgo):
             
 
             table_type = "1h"
-            self.usdjpy1h, self.eurusd1h, self.gbpusd1h, self.gbpjpy1h, self.eurjpy1h = self.multi_predict(table_type, target_time)
+            self.usdjpy1h, self.eurusd1h, self.gbpusd1h, self.gbpjpy1h = self.multi_predict(table_type, target_time)
 
             table_type = "3h"
-            self.usdjpy3h, self.eurusd3h, self.gbpusd3h, self.gbpjpy3h, self.eurjpy3h = self.multi_predict(table_type, target_time)
+            self.usdjpy3h, self.eurusd3h, self.gbpusd3h, self.gbpjpy3h = self.multi_predict(table_type, target_time)
 
             table_type = "8h"
-            self.usdjpy8h, self.eurusd8h, self.gbpusd8h, self.gbpjpy8h, self.eurjpy8h = self.multi_predict(table_type, target_time)
+            self.usdjpy8h, self.eurusd8h, self.gbpusd8h, self.gbpjpy8h = self.multi_predict(table_type, target_time)
 
             trade1h_flag = ""
             trade3h_flag = ""
             trade8h_flag = ""
 
-
-            if self.usdjpy_current_price < self.usdjpy1h and self.eurusd_current_price < self.eurusd1h:
+            if self.usdjpy_current_price < self.usdjpy1h and self.gbpusd_current_price < self.gbpusd1h:
                 trade1h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy1h and self.eurusd_current_price > self.eurusd1h:
+            if self.usdjpy_current_price > self.usdjpy1h and self.gbpusd_current_price > self.gbpusd1h:
                 trade1h_flag = "sell"
 
-            if self.usdjpy_current_price < self.usdjpy3h and self.eurusd_current_price < self.eurusd3h:
+
+            if self.usdjpy_current_price < self.usdjpy3h and self.gbpusd_current_price < self.gbpusd3h:
                 trade3h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy3h and self.eurusd_current_price > self.eurusd3h:
+            if self.usdjpy_current_price > self.usdjpy3h and self.gbpusd_current_price > self.gbpusd3h:
                 trade3h_flag = "sell"
 
-            if self.usdjpy_current_price < self.usdjpy8h and self.eurusd_current_price < self.eurusd8h:
+            if self.usdjpy_current_price < self.usdjpy8h and self.gbpusd_current_price < self.gbpusd8h:
                 trade8h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy8h and self.eurusd_current_price > self.eurusd8h:
+            if self.usdjpy_current_price > self.usdjpy8h and self.gbpusd_current_price > self.gbpusd8h:
                 trade8h_flag = "sell"
 
 
+            #if trade1h_flag == trade3h_flag == trade8h_flag == "buy":
+            #    trade_flag = "buy"
+            #elif trade1h_flag == trade3h_flag == trade8h_flag == "sell":
+            #    trade_flag = "sell"
+            if trade1h_flag == trade3h_flag == "buy":
+                trade_flag = "buy"
+            elif trade1h_flag == trade3h_flag == "sell":
+                trade_flag = "sell"
 
-            if trade1h_flag == trade3h_flag == trade8h_flag == "buy":
-                self.first_trade_flag = "buy"
-                self.first_trade_time = base_time
-            elif trade1h_flag == trade3h_flag == trade8h_flag == "sell":
-                self.first_trade_flag = "sell"
-                self.first_trade_time = base_time
-
-#            if trade1h_flag == trade3h_flag == "buy":
-#                self.first_trade_flag = "buy"
-#            elif trade1h_flag == trade3h_flag == "sell":
-#                self.first_trade_flag = "sell"
 
             self.debug_logger.info("###############################")
             self.debug_logger.info("# base_time=%s" % base_time)
@@ -458,37 +432,6 @@ class LstmAlgo(SuperAlgo):
             self.debug_logger.info("# gbpjpy1h=%s" % self.gbpjpy1h)
             self.debug_logger.info("# gbpjpy3h=%s" % self.gbpjpy3h)
             self.debug_logger.info("# gbpjpy8h=%s" % self.gbpjpy8h)
-            self.debug_logger.info("# eurjpy=%s" % self.eurjpy_current_price)
-            self.debug_logger.info("# eurjpy1h=%s" % self.eurjpy1h)
-            self.debug_logger.info("# eurjpy3h=%s" % self.eurjpy3h)
-            self.debug_logger.info("# eurjpy8h=%s" % self.eurjpy8h)
-
-            self.setBollinger(base_time)
-
-        if 0 < seconds <= 10 and self.order_flag == False and self.first_trade_flag != "":
-            target_time = base_time - timedelta(minutes=1)
-            sql = "select close_ask, close_bid from %s_1m_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, target_time)
-            response = self.mysql_connector.select_sql(sql)
-            self.current_price = (response[0][0]+response[0][1])/2
-
-            if self.current_price > self.upper_sigma1h and self.first_trade_flag == "buy":
-                if self.usdjpy_current_price < self.usdjpy8h and self.eurusd_current_price < self.eurusd8h:
-                    trade_flag = "buy"
-                else:
-                    self.first_trade_flag = ""
-
-            elif self.current_price < self.lower_sigma1h and self.first_trade_flag == "sell":
-                if self.usdjpy_current_price > self.usdjpy8h and self.eurusd_current_price > self.eurusd8h:
-                    trade_flag = "sell"
-                else:
-                    self.first_trade_flag = ""
-
-
-
-            self.debug_logger.info("# current_price=%s" % self.current_price)
-            self.debug_logger.info("# upper_sigma1h=%s" % self.upper_sigma1h)
-            self.debug_logger.info("# lower_sigma1h=%s" % self.lower_sigma1h)
-        
 
         return trade_flag
 
@@ -502,31 +445,9 @@ class LstmAlgo(SuperAlgo):
         elif self.log_min_price > current_price:
             self.log_min_price = current_price
 
-
-
-    def setBollinger(self, base_time):
-        window_size = 21
-        table_type = "5m"
-        sigma_valiable = 3
-        target_time = base_time - timedelta(hours=1)
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (self.instrument, table_type, target_time, window_size)
-        response = self.mysql_connector.select_sql(sql)
-        close_price = []
-        for res in response:
-            close_price.append((res[0]+res[1])/2)
-
-        close_price.reverse()
-
-        dataset = getBollingerDataSet(close_price, window_size, sigma_valiable)
-        self.upper_sigma1h = dataset["upper_sigmas"][-1]
-        self.lower_sigma1h = dataset["lower_sigmas"][-1]
-
-
-
-
 # reset flag and valiables function after settlement
     def resetFlag(self):
-        self.first_trade_flag = ""
+        self.trade_first_flag = ""
         self.mode = ""
         self.most_high_price = 0
         self.most_low_price = 0
@@ -551,7 +472,6 @@ class LstmAlgo(SuperAlgo):
     def entryLogWrite(self, base_time):
         self.result_logger.info("#######################################################")
         self.result_logger.info("# in %s Algorithm" % self.algorithm)
-        self.result_logger.info("# first trade time at %s" % self.first_trade_time)
         self.result_logger.info("# EXECUTE ORDER at %s" % base_time)
         self.result_logger.info("# trade_flag=%s" % self.order_kind)
         self.result_logger.info("# ORDER_PRICE=%s" % ((self.ask_price + self.bid_price)/2 ))
@@ -571,13 +491,7 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# gbpjpy1h=%s" % self.gbpjpy1h)
         self.result_logger.info("# gbpjpy3h=%s" % self.gbpjpy3h)
         self.result_logger.info("# gbpjpy8h=%s" % self.gbpjpy8h)
-        self.result_logger.info("# eurjpy=%s" % self.eurjpy_current_price)
-        self.result_logger.info("# eurjpy1h=%s" % self.eurjpy1h)
-        self.result_logger.info("# eurjpy3h=%s" % self.eurjpy3h)
-        self.result_logger.info("# eurjpy8h=%s" % self.eurjpy8h)
-        self.result_logger.info("# current_price=%s" % self.current_price)
-        self.result_logger.info("# upper_sigma1h=%s" % self.upper_sigma1h)
-        self.result_logger.info("# lower_sigma1h=%s" % self.lower_sigma1h)
+
 
 
 

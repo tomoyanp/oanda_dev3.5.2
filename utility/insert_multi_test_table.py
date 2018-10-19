@@ -82,9 +82,9 @@ if __name__ == "__main__":
     currency = args[1].strip()
     table_type = args[2].strip()
     con = MysqlConnector()
-    base_time = "2008-01-01 00:00:00"
+    base_time = "2018-10-01 00:00:00"
     base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
-    end_time = "2018-10-01 00:00:00"
+    end_time = "2018-10-18 00:00:00"
     end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
 
     while True:

@@ -39,7 +39,6 @@ import json
 
 mysql_connector = MysqlConnector()
 instruments = sys.argv[1]
-table_type = sys.argv[2]
 #print(instruments)
 
 def get_original_dataset(target_time, table_type, span, direct):
@@ -149,7 +148,7 @@ def decideTerm( hour):
 def decide_market(base_time, table_type):
     flag = True
 
-    sql = "select * from %s_1h_TABLE where insert_time = \'%s\'" % (instruments, base_time)
+    sql = "select * from %s_%s_TABLE where insert_time = \'%s\'" % (instruments, table_type, base_time)
     response = mysql_connector.select_sql(sql)
     #print(response)
     if len(response) == 0:
@@ -229,10 +228,6 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                 target_time = target_time + timedelta(minutes=5)
             elif table_type == "1h":
                 target_time = target_time + timedelta(hours=1)
-            elif table_type == "3h":
-                target_time = target_time + timedelta(hours=3)
-            elif table_type == "8h":
-                target_time = target_time + timedelta(hours=8)
             elif table_type == "day":
                 target_time = target_time + timedelta(days=1)
             else:
@@ -275,11 +270,12 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 if __name__ == "__main__":
 #    instruments = sys.argv[1]
-    start_time = "2014-01-01 00:00:00"
-    end_time = "2015-01-01 00:00:00"
+    start_time = "2017-07-01 00:00:00"
+    end_time = "2018-07-01 00:00:00"
+    table_type = "1h"
     model_name = "multi_model"
-    window_size = 10
-    output_train_index = 1
-    filename = "%s_%s_%s" % (model_name, instruments, table_type)
+    window_size = 24
+    output_train_index = 8
+    filename = "%s_%s" % (model_name, instruments)
     learning_model1h = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
 

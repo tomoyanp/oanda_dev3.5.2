@@ -114,7 +114,7 @@ if __name__ == "__main__":
     term = decide_term(base_time, currency, con)
 
     base_time = base_time.strftime("%Y-%m-%d 06:00:00")
-    base_time = datetime.strptime("%Y-%m-%d %H:%M:%S")
+    base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
 
     while True:
         try:

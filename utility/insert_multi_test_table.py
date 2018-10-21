@@ -4,7 +4,7 @@
 import sys
 import os
 current_path = os.path.abspath(os.path.dirname(__file__))
-current_path = current_path + "/../.."
+current_path = current_path + "/.."
 sys.path.append(current_path)
 sys.path.append(current_path + "/trade_algorithm")
 sys.path.append(current_path + "/obj")
@@ -84,12 +84,13 @@ if __name__ == "__main__":
     con = MysqlConnector()
     base_time = "2018-10-01 00:00:00"
     base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
-    end_time = "2018-10-18 00:00:00"
+    end_time = "2018-10-21 00:00:00"
     end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
 
     while True:
         try:
             base_time = insert_table(base_time, currency, con, table_type)
+            print(base_time)
 
             if type(base_time) is str:
                 base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")

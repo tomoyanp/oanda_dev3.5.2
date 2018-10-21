@@ -4,7 +4,7 @@
 import sys
 import os
 current_path = os.path.abspath(os.path.dirname(__file__))
-current_path = current_path + "/../.."
+current_path = current_path + "/.."
 sys.path.append(current_path)
 sys.path.append(current_path + "/trade_algorithm")
 sys.path.append(current_path + "/obj")
@@ -87,6 +87,7 @@ def decide_term(base_time, currency, con):
         granularity=granularity,
         count=count
     )
+    print(response)
 
     today = response["candles"][0]["time"]
     today = iso_jp(today)
@@ -111,6 +112,9 @@ if __name__ == "__main__":
     con = MysqlConnector()
     base_time = datetime.now()
     term = decide_term(base_time, currency, con)
+
+    base_time = base_time.strftime("%Y-%m-%d 06:00:00")
+    base_time = datetime.strptime("%Y-%m-%d %H:%M:%S")
 
     while True:
         try:

@@ -275,8 +275,8 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 if __name__ == "__main__":
 #    instruments = sys.argv[1]
-    start_time = "2014-01-01 00:00:00"
-    end_time = "2015-01-01 00:00:00"
+    start_time = "2010-01-01 00:00:00"
+    end_time = "2017-01-01 00:00:00"
     model_name = "multi_model"
     window_size = 10
     output_train_index = 1

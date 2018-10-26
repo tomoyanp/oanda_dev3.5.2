@@ -492,8 +492,8 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# PROFIT=%s" % profit)
 
     def load_model(self, model_filename, weights_filename):
-        model_filename = "%s/../model/%s" % (self.current_path, model_filename)
-        weights_filename = "%s/../model/%s" % (self.current_path, weights_filename)
+        model_filename = "%s/../model/master/%s" % (self.current_path, model_filename)
+        weights_filename = "%s/../model/master/%s" % (self.current_path, weights_filename)
 
         print(model_filename)
         print(weights_filename)

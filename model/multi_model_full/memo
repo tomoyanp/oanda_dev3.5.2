@@ -1,4 +1,0 @@
-learning span = 2017-07-01 to 2018-07-01
-window size = 24
-table_type = 1h
-parameter = close price, high price, low price

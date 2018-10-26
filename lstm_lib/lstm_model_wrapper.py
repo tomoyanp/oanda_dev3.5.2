@@ -43,9 +43,9 @@ def get_original_dataset(target_time, table_type, span, direct, instruments):
     target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
 
     if direct == "ASC" or direct == "asc":
-        where_statement = "insert_time >= \'%s\'" % target_time
+        where_statement = "insert_time > \'%s\'" % target_time
     else:
-        where_statement = "insert_time < \'%s\'" % target_time
+        where_statement = "insert_time <= \'%s\'" % target_time
 
     close_price_list = []
     high_price_list = []
@@ -262,44 +262,31 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 def predict_value(base_time, learning_model, window_size, table_type, output_train_index, instruments, right_string):
     predict_value = 0
-
-    if table_type == "1h":
-        target_time = base_time - timedelta(hours=1)
-    elif table_type == "3h":
-        target_time = base_time - timedelta(hours=3)
-    elif table_type == "8h":
-        target_time = base_time - timedelta(hours=8)
-    elif table_type == "5m":
-        target_time = base_time - timedelta(minutes=5)
-    elif table_type == "day":
-        target_time = base_time - timedelta(days=1)
-    else:
-        raise
+    target_time = base_time
 
     # パーフェクトオーダーが出てるときだけを教師データとして入力する
-    if 1==1:
-        tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC", instruments=instruments)
+    tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC", instruments=instruments)
 
-        # 正規化を戻したいので、高値安値を押さえておく
-        output_max_price = max(tmp_dataframe[right_string])
-        output_min_price = min(tmp_dataframe[right_string])
+    # 正規化を戻したいので、高値安値を押さえておく
+    output_max_price = max(tmp_dataframe[right_string])
+    output_min_price = min(tmp_dataframe[right_string])
 
-        # 正規化したいのでtimestampを落とす
-        del tmp_dataframe["insert_time"]
-        test_dataframe_dataset = tmp_dataframe.copy().values
+    # 正規化したいのでtimestampを落とす
+    del tmp_dataframe["insert_time"]
+    test_dataframe_dataset = tmp_dataframe.copy().values
 
-        # outputは別のモデルで正規化する
-        model = build_to_normalization(test_dataframe_dataset)
-        test_normalization_dataset = change_to_normalization(model, test_dataframe_dataset)
+    # outputは別のモデルで正規化する
+    model = build_to_normalization(test_dataframe_dataset)
+    test_normalization_dataset = change_to_normalization(model, test_dataframe_dataset)
 
-        # データが1セットなので空配列に追加してndarrayに変換する
-        test_input_dataset = []
-        test_input_dataset.append(test_normalization_dataset)
-        test_input_dataset = np.array(test_input_dataset)
+    # データが1セットなので空配列に追加してndarrayに変換する
+    test_input_dataset = []
+    test_input_dataset.append(test_normalization_dataset)
+    test_input_dataset = np.array(test_input_dataset)
 
-        test_predict = learning_model.predict(test_input_dataset)
-        predict_value = test_predict[0][0]
-        predict_value = (predict_value*(output_max_price-output_min_price))+output_min_price
+    test_predict = learning_model.predict(test_input_dataset)
+    predict_value = test_predict[0][0]
+    predict_value = (predict_value*(output_max_price-output_min_price))+output_min_price
 
 
     return predict_value

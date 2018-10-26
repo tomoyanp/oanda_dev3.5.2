@@ -30,6 +30,34 @@ def iso_jp(iso):
         except ValueError:
             pass
     return date
+
+def calculate_time(base_time, instruments, table_type, con, index):
+    if type(base_time) is str:
+        base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
+
+    if table_type == "1m":
+        initial_time = base_time - timedelta(minutes=1)
+    elif table_type == "5m":
+        initial_time = base_time - timedelta(minutes=5)
+    elif table_type == "1h":
+        initial_time = base_time - timedelta(hours=1)
+    elif table_type == "3h":
+        initial_time = base_time - timedelta(hours=3)
+    elif table_type == "8h":
+        initial_time = base_time - timedelta(hours=8)
+    elif table_type == "day":
+        initial_time = base_time - timedelta(days=1)
+    else:
+        raise
+
+    initial_time = initial_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    sql = "select insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (instruments, table_type, initial_time, index+1)
+
+    response = con.select_sql(sql)
+    cal_time = response[-1][0]
+
+    return cal_time
  
 def change_basetime(base_time, table_type):
     if table_type == "1m":

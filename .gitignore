@@ -2,3 +2,5 @@
 *.txt
 *.log
 property/
+model/master/*.hdf5
+model/master/*.json

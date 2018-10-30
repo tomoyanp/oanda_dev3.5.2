@@ -105,7 +105,7 @@ if __name__ == "__main__":
     base_time = datetime.now()
 
     if mode == "test":
-        base_time = "2009-01-01 00:00:00"
+        base_time = "2009-01-01 00:00:40"
         base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
         end_time = "2018-10-01 00:00:00"
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
@@ -117,6 +117,7 @@ if __name__ == "__main__":
 
     while True:
         try:
+            print(base_time)
             now = datetime.now()
             weekday = base_time.weekday()
             hour = base_time.hour
@@ -190,14 +191,21 @@ if __name__ == "__main__":
  
                     insert_table(base_time, currency, con, table_type)
     
+            if mode == "test":
+                base_time = base_time + timedelta(minutes=1)
+            else:
                 base_time = base_time + timedelta(seconds=1)
 
-            if weekday == 5 and hour > 10:
+            if weekday == 5 and hour > 10 and mode != "test":
                 break
 
             if mode == "test" and end_time < base_time:
                 break
 
         except Exception as e:
-            base_time = base_time + timedelta(seconds=1)
             traceback.print_exc() 
+            if mode == "test":
+                base_time = base_time + timedelta(minutes=1)
+            else:
+                base_time = base_time + timedelta(seconds=1)
+

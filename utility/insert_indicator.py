@@ -63,7 +63,11 @@ def insert_table(base_time, currency, con, table_type):
     upper_sigma3 = dataset_sigma3["upper_sigmas"][-1]
     lower_sigma3 = dataset_sigma3["lower_sigmas"][-1]
 
-    sql = "insert into INDICATOR_TABLE(table_type, currency, sma20, sma40, sma80, upper_sigma2, lower_sigma2, upper_sigma3, lower_sigma3, insert_time) values(\'%s\', \'%s\', %s, %s, %s, %s, %s, %s, %s, \'%s\')" % (table_type, currency, sma20, sma40, sma80, upper_sigma2, lower_sigma2, upper_sigma3, lower_sigma3, base_time)
+    sql = "select insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (currency, table_type, base_time)
+    response = con.select_sql(sql)
+    insert_time = response[0][0]
+
+    sql = "insert into INDICATOR_TABLE(table_type, currency, sma20, sma40, sma80, upper_sigma2, lower_sigma2, upper_sigma3, lower_sigma3, insert_time) values(\'%s\', \'%s\', %s, %s, %s, %s, %s, %s, %s, \'%s\')" % (table_type, currency, sma20, sma40, sma80, upper_sigma2, lower_sigma2, upper_sigma3, lower_sigma3, insert_time)
 
     con.insert_sql(sql)
 

@@ -37,10 +37,10 @@ from keras.models import model_from_json
 from sklearn.preprocessing import MinMaxScaler
 import json
 
+
+instrument = sys.argv[0]
+instrument = "GBP_JPY"
 mysql_connector = MysqlConnector()
-instruments = sys.argv[1]
-table_type = sys.argv[2]
-#print(instruments)
 
 def get_original_dataset(target_time, table_type, span, direct):
     daily_target_time = target_time - timedelta(days=1)
@@ -118,55 +118,10 @@ def get_original_dataset(target_time, table_type, span, direct):
     tmp_dataframe["daily_lowersigma2"] = tmp_dataframe["end_price"] - daily_lowersigma2
     tmp_dataframe["daily_end_price"] = tmp_dataframe["end_price"] - daily_end_price
 
-
-
-
-
-def get_original_dataset(target_time, table_type, span, direct):
-    target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
-
-    if direct == "ASC" or direct == "asc":
-        where_statement = "insert_time >= \'%s\'" % target_time
-    else:
-        where_statement = "insert_time < \'%s\'" % target_time
-
-    close_price_list = []
-    high_price_list = []
-    low_price_list = []
-    insert_time_list = []
-
-
-    train_original_sql = "select close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time from %s_%s_TABLE where %s order by insert_time %s limit %s" % (instruments, table_type, where_statement, direct, span)
-    response = mysql_connector.select_sql(train_original_sql)
-
-
-    for res in response:
-        close_price_list.append((res[0]+res[1])/2)
-        high_price_list.append((res[2]+res[3])/2)
-        low_price_list.append((res[4]+res[5])/2)
-        insert_time_list.append(res[6])
-
-    if direct == "ASC" or direct == "asc":
-        pass
-    else:
-        close_price_list.reverse()
-        high_price_list.reverse()
-        low_price_list.reverse()
-        insert_time_list.reverse()
-        print("#########################")
-        print(insert_time_list[0])
-
-    tmp_original_dataset = {
-        "close_price": close_price_list,
-        "high_price": high_price_list,
-        "low_price": low_price_list,
-        "insert_time": insert_time_list
-    }
-
-
-    tmp_dataframe = pd.DataFrame(tmp_original_dataset)
-
     #print(tmp_dataframe)
+
+    print(tmp_dataframe["insert_time"])
+
     return tmp_dataframe
 
 def build_to_normalization( dataset):
@@ -211,7 +166,29 @@ def change_to_ptime( time):
     return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
 def decideConditions( table_type, target_time):
-    return True
+    target_time = target_time - timedelta(minutes=5)
+    target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
+    sql = "select end_price, uppersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, "5m", target_time)
+    response = mysql_connector.select_sql(sql)
+    end_price = response[0][0]
+    uppersigma3 = response[0][1]
+    flag = False
+    if end_price > uppersigma3:
+        flag = True
+
+    return flag
+
+
+#def decideConditions(table_type, target_time):
+#    sql = "select end_price, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, "5m", target_time)
+#    response = mysql_connector.select_sql(sql)
+#    end_price = response[0][0]
+#    uppersigma3 = response[0][1]
+#    flag = False
+#    if end_price < lowersigma3:
+#        flag = True
+#
+#    return flag
 
 
 def decideTerm( hour):
@@ -224,20 +201,6 @@ def decideTerm( hour):
         term = "night"
 
     return term
-
-
-def decide_market(base_time, table_type):
-    flag = True
-
-    sql = "select * from %s_1h_TABLE where insert_time = \'%s\'" % (instruments, base_time)
-    response = mysql_connector.select_sql(sql)
-    #print(response)
-    if len(response) == 0:
-        flag = False
-
-    
-    return flag
-
 
 def train_save_model(window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time, term):
     command = "ls ../model/ | grep -e %s -e %s | wc -l" % (model_filename, weights_filename)
@@ -254,15 +217,12 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         input_max_price = []
         input_min_price = []
 
-        predict_currency = "close_price"
-
         while target_time < end_ptime:
             hour = target_time.hour
-            if decide_market(target_time, table_type):
+            if decideMarket(target_time):
                 if decideTerm(hour) == term or term == "all":
                     if decideConditions(table_type, target_time):
-                    #if 1==1:
-                        #print("term=%s, target_time=%s" % (term, target_time))
+                        print("term=%s, target_time=%s" % (term, target_time))
                         # 未来日付に変えて、教師データと一緒にまとめて取得
                         tmp_target_time = target_time - timedelta(hours=1)
                         tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
@@ -270,11 +230,8 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
     
                         tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
                         tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
-#                        input_max_price.append(max(tmp_dataframe["end_price"]))
-#                        input_min_price.append(min(tmp_dataframe["end_price"]))
-
-                        input_max_price.append(max(tmp_dataframe[predict_currency]))
-                        input_min_price.append(min(tmp_dataframe[predict_currency]))
+                        input_max_price.append(max(tmp_dataframe["end_price"]))
+                        input_min_price.append(min(tmp_dataframe["end_price"]))
     
                         del tmp_dataframe["insert_time"]
     
@@ -287,7 +244,6 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                         #print("=========== output list ============")
                         #print(tmp_time_output_dataframe)
     
-                        #print(tmp_dataframe)
                         tmp_np_dataset = tmp_dataframe.values
                         normalization_model = build_to_normalization(tmp_np_dataset)
                         tmp_np_normalization_dataset = change_to_normalization(normalization_model, tmp_np_dataset)
@@ -302,27 +258,17 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                         train_time_dataset.append(tmp_time_output_dataframe)
                         train_input_dataset.append(tmp_input_dataframe)
                         train_output_dataset.append(tmp_output_dataframe)
-
-            if table_type == "1m":
-                target_time = target_time + timedelta(minutes=1)
-            elif table_type == "5m":
-                target_time = target_time + timedelta(minutes=5)
-            elif table_type == "1h":
-                target_time = target_time + timedelta(hours=1)
-            elif table_type == "3h":
-                target_time = target_time + timedelta(hours=3)
-            elif table_type == "8h":
-                target_time = target_time + timedelta(hours=8)
-            elif table_type == "day":
-                target_time = target_time + timedelta(days=1)
+                        target_time = target_time + timedelta(hours=1)
+                    else:
+                        target_time = target_time + timedelta(minutes=5)
+                else:
+                    target_time = target_time + timedelta(minutes=5)
             else:
-                raise
+                target_time = target_time + timedelta(minutes=5)
 
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
 
-        print(train_input_dataset.shape)
-        print(train_output_dataset.shape)
         learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=200)
         history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=False)
         #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
@@ -354,12 +300,4 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 
 if __name__ == "__main__":
-#    instruments = sys.argv[1]
-    start_time = "2010-01-01 00:00:00"
-    end_time = "2017-01-01 00:00:00"
-    model_name = "multi_model"
-    window_size = 10
-    output_train_index = 1
-    filename = "%s_%s_%s" % (model_name, instruments, table_type)
-    learning_model1h = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
-
+    learning_model1h = train_save_model(window_size=24, output_train_index=8, table_type="1h", figure_filename="figure_1h_uppersigma.png", model_filename="lstm_1h_uppersigma.json", weights_filename="lstm_1h_uppersigma.hdf5", start_time="2010-03-01 00:00:00", end_time="2017-04-01 00:00:00", term="all")

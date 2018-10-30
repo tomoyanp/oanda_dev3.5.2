@@ -15,9 +15,11 @@ from oanda_wrapper import OandaWrapper
 from oandapy import oandapy
 from price_obj import PriceObj
 from datetime import datetime, timedelta
-from common import decideMarket, account_init, iso_jp, jp_utc
+from common import decideMarket, account_init, iso_jp, jp_utc, get_sma, getBollingerDataSet
 from get_indicator import getBollingerWrapper
 import time
+import pandas as pd
+import traceback
 
 account_data = account_init("production", current_path)
 account_id = account_data["account_id"]
@@ -29,19 +31,13 @@ oanda = oandapy.API(environment=env, access_token=token)
 # python insert_multi_table.py instrument table_type mode
 
 def get_original_data(base_time, currency, con, table_type, length):
-    sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (currency, table_type, base_time, index)
+    sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (currency, table_type, base_time, length)
     response = con.select_sql(sql)
-    close_ask = []
-    close_bid = []
+    close_price = []
     for res in response:
-        close_ask.append(res[0])
-        close_bid.append(res[1])
+        close_price.append((res[0]+res[1])/2)
 
-    close_ask.reverse()
-    close_bid.reverse()
-    close_ask = pd.DataFrame(close_ask)
-    close_bid = pd.DataFrame(close_bid)
-    close_price = (close_ask + close_bid) / 2
+    close_price.reverse()
 
     return close_price
 
@@ -58,12 +54,12 @@ def insert_table(base_time, currency, con, table_type):
     length = 21
     sigma = 2
     data = get_original_data(base_time, currency, con, table_type, length)
-    dataset_sigma2 = getBollingerDataset(data, length, sigma)
+    dataset_sigma2 = getBollingerDataSet(data, length, sigma)
     upper_sigma2 = dataset_sigma2["upper_sigmas"][-1]
     lower_sigma2 = dataset_sigma2["lower_sigmas"][-1]
 
     sigma = 3
-    dataset_sigma3 = getBollingerDataset(data, length, sigma)
+    dataset_sigma3 = getBollingerDataSet(data, length, sigma)
     upper_sigma3 = dataset_sigma3["upper_sigmas"][-1]
     lower_sigma3 = dataset_sigma3["lower_sigmas"][-1]
 
@@ -84,12 +80,10 @@ def decide_term(base_time, currency, con):
         granularity=granularity,
         count=count
     )
-    print(response)
 
     today = response["candles"][0]["time"]
     today = iso_jp(today)
     today = today.strftime("%Y-%m-%d %H:%M:%S")
-    print(today)
 
     today = datetime.strptime(today, "%Y-%m-%d %H:%M:%S")
 
@@ -111,7 +105,7 @@ if __name__ == "__main__":
     base_time = datetime.now()
 
     if mode == "test":
-        base_time = "2008-01-01 00:00:00"
+        base_time = "2009-01-01 00:00:00"
         base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
         end_time = "2018-10-01 00:00:00"
         end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
@@ -136,8 +130,6 @@ if __name__ == "__main__":
                     table_type = "1m"
                     target_time = base_time - timedelta(minutes=1)
                     target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
                     
                      
@@ -146,8 +138,6 @@ if __name__ == "__main__":
                     table_type = "5m"
                     target_time = base_time - timedelta(minutes=5)
                     target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
  
                     insert_table(target_time, currency, con, table_type)
@@ -155,8 +145,6 @@ if __name__ == "__main__":
                     table_type = "1h"
                     target_time = base_time - timedelta(hours=1)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
  
                     insert_table(target_time, currency, con, table_type)
@@ -165,8 +153,6 @@ if __name__ == "__main__":
                     table_type = "3h"
                     target_time = base_time - timedelta(hours=3)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
  
                     insert_table(target_time, currency, con, table_type)
@@ -174,8 +160,6 @@ if __name__ == "__main__":
                     table_type = "3h"
                     target_time = base_time - timedelta(hours=3)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
  
                     insert_table(target_time, currency, con, table_type)
@@ -184,8 +168,6 @@ if __name__ == "__main__":
                     table_type = "8h"
                     target_time = base_time - timedelta(hours=8)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
  
                     insert_table(target_time, currency, con, table_type)
@@ -193,8 +175,6 @@ if __name__ == "__main__":
                     table_type = "8h"
                     target_time = base_time - timedelta(hours=8)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
  
                     insert_table(target_time, currency, con, table_type)
@@ -205,8 +185,6 @@ if __name__ == "__main__":
                     table_type = "day"
                     target_time = base_time - timedelta(days=1, hours=1)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
  
  
@@ -221,4 +199,5 @@ if __name__ == "__main__":
                 break
 
         except Exception as e:
-            print(e.args)
+            base_time = base_time + timedelta(seconds=1)
+            traceback.print_exc() 

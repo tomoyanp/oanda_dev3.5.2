@@ -1,5 +1,5 @@
 {
-  "EUR_JPY": {
+  "GBP_JPY": {
     "stop_loss": 0.5,
     "take_profit": 0.5,
     "time_width": 720000,

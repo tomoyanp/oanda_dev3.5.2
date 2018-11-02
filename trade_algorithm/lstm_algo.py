@@ -346,19 +346,19 @@ class LstmAlgo(SuperAlgo):
             tradeday_flag = ""
 
 
-            if self.usdjpy_current_price < self.usdjpy1h and self.eurusd_current_price < self.eurusd1h:
+            if self.usdjpy_current_price < self.usdjpy1h and self.gbpusd_current_price < self.gbpusd1h:
                 trade1h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy1h and self.eurusd_current_price > self.eurusd1h:
+            if self.usdjpy_current_price > self.usdjpy1h and self.gbpusd_current_price > self.gbpusd1h:
                 trade1h_flag = "sell"
 
-            if self.usdjpy_current_price < self.usdjpy3h and self.eurusd_current_price < self.eurusd3h:
+            if self.usdjpy_current_price < self.usdjpy3h and self.gbpusd_current_price < self.gbpusd3h:
                 trade3h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy3h and self.eurusd_current_price > self.eurusd3h:
+            if self.usdjpy_current_price > self.usdjpy3h and self.gbpusd_current_price > self.gbpusd3h:
                 trade3h_flag = "sell"
 
-            if self.usdjpy_current_price < self.usdjpyday and self.eurusd_current_price < self.eurusdday:
+            if self.usdjpy_current_price < self.usdjpyday and self.gbpusd_current_price < self.gbpusdday:
                 tradeday_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpyday and self.eurusd_current_price > self.eurusdday:
+            if self.usdjpy_current_price > self.usdjpyday and self.gbpusd_current_price > self.gbpusdday:
                 tradeday_flag = "sell"
 
 
@@ -371,14 +371,14 @@ class LstmAlgo(SuperAlgo):
 
         if self.first_trade_flag != "" and minutes % 5 == 0 and 5 < seconds < 15:
             self.usdjpy_sma = get_sma(instrument="USD_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
-            self.eurusd_sma = get_sma(instrument="EUR_USD", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
-            self.eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
+            self.gbpusd_sma = get_sma(instrument="GBP_USD", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
+            self.gbpjpy_sma = get_sma(instrument="GBP_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
         
             if self.first_trade_flag == "buy":
-                if self.usdjpy_current_price > self.usdjpy_sma and self.eurusd_current_price > self.eurusd_sma and self.eurjpy_current_price > self.eurjpy_sma:
+                if self.usdjpy_current_price > self.usdjpy_sma and self.gbpusd_current_price > self.gbpusd_sma and self.gbpjpy_current_price > self.gbpjpy_sma:
                     trade_flag = "buy"
             elif self.first_trade_flag == "sell":
-                if self.usdjpy_current_price < self.usdjpy_sma and self.eurusd_current_price < self.eurusd_sma and self.eurjpy_current_price < self.eurjpy_sma:
+                if self.usdjpy_current_price < self.usdjpy_sma and self.gbpusd_current_price < self.gbpusd_sma and self.gbpjpy_current_price < self.gbpjpy_sma:
                     trade_flag = "sell"
             else:
                 raise
@@ -469,8 +469,8 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# eurjpy3h=%s" % self.eurjpy3h)
         self.result_logger.info("# eurjpyday=%s" % self.eurjpyday)
         self.result_logger.info("# usdjpy_sma=%s" % self.usdjpy_sma) 
-        self.result_logger.info("# eurusd_sma=%s" % self.eurusd_sma) 
-        self.result_logger.info("# eurjpy_sma=%s" % self.eurjpy_sma) 
+        self.result_logger.info("# gbpusd_sma=%s" % self.gbpusd_sma) 
+        self.result_logger.info("# gbpjpy_sma=%s" % self.gbpjpy_sma) 
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):
         self.result_logger.info("# %s at %s" % (stl_method, base_time))
@@ -483,8 +483,8 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# PROFIT=%s" % profit)
 
     def load_model(self, model_filename, weights_filename):
-        model_filename = "%s/../model/%s" % (self.current_path, model_filename)
-        weights_filename = "%s/../model/%s" % (self.current_path, weights_filename)
+        model_filename = "%s/../model/master/%s" % (self.current_path, model_filename)
+        weights_filename = "%s/../model/master/%s" % (self.current_path, weights_filename)
 
         print(model_filename)
         print(weights_filename)

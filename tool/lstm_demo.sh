@@ -1,1 +1,1 @@
-python ../main.py "GBP_JPY" "demo" "lstm" "trendreverse_test" 
+nohup python ../main.py "EUR_JPY" "demo" "lstm" "trendreverse_test"  > lstm.log &

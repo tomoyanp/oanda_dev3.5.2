@@ -72,6 +72,7 @@ class LstmAlgo(SuperAlgo):
         self.output_max_price = 0
         self.output_min_price = 0
         self.first_trade_flag = ""
+        self.first_stl_flag = False
         self.current_path = os.path.abspath(os.path.dirname(__file__))
         
         self.usdjpy_1hmodel = self.load_model(model_filename="multi_model_USD_JPY_1h.json", weights_filename="multi_model_USD_JPY_1h.hdf5")
@@ -179,38 +180,27 @@ class LstmAlgo(SuperAlgo):
             seconds = base_time.second
 
 
-            hour = base_time.hour
-            minutes = base_time.minute
-            seconds = base_time.second
+            if seconds < 10:
+                target_time = base_time
+                self.set_current_price(target_time)
 
-            if minutes == 0 and seconds < 10:
-
-                term = self.decideTerm(hour)
-                if term == "morning":
-                    model_1h = self.learning_model1h_morning
-                    model_5m = self.learning_model5m_morning
-                elif term == "daytime":
-                    model_1h = self.learning_model1h_daytime
-                    model_5m = self.learning_model5m_daytime
-                elif term == "night":
-                    model_1h = self.learning_model1h_night
-                    model_5m = self.learning_model5m_night
-
-                self.predict_value1h = self.predict_value(base_time, model_1h, window_size=24, table_type="1h", output_train_index=1)
-                self.predict_value5m = self.predict_value(base_time, model_5m, window_size=8*12, table_type="5m", output_train_index=12)
-
-                if self.order_kind == "buy":
-                    if self.predict_value5m > self.ask_price and self.predict_value1h > self.ask_price:
-                        pass
-                    else:
+                if self.order_kind == "buy"  and (self.gbpjpy_current_price - self.order_price) > 0.5:
+                    self.first_stl_flag = True
+                elif self.order_kind == "sell" and (self.order_price - self.gbpjpy_current_price) > 0.5:
+                    self.first_stl_flag = True
+                
+                if self.first_stl_flag:
+                    table_type = "day"
+                    self.usdjpyday, self.eurusdday, self.gbpusdday, self.gbpjpyday, self.gbpjpyday = self.multi_predict(table_type, target_time)
+        
+                    if self.gbpjpy_current_price > self.gbpjpyday and self.order_kind == "buy":
                         stl_flag = True
-                elif self.order_kind == "sell":
-                    if self.predict_value5m < self.bid_price and self.predict_value1h < self.bid_price:
-                        pass
-                    else:
+                    elif self.gbpjpy_current_price < self.gbpjpyday and self.order_kind == "sell":
                         stl_flag = True
+          
 
         return stl_flag
+
 
     def decideCondition(self, table_type, target_time):
         sql = "select uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, "5m", target_time - timedelta(minutes=5))
@@ -420,6 +410,7 @@ class LstmAlgo(SuperAlgo):
 # reset flag and valiables function after settlement
     def resetFlag(self):
         self.first_trade_flag = ""
+        self.first_stl_flag = False
         self.mode = ""
         self.most_high_price = 0
         self.most_low_price = 0

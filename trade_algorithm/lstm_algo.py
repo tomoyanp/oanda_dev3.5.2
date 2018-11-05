@@ -72,7 +72,24 @@ class LstmAlgo(SuperAlgo):
         self.output_max_price = 0
         self.output_min_price = 0
         self.first_trade_flag = ""
+        self.first_trade_time = None
         self.current_path = os.path.abspath(os.path.dirname(__file__))
+
+        self.usdjpy_current_price = None
+        self.usdjpy1h = None
+        self.usdjpy3h = None
+        self.usdjpyday = None
+        self.eurusd_current_price = None
+        self.eurusd1h = None
+        self.eurusd3h = None
+        self.eurusdday = None
+        self.eurjpy_current_price = None
+        self.eurjpy1h = None
+        self.eurjpy3h = None
+        self.eurjpyday = None
+        self.usdjpy_sma = None
+        self.eurusd_sma = None
+        self.eurjpy_sma = None
         
         self.usdjpy_1hmodel = self.load_model(model_filename="multi_model_USD_JPY_1h.json", weights_filename="multi_model_USD_JPY_1h.hdf5")
         self.usdjpy_3hmodel = self.load_model(model_filename="multi_model_USD_JPY_3h.json", weights_filename="multi_model_USD_JPY_3h.hdf5")
@@ -121,19 +138,6 @@ class LstmAlgo(SuperAlgo):
 
                 else:
                     trade_flag = self.decideReverseTrade(trade_flag, current_price, base_time)
-                    if self.order_flag:
-                        trade_flag = "pass"
-
-#                     self.test_predict(base_time)
-
-            if trade_flag != "pass" and self.order_flag:
-                if trade_flag == "buy" and self.order_kind == "buy":
-                    trade_flag = "pass"
-                elif trade_flag == "sell" and self.order_kind == "sell":
-                    trade_flag = "pass"
-                else:
-                    self.stl_logic = "allovertheworld settlement"
-                    self.algorithm = self.algorithm + " by allovertheworld"
 
 
             return trade_flag
@@ -323,65 +327,72 @@ class LstmAlgo(SuperAlgo):
 
 
     def decideReverseTrade(self, trade_flag, current_price, base_time):
-        minutes = base_time.minute
-        seconds = base_time.second
+        if self.order_flag == False:
+            minutes = base_time.minute
+            seconds = base_time.second
+    
+            #if minutes == 0 and 0 < seconds <= 10 and self.order_flag == False:
+            if minutes == 0 and 0 < seconds <= 10:
+                target_time = base_time
+                self.set_current_price(target_time)
+                
+    
+                table_type = "1h"
+                self.usdjpy1h, self.eurusd1h, self.gbpusd1h, self.gbpjpy1h, self.eurjpy1h = self.multi_predict(table_type, target_time)
+    
+                table_type = "3h"
+                self.usdjpy3h, self.eurusd3h, self.gbpusd3h, self.gbpjpy3h, self.eurjpy3h = self.multi_predict(table_type, target_time)
+    
+                table_type = "day"
+                self.usdjpyday, self.eurusdday, self.gbpusdday, self.gbpjpyday, self.eurjpyday = self.multi_predict(table_type, target_time)
+    
+                trade1h_flag = ""
+                trade3h_flag = ""
+                tradeday_flag = ""
+    
+    
+                if self.usdjpy_current_price < self.usdjpy1h and self.eurusd_current_price < self.eurusd1h:
+                    trade1h_flag = "buy"
+                if self.usdjpy_current_price > self.usdjpy1h and self.eurusd_current_price > self.eurusd1h:
+                    trade1h_flag = "sell"
+    
+                if self.usdjpy_current_price < self.usdjpy3h and self.eurusd_current_price < self.eurusd3h:
+                    trade3h_flag = "buy"
+                if self.usdjpy_current_price > self.usdjpy3h and self.eurusd_current_price > self.eurusd3h:
+                    trade3h_flag = "sell"
+    
+                if self.usdjpy_current_price < self.usdjpyday and self.eurusd_current_price < self.eurusdday:
+                    tradeday_flag = "buy"
+                if self.usdjpy_current_price > self.usdjpyday and self.eurusd_current_price > self.eurusdday:
+                    tradeday_flag = "sell"
+    
+    
+                #if trade1h_flag == trade3h_flag == tradeday_flag == "buy":
+                if trade1h_flag == tradeday_flag == "buy":
+                    self.first_trade_flag = "buy"
+                    self.first_trade_time = base_time
+                #elif trade1h_flag == trade3h_flag == tradeday_flag == "sell":
+                elif trade1h_flag == tradeday_flag == "sell":
+                    self.first_trade_flag = "sell"
+                    self.first_trade_time = base_time
+    
+                self.writeDebugTradeLog(base_time, trade_flag)
 
-        #if minutes == 0 and 0 < seconds <= 10 and self.order_flag == False:
-        if minutes == 0 and 0 < seconds <= 10:
-            target_time = base_time
-            self.set_current_price(target_time)
+            if self.first_trade_flag != "" and minutes % 5 == 0 and 5 < seconds < 15:
+                self.usdjpy_sma = get_sma(instrument="USD_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
+                self.eurusd_sma = get_sma(instrument="EUR_USD", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
+                self.eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
             
+                if self.first_trade_flag == "buy":
+                    if self.usdjpy_current_price > self.usdjpy_sma and self.eurusd_current_price > self.eurusd_sma and self.eurjpy_current_price > self.eurjpy_sma:
+                        trade_flag = "buy"
+                elif self.first_trade_flag == "sell":
+                    if self.usdjpy_current_price < self.usdjpy_sma and self.eurusd_current_price < self.eurusd_sma and self.eurjpy_current_price < self.eurjpy_sma:
+                        trade_flag = "sell"
+                else:
+                    raise
 
-            table_type = "1h"
-            self.usdjpy1h, self.eurusd1h, self.gbpusd1h, self.gbpjpy1h, self.eurjpy1h = self.multi_predict(table_type, target_time)
-
-            table_type = "3h"
-            self.usdjpy3h, self.eurusd3h, self.gbpusd3h, self.gbpjpy3h, self.eurjpy3h = self.multi_predict(table_type, target_time)
-
-            table_type = "day"
-            self.usdjpyday, self.eurusdday, self.gbpusdday, self.gbpjpyday, self.eurjpyday = self.multi_predict(table_type, target_time)
-
-            trade1h_flag = ""
-            trade3h_flag = ""
-            tradeday_flag = ""
-
-
-            if self.usdjpy_current_price < self.usdjpy1h and self.eurusd_current_price < self.eurusd1h:
-                trade1h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy1h and self.eurusd_current_price > self.eurusd1h:
-                trade1h_flag = "sell"
-
-            if self.usdjpy_current_price < self.usdjpy3h and self.eurusd_current_price < self.eurusd3h:
-                trade3h_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpy3h and self.eurusd_current_price > self.eurusd3h:
-                trade3h_flag = "sell"
-
-            if self.usdjpy_current_price < self.usdjpyday and self.eurusd_current_price < self.eurusdday:
-                tradeday_flag = "buy"
-            if self.usdjpy_current_price > self.usdjpyday and self.eurusd_current_price > self.eurusdday:
-                tradeday_flag = "sell"
-
-
-            if trade1h_flag == trade3h_flag == tradeday_flag == "buy":
-                self.first_trade_flag = "buy"
-                self.first_trade_time = base_time
-            elif trade1h_flag == trade3h_flag == tradeday_flag == "sell":
-                self.first_trade_flag = "sell"
-                self.first_trade_time = base_time
-
-        if self.first_trade_flag != "" and minutes % 5 == 0 and 5 < seconds < 15:
-            self.usdjpy_sma = get_sma(instrument="USD_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
-            self.eurusd_sma = get_sma(instrument="EUR_USD", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
-            self.eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
-        
-            if self.first_trade_flag == "buy":
-                if self.usdjpy_current_price > self.usdjpy_sma and self.eurusd_current_price > self.eurusd_sma and self.eurjpy_current_price > self.eurjpy_sma:
-                    trade_flag = "buy"
-            elif self.first_trade_flag == "sell":
-                if self.usdjpy_current_price < self.usdjpy_sma and self.eurusd_current_price < self.eurusd_sma and self.eurjpy_current_price < self.eurjpy_sma:
-                    trade_flag = "sell"
-            else:
-                raise
+                self.writeDebugTradeLog(base_time, trade_flag)
 
         return trade_flag
 
@@ -431,14 +442,23 @@ class LstmAlgo(SuperAlgo):
 
 # write log function
     def writeDebugTradeLog(self, base_time, trade_flag):
-        self.debug_logger.info("# %s "% base_time)
-        self.debug_logger.info("# trade_flag=            %s" % trade_flag)
         self.debug_logger.info("#############################################")
+        self.debug_logger.info("# %s "% base_time)
+        self.debug_logger.info("# trade_flag=%s" % trade_flag)
+        self.debug_logger.info("# first_trade_flag=%s" % self.first_trade_flag)
+        self.debug_logger.info("# first_trade_time=%s" % self.first_trade_time)
+        self.debug_logger.info("# usdjpy=%s" % self.usdjpy_current_price)
+        self.debug_logger.info("# usdjpy1h=%s" % self.usdjpy1h)
+        self.debug_logger.info("# usdjpy3h=%s" % self.usdjpy3h)
+        self.debug_logger.info("# usdjpyday=%s" % self.usdjpyday)
+        self.debug_logger.info("# eurusd=%s" % self.eurusd_current_price)
+        self.debug_logger.info("# eurusd1h=%s" % self.eurusd1h)
+        self.debug_logger.info("# eurusd3h=%s" % self.eurusd3h)
+        self.debug_logger.info("# eurusdday=%s" % self.eurusdday)
+        self.debug_logger.info("# eurjpyday=%s" % self.eurjpyday)
+        self.debug_logger.info("# usdjpy_sma=%s" % self.usdjpy_sma) 
+        self.debug_logger.info("# eurusd_sma=%s" % self.eurusd_sma) 
 
-    def writeDebugStlLog(self, base_time, stl_flag):
-        self.debug_logger.info("# %s "% base_time)
-        self.debug_logger.info("# stl_flag=           %s" % stl_flag)
-        self.debug_logger.info("#############################################")
 
 
     def entryLogWrite(self, base_time):
@@ -456,14 +476,6 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# eurusd1h=%s" % self.eurusd1h)
         self.result_logger.info("# eurusd3h=%s" % self.eurusd3h)
         self.result_logger.info("# eurusdday=%s" % self.eurusdday)
-        self.result_logger.info("# gbpusd=%s" % self.gbpusd_current_price)
-        self.result_logger.info("# gbpusd1h=%s" % self.gbpusd1h)
-        self.result_logger.info("# gbpusd3h=%s" % self.gbpusd3h)
-        self.result_logger.info("# gbpusdday=%s" % self.gbpusdday)
-        self.result_logger.info("# gbpjpy=%s" % self.gbpjpy_current_price)
-        self.result_logger.info("# gbpjpy1h=%s" % self.gbpjpy1h)
-        self.result_logger.info("# gbpjpy3h=%s" % self.gbpjpy3h)
-        self.result_logger.info("# gbpjpyday=%s" % self.gbpjpyday)
         self.result_logger.info("# eurjpy=%s" % self.eurjpy_current_price)
         self.result_logger.info("# eurjpy1h=%s" % self.eurjpy1h)
         self.result_logger.info("# eurjpy3h=%s" % self.eurjpy3h)

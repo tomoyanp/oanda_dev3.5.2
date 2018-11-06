@@ -68,10 +68,10 @@ oanda = oandapy.API(environment=env, access_token=token)
 #response = oanda.get_transaction_history(account_id)
 
 response = oanda.get_history(
-    instrument=["USD_JPY"],
+    instrument=["USD_JPY", "GBP_JPY"],
     start=test_time,
     granularity="H1",
-    count=1
+    count=10
 )
 
 print(response)

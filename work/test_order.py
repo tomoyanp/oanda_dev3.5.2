@@ -53,7 +53,7 @@ def jp_utc(local_time):
 #{'candles': [{'time': '2018-10-04T15:30:00.000000Z', 'lowAsk': 148.225, 'openBid': 148.223, 'closeAsk': 148.314, 'closeBid': 148.286, 'volume': 110, 'complete': True, 'openAsk': 148.247, 'highAsk': 148.317, 'lowBid': 148.199, 'highBid': 148.289}], 'instrument': 'GBP_JPY', 'granularity': 'M1'}5
 
 #test_time = datetime.now()
-test_time = "2018-10-22 00:00:00"
+test_time = "2018-11-05 12:47:00"
 test_time = datetime.strptime(test_time, "%Y-%m-%d %H:%M:%S")
 print(test_time)
 test_time = test_time - timedelta(hours=9)

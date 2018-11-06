@@ -331,10 +331,12 @@ class LstmAlgo(SuperAlgo):
             minutes = base_time.minute
             seconds = base_time.second
     
-            #if minutes == 0 and 0 < seconds <= 10 and self.order_flag == False:
-            if minutes == 0 and 0 < seconds <= 10:
+            if 15 < seconds < 30:
                 target_time = base_time
                 self.set_current_price(target_time)
+
+            if minutes == 0 and 0 < seconds <= 10:
+                target_time = base_time
                 
     
                 table_type = "1h"

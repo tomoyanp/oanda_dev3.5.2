@@ -39,7 +39,6 @@ result_logger.addHandler(result_fh)
 debug_logger.setLevel(DEBUG)
 result_logger.setLevel(DEBUG)
 
-sendmail = SendMail("tomoyanpy@gmail.com", "tomoyanpy@softbank.ne.jp", property_path)
 
 if __name__ == '__main__':
 
@@ -121,6 +120,7 @@ if __name__ == '__main__':
 
 
     except:
+        sendmail = SendMail("tomoyanpy@gmail.com", "tomoyanpy@softbank.ne.jp", property_path)
         message = traceback.format_exc()
         debug_logger.info(message)
         sendmail.set_msg(message)

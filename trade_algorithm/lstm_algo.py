@@ -299,29 +299,29 @@ class LstmAlgo(SuperAlgo):
 
 
     def set_current_price(self, target_time):
-        table_type = "1h"
+        table_type = "1m"
         instruments = "USD_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
         response = self.mysql_connector.select_sql(sql)
         self.usdjpy_current_price = (response[0][0] + response[0][1]) / 2
 
         instruments = "EUR_USD"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
         response = self.mysql_connector.select_sql(sql)
         self.eurusd_current_price = (response[0][0] + response[0][1]) / 2
 
         instruments = "GBP_USD"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
         response = self.mysql_connector.select_sql(sql)
         self.gbpusd_current_price = (response[0][0] + response[0][1]) / 2
 
         instruments = "GBP_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
         response = self.mysql_connector.select_sql(sql)
         self.gbpjpy_current_price = (response[0][0] + response[0][1]) / 2
 
         instruments = "EUR_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(hours=1)) 
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
         response = self.mysql_connector.select_sql(sql)
         self.eurjpy_current_price = (response[0][0] + response[0][1]) / 2
 

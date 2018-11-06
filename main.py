@@ -43,6 +43,7 @@ result_logger.setLevel(DEBUG)
 if __name__ == '__main__':
 
     args = sys.argv
+    sendmail = SendMail("tomoyanpy@gmail.com", "tomoyanpy@softbank.ne.jp", property_path)
     # コマンドライン引数から、通貨とモード取得
     instrument = args[1]
     mode       = args[2]

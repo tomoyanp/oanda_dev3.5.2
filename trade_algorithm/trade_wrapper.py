@@ -65,7 +65,7 @@ class TradeWrapper:
         else:
             if base_time.second >= 50:
                 balance = self.oanda_wrapper.getBalance()
-                balance = balance * 0.7 * 20
+                balance = balance * 0.9 * 25
                 #balance = balance * 0.2 * 20
                 units = balance / current_price
                 tmp = int(units / 1000)

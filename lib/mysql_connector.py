@@ -19,7 +19,7 @@ class MysqlConnector:
                 self.cursor.execute(sql)
                 self.connector.commit()
                 break
-            except OperationalError as oe:
+            except:
                 self.__init__()
 
     def select_sql(self, sql):
@@ -28,7 +28,7 @@ class MysqlConnector:
                 self.cursor.execute(sql)
                 response = self.cursor.fetchall()
                 break
-            except OperationalError as oe: 
+            except: 
                 self.__init__()
 
         return response

@@ -19,8 +19,8 @@ class MysqlConnector:
                 self.cursor.execute(sql)
                 self.connector.commit()
                 break
-            except:
-                self.__init__()
+#            except:
+#                self.__init__()
 
     def select_sql(self, sql):
         while True:
@@ -28,8 +28,8 @@ class MysqlConnector:
                 self.cursor.execute(sql)
                 response = self.cursor.fetchall()
                 break
-            except: 
-                self.__init__()
+#            except: 
+#                self.__init__()
 
         return response
 

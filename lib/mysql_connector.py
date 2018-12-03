@@ -14,22 +14,12 @@ class MysqlConnector:
         self.cursor = self.connector.cursor()
 
     def insert_sql(self, sql):
-        while True:
-            try:
-                self.cursor.execute(sql)
-                self.connector.commit()
-                break
-#            except:
-#                self.__init__()
+        self.cursor.execute(sql)
+        self.connector.commit()
 
     def select_sql(self, sql):
-        while True:
-            try:
-                self.cursor.execute(sql)
-                response = self.cursor.fetchall()
-                break
-#            except: 
-#                self.__init__()
+        self.cursor.execute(sql)
+        response = self.cursor.fetchall()
 
         return response
 

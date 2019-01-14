@@ -358,8 +358,8 @@ if __name__ == "__main__":
     start_time = "2016-01-01 00:00:00"
     end_time = "2017-01-01 00:00:00"
     model_name = "multi_model"
-    window_size = 60
-    output_train_index = 60 
+    window_size = 12
+    output_train_index = 12
     filename = "%s_%s_%s" % (model_name, instruments, table_type)
     learning_model1h = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
 

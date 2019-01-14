@@ -1,1 +1,2 @@
-nohup python ../main.py "EUR_JPY" "demo" "lstm" "trendreverse_test"  > lstm.log &
+CURRENT_PATH=`pwd`
+nohup python $CURRENT_PATH/../main.py "EUR_JPY" "demo" "lstm" "trendreverse_test" > lstm.log &

@@ -77,39 +77,36 @@ class LstmAlgo(SuperAlgo):
 
         self.usdjpy_current_price = None
         self.usdjpy1h = None
-        self.usdjpy3h = None
-        self.usdjpyday = None
+        self.usdjpy5m = None
+        self.usdjpy1m = None
         self.eurusd_current_price = None
         self.eurusd1h = None
-        self.eurusd3h = None
-        self.eurusdday = None
+        self.eurusd5m = None
+        self.eurusd1m = None
         self.eurjpy_current_price = None
         self.eurjpy1h = None
-        self.eurjpy3h = None
-        self.eurjpyday = None
-        self.usdjpy_sma = None
-        self.eurusd_sma = None
-        self.eurjpy_sma = None
+        self.eurjpy5m = None
+        self.eurjpy1m = None
         
         self.usdjpy_1hmodel = self.load_model(model_filename="multi_model_USD_JPY_1h.json", weights_filename="multi_model_USD_JPY_1h.hdf5")
-        self.usdjpy_3hmodel = self.load_model(model_filename="multi_model_USD_JPY_3h.json", weights_filename="multi_model_USD_JPY_3h.hdf5")
-        self.usdjpy_daymodel = self.load_model(model_filename="multi_model_USD_JPY_day.json", weights_filename="multi_model_USD_JPY_day.hdf5")
+        self.usdjpy_5mmodel = self.load_model(model_filename="multi_model_USD_JPY_5m.json", weights_filename="multi_model_USD_JPY_5m.hdf5")
+        self.usdjpy_1mmodel = self.load_model(model_filename="multi_model_USD_JPY_1m.json", weights_filename="multi_model_USD_JPY_1m.hdf5")
 
         self.eurusd_1hmodel = self.load_model(model_filename="multi_model_EUR_USD_1h.json", weights_filename="multi_model_EUR_USD_1h.hdf5")
-        self.eurusd_3hmodel = self.load_model(model_filename="multi_model_EUR_USD_3h.json", weights_filename="multi_model_EUR_USD_3h.hdf5")
-        self.eurusd_daymodel = self.load_model(model_filename="multi_model_EUR_USD_day.json", weights_filename="multi_model_EUR_USD_day.hdf5")
+        self.eurusd_5mmodel = self.load_model(model_filename="multi_model_EUR_USD_5m.json", weights_filename="multi_model_EUR_USD_5m.hdf5")
+        self.eurusd_1mmodel = self.load_model(model_filename="multi_model_EUR_USD_1m.json", weights_filename="multi_model_EUR_USD_1m.hdf5")
 
         self.gbpusd_1hmodel = self.load_model(model_filename="multi_model_GBP_USD_1h.json", weights_filename="multi_model_GBP_USD_1h.hdf5")
-        self.gbpusd_3hmodel = self.load_model(model_filename="multi_model_GBP_USD_3h.json", weights_filename="multi_model_GBP_USD_3h.hdf5")
-        self.gbpusd_daymodel = self.load_model(model_filename="multi_model_GBP_USD_day.json", weights_filename="multi_model_GBP_USD_day.hdf5")
+        self.gbpusd_5mmodel = self.load_model(model_filename="multi_model_GBP_USD_5m.json", weights_filename="multi_model_GBP_USD_5m.hdf5")
+        self.gbpusd_1mmodel = self.load_model(model_filename="multi_model_GBP_USD_1m.json", weights_filename="multi_model_GBP_USD_1m.hdf5")
 
         self.gbpjpy_1hmodel = self.load_model(model_filename="multi_model_GBP_JPY_1h.json", weights_filename="multi_model_GBP_JPY_1h.hdf5")
-        self.gbpjpy_3hmodel = self.load_model(model_filename="multi_model_GBP_JPY_3h.json", weights_filename="multi_model_GBP_JPY_3h.hdf5")
-        self.gbpjpy_daymodel = self.load_model(model_filename="multi_model_GBP_JPY_day.json", weights_filename="multi_model_GBP_JPY_day.hdf5")
+        self.gbpjpy_5mmodel = self.load_model(model_filename="multi_model_GBP_JPY_5m.json", weights_filename="multi_model_GBP_JPY_5m.hdf5")
+        self.gbpjpy_1mmodel = self.load_model(model_filename="multi_model_GBP_JPY_1m.json", weights_filename="multi_model_GBP_JPY_1m.hdf5")
 
         self.eurjpy_1hmodel = self.load_model(model_filename="multi_model_EUR_JPY_1h.json", weights_filename="multi_model_EUR_JPY_1h.hdf5")
-        self.eurjpy_3hmodel = self.load_model(model_filename="multi_model_EUR_JPY_3h.json", weights_filename="multi_model_EUR_JPY_3h.hdf5")
-        self.eurjpy_daymodel = self.load_model(model_filename="multi_model_EUR_JPY_day.json", weights_filename="multi_model_EUR_JPY_day.hdf5")
+        self.eurjpy_5mmodel = self.load_model(model_filename="multi_model_EUR_JPY_5m.json", weights_filename="multi_model_EUR_JPY_5m.hdf5")
+        self.eurjpy_1mmodel = self.load_model(model_filename="multi_model_EUR_JPY_1m.json", weights_filename="multi_model_EUR_JPY_1m.hdf5")
 
 
 
@@ -165,8 +162,8 @@ class LstmAlgo(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        #stl_flag = self.decideReverseStl(stl_flag, base_time)
-                        pass
+                        stl_flag = self.decideReverseStl(stl_flag, base_time)
+                        #pass
 
             else:
                 pass
@@ -178,95 +175,52 @@ class LstmAlgo(SuperAlgo):
 
     def decideReverseStl(self, stl_flag, base_time):
         if self.order_flag:
-            hour = base_time.hour
-            minutes = base_time.minute
-            seconds = base_time.second
-
-
-            hour = base_time.hour
-            minutes = base_time.minute
-            seconds = base_time.second
-
-            if minutes == 0 and seconds < 10:
-
-                term = self.decideTerm(hour)
-                if term == "morning":
-                    model_1h = self.learning_model1h_morning
-                    model_5m = self.learning_model5m_morning
-                elif term == "daytime":
-                    model_1h = self.learning_model1h_daytime
-                    model_5m = self.learning_model5m_daytime
-                elif term == "night":
-                    model_1h = self.learning_model1h_night
-                    model_5m = self.learning_model5m_night
-
-                self.predict_value1h = self.predict_value(base_time, model_1h, window_size=24, table_type="1h", output_train_index=1)
-                self.predict_value5m = self.predict_value(base_time, model_5m, window_size=8*12, table_type="5m", output_train_index=12)
-
-                if self.order_kind == "buy":
-                    if self.predict_value5m > self.ask_price and self.predict_value1h > self.ask_price:
-                        pass
-                    else:
-                        stl_flag = True
-                elif self.order_kind == "sell":
-                    if self.predict_value5m < self.bid_price and self.predict_value1h < self.bid_price:
-                        pass
-                    else:
-                        stl_flag = True
+            stl_time = self.trade_time + timedelta(hours=1)
+            stl_time = stl_time.strftime("%Y%m%d%H0000")
+            stl_time = datetime.strptime(stl_time, "%Y%m%d%H%M%S")
+    
+            if stl_time < base_time:
+                stl_flag = True
 
         return stl_flag
-
-    def decideCondition(self, table_type, target_time):
-        sql = "select uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, "5m", target_time - timedelta(minutes=5))
-        response = self.mysql_connector.select_sql(sql)
-        uppersigma3 = response[0][0]
-        lowersigma3 = response[0][1]
-
-        flag = "none"
-        if (self.ask_price > uppersigma3):
-            flag = "up"
-        elif (self.bid_price < lowersigma3):
-            flag = "down"
-    
-        return flag
 
 
     def get_model(self, table_type, instruments):
         model = None
         if table_type == "1h" and instruments == "USD_JPY":
             model = self.usdjpy_1hmodel
-        elif table_type == "3h" and instruments == "USD_JPY":
-            model = self.usdjpy_3hmodel
-        elif table_type == "day" and instruments == "USD_JPY":
-            model = self.usdjpy_daymodel
+        elif table_type == "5m" and instruments == "USD_JPY":
+            model = self.usdjpy_5mmodel
+        elif table_type == "1m" and instruments == "USD_JPY":
+            model = self.usdjpy_1mmodel
 
         elif table_type == "1h" and instruments == "EUR_USD":
             model = self.eurusd_1hmodel
-        elif table_type == "3h" and instruments == "EUR_USD":
-            model = self.eurusd_3hmodel
-        elif table_type == "day" and instruments == "EUR_USD":
-            model = self.eurusd_daymodel
+        elif table_type == "5m" and instruments == "EUR_USD":
+            model = self.eurusd_5mmodel
+        elif table_type == "1m" and instruments == "EUR_USD":
+            model = self.eurusd_1mmodel
 
         elif table_type == "1h" and instruments == "GBP_USD":
             model = self.gbpusd_1hmodel
-        elif table_type == "3h" and instruments == "GBP_USD":
-            model = self.gbpusd_3hmodel
-        elif table_type == "day" and instruments == "GBP_USD":
-            model = self.gbpusd_daymodel
+        elif table_type == "5m" and instruments == "GBP_USD":
+            model = self.gbpusd_5mmodel
+        elif table_type == "1m" and instruments == "GBP_USD":
+            model = self.gbpusd_1mmodel
 
         elif table_type == "1h" and instruments == "GBP_JPY":
             model = self.gbpjpy_1hmodel
-        elif table_type == "3h" and instruments == "GBP_JPY":
-            model = self.gbpjpy_3hmodel
-        elif table_type == "day" and instruments == "GBP_JPY":
-            model = self.gbpjpy_daymodel
+        elif table_type == "5m" and instruments == "GBP_JPY":
+            model = self.gbpjpy_5mmodel
+        elif table_type == "1m" and instruments == "GBP_JPY":
+            model = self.gbpjpy_1mmodel
 
         elif table_type == "1h" and instruments == "EUR_JPY":
             model = self.eurjpy_1hmodel
-        elif table_type == "3h" and instruments == "EUR_JPY":
-            model = self.eurjpy_3hmodel
-        elif table_type == "day" and instruments == "EUR_JPY":
-            model = self.eurjpy_daymodel
+        elif table_type == "5m" and instruments == "EUR_JPY":
+            model = self.eurjpy_5mmodel
+        elif table_type == "1m" and instruments == "EUR_JPY":
+            model = self.eurjpy_1mmodel
  
 
         else:
@@ -274,10 +228,10 @@ class LstmAlgo(SuperAlgo):
 
         return model
 
-    def multi_predict(self, table_type, target_time):
+    def multi_predict(self, table_type, target_time, window_size, output_train_index):
         right_string = "close_price"
-        window_size = 10 
-        output_train_index = 1
+        #window_size = 10 
+        #output_train_index = 1
 
         instruments = "USD_JPY"
         usdjpy = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
@@ -335,22 +289,22 @@ class LstmAlgo(SuperAlgo):
                 target_time = base_time
                 self.set_current_price(target_time)
 
-            if minutes == 0 and 0 < seconds <= 10:
+            if minutes == 15 and 0 < seconds <= 10:
                 target_time = base_time
                 
     
                 table_type = "1h"
-                self.usdjpy1h, self.eurusd1h, self.gbpusd1h, self.gbpjpy1h, self.eurjpy1h = self.multi_predict(table_type, target_time)
+                self.usdjpy1h, self.eurusd1h, self.gbpusd1h, self.gbpjpy1h, self.eurjpy1h = self.multi_predict(table_type, target_time, window_size=10, output_train_index=1)
     
-                table_type = "3h"
-                self.usdjpy3h, self.eurusd3h, self.gbpusd3h, self.gbpjpy3h, self.eurjpy3h = self.multi_predict(table_type, target_time)
+                table_type = "5m"
+                self.usdjpy5m, self.eurusd5m, self.gbpusd5m, self.gbpjpy5m, self.eurjpy5m = self.multi_predict(table_type, target_time, window_size=12, output_train_index=12)
     
-                table_type = "day"
-                self.usdjpyday, self.eurusdday, self.gbpusdday, self.gbpjpyday, self.eurjpyday = self.multi_predict(table_type, target_time)
+                table_type = "1m"
+                self.usdjpy1m, self.eurusd1m, self.gbpusd1m, self.gbpjpy1m, self.eurjpy1m = self.multi_predict(table_type, target_time, window_size=60, output_train_index=60)
     
                 trade1h_flag = ""
-                trade3h_flag = ""
-                tradeday_flag = ""
+                trade5m_flag = ""
+                trade1m_flag = ""
     
     
                 if self.usdjpy_current_price < self.usdjpy1h and self.eurusd_current_price < self.eurusd1h:
@@ -358,42 +312,24 @@ class LstmAlgo(SuperAlgo):
                 if self.usdjpy_current_price > self.usdjpy1h and self.eurusd_current_price > self.eurusd1h:
                     trade1h_flag = "sell"
     
-                if self.usdjpy_current_price < self.usdjpy3h and self.eurusd_current_price < self.eurusd3h:
-                    trade3h_flag = "buy"
-                if self.usdjpy_current_price > self.usdjpy3h and self.eurusd_current_price > self.eurusd3h:
-                    trade3h_flag = "sell"
+                if self.usdjpy_current_price < self.usdjpy5m and self.eurusd_current_price < self.eurusd5m:
+                    trade5m_flag = "buy"
+                if self.usdjpy_current_price > self.usdjpy5m and self.eurusd_current_price > self.eurusd5m:
+                    trade5m_flag = "sell"
     
-                if self.usdjpy_current_price < self.usdjpyday and self.eurusd_current_price < self.eurusdday:
-                    tradeday_flag = "buy"
-                if self.usdjpy_current_price > self.usdjpyday and self.eurusd_current_price > self.eurusdday:
-                    tradeday_flag = "sell"
+                if self.usdjpy_current_price < self.usdjpy1m and self.eurusd_current_price < self.eurusd1m:
+                    trade1m_flag = "buy"
+                if self.usdjpy_current_price > self.usdjpy1m and self.eurusd_current_price > self.eurusd1m:
+                    trade1m_flag = "sell"
     
     
-                #if trade1h_flag == trade3h_flag == tradeday_flag == "buy":
-                if trade1h_flag == tradeday_flag == "buy":
-                    self.first_trade_flag = "buy"
-                    self.first_trade_time = base_time
-                #elif trade1h_flag == trade3h_flag == tradeday_flag == "sell":
-                elif trade1h_flag == tradeday_flag == "sell":
-                    self.first_trade_flag = "sell"
-                    self.first_trade_time = base_time
-    
-                self.writeDebugTradeLog(base_time, trade_flag)
-
-            if self.first_trade_flag != "" and minutes % 5 == 0 and 5 < seconds < 15:
-                self.usdjpy_sma = get_sma(instrument="USD_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
-                self.eurusd_sma = get_sma(instrument="EUR_USD", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
-                self.eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
-            
-                if self.first_trade_flag == "buy":
-                    if self.usdjpy_current_price > self.usdjpy_sma and self.eurusd_current_price > self.eurusd_sma and self.eurjpy_current_price > self.eurjpy_sma:
-                        trade_flag = "buy"
-                elif self.first_trade_flag == "sell":
-                    if self.usdjpy_current_price < self.usdjpy_sma and self.eurusd_current_price < self.eurusd_sma and self.eurjpy_current_price < self.eurjpy_sma:
-                        trade_flag = "sell"
-                else:
-                    raise
-
+                if trade1h_flag == trade5m_flag == trade1m_flag == "buy":
+                    trade_flag = "buy"
+                    self.trade_time = base_time
+                elif trade1h_flag == trade5m_flag == trade1m_flag == "sell":
+                    trade_flag = "sell"
+                    self.trade_time = base_time
+                
                 self.writeDebugTradeLog(base_time, trade_flag)
 
         return trade_flag
@@ -407,26 +343,6 @@ class LstmAlgo(SuperAlgo):
             self.log_min_price = current_price
         elif self.log_min_price > current_price:
             self.log_min_price = current_price
-
-
-
-    def setBollinger(self, base_time):
-        window_size = 21
-        table_type = "5m"
-        sigma_valiable = 3
-        target_time = base_time - timedelta(hours=1)
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (self.instrument, table_type, target_time, window_size)
-        response = self.mysql_connector.select_sql(sql)
-        close_price = []
-        for res in response:
-            close_price.append((res[0]+res[1])/2)
-
-        close_price.reverse()
-
-        dataset = getBollingerDataSet(close_price, window_size, sigma_valiable)
-        self.upper_sigma1h = dataset["upper_sigmas"][-1]
-        self.lower_sigma1h = dataset["lower_sigmas"][-1]
-
 
 
 
@@ -451,16 +367,13 @@ class LstmAlgo(SuperAlgo):
         self.debug_logger.info("# first_trade_time=%s" % self.first_trade_time)
         self.debug_logger.info("# usdjpy=%s" % self.usdjpy_current_price)
         self.debug_logger.info("# usdjpy1h=%s" % self.usdjpy1h)
-        self.debug_logger.info("# usdjpy3h=%s" % self.usdjpy3h)
-        self.debug_logger.info("# usdjpyday=%s" % self.usdjpyday)
+        self.debug_logger.info("# usdjpy5m=%s" % self.usdjpy5m)
+        self.debug_logger.info("# usdjpy1m=%s" % self.usdjpy1m)
         self.debug_logger.info("# eurusd=%s" % self.eurusd_current_price)
         self.debug_logger.info("# eurusd1h=%s" % self.eurusd1h)
-        self.debug_logger.info("# eurusd3h=%s" % self.eurusd3h)
-        self.debug_logger.info("# eurusdday=%s" % self.eurusdday)
-        self.debug_logger.info("# eurjpyday=%s" % self.eurjpyday)
-        self.debug_logger.info("# usdjpy_sma=%s" % self.usdjpy_sma) 
-        self.debug_logger.info("# eurusd_sma=%s" % self.eurusd_sma) 
-
+        self.debug_logger.info("# eurusd5m=%s" % self.eurusd5m)
+        self.debug_logger.info("# eurusd1m=%s" % self.eurusd1m)
+        self.debug_logger.info("# eurjpy1m=%s" % self.eurjpy1m)
 
 
     def entryLogWrite(self, base_time):
@@ -472,19 +385,16 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# ORDER_PRICE=%s" % ((self.ask_price + self.bid_price)/2 ))
         self.result_logger.info("# usdjpy=%s" % self.usdjpy_current_price)
         self.result_logger.info("# usdjpy1h=%s" % self.usdjpy1h)
-        self.result_logger.info("# usdjpy3h=%s" % self.usdjpy3h)
-        self.result_logger.info("# usdjpyday=%s" % self.usdjpyday)
+        self.result_logger.info("# usdjpy5m=%s" % self.usdjpy5m)
+        self.result_logger.info("# usdjpy1m=%s" % self.usdjpy1m)
         self.result_logger.info("# eurusd=%s" % self.eurusd_current_price)
         self.result_logger.info("# eurusd1h=%s" % self.eurusd1h)
-        self.result_logger.info("# eurusd3h=%s" % self.eurusd3h)
-        self.result_logger.info("# eurusdday=%s" % self.eurusdday)
+        self.result_logger.info("# eurusd5m=%s" % self.eurusd5m)
+        self.result_logger.info("# eurusd1m=%s" % self.eurusd1m)
         self.result_logger.info("# eurjpy=%s" % self.eurjpy_current_price)
         self.result_logger.info("# eurjpy1h=%s" % self.eurjpy1h)
-        self.result_logger.info("# eurjpy3h=%s" % self.eurjpy3h)
-        self.result_logger.info("# eurjpyday=%s" % self.eurjpyday)
-        self.result_logger.info("# usdjpy_sma=%s" % self.usdjpy_sma) 
-        self.result_logger.info("# eurusd_sma=%s" % self.eurusd_sma) 
-        self.result_logger.info("# eurjpy_sma=%s" % self.eurjpy_sma) 
+        self.result_logger.info("# eurjpy5m=%s" % self.eurjpy5m)
+        self.result_logger.info("# eurjpy1m=%s" % self.eurjpy1m)
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):
         self.result_logger.info("# %s at %s" % (stl_method, base_time))

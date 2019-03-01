@@ -88,12 +88,20 @@ def decide_term(base_time, instrument, con):
     start_time = base_time.strftime("%Y-%m-%d %H:%M:%S")
     start_time = jp_utc(start_time)
     start_time = start_time.strftime("%Y-%m-%dT%H:%M:%S")
-    response = oanda.get_history(
-        instrument=instrument,
-        start=start_time,
-        granularity=granularity,
-        count=count
-    )
+    params = {
+            "from": start_time,
+            "granularity": granularity,
+            "price": "ABM",
+            "count": count
+            }
+
+    req = instruments.InstrumentsCandles(instrument=instrument, params=params)
+    client.request(req)
+    response = req.response
+    today = candle["time"]
+    today = today.split(".")[0]
+    today = today + ".000000Z"
+ 
     print(response)
 
     today = response["candles"][0]["time"]

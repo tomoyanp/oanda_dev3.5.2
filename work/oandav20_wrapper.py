@@ -103,15 +103,17 @@ response = oanda.get_history(
 print(response)
 print(return_sql(response))
 print("================ v20 ==================")
-start_time = (base_time - timedelta(hours=14)).strftime("%Y-%m-%dT%H:%M:%S")
-#start_time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+
+#start_time = (base_time - timedelta(hours=14)).strftime("%Y-%m-%dT%H:%M:%S")
+start_time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
 print(start_time)
 url = "https://api-fxtrade.oanda.com/v3/instruments/%s/candles" % instrument
 params = {
         "from": start_time,
         "granularity": granularity,
         "price": "ABM",
-        "count": count
+        "count": count,
+        "alignmentTimezone": "Asia/Tokyo"
         }
 
 env = "live"

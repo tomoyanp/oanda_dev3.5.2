@@ -165,8 +165,8 @@ class LstmAlgo(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        #stl_flag = self.decideReverseStl(stl_flag, base_time)
-                        pass
+                        stl_flag = self.decideReverseStl(stl_flag, base_time)
+                        #pass
 
             else:
                 pass
@@ -177,6 +177,10 @@ class LstmAlgo(SuperAlgo):
 
 
     def decideReverseStl(self, stl_flag, base_time):
+        if 15 < seconds < 30:
+            target_time = base_time
+            self.set_current_price(target_time)
+
         if self.order_flag:
             hour = base_time.hour
             minutes = base_time.minute

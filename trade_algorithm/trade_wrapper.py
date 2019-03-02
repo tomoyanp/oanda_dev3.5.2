@@ -100,15 +100,13 @@ class TradeWrapper:
         if self.test_mode:
             pass
         else:
-            response = self.oanda_wrapper.get_current_trades()
+            order_flag = self.oanda_wrapper.get_trade_position()
             onfile_flag = self.checkOnfile()
 
-            if len(response["trades"]) > 0 and onfile_flag:
-                trade_data = response["trades"][0]
-                order_price = trade_data["price"]
-                order_kind = trade_data["side"]
-                trade_id = trade_data["id"]
-                order_flag = True
+            if order_flag and onfile_flag:
+                order_price = 111.111
+                order_kind = "dummy"
+                trade_id = 12345
                 self.trade_algo.setOrderData(order_kind, order_price, order_flag, trade_id)
                 self.debug_logger.info("setCurrentTrade = True")
             else:
@@ -182,7 +180,7 @@ class TradeWrapper:
             stl_price = self.trade_algo.getCurrentPrice()
         else:
             trade_id = self.trade_algo.getTradeId()
-            response = self.oanda_wrapper.close_trade(trade_id)
+            response = self.oanda_wrapper.close_trade(self.instrument)
             stl_price = response["price"]
             self.trade_algo.setStlPrice(stl_price)
 

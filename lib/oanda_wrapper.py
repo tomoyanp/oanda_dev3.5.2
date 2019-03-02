@@ -8,6 +8,11 @@ import time
 import oandapyV20
 import oandapyV20.endpoints.orders as orders
 import oandapyV20.endpoints.pricing as pricing
+import oandapyV20.endpoints.trades as trades
+import oandapyV20.endpoints.positions as positions
+import oandapyV20.endpoints.accounts as accounts
+import oandapyV20.endpoints.accounts as accounts
+
 class OandaWrapper:
     def __init__(self, env, account_id, token, units):
         self.oanda = oandapyV20.API(environment=env, access_token=token)
@@ -15,10 +20,7 @@ class OandaWrapper:
         self.units = units
 
     def get_price(self, currency):
-        params =
-            {
-              "instruments": currency
-            }
+        params = {"instruments": currency}
 
         req = pricing.PricingInfo(accountID=self.account_id, params=params)
         response = self.oanda.request(req)

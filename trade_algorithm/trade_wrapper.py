@@ -100,7 +100,7 @@ class TradeWrapper:
         if self.test_mode:
             pass
         else:
-            order_flag = self.oanda_wrapper.get_trade_position()
+            order_flag = self.oanda_wrapper.get_trade_position(self.instrument)
             onfile_flag = self.checkOnfile()
 
             if order_flag and onfile_flag:

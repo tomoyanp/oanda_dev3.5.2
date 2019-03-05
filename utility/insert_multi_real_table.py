@@ -18,7 +18,7 @@ from get_indicator import getBollingerWrapper
 import time
 
 account_data = account_init("production", current_path)
-account_id = account_data["account_id_v20"]
+account_id = account_data["account_id"]
 token = account_data["token"]
 env = account_data["env"]
 import oandapyV20

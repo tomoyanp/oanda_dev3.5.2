@@ -23,7 +23,8 @@ from oandapy import oandapy
 import time
 
 account_id = 4093685
-token = 'e93bdc312be2c3e0a4a18f5718db237a-32ca3b9b94401fca447d4049ab046fad'
+#token = 'e93bdc312be2c3e0a4a18f5718db237a-32ca3b9b94401fca447d4049ab046fad'
+token = '8667a3c769f85ad5e92c3d16855b5ee7-64e7b74c5a4e377f83459eab8fbe05f1'
 env = 'live'
 
 

@@ -97,7 +97,7 @@ class OandaWrapper:
             req = accounts.AccountSummary(accountID=self.account_id)
             response = self.oanda.request(req)
 
-            banace = int(response["account"]["balance"])
+            balance = int(float(response["account"]["balance"]))
 
             return balance
 

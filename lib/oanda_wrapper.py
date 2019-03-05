@@ -40,9 +40,9 @@ class OandaWrapper:
             stop_loss_price = stop_loss
             take_profit_price = take_profit
             if l_side == "buy":
-                units = "+" + self.units
+                units = "+" + str(self.units)
             else:
-                units = "-" + self.units
+                units = "-" + str(self.units)
 
             data = {
                 "order": {

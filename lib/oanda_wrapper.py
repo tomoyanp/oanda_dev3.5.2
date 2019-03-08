@@ -37,7 +37,9 @@ class OandaWrapper:
 
     def order(self, l_side, currency, stop_loss, take_profit):
         try:
+            print(stop_loss)
             stop_loss_price = round(stop_loss, 3)
+            print(stop_loss_price)
             take_profit_price = round(take_profit, 3)
             if l_side == "buy":
                 units = "+" + str(self.units)
@@ -51,16 +53,20 @@ class OandaWrapper:
                     "type": "MARKET",
                     "positionFill": "DEFAULT",
                     "stopLossOnFill": {
-                        "price": stop_loss_price
+                        "price": str(stop_loss_price)
                     },
                     "takeProfitOnFill": {
-                        "price": take_profit_price
+                        "price": str(take_profit_price)
                     }
                 }
             }
 
+            print(data)
+
             req = orders.OrderCreate(accountID=self.account_id, data=data)
             res = self.oanda.request(req)
+
+            return res
         except Exception as e:
             raise
 
@@ -118,7 +124,7 @@ class OandaWrapper:
                 "longUnits": "ALL"
             }
             req = positions.PositionClose(accountID=self.account_id, instrument=currency, data=data)
-            response = oanda.request(req)
+            response = self.oanda.request(req)
             return response
 
         except:

@@ -71,6 +71,7 @@ class TradeWrapper:
                 tmp = int(units / 1000)
                 units = int(tmp * 1000)
                 self.oanda_wrapper.setUnit(units)
+                print("units = %s" % units)
                 #self.debug_logger.info("units=%s" % units)
 
     def setTradeAlgo(self, algo, base_time):
@@ -108,6 +109,7 @@ class TradeWrapper:
                 order_kind = "dummy"
                 trade_id = 12345
                 self.trade_algo.setOrderData(order_kind, order_price, order_flag, trade_id)
+                print("set current trade = True")
                 self.debug_logger.info("setCurrentTrade = True")
             else:
                 pass
@@ -256,8 +258,10 @@ class TradeWrapper:
                 trade_id = 12345
             else:
                 response = self.oanda_wrapper.order(trade_flag, self.instrument, threshold_list["stoploss"], threshold_list["takeprofit"])
-                order_price = response["price"]
-                trade_id = response["tradeOpened"]["id"]
+                print(response)
+                order_price = response["orderFillTransaction"]["price"]
+                #trade_id = response["tradeOpened"]["id"]
+                trade_id = 12345
 
             order_flag = True
             self.trade_algo.setOrderData(trade_flag, order_price, order_flag, trade_id)

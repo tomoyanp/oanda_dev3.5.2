@@ -38,8 +38,89 @@ from sklearn.preprocessing import MinMaxScaler
 import json
 
 mysql_connector = MysqlConnector()
-instruments = "EUR_JPY"
+instruments = sys.argv[1]
+table_type = sys.argv[2]
 #print(instruments)
+
+def get_original_dataset(target_time, table_type, span, direct):
+    daily_target_time = target_time - timedelta(days=1)
+    target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
+    daily_target_time = daily_target_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    if direct == "ASC" or direct == "asc":
+        train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time >= \'%s\' order by insert_time %s limit %s" % (instrument, table_type, target_time, direct, span)
+    else:
+        train_original_sql = "select end_price, sma20, sma40, sma80, sma100, insert_time, uppersigma3, lowersigma3 from %s_%s_TABLE where insert_time < \'%s\' order by insert_time %s limit %s" % (instrument, table_type, target_time, direct, span)
+
+    response = mysql_connector.select_sql(train_original_sql)
+
+    print("#### sql ####")
+    print(train_original_sql)
+    print(target_time)
+    end_price_list = []
+    sma20_list = []
+    sma40_list = []
+    sma80_list = []
+    sma100_list = []
+    insert_time_list = []
+    uppersigma3_list = []
+    lowersigma3_list = []
+
+    for res in response:
+        end_price_list.append(res[0])
+        sma20_list.append(res[1])
+        sma40_list.append(res[2])
+        sma80_list.append(res[3])
+        sma100_list.append(res[4])
+        insert_time_list.append(res[5])
+        uppersigma3_list.append(res[6])
+        lowersigma3_list.append(res[7])
+
+    if direct == "DESC" or direct == "desc":
+        end_price_list.reverse()
+        sma20_list.reverse()
+        sma40_list.reverse()
+        sma80_list.reverse()
+        sma100_list.reverse()
+        insert_time_list.reverse()
+        uppersigma3_list.reverse()
+        lowersigma3_list.reverse()
+
+
+    daily_train_original_sql = "select max_price, min_price, uppersigma2, lowersigma2, end_price from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, daily_target_time)
+    response = mysql_connector.select_sql(train_original_sql)
+    daily_max_price = response[0][0]
+    daily_min_price = response[0][1]
+    daily_uppersigma2 = response[0][2]
+    daily_lowersigma2 = response[0][3]
+    daily_end_price = response[0][4]
+
+    tmp_original_dataset = {"end_price": end_price_list,
+                            "sma20": sma20_list,
+                            "sma40": sma40_list,
+                            "sma80": sma80_list,
+                            "uppersigma3": uppersigma3_list,
+                            "lowersigma3": lowersigma3_list,
+                            "insert_time": insert_time_list}
+
+
+
+
+    tmp_dataframe = pd.DataFrame(tmp_original_dataset)
+    tmp_dataframe["sma20"] = tmp_dataframe["end_price"] - tmp_dataframe["sma20"]
+    tmp_dataframe["sma40"] = tmp_dataframe["end_price"] - tmp_dataframe["sma40"]
+    tmp_dataframe["sma80"] = tmp_dataframe["end_price"] - tmp_dataframe["sma80"]
+    tmp_dataframe["uppersigma3"] = tmp_dataframe["end_price"] - tmp_dataframe["uppersigma3"]
+    tmp_dataframe["lowersigma3"] = tmp_dataframe["end_price"] - tmp_dataframe["lowersigma3"]
+    tmp_dataframe["daily_max_price"] = tmp_dataframe["end_price"] - daily_max_price
+    tmp_dataframe["daily_min_price"] = tmp_dataframe["end_price"] - daily_min_price
+    tmp_dataframe["daily_uppersigma2"] = tmp_dataframe["end_price"] - daily_uppersigma2
+    tmp_dataframe["daily_lowersigma2"] = tmp_dataframe["end_price"] - daily_lowersigma2
+    tmp_dataframe["daily_end_price"] = tmp_dataframe["end_price"] - daily_end_price
+
+
+
+
 
 def get_original_dataset(target_time, table_type, span, direct):
     target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -49,45 +130,43 @@ def get_original_dataset(target_time, table_type, span, direct):
     else:
         where_statement = "insert_time < \'%s\'" % target_time
 
-
-    instrument_list = ["EUR_JPY", "EUR_USD", "USD_JPY", "AUD_USD", "GBP_USD"]
-    tmp_original_dataset = {}
-
-    for instrument in instrument_list:
-        print(instrument)
-        tmp_original_dataset[instrument] = []
-        train_original_sql = "select close_ask, close_bid from %s_%s_TABLE where %s order by insert_time %s limit %s" % (instrument, table_type, where_statement, direct, span)
-        response = mysql_connector.select_sql(train_original_sql)
-
-        for res in response:
-            tmp_original_dataset[instrument].append((res[0]+res[1])/2)
-
-        if direct == "ASC" or direct == "asc":
-            pass
-        else:
-            tmp_original_dataset[instrument].reverse()
+    close_price_list = []
+    high_price_list = []
+    low_price_list = []
+    insert_time_list = []
 
 
-    # insert_timeだけ別でリストを作る
-    instrument = "USD_JPY"
-    sql = "select insert_time from %s_%s_TABLE where %s order by insert_time %s limit %s" % (instrument, table_type, where_statement, direct, span)
-    print(sql)
+    train_original_sql = "select close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time from %s_%s_TABLE where %s order by insert_time %s limit %s" % (instruments, table_type, where_statement, direct, span)
+    response = mysql_connector.select_sql(train_original_sql)
 
-    response = mysql_connector.select_sql(sql)
 
-    tmp_original_dataset["insert_time"] = []
     for res in response:
-        tmp_original_dataset["insert_time"].append(res[0])
-
+        close_price_list.append((res[0]+res[1])/2)
+        high_price_list.append((res[2]+res[3])/2)
+        low_price_list.append((res[4]+res[5])/2)
+        insert_time_list.append(res[6])
 
     if direct == "ASC" or direct == "asc":
         pass
     else:
-        tmp_original_dataset["insert_time"].reverse()
+        close_price_list.reverse()
+        high_price_list.reverse()
+        low_price_list.reverse()
+        insert_time_list.reverse()
+        print("#########################")
+        print(insert_time_list[0])
+
+    tmp_original_dataset = {
+        "close_price": close_price_list,
+        "high_price": high_price_list,
+        "low_price": low_price_list,
+        "insert_time": insert_time_list
+    }
 
 
     tmp_dataframe = pd.DataFrame(tmp_original_dataset)
-    print(tmp_dataframe)
+
+    #print(tmp_dataframe)
     return tmp_dataframe
 
 def build_to_normalization( dataset):
@@ -175,7 +254,7 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         input_max_price = []
         input_min_price = []
 
-        predict_currency = "EUR_JPY"
+        predict_currency = "close_price"
 
         while target_time < end_ptime:
             hour = target_time.hour
@@ -185,11 +264,14 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                     #if 1==1:
                         #print("term=%s, target_time=%s" % (term, target_time))
                         # 未来日付に変えて、教師データと一緒にまとめて取得
+                        tmp_target_time = target_time - timedelta(hours=1)
                         tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
                         tmp_output_dataframe = get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
     
                         tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
                         tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
+#                        input_max_price.append(max(tmp_dataframe["end_price"]))
+#                        input_min_price.append(min(tmp_dataframe["end_price"]))
 
                         input_max_price.append(max(tmp_dataframe[predict_currency]))
                         input_min_price.append(min(tmp_dataframe[predict_currency]))
@@ -200,6 +282,12 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                         tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
                         tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
     
+                        #print("=========== train list ============")
+                        #print(tmp_time_input_dataframe)
+                        #print("=========== output list ============")
+                        #print(tmp_time_output_dataframe)
+    
+                        #print(tmp_dataframe)
                         tmp_np_dataset = tmp_dataframe.values
                         normalization_model = build_to_normalization(tmp_np_dataset)
                         tmp_np_normalization_dataset = change_to_normalization(normalization_model, tmp_np_dataset)
@@ -266,12 +354,12 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
 
 if __name__ == "__main__":
-    table_type = sys.argv[1] #1m, 5m, 1h
-    start_time = "%s 00:00:00" % sys.argv[4]
-    end_time = "%s 00:00:00" % sys.argv[5]
+#    instruments = sys.argv[1]
+    start_time = "2016-01-01 00:00:00"
+    end_time = "2017-01-01 00:00:00"
     model_name = "multi_model"
-    window_size = int(sys.argv[2]) #60, 60, 60
-    output_train_index = int(sys.argv[3]) #60, 12, 1
-    filename = "%s_%s" % (model_name, table_type)
-    learning_model = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
+    window_size = 12
+    output_train_index = 12
+    filename = "%s_%s_%s" % (model_name, instruments, table_type)
+    learning_model1h = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
 

@@ -28,6 +28,28 @@ client = oandapyV20.API(access_token=token, environment=env)
  
 # python insert_multi_table.py instrument table_type mode
 
+def check_table(base_time, instrument, con, table_type):
+    if table_type == "1m":
+        base_time = base_time - timedelta(minutes=1)
+    elif table_type == "5m":
+        base_time = base_time - timedelta(minutes=5)
+    elif table_type == "1h":
+        base_time = base_time - timedelta(hours=1)
+    elif table_type == "3h":
+        base_time = base_time - timedelta(hours=3)
+    elif table_type == "8h":
+        base_time = base_time - timedelta(hours=8)
+    elif table_type == "day":
+        base_time = base_time - timedelta(days=1)
+
+    sql = "select insert_time from %s_%s_TABLE where insert_time = \'%s\'" % (instrument, table_type, insert_time)
+    response = con.select_sql(sql)
+
+    if len(response) == 0:
+        print("below is no data")
+        print(sql)
+    
+
 def insert_table(base_time, instrument, con, table_type):
     count=1
     if table_type == "1m":
@@ -76,7 +98,8 @@ def insert_table(base_time, instrument, con, table_type):
         sql = "insert into %s_%s_TABLE(open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, \'%s\')" % (instrument, table_type, open_ask_price, open_bid_price, close_ask_price, close_bid_price, high_ask_price, high_bid_price, low_ask_price, low_bid_price, insert_time)
         print(sql)
         try:
-            con.insert_sql(sql)
+            #con.insert_sql(sql)
+            pass
 
         except Exception as e:
             print(e.args)
@@ -126,6 +149,7 @@ if __name__ == "__main__":
     instrument = args[1].strip()
     con = MysqlConnector()
     base_time = datetime.now()
+    base_time = datetime.now() - timedelta(days=7)
     term = decide_term(base_time, instrument, con)
 
     base_time = base_time.strftime("%Y-%m-%d 06:00:00")
@@ -146,68 +170,56 @@ if __name__ == "__main__":
                     table_type = "1m"
                     target_time = base_time - timedelta(minutes=1)
                     target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
-                    
-                     
                     insert_table(target_time, instrument, con, table_type)
+                    check_table(base_time, instrument, con, table_type)
                 if minutes % 5 == 0 and 5 < seconds < 30:
                     table_type = "5m"
                     target_time = base_time - timedelta(minutes=5)
                     target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
- 
                     insert_table(target_time, instrument, con, table_type)
+                    check_table(base_time, instrument, con, table_type)
                 if minutes == 0 and 5 < seconds < 30:
                     table_type = "1h"
                     target_time = base_time - timedelta(hours=1)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
  
                     insert_table(target_time, instrument, con, table_type)
+                    check_table(base_time, instrument, con, table_type)
 
                 if term == "summer" and hour % 3 == 0 and minutes == 0 and 5 < seconds < 30:
                     table_type = "3h"
                     target_time = base_time - timedelta(hours=3)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
  
                     insert_table(target_time, instrument, con, table_type)
+                    check_table(base_time, instrument, con, table_type)
                 elif term == "winter" and hour % 3 == 1 and minutes == 0 and 5 < seconds < 30:
                     table_type = "3h"
                     target_time = base_time - timedelta(hours=3)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
- 
                     insert_table(target_time, instrument, con, table_type)
+                    check_table(base_time, instrument, con, table_type)
 
                 if term == "summer" and (hour == 14 or hour == 22 or hour == 6) and minutes == 0 and 5 < seconds < 30:
                     table_type = "8h"
                     target_time = base_time - timedelta(hours=8)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
  
                     insert_table(target_time, instrument, con, table_type)
+                    check_table(base_time, instrument, con, table_type)
                 elif term == "winter" and (hour == 15 or hour == 23 or hour == 7) and minutes == 0 and 5 < seconds < 30:
                     table_type = "8h"
                     target_time = base_time - timedelta(hours=8)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
- 
                     insert_table(target_time, instrument, con, table_type)
+                    check_table(base_time, instrument, con, table_type)
 
                 if hour == 7 and minutes == 0 and 5 < seconds < 30: 
                     term = decide_term(target_time, instrument, con)
@@ -215,12 +227,9 @@ if __name__ == "__main__":
                     table_type = "day"
                     target_time = base_time - timedelta(days=1, hours=1)
                     target_time = target_time.strftime("%Y-%m-%d %H:00:00")
-                    print("######################")
-                    print(target_time)
                     target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
- 
- 
                     insert_table(base_time, instrument, con, table_type)
+                    check_table(base_time, instrument, con, table_type)
     
                 base_time = base_time + timedelta(seconds=1)
 

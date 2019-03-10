@@ -60,65 +60,64 @@ def check_table(base_time, instrument, con, table_type):
             insert_table(base_time, instrument, con, table_type, count=1)
 
 def insert_table(base_time, instrument, con, table_type, count):
-    if decideMarket(base_time):
-        sql = "select insert_time from %s_%s_TABLE where insert_time = \'%s\'" % (instrument, table_type, base_time)
-        response = con.select_sql(sql)
+    sql = "select insert_time from %s_%s_TABLE where insert_time = \'%s\'" % (instrument, table_type, base_time)
+    response = con.select_sql(sql)
+    if len(response) == 0:
+        if table_type == "1m":
+            granularity = "M1"
+        elif table_type == "5m":
+            granularity = "M5"
+        elif table_type == "1h":
+            granularity = "H1"
+        elif table_type == "3h":
+            granularity = "H3"
+        elif table_type == "8h":
+            granularity = "H8"
+        elif table_type == "day":
+            granularity = "D"
+    
+        start_time = (base_time - timedelta(hours=14)).strftime("%Y-%m-%dT%H:%M:%S")
+        params = {
+                "from": start_time,
+                "granularity": granularity,
+                "price": "ABM",
+                "count": count
+                }
+    
+        req = instruments.InstrumentsCandles(instrument=instrument, params=params)
+        client.request(req)
+        response = req.response
+    
         if len(response) == 0:
-            if table_type == "1m":
-                granularity = "M1"
-            elif table_type == "5m":
-                granularity = "M5"
-            elif table_type == "1h":
-                granularity = "H1"
-            elif table_type == "3h":
-                granularity = "H3"
-            elif table_type == "8h":
-                granularity = "H8"
-            elif table_type == "day":
-                granularity = "D"
+            pass
+        else:
+            for candle in response["candles"]:
+                open_ask_price = candle["ask"]["o"]
+                open_bid_price = candle["bid"]["o"]
+                close_ask_price = candle["ask"]["c"]
+                close_bid_price = candle["bid"]["c"]
+                high_ask_price = candle["ask"]["h"]
+                high_bid_price = candle["bid"]["h"]
+                low_ask_price = candle["ask"]["l"]
+                low_bid_price = candle["bid"]["l"]
+                insert_time = candle["time"]
+                insert_time = insert_time.split(".")[0]
+                insert_time = insert_time + ".000000Z"
+                #print(insert_time)
+                insert_time = iso_jp(insert_time)
+                insert_time = insert_time.strftime("%Y-%m-%d %H:%M:%S")
         
-            start_time = (base_time - timedelta(hours=14)).strftime("%Y-%m-%dT%H:%M:%S")
-            params = {
-                    "from": start_time,
-                    "granularity": granularity,
-                    "price": "ABM",
-                    "count": count
-                    }
-        
-            req = instruments.InstrumentsCandles(instrument=instrument, params=params)
-            client.request(req)
-            response = req.response
-        
-            if len(response) == 0:
-                pass
-            else:
-                for candle in response["candles"]:
-                    open_ask_price = candle["ask"]["o"]
-                    open_bid_price = candle["bid"]["o"]
-                    close_ask_price = candle["ask"]["c"]
-                    close_bid_price = candle["bid"]["c"]
-                    high_ask_price = candle["ask"]["h"]
-                    high_bid_price = candle["bid"]["h"]
-                    low_ask_price = candle["ask"]["l"]
-                    low_bid_price = candle["bid"]["l"]
-                    insert_time = candle["time"]
-                    insert_time = insert_time.split(".")[0]
-                    insert_time = insert_time + ".000000Z"
-                    #print(insert_time)
-                    insert_time = iso_jp(insert_time)
-                    insert_time = insert_time.strftime("%Y-%m-%d %H:%M:%S")
+                sql = "select insert_time from %s_%s_TABLE where insert_time = \'%s\'" % (instrument, table_type, insert_time)
+                response = con.select_sql(sql)
             
-                    sql = "select insert_time from %s_%s_TABLE where insert_time = \'%s\'" % (instrument, table_type, insert_time)
-                    response = con.select_sql(sql)
-                
-                    if len(response) == 0:
-                        sql = "insert into %s_%s_TABLE(open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, \'%s\')" % (instrument, table_type, open_ask_price, open_bid_price, close_ask_price, close_bid_price, high_ask_price, high_bid_price, low_ask_price, low_bid_price, insert_time)
-                        print(sql)
-                        try:
-                            con.insert_sql(sql)
-            
-                        except Exception as e:
-                            print(traceback.format_exc())
+                if len(response) == 0:
+                    sql = "insert into %s_%s_TABLE(open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, \'%s\')" % (instrument, table_type, open_ask_price, open_bid_price, close_ask_price, close_bid_price, high_ask_price, high_bid_price, low_ask_price, low_bid_price, insert_time)
+                    print(sql)
+                    try:
+                        con.insert_sql(sql)
+        
+                    except Exception as e:
+                        print(traceback.format_exc())
 
 if __name__ == "__main__":
     args = sys.argv
@@ -209,8 +208,8 @@ if __name__ == "__main__":
     
                 base_time = base_time + timedelta(seconds=1)
 
-#            if weekday == 5 and hour > 10 and mode == "production":
-#                break
+            if weekday == 5 and hour > 10:
+                break
 
         except Exception as e:
             print(traceback.format_exc())

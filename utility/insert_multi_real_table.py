@@ -214,3 +214,6 @@ if __name__ == "__main__":
 
         except Exception as e:
             print(traceback.format_exc())
+
+    else:
+        print("Offline time = %s" % base_time)

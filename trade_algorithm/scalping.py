@@ -51,17 +51,15 @@ from common import get_sma
 import json
 
 
-class LstmAlgo(SuperAlgo):
+class Scalping(SuperAlgo):
     def __init__(self, instrument, base_path, config_name, base_time):
-        super(LstmAlgo, self).__init__(instrument, base_path, config_name, base_time)
-        self.base_price = 0
+        super(Scalping, self).__init__(instrument, base_path, config_name, base_time)
         self.setPrice(base_time)
         self.debug_logger = getLogger("debug")
         self.result_logger = getLogger("result")
         self.mysql_connector = MysqlConnector()
         self.first_flag = self.config_data["first_trail_mode"]
         self.second_flag = self.config_data["second_trail_mode"]
-        self.trail_third_flag = False
         self.most_high_price = 0
         self.most_low_price = 0
         self.mode = ""
@@ -73,12 +71,12 @@ class LstmAlgo(SuperAlgo):
         self.output_min_price = 0
         self.first_trade_flag = ""
         self.first_trade_time = None
+        self.log_object = {}
         self.current_path = os.path.abspath(os.path.dirname(__file__))
 
-        self.model_1h = self.load_model(model_filename="multi_model_EUR_JPY_1h.json", weights_filename="multi_model_EUR_JPY_1h.hdf5")
-        self.model_5m = self.load_model(model_filename="multi_model_EUR_JPY_5m.json", weights_filename="multi_model_EUR_JPY_5m.hdf5")
-        self.model_1m = self.load_model(model_filename="multi_model_EUR_JPY_1m.json", weights_filename="multi_model_EUR_JPY_1m.hdf5")
-
+        self.model_1h = self.load_model(model_filename="multi_model_1h.json", weights_filename="multi_model_1h.hdf5")
+        self.model_5m = self.load_model(model_filename="multi_model_5m.json", weights_filename="multi_model_5m.hdf5")
+        self.model_1m = self.load_model(model_filename="multi_model_1m.json", weights_filename="multi_model_1m.hdf5")
 
 
     # decide trade entry timing
@@ -147,12 +145,12 @@ class LstmAlgo(SuperAlgo):
 
         return stl_flag
 
-    def set_current_price(self, target_time):
+    def get_current_price(self, target_time):
         table_type = "1m"
         instruments = "EUR_JPY"
         sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
         response = self.mysql_connector.select_sql(sql)
-        self.eurjpy_current_price = (response[0][0] + response[0][1]) / 2
+        return ((response[0][0] + response[0][1]) / 2)
 
 
     def decideReverseTrade(self, trade_flag, current_price, base_time):
@@ -166,7 +164,6 @@ class LstmAlgo(SuperAlgo):
 
             if minutes == 0 and 0 < seconds <= 10:
                 target_time = base_time
-
                 right_string = "EUR_JPY"
                 instruments = "EUR_JPY"
         
@@ -187,52 +184,47 @@ class LstmAlgo(SuperAlgo):
                 table_type = "1h"
                 predict_price_1h = predict_value(target_time, self.mode_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
+                current_price = self.get_current_price(base_time)
 
-
-    
-    
-                if self.usdjpy_current_price < self.usdjpy1h and self.eurusd_current_price < self.eurusd1h:
-                    trade1h_flag = "buy"
-                if self.usdjpy_current_price > self.usdjpy1h and self.eurusd_current_price > self.eurusd1h:
-                    trade1h_flag = "sell"
-    
-                if self.usdjpy_current_price < self.usdjpy3h and self.eurusd_current_price < self.eurusd3h:
-                    trade3h_flag = "buy"
-                if self.usdjpy_current_price > self.usdjpy3h and self.eurusd_current_price > self.eurusd3h:
-                    trade3h_flag = "sell"
-    
-                if self.usdjpy_current_price < self.usdjpyday and self.eurusd_current_price < self.eurusdday:
-                    tradeday_flag = "buy"
-                if self.usdjpy_current_price > self.usdjpyday and self.eurusd_current_price > self.eurusdday:
-                    tradeday_flag = "sell"
-    
-    
-                #if trade1h_flag == trade3h_flag == tradeday_flag == "buy":
-                if trade1h_flag == tradeday_flag == "buy":
+                if current_price < predict_price_1m and current_price < predict_price_5m and current_price < predict_price_1h:
                     self.first_trade_flag = "buy"
                     self.first_trade_time = base_time
-                #elif trade1h_flag == trade3h_flag == tradeday_flag == "sell":
-                elif trade1h_flag == tradeday_flag == "sell":
+                    self.setLogObject("first_trade_time", base_time)
+                    self.setLogObject("first_trade_flag", self.first_trade_flag)
+                    self.setLogObject("predict_price_1m", predict_price_1m)
+                    self.setLogObject("predict_price_5m", predict_price_5m)
+                    self.setLogObject("predict_price_1h", predict_price_1h)
+                    self.setLogObject("first_trade_price", current_price)
+                elif current_price > predict_price_1m and current_price > predict_price_5m and current_price > predict_price_1h:
                     self.first_trade_flag = "sell"
                     self.first_trade_time = base_time
-    
-                self.writeDebugTradeLog(base_time, trade_flag)
+                    self.setLogObject("first_trade_time", base_time)
+                    self.setLogObject("first_trade_flag", self.first_trade_flag)
+                    self.setLogObject("predict_price_1m", predict_price_1m)
+                    self.setLogObject("predict_price_5m", predict_price_5m)
+                    self.setLogObject("predict_price_1h", predict_price_1h)
+                    self.setLogObject("first_trade_price", current_price)
 
-            if self.first_trade_flag != "" and minutes % 5 == 0 and 5 < seconds < 15:
-                self.usdjpy_sma = get_sma(instrument="USD_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
-                self.eurusd_sma = get_sma(instrument="EUR_USD", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
-                self.eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="5m", length=40, con=self.mysql_connector)
+            if self.first_trade_flag != "" and 5 < seconds < 15:
+                current_price = self.get_current_price(base_time)
+                eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="1m", length=20, con=self.mysql_connector)
             
                 if self.first_trade_flag == "buy":
-                    if self.usdjpy_current_price > self.usdjpy_sma and self.eurusd_current_price > self.eurusd_sma and self.eurjpy_current_price > self.eurjpy_sma:
+                    if current_price > eurjpy_sma:
                         trade_flag = "buy"
+                        self.setLogObject("second_trade_time", base_time)
+                        self.setLogObject("second_trade_price", current_price)
+                        self.setLogObject("eurjpy_sma", eurjpy_sma)
+
+
                 elif self.first_trade_flag == "sell":
-                    if self.usdjpy_current_price < self.usdjpy_sma and self.eurusd_current_price < self.eurusd_sma and self.eurjpy_current_price < self.eurjpy_sma:
+                    if current_price < eurjpy_sma:
                         trade_flag = "sell"
+                        self.setLogObject("second_trade_time", base_time)
+                        self.setLogObject("second_trade_price", current_price)
+                        self.setLogObject("eurjpy_sma", eurjpy_sma)
                 else:
                     raise
-
-                self.writeDebugTradeLog(base_time, trade_flag)
 
         return trade_flag
 
@@ -256,62 +248,30 @@ class LstmAlgo(SuperAlgo):
         self.log_max_price = 0
         self.log_min_price = 0
         self.stl_logic = "none"
-        super(LstmAlgo, self).resetFlag()
+        super(Scalping, self).resetFlag()
 
+    def setLogObject(self, key, value):
+        self.log_object[key] = value
 
 # write log function
-    def writeDebugTradeLog(self, base_time, trade_flag):
-        self.debug_logger.info("#############################################")
-        self.debug_logger.info("# %s "% base_time)
-        self.debug_logger.info("# trade_flag=%s" % trade_flag)
-        self.debug_logger.info("# first_trade_flag=%s" % self.first_trade_flag)
-        self.debug_logger.info("# first_trade_time=%s" % self.first_trade_time)
-        self.debug_logger.info("# usdjpy=%s" % self.usdjpy_current_price)
-        self.debug_logger.info("# usdjpy1h=%s" % self.usdjpy1h)
-        self.debug_logger.info("# usdjpy3h=%s" % self.usdjpy3h)
-        self.debug_logger.info("# usdjpyday=%s" % self.usdjpyday)
-        self.debug_logger.info("# eurusd=%s" % self.eurusd_current_price)
-        self.debug_logger.info("# eurusd1h=%s" % self.eurusd1h)
-        self.debug_logger.info("# eurusd3h=%s" % self.eurusd3h)
-        self.debug_logger.info("# eurusdday=%s" % self.eurusdday)
-        self.debug_logger.info("# eurjpyday=%s" % self.eurjpyday)
-        self.debug_logger.info("# usdjpy_sma=%s" % self.usdjpy_sma) 
-        self.debug_logger.info("# eurusd_sma=%s" % self.eurusd_sma) 
-
-
+    def writeLog(self, logger):
+        key_list = self.log_object.keys()
+        logger.info("####################################")
+        for key in key_list:
+            logger.info("%s=%s" % (key, self.log_object[key])
+        
+        self.log_object = {}
 
     def entryLogWrite(self, base_time):
-        self.result_logger.info("#######################################################")
-        self.result_logger.info("# in %s Algorithm" % self.algorithm)
-        self.result_logger.info("# first trade time at %s" % self.first_trade_time)
-        self.result_logger.info("# EXECUTE ORDER at %s" % base_time)
-        self.result_logger.info("# trade_flag=%s" % self.order_kind)
-        self.result_logger.info("# ORDER_PRICE=%s" % ((self.ask_price + self.bid_price)/2 ))
-        self.result_logger.info("# usdjpy=%s" % self.usdjpy_current_price)
-        self.result_logger.info("# usdjpy1h=%s" % self.usdjpy1h)
-        self.result_logger.info("# usdjpy3h=%s" % self.usdjpy3h)
-        self.result_logger.info("# usdjpyday=%s" % self.usdjpyday)
-        self.result_logger.info("# eurusd=%s" % self.eurusd_current_price)
-        self.result_logger.info("# eurusd1h=%s" % self.eurusd1h)
-        self.result_logger.info("# eurusd3h=%s" % self.eurusd3h)
-        self.result_logger.info("# eurusdday=%s" % self.eurusdday)
-        self.result_logger.info("# eurjpy=%s" % self.eurjpy_current_price)
-        self.result_logger.info("# eurjpy1h=%s" % self.eurjpy1h)
-        self.result_logger.info("# eurjpy3h=%s" % self.eurjpy3h)
-        self.result_logger.info("# eurjpyday=%s" % self.eurjpyday)
-        self.result_logger.info("# usdjpy_sma=%s" % self.usdjpy_sma) 
-        self.result_logger.info("# eurusd_sma=%s" % self.eurusd_sma) 
-        self.result_logger.info("# eurjpy_sma=%s" % self.eurjpy_sma) 
+        self.setLogObject("EXECUTE_ORDER", base_time)
+        self.writeLog(self.result_logger)
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):
-        self.result_logger.info("# %s at %s" % (stl_method, base_time))
-        self.result_logger.info("# self.ask_price=%s" % self.ask_price)
-        self.result_logger.info("# self.bid_price=%s" % self.bid_price)
-        self.result_logger.info("# self.log_max_price=%s" % self.log_max_price)
-        self.result_logger.info("# self.log_min_price=%s" % self.log_min_price)
-        self.result_logger.info("# self.stl_logic=%s" % self.stl_logic)
-        self.result_logger.info("# STL_PRICE=%s" % stl_price)
-        self.result_logger.info("# PROFIT=%s" % profit)
+        self.setLogObject("STL_TIME", base_time)
+        self.setLogObject("PROFIT", profit)
+        self.setLogObject("LOG_MAX_PRICE", self.log_max_price)
+        self.setLogObject("LOG_MIN_PRICE", self.log_min_price)
+        self.writeLog(self.result_logger)
 
     def load_model(self, model_filename, weights_filename):
         model_filename = "%s/../model/master/%s" % (self.current_path, model_filename)

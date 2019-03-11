@@ -91,6 +91,8 @@ class TradeWrapper:
             self.trade_algo = VolatilityAlgo(self.instrument, self.base_path, self.config_name, base_time)
         elif algo == "lstm":
             self.trade_algo = LstmAlgo(self.instrument, self.base_path, self.config_name, base_time)
+        elif algo == "scalping":
+            self.trade_algo = Scalping(self.instrument, self.base_path, self.config_name, base_time)
         else:
             self.trade_algo = HiLowAlgo(self.instrument, self.base_path, self.config_name, base_time)
 

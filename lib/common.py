@@ -113,41 +113,80 @@ def account_init(mode, base_path):
     account_data = jsonData[mode]
     return account_data
 
+
+def decideSeason(base_time):
+    year = int(base_time.year)
+    month = int(base_time.month)
+
+    if month == 3:
+        start_time = "%s-03-01 00:00:00" % year
+        start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+        sunday = 6
+        count = 0
+
+        # 日曜日を数え上げ。2以上だったら夏時間
+        while start_time < base_time:
+            week_tmp = start_time.weekday()
+            if week_tmp == sunday:
+                count = count + 1
+            start_time = start_time + timedelta(days=1)
+
+        if count >= 2:
+            season = "summer"
+        else:
+            season = "winter"
+
+
+    elif month == 11:
+        start_time = "%s-11-01 00:00:00" % year
+        start_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
+        sunday = 6
+        count = 0
+
+        # 日曜日を数え上げ。1以上だったら冬時間
+        while start_time < base_time:
+            week_tmp = start_time.weekday()
+            if week_tmp == sunday:
+                count = count + 1
+            start_time = start_time + timedelta(days=1)
+
+        if count >= 1:
+            season = "winter"
+        else:
+            season = "summer"
+
+    elif month == 4 or month == 5 or month == 6 or month == 7 or month == 8 or month == 9 or month == 10:
+        season = "summer"
+    elif month == 12 or month == 1 or month == 2:
+        season = "winter"
+
+    return season
+
+
 # マーケットが休みであればfalseを返す
 def decideMarket(base_time):
     flag = True
+    year = int(base_time.year)
     month = int(base_time.month)
     week = int(base_time.weekday())
     day = int(base_time.day)
     hour = int(base_time.hour)
 
-    if month == 12 and day == 30 and hour > 6:
-        flag = False
-    elif month == 12 and day == 31:
-        flag = False
-    elif month == 1 and day == 1:
-        flag = False
-    elif month == 1 and day == 2 and hour < 7:
-        flag = False
-    # 冬時間の場合
-    elif (month == 11 and day > 5) or month == 12 or month == 1 or month == 2 or (month == 3 and day < 12):
-        if week == 5 and hour > 6:
-            flag = False
-
-        elif week == 0 and  hour < 7:
-            flag = False
-
-    # 夏時間の場合
-    else:
-        if week == 5 and hour > 5:
-            flag = False
-
-        elif week == 0 and  hour < 6:
-            flag = False
-
-    # 日曜日の場合
+    # 日曜日
     if week == 6:
         flag = False
+    else:
+        season = decideSeason(base_time)
+        if season == "summer":
+            if week == 5 and hour > 5:
+                flag = False
+            elif week == 0 and hour < 6:
+                flag = False
+        if season == "winter":
+            if week == 5 and hour > 6:
+                flag = False
+            elif week == 0 and hour < 7:
+                flag = False
 
     return flag
 

@@ -143,6 +143,16 @@ class Scalping(SuperAlgo):
 
 
     def decideReverseStl(self, stl_flag, base_time):
+        if self.order_flag:
+            current_price = self.get_current_price(base_time)
+            if self.order_kind == "buy":
+                if current_price > self.take_profit_rate or current_price < self.stop_loss_rate:
+                    stl_flag = True
+            elif self.order_kind == "sell":
+                if current_price < self.take_profit_rate or current_price > self.stop_loss_rate:
+                    stl_flag = True
+            else:
+                raise
 
         return stl_flag
 
@@ -216,6 +226,11 @@ class Scalping(SuperAlgo):
                         self.setLogObject("second_trade_time", base_time)
                         self.setLogObject("second_trade_price", current_price)
                         self.setLogObject("eurjpy_sma", eurjpy_sma)
+                        self.take_profit_rate = max([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"])
+                        self.stop_loss_rate = current_price - (self.take_profit_rate - current_price)
+
+                        self.setLogObject("takeprofit_rate", self.take_profit_rate)
+                        self.setLogObject("stoploss_rate", self.stop_loss_rate)
 
 
                 elif self.first_trade_flag == "sell":
@@ -224,6 +239,11 @@ class Scalping(SuperAlgo):
                         self.setLogObject("second_trade_time", base_time)
                         self.setLogObject("second_trade_price", current_price)
                         self.setLogObject("eurjpy_sma", eurjpy_sma)
+                        self.take_profit_rate = min([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"])
+                        self.stop_loss_rate = current_price + (current_price - self.take_profit_rate)
+
+                        self.setLogObject("takeprofit_rate", self.take_profit_rate)
+                        self.setLogObject("stoploss_rate", self.stop_loss_rate)
                 else:
                     raise
 

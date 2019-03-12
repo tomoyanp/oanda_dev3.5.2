@@ -168,19 +168,19 @@ class Scalping(SuperAlgo):
                 right_string = "EUR_JPY"
                 instruments = "EUR_JPY"
         
-                window_size = 60 
+                window_size = 20 
                 output_train_index = 60
                 table_type = "1m"
                 predict_price_1m = predict_value(target_time, self.model_1m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
         
         
-                window_size = 60 
+                window_size = 20 
                 output_train_index = 12 
                 table_type = "5m"
                 predict_price_5m = predict_value(target_time, self.model_5m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
         
         
-                window_size = 60 
+                window_size = 20 
                 output_train_index = 1 
                 table_type = "1h"
                 predict_price_1h = predict_value(target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)

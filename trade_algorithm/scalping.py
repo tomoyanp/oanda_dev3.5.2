@@ -266,9 +266,9 @@ class Scalping(SuperAlgo):
 
                 if trade_flag == "buy" or trade_flag == "sell":
                     self.result_logger.info("%s: second_trade_price=%s" % (base_time, current_price))
-                    self.result_logger.info("%s: eurjpy_sma=%s" % (base_time, eurjpy_sma))
-                    self.result_logger.info("%s: takeprofit_rate=%s" % (base_time, takeprofit_rate))
-                    self.result_logger.info("%s: stoploss_rate=%s" % (base_time, stoploss_rate))
+                    #self.result_logger.info("%s: eurjpy_sma=%s" % (base_time, eurjpy_sma))
+                    self.result_logger.info("%s: takeprofit_rate=%s" % (base_time, self.takeprofit_rate))
+                    self.result_logger.info("%s: stoploss_rate=%s" % (base_time, self.stoploss_rate))
 
         return trade_flag
 

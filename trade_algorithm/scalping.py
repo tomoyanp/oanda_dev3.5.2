@@ -190,7 +190,7 @@ class Scalping(SuperAlgo):
         self.result_logger.info("%s: Start checkPredict Logic" % base_time)
         self.result_logger.info("%s: before_close_price=" % base_time, before_close_price)
         self.result_logger.info("%s: current_close_price=" % base_time, current_close_price)
-        self.result_logger.info("%s: predict_price_1h=" % base_time, predict_price_1h)
+        self.result_logger.info("%s: before_predict_price_1h=" % base_time, predict_price_1h)
 
         flag = False
         if before_close_price < current_close_price and before_close_price < predict_price_1h:
@@ -241,9 +241,9 @@ class Scalping(SuperAlgo):
 
                     if self.first_trade_flag != "":
                         self.result_logger.info("%s: first_trade_flag=%s" % (base_time, self.first_trade_flag))
-                        self.result_logger.info("%s: predict_price_1m=%s" % (base_time, self.predict_price_1m))
-                        self.result_logger.info("%s: predict_price_5m=%s" % (base_time, self.predict_price_5m))
-                        self.result_logger.info("%s: predict_price_1h=%s" % (base_time, self.predict_price_1h))
+                        self.result_logger.info("%s: predict_price_1m=%s" % (base_time, predict_price_1m))
+                        self.result_logger.info("%s: predict_price_5m=%s" % (base_time, predict_price_5m))
+                        self.result_logger.info("%s: predict_price_1h=%s" % (base_time, predict_price_1h))
                         self.result_logger.info("%s: first_trade_price=%s" % (base_time, current_price))
 
             if self.first_trade_flag != "" and 5 < seconds < 15:

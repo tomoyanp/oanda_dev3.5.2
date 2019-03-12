@@ -1,0 +1,5100 @@
+#########################
+# /home/tomoyan/test/testmode/tool/../main.py EUR_JPY demo scalping scalping_test test 
+# enable_time = ['00:00:00', '01:00:00', '02:00:00', '03:00:00', '08:00:00', '09:00:00', '10:00:00', '11:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00', '21:00:00', '22:00:00', '23:00:00']
+# enable_time_mode = off
+# ex_stlmode = on
+# first_trail_mode = on
+# second_trail_mode = on
+# sleep_time = 10
+# stl_sleep_ltime = 0
+# stl_sleep_time = 10
+# stl_sleep_vtime = 0
+# stl_time_width = 720000
+# stop_loss = 0.1
+# take_profit = 0.1
+# time_width = 720000
+# trade_sleep_time = 60
+# units = 15000
+####################################
+predict_price_1h=125.22165951859951
+predict_price_5m=124.7270503896326
+second_trade_time=2019-02-01 00:01:10
+predict_price_1m=124.72137172955276
+eurjpy_sma=124.72282500000001
+first_trade_time=2019-02-01 00:00:10
+first_trade_flag=buy
+second_trade_price=124.744
+EXECUTE_ORDER=2019-02-01 00:01:10
+first_trade_price=124.717
+####################################
+PROFIT=0.10900000000000887
+LOG_MIN_PRICE=124.7325
+STL_TIME=2019-02-01 00:30:20
+LOG_MAX_PRICE=124.87
+####################################
+predict_price_1h=125.22165951859951
+predict_price_5m=124.85720339643956
+second_trade_time=2019-02-01 01:00:10
+predict_price_1m=124.88209542930126
+eurjpy_sma=124.88152500000001
+first_trade_time=2019-02-01 00:57:10
+first_trade_flag=buy
+second_trade_price=124.887
+EXECUTE_ORDER=2019-02-01 01:00:10
+first_trade_price=124.84649999999999
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=124.7985
+STL_TIME=2019-02-01 01:07:20
+LOG_MAX_PRICE=124.903
+####################################
+predict_price_1h=125.09002631294727
+predict_price_5m=124.75959893274307
+second_trade_time=2019-02-01 01:35:10
+predict_price_1m=124.6698236667812
+eurjpy_sma=124.66517499999998
+first_trade_time=2019-02-01 01:34:10
+first_trade_flag=buy
+second_trade_price=124.676
+EXECUTE_ORDER=2019-02-01 01:35:10
+first_trade_price=124.662
+####################################
+PROFIT=-0.12399999999999523
+LOG_MIN_PRICE=124.57050000000001
+STL_TIME=2019-02-01 02:16:20
+LOG_MAX_PRICE=124.7145
+####################################
+predict_price_1h=124.89392922255396
+predict_price_5m=124.68838388372957
+second_trade_time=2019-02-01 02:33:10
+predict_price_1m=124.54685520929098
+eurjpy_sma=124.551675
+first_trade_time=2019-02-01 02:32:10
+first_trade_flag=buy
+second_trade_price=124.5615
+EXECUTE_ORDER=2019-02-01 02:33:10
+first_trade_price=124.545
+####################################
+PROFIT=0.10200000000000387
+LOG_MIN_PRICE=124.505
+STL_TIME=2019-02-01 06:10:20
+LOG_MAX_PRICE=124.681
+####################################
+predict_price_1h=124.77099738660455
+predict_price_5m=124.65287350147962
+second_trade_time=2019-02-01 07:07:10
+predict_price_1m=124.6218939576298
+eurjpy_sma=124.63070000000002
+first_trade_time=2019-02-01 06:59:10
+first_trade_flag=buy
+second_trade_price=124.63499999999999
+EXECUTE_ORDER=2019-02-01 07:07:10
+first_trade_price=124.612
+####################################
+PROFIT=-0.11599999999999966
+LOG_MIN_PRICE=124.56899999999999
+STL_TIME=2019-02-01 07:26:20
+LOG_MAX_PRICE=124.64
+####################################
+predict_price_1h=124.66499987274409
+predict_price_5m=124.59999075494706
+second_trade_time=2019-02-01 08:01:10
+predict_price_1m=124.58331697630882
+eurjpy_sma=124.58155000000002
+first_trade_time=2019-02-01 08:00:10
+first_trade_flag=buy
+second_trade_price=124.58600000000001
+EXECUTE_ORDER=2019-02-01 08:01:10
+first_trade_price=124.58000000000001
+####################################
+PROFIT=0.10799999999998988
+LOG_MIN_PRICE=124.577
+STL_TIME=2019-02-01 09:18:20
+LOG_MAX_PRICE=124.728
+####################################
+predict_price_1h=124.62980443239213
+predict_price_5m=124.67000274741649
+second_trade_time=2019-02-01 09:29:10
+predict_price_1m=124.6959882343635
+eurjpy_sma=124.71337500000001
+first_trade_time=2019-02-01 09:29:10
+first_trade_flag=sell
+second_trade_price=124.699
+EXECUTE_ORDER=2019-02-01 09:29:10
+first_trade_price=124.699
+####################################
+PROFIT=0.10499999999998977
+LOG_MIN_PRICE=124.5735
+STL_TIME=2019-02-01 09:58:20
+LOG_MAX_PRICE=124.733
+####################################
+predict_price_1h=124.62980443239213
+predict_price_5m=124.66248944509029
+second_trade_time=2019-02-01 10:12:10
+predict_price_1m=124.63148300778865
+eurjpy_sma=124.612
+first_trade_time=2019-02-01 09:59:10
+first_trade_flag=buy
+second_trade_price=124.6195
+EXECUTE_ORDER=2019-02-01 10:12:10
+first_trade_price=124.56899999999999
+####################################
+PROFIT=-0.12199999999999989
+LOG_MIN_PRICE=124.515
+STL_TIME=2019-02-01 10:31:20
+LOG_MAX_PRICE=124.65450000000001
+####################################
+predict_price_1h=124.55876385879516
+predict_price_5m=124.56013866817952
+second_trade_time=2019-02-01 10:52:10
+predict_price_1m=124.40207939207554
+eurjpy_sma=124.45122499999998
+first_trade_time=2019-02-01 10:46:10
+first_trade_flag=buy
+second_trade_price=124.4545
+EXECUTE_ORDER=2019-02-01 10:52:10
+first_trade_price=124.368
+####################################
+PROFIT=0.10599999999999454
+LOG_MIN_PRICE=124.4545
+STL_TIME=2019-02-01 11:24:20
+LOG_MAX_PRICE=124.57849999999999
+####################################
+predict_price_1h=124.57368904606999
+predict_price_5m=124.48842256057263
+second_trade_time=2019-02-01 11:32:10
+predict_price_1m=124.56370209503173
+eurjpy_sma=124.55615
+first_trade_time=2019-02-01 11:30:10
+first_trade_flag=sell
+second_trade_price=124.5475
+EXECUTE_ORDER=2019-02-01 11:32:10
+first_trade_price=124.582
+####################################
+PROFIT=-0.10200000000000387
+LOG_MIN_PRICE=124.547
+STL_TIME=2019-02-01 12:00:20
+LOG_MAX_PRICE=124.6305
+####################################
+predict_price_1h=124.53966430616379
+predict_price_5m=124.6163874642849
+second_trade_time=2019-02-01 12:41:10
+predict_price_1m=124.66879792016745
+eurjpy_sma=124.65922499999999
+first_trade_time=2019-02-01 12:34:10
+first_trade_flag=sell
+second_trade_price=124.656
+EXECUTE_ORDER=2019-02-01 12:41:10
+first_trade_price=124.67750000000001
+####################################
+PROFIT=0.1039999999999992
+LOG_MIN_PRICE=124.5355
+STL_TIME=2019-02-01 13:48:20
+LOG_MAX_PRICE=124.656
+####################################
+predict_price_1h=124.53055766773224
+predict_price_5m=124.58095065730811
+second_trade_time=2019-02-01 14:06:10
+predict_price_1m=124.54552348315715
+eurjpy_sma=124.54630000000002
+first_trade_time=2019-02-01 14:03:10
+first_trade_flag=buy
+second_trade_price=124.5485
+EXECUTE_ORDER=2019-02-01 14:06:10
+first_trade_price=124.53
+####################################
+PROFIT=0.10899999999999466
+LOG_MIN_PRICE=124.498
+STL_TIME=2019-02-01 16:27:20
+LOG_MAX_PRICE=124.6755
+####################################
+predict_price_1h=124.57540810284019
+predict_price_5m=124.60899242052436
+second_trade_time=2019-02-01 16:39:10
+predict_price_1m=124.65485015249253
+eurjpy_sma=124.65520000000001
+first_trade_time=2019-02-01 16:38:10
+first_trade_flag=sell
+second_trade_price=124.6525
+EXECUTE_ORDER=2019-02-01 16:39:10
+first_trade_price=124.656
+####################################
+PROFIT=-0.11399999999999011
+LOG_MIN_PRICE=124.639
+STL_TIME=2019-02-01 17:15:20
+LOG_MAX_PRICE=124.7495
+####################################
+predict_price_1h=124.5902980620861
+predict_price_5m=124.65729438474774
+second_trade_time=2019-02-01 17:20:10
+predict_price_1m=124.71935426425934
+eurjpy_sma=124.70482500000003
+first_trade_time=2019-02-01 17:17:10
+first_trade_flag=sell
+second_trade_price=124.703
+EXECUTE_ORDER=2019-02-01 17:20:10
+first_trade_price=124.7195
+####################################
+PROFIT=-0.10600000000000875
+LOG_MIN_PRICE=124.6695
+STL_TIME=2019-02-01 18:21:20
+LOG_MAX_PRICE=124.7925
+####################################
+predict_price_1h=124.66275880542398
+predict_price_5m=124.78996483623982
+second_trade_time=2019-02-01 18:41:10
+predict_price_1m=124.79519776341319
+eurjpy_sma=124.812625
+first_trade_time=2019-02-01 18:41:10
+first_trade_flag=sell
+second_trade_price=124.8035
+EXECUTE_ORDER=2019-02-01 18:41:10
+first_trade_price=124.8035
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=124.799
+STL_TIME=2019-02-01 19:00:20
+LOG_MAX_PRICE=124.8895
+####################################
+predict_price_1h=124.67344607827067
+predict_price_5m=124.8749978071451
+second_trade_time=2019-02-01 19:17:10
+predict_price_1m=124.88606642776729
+eurjpy_sma=124.92077500000002
+first_trade_time=2019-02-01 19:17:10
+first_trade_flag=sell
+second_trade_price=124.917
+EXECUTE_ORDER=2019-02-01 19:17:10
+first_trade_price=124.917
+####################################
+PROFIT=-0.11899999999999977
+LOG_MIN_PRICE=124.84299999999999
+STL_TIME=2019-02-01 22:42:20
+LOG_MAX_PRICE=125.0185
+####################################
+predict_price_1h=124.87138097834587
+predict_price_5m=125.0359694905281
+second_trade_time=2019-02-01 22:58:10
+predict_price_1m=125.06162649405002
+eurjpy_sma=125.05200000000002
+first_trade_time=2019-02-01 22:57:10
+first_trade_flag=sell
+second_trade_price=125.05199999999999
+EXECUTE_ORDER=2019-02-01 22:58:10
+first_trade_price=125.07
+####################################
+PROFIT=-0.10300000000000864
+LOG_MIN_PRICE=125.028
+STL_TIME=2019-02-01 23:43:20
+LOG_MAX_PRICE=125.135
+####################################
+predict_price_1h=124.93377255010606
+predict_price_5m=125.01814678236842
+second_trade_time=2019-02-04 07:35:10
+predict_price_1m=125.13774955406785
+eurjpy_sma=125.45927500000002
+first_trade_time=2019-02-01 23:59:10
+first_trade_flag=sell
+second_trade_price=125.44749999999999
+EXECUTE_ORDER=2019-02-04 07:35:10
+first_trade_price=125.2015
+####################################
+PROFIT=-0.132000000000005
+LOG_MIN_PRICE=125.3635
+STL_TIME=2019-02-04 09:06:20
+LOG_MAX_PRICE=125.545
+####################################
+predict_price_1h=124.65266900233925
+predict_price_5m=125.46056018146872
+second_trade_time=2019-02-04 09:19:10
+predict_price_1m=125.45406576532126
+eurjpy_sma=125.49537500000001
+first_trade_time=2019-02-04 09:19:10
+first_trade_flag=sell
+second_trade_price=125.4875
+EXECUTE_ORDER=2019-02-04 09:19:10
+first_trade_price=125.4875
+####################################
+PROFIT=-0.11800000000000921
+LOG_MIN_PRICE=125.4345
+STL_TIME=2019-02-04 13:24:20
+LOG_MAX_PRICE=125.5875
+####################################
+predict_price_1h=124.87384248137474
+predict_price_5m=125.51088065758347
+second_trade_time=2019-02-04 13:32:10
+predict_price_1m=125.53451374068857
+eurjpy_sma=125.542175
+first_trade_time=2019-02-04 13:32:10
+first_trade_flag=sell
+second_trade_price=125.542
+EXECUTE_ORDER=2019-02-04 13:32:10
+first_trade_price=125.542
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=125.53
+STL_TIME=2019-02-04 14:25:20
+LOG_MAX_PRICE=125.6285
+####################################
+predict_price_1h=125.00927255654335
+predict_price_5m=125.59244325304032
+second_trade_time=2019-02-04 14:28:10
+predict_price_1m=125.62095863878727
+eurjpy_sma=125.617075
+first_trade_time=2019-02-04 14:27:10
+first_trade_flag=sell
+second_trade_price=125.616
+EXECUTE_ORDER=2019-02-04 14:28:10
+first_trade_price=125.625
+####################################
+PROFIT=-0.11199999999999477
+LOG_MIN_PRICE=125.5605
+STL_TIME=2019-02-04 16:52:20
+LOG_MAX_PRICE=125.7105
+####################################
+predict_price_1h=125.19475928556919
+predict_price_5m=125.66060965442658
+second_trade_time=2019-02-04 17:01:10
+predict_price_1m=125.65353794002533
+eurjpy_sma=125.680025
+first_trade_time=2019-02-04 17:00:10
+first_trade_flag=sell
+second_trade_price=125.6765
+EXECUTE_ORDER=2019-02-04 17:01:10
+first_trade_price=125.678
+####################################
+PROFIT=-0.11199999999999477
+LOG_MIN_PRICE=125.6525
+STL_TIME=2019-02-04 17:07:20
+LOG_MAX_PRICE=125.771
+####################################
+predict_price_1h=125.19475928556919
+predict_price_5m=125.71943357688188
+second_trade_time=2019-02-04 17:18:10
+predict_price_1m=125.69606257915497
+eurjpy_sma=125.73867499999999
+first_trade_time=2019-02-04 17:18:10
+first_trade_flag=sell
+second_trade_price=125.7315
+EXECUTE_ORDER=2019-02-04 17:18:10
+first_trade_price=125.7315
+####################################
+PROFIT=-0.117999999999995
+LOG_MIN_PRICE=125.7315
+STL_TIME=2019-02-04 17:48:20
+LOG_MAX_PRICE=125.8325
+####################################
+predict_price_1h=125.19475928556919
+predict_price_5m=125.65122678551822
+second_trade_time=2019-02-04 17:52:10
+predict_price_1m=125.80395522883535
+eurjpy_sma=125.79362499999999
+first_trade_time=2019-02-04 17:51:10
+first_trade_flag=sell
+second_trade_price=125.774
+EXECUTE_ORDER=2019-02-04 17:52:10
+first_trade_price=125.8045
+####################################
+PROFIT=-0.11499999999999488
+LOG_MIN_PRICE=125.721
+STL_TIME=2019-02-04 22:31:20
+LOG_MAX_PRICE=125.872
+####################################
+predict_price_1h=125.41323523138463
+predict_price_5m=125.77344090394676
+second_trade_time=2019-02-04 22:49:10
+predict_price_1m=125.86966205257177
+eurjpy_sma=125.88042500000002
+first_trade_time=2019-02-04 22:48:10
+first_trade_flag=sell
+second_trade_price=125.8665
+EXECUTE_ORDER=2019-02-04 22:49:10
+first_trade_price=125.8865
+####################################
+PROFIT=0.1150000000000091
+LOG_MIN_PRICE=125.7345
+STL_TIME=2019-02-05 00:49:20
+LOG_MAX_PRICE=125.9455
+####################################
+predict_price_1h=125.4695981000662
+predict_price_5m=125.73972759880125
+second_trade_time=2019-02-05 01:46:10
+predict_price_1m=125.74415374493599
+eurjpy_sma=125.74565
+first_trade_time=2019-02-05 01:45:10
+first_trade_flag=sell
+second_trade_price=125.7375
+EXECUTE_ORDER=2019-02-05 01:46:10
+first_trade_price=125.75
+####################################
+PROFIT=0.10599999999999454
+LOG_MIN_PRICE=125.61500000000001
+STL_TIME=2019-02-05 02:56:20
+LOG_MAX_PRICE=125.7745
+####################################
+predict_price_1h=125.49122016954422
+predict_price_5m=125.65640138576924
+second_trade_time=2019-02-05 03:26:10
+predict_price_1m=125.65330149789155
+eurjpy_sma=125.66497499999998
+first_trade_time=2019-02-05 03:26:10
+first_trade_flag=sell
+second_trade_price=125.663
+EXECUTE_ORDER=2019-02-05 03:26:10
+first_trade_price=125.663
+####################################
+PROFIT=-0.10999999999999943
+LOG_MIN_PRICE=125.5795
+STL_TIME=2019-02-05 08:31:20
+LOG_MAX_PRICE=125.7555
+####################################
+predict_price_1h=125.65727195012569
+predict_price_5m=125.71313109758496
+second_trade_time=2019-02-05 08:51:10
+predict_price_1m=125.7682180390358
+eurjpy_sma=125.75802499999998
+first_trade_time=2019-02-05 08:50:10
+first_trade_flag=sell
+second_trade_price=125.7515
+EXECUTE_ORDER=2019-02-05 08:51:10
+first_trade_price=125.7735
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=125.7285
+STL_TIME=2019-02-05 09:54:20
+LOG_MAX_PRICE=125.8375
+####################################
+predict_price_1h=125.64099366806447
+predict_price_5m=125.75947784471512
+second_trade_time=2019-02-05 10:01:10
+predict_price_1m=125.76839021615685
+eurjpy_sma=125.7846
+first_trade_time=2019-02-05 10:01:10
+first_trade_flag=sell
+second_trade_price=125.774
+EXECUTE_ORDER=2019-02-05 10:01:10
+first_trade_price=125.774
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=125.76
+STL_TIME=2019-02-05 10:52:20
+LOG_MAX_PRICE=125.8595
+####################################
+predict_price_1h=125.67943925564735
+predict_price_5m=125.82158960926533
+second_trade_time=2019-02-05 11:03:10
+predict_price_1m=125.84724259960652
+eurjpy_sma=125.84507500000002
+first_trade_time=2019-02-05 11:02:10
+first_trade_flag=sell
+second_trade_price=125.838
+EXECUTE_ORDER=2019-02-05 11:03:10
+first_trade_price=125.85300000000001
+####################################
+PROFIT=0.10499999999998977
+LOG_MIN_PRICE=125.7145
+STL_TIME=2019-02-05 13:00:20
+LOG_MAX_PRICE=125.838
+####################################
+predict_price_1h=125.91546231406927
+predict_price_5m=125.74873574149609
+second_trade_time=2019-02-05 13:24:10
+predict_price_1m=125.67912752270698
+eurjpy_sma=125.676075
+first_trade_time=2019-02-05 13:24:10
+first_trade_flag=buy
+second_trade_price=125.67750000000001
+EXECUTE_ORDER=2019-02-05 13:24:10
+first_trade_price=125.67750000000001
+####################################
+PROFIT=-0.10900000000000887
+LOG_MIN_PRICE=125.5865
+STL_TIME=2019-02-05 14:57:20
+LOG_MAX_PRICE=125.6965
+####################################
+predict_price_1h=125.87681668508053
+predict_price_5m=125.62618913578987
+second_trade_time=2019-02-05 15:06:10
+predict_price_1m=125.59387735435367
+eurjpy_sma=125.59062499999997
+first_trade_time=2019-02-05 15:04:10
+first_trade_flag=buy
+second_trade_price=125.595
+EXECUTE_ORDER=2019-02-05 15:06:10
+first_trade_price=125.5825
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=125.509
+STL_TIME=2019-02-05 16:35:20
+LOG_MAX_PRICE=125.65950000000001
+####################################
+predict_price_1h=125.77394530370832
+predict_price_5m=125.5802896116376
+second_trade_time=2019-02-05 16:56:10
+predict_price_1m=125.48360938301683
+eurjpy_sma=125.482675
+first_trade_time=2019-02-05 16:52:10
+first_trade_flag=buy
+second_trade_price=125.4905
+EXECUTE_ORDER=2019-02-05 16:56:10
+first_trade_price=125.4675
+####################################
+PROFIT=0.10000000000000853
+LOG_MIN_PRICE=125.416
+STL_TIME=2019-02-05 18:14:20
+LOG_MAX_PRICE=125.607
+####################################
+predict_price_1h=125.68989793995023
+predict_price_5m=125.6178149394989
+second_trade_time=2019-02-05 20:05:10
+predict_price_1m=125.54456355270743
+eurjpy_sma=125.53727499999998
+first_trade_time=2019-02-05 20:04:10
+first_trade_flag=buy
+second_trade_price=125.5485
+EXECUTE_ORDER=2019-02-05 20:05:10
+first_trade_price=125.5305
+####################################
+PROFIT=-0.1280000000000001
+LOG_MIN_PRICE=125.4405
+STL_TIME=2019-02-06 00:01:20
+LOG_MAX_PRICE=125.638
+####################################
+predict_price_1h=125.62607566851378
+predict_price_5m=125.4523527508229
+second_trade_time=2019-02-06 00:33:10
+predict_price_1m=125.33928715911507
+eurjpy_sma=125.34347500000001
+first_trade_time=2019-02-06 00:31:10
+first_trade_flag=buy
+second_trade_price=125.36699999999999
+EXECUTE_ORDER=2019-02-06 00:33:10
+first_trade_price=125.312
+####################################
+PROFIT=0.10500000000000398
+LOG_MIN_PRICE=125.2945
+STL_TIME=2019-02-06 03:50:20
+LOG_MAX_PRICE=125.4885
+####################################
+predict_price_1h=125.61703692400455
+predict_price_5m=125.4795335674733
+second_trade_time=2019-02-06 05:27:10
+predict_price_1m=125.47490187817812
+eurjpy_sma=125.478
+first_trade_time=2019-02-06 05:26:10
+first_trade_flag=buy
+second_trade_price=125.48
+EXECUTE_ORDER=2019-02-06 05:27:10
+first_trade_price=125.4705
+####################################
+PROFIT=-0.1039999999999992
+LOG_MIN_PRICE=125.394
+STL_TIME=2019-02-06 06:45:20
+LOG_MAX_PRICE=125.48
+####################################
+predict_price_1h=125.56711392125487
+predict_price_5m=125.45514258354902
+second_trade_time=2019-02-06 06:56:10
+predict_price_1m=125.3859437277913
+eurjpy_sma=125.397275
+first_trade_time=2019-02-06 06:52:10
+first_trade_flag=buy
+second_trade_price=125.406
+EXECUTE_ORDER=2019-02-06 06:56:10
+first_trade_price=125.3845
+####################################
+PROFIT=-0.10200000000000387
+LOG_MIN_PRICE=125.338
+STL_TIME=2019-02-06 09:53:20
+LOG_MAX_PRICE=125.447
+####################################
+predict_price_1h=125.30902035239339
+predict_price_5m=125.38543763434888
+second_trade_time=2019-02-06 10:10:10
+predict_price_1m=125.32926641142369
+eurjpy_sma=125.31442499999999
+first_trade_time=2019-02-06 10:07:10
+first_trade_flag=buy
+second_trade_price=125.336
+EXECUTE_ORDER=2019-02-06 10:10:10
+first_trade_price=125.3075
+####################################
+PROFIT=-0.15200000000000102
+LOG_MIN_PRICE=125.2025
+STL_TIME=2019-02-06 10:31:20
+LOG_MAX_PRICE=125.372
+####################################
+predict_price_1h=125.30902035239339
+predict_price_5m=125.46693773651124
+second_trade_time=2019-02-06 10:39:10
+predict_price_1m=125.25076218831539
+eurjpy_sma=125.2891
+first_trade_time=2019-02-06 10:34:10
+first_trade_flag=buy
+second_trade_price=125.3005
+EXECUTE_ORDER=2019-02-06 10:39:10
+first_trade_price=125.2505
+####################################
+PROFIT=-0.1419999999999959
+LOG_MIN_PRICE=125.178
+STL_TIME=2019-02-06 11:25:20
+LOG_MAX_PRICE=125.4
+####################################
+predict_price_1h=125.15568396659195
+predict_price_5m=125.14711056487262
+second_trade_time=2019-02-06 11:27:10
+predict_price_1m=125.16964096979797
+eurjpy_sma=125.31657499999997
+first_trade_time=2019-02-06 11:27:10
+first_trade_flag=sell
+second_trade_price=125.1825
+EXECUTE_ORDER=2019-02-06 11:27:10
+first_trade_price=125.1825
+####################################
+PROFIT=0.12099999999999511
+LOG_MIN_PRICE=125.041
+STL_TIME=2019-02-06 11:29:20
+LOG_MAX_PRICE=125.1825
+####################################
+predict_price_1h=125.15568396659195
+predict_price_5m=125.108716160506
+second_trade_time=2019-02-06 11:37:10
+predict_price_1m=125.16982187753915
+eurjpy_sma=125.21004999999998
+first_trade_time=2019-02-06 11:37:10
+first_trade_flag=sell
+second_trade_price=125.18549999999999
+EXECUTE_ORDER=2019-02-06 11:37:10
+first_trade_price=125.18549999999999
+####################################
+PROFIT=0.10000000000000853
+LOG_MIN_PRICE=125.068
+STL_TIME=2019-02-06 15:05:20
+LOG_MAX_PRICE=125.22
+####################################
+predict_price_1h=125.09597562712432
+predict_price_5m=125.14046443867683
+second_trade_time=2019-02-06 15:23:10
+predict_price_1m=125.05802119335533
+eurjpy_sma=125.06335000000001
+first_trade_time=2019-02-06 15:18:10
+first_trade_flag=buy
+second_trade_price=125.0755
+EXECUTE_ORDER=2019-02-06 15:23:10
+first_trade_price=125.0435
+####################################
+PROFIT=-0.12100000000000932
+LOG_MIN_PRICE=124.972
+STL_TIME=2019-02-06 16:08:20
+LOG_MAX_PRICE=125.0945
+####################################
+predict_price_1h=124.93261832526326
+predict_price_5m=125.00676886066795
+second_trade_time=2019-02-06 16:45:10
+predict_price_1m=124.89128373146058
+eurjpy_sma=124.8865
+first_trade_time=2019-02-06 16:44:10
+first_trade_flag=buy
+second_trade_price=124.902
+EXECUTE_ORDER=2019-02-06 16:45:10
+first_trade_price=124.871
+####################################
+PROFIT=0.1039999999999992
+LOG_MIN_PRICE=124.8295
+STL_TIME=2019-02-06 21:30:20
+LOG_MAX_PRICE=125.0205
+####################################
+predict_price_1h=124.9104330714196
+predict_price_5m=124.96295324589312
+second_trade_time=2019-02-06 21:34:10
+predict_price_1m=124.99653960067033
+eurjpy_sma=125.00545000000002
+first_trade_time=2019-02-06 21:34:10
+first_trade_flag=sell
+second_trade_price=125.0035
+EXECUTE_ORDER=2019-02-06 21:34:10
+first_trade_price=125.0035
+####################################
+PROFIT=-0.10500000000000398
+LOG_MIN_PRICE=124.9875
+STL_TIME=2019-02-06 22:32:20
+LOG_MAX_PRICE=125.094
+####################################
+predict_price_1h=124.89141635645926
+predict_price_5m=124.99562448310851
+second_trade_time=2019-02-06 22:43:10
+predict_price_1m=125.05637384316326
+eurjpy_sma=125.07807499999998
+first_trade_time=2019-02-06 22:42:10
+first_trade_flag=sell
+second_trade_price=125.064
+EXECUTE_ORDER=2019-02-06 22:43:10
+first_trade_price=125.0955
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=124.9465
+STL_TIME=2019-02-06 23:04:20
+LOG_MAX_PRICE=125.0815
+####################################
+predict_price_1h=124.90143088793755
+predict_price_5m=124.97247027206421
+second_trade_time=2019-02-06 23:37:10
+predict_price_1m=124.93679672715068
+eurjpy_sma=124.94404999999998
+first_trade_time=2019-02-06 23:32:10
+first_trade_flag=sell
+second_trade_price=124.9435
+EXECUTE_ORDER=2019-02-06 23:37:10
+first_trade_price=124.9805
+####################################
+PROFIT=-0.10200000000000387
+LOG_MIN_PRICE=124.82849999999999
+STL_TIME=2019-02-07 03:39:20
+LOG_MAX_PRICE=125.0275
+####################################
+predict_price_1h=124.865932472229
+predict_price_5m=124.90733080744744
+second_trade_time=2019-02-07 03:47:10
+predict_price_1m=125.0185985031128
+eurjpy_sma=125.01029999999999
+first_trade_time=2019-02-07 03:45:10
+first_trade_flag=sell
+second_trade_price=125.0055
+EXECUTE_ORDER=2019-02-07 03:47:10
+first_trade_price=125.0325
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=124.8865
+STL_TIME=2019-02-07 09:23:20
+LOG_MAX_PRICE=125.02950000000001
+####################################
+predict_price_1h=124.85884911389648
+predict_price_5m=124.95211615906656
+second_trade_time=2019-02-07 09:44:10
+predict_price_1m=124.94311415183543
+eurjpy_sma=124.94695000000002
+first_trade_time=2019-02-07 09:43:10
+first_trade_flag=sell
+second_trade_price=124.9445
+EXECUTE_ORDER=2019-02-07 09:44:10
+first_trade_price=124.954
+####################################
+PROFIT=0.10400000000001342
+LOG_MIN_PRICE=124.82249999999999
+STL_TIME=2019-02-07 10:06:20
+LOG_MAX_PRICE=124.9445
+####################################
+predict_price_1h=124.7996930937767
+predict_price_5m=124.84986349977552
+second_trade_time=2019-02-07 10:29:10
+predict_price_1m=124.73568651889265
+eurjpy_sma=124.735625
+first_trade_time=2019-02-07 10:20:10
+first_trade_flag=buy
+second_trade_price=124.739
+EXECUTE_ORDER=2019-02-07 10:29:10
+first_trade_price=124.726
+####################################
+PROFIT=0.10000000000000853
+LOG_MIN_PRICE=124.69200000000001
+STL_TIME=2019-02-07 12:58:20
+LOG_MAX_PRICE=124.8575
+####################################
+predict_price_1h=124.79474374517798
+predict_price_5m=124.86416019488871
+second_trade_time=2019-02-07 13:30:10
+predict_price_1m=124.90396734821796
+eurjpy_sma=124.911725
+first_trade_time=2019-02-07 13:30:10
+first_trade_flag=sell
+second_trade_price=124.909
+EXECUTE_ORDER=2019-02-07 13:30:10
+first_trade_price=124.909
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=124.875
+STL_TIME=2019-02-07 15:58:20
+LOG_MAX_PRICE=124.994
+####################################
+predict_price_1h=124.80898667103052
+predict_price_5m=124.87237801080941
+second_trade_time=2019-02-07 16:01:10
+predict_price_1m=124.93290014141799
+eurjpy_sma=124.951025
+first_trade_time=2019-02-07 16:01:10
+first_trade_flag=sell
+second_trade_price=124.94399999999999
+EXECUTE_ORDER=2019-02-07 16:01:10
+first_trade_price=124.94399999999999
+####################################
+PROFIT=0.10699999999999932
+LOG_MIN_PRICE=124.818
+STL_TIME=2019-02-07 16:59:20
+LOG_MAX_PRICE=124.9465
+####################################
+predict_price_1h=124.81481353774666
+predict_price_5m=124.89841647848488
+second_trade_time=2019-02-07 17:08:10
+predict_price_1m=124.8353848105669
+eurjpy_sma=124.83107499999998
+first_trade_time=2019-02-07 17:07:10
+first_trade_flag=buy
+second_trade_price=124.848
+EXECUTE_ORDER=2019-02-07 17:08:10
+first_trade_price=124.801
+####################################
+PROFIT=-0.13400000000000034
+LOG_MIN_PRICE=124.72999999999999
+STL_TIME=2019-02-07 18:37:20
+LOG_MAX_PRICE=124.943
+####################################
+predict_price_1h=124.82096432605385
+predict_price_5m=124.85440937530994
+second_trade_time=2019-02-07 18:50:10
+predict_price_1m=124.74604865798354
+eurjpy_sma=124.75270000000003
+first_trade_time=2019-02-07 18:48:10
+first_trade_flag=buy
+second_trade_price=124.7705
+EXECUTE_ORDER=2019-02-07 18:50:10
+first_trade_price=124.7435
+####################################
+PROFIT=-0.11299999999999955
+LOG_MIN_PRICE=124.674
+STL_TIME=2019-02-07 19:14:20
+LOG_MAX_PRICE=124.834
+####################################
+predict_price_1h=124.69806346032023
+predict_price_5m=124.78159113419056
+second_trade_time=2019-02-07 19:33:10
+predict_price_1m=124.5757973586917
+eurjpy_sma=124.57002499999999
+first_trade_time=2019-02-07 19:32:10
+first_trade_flag=buy
+second_trade_price=124.586
+EXECUTE_ORDER=2019-02-07 19:33:10
+first_trade_price=124.566
+####################################
+PROFIT=-0.10199999999998965
+LOG_MIN_PRICE=124.5005
+STL_TIME=2019-02-07 19:51:20
+LOG_MAX_PRICE=124.59
+####################################
+predict_price_1h=124.69664483197035
+predict_price_5m=124.6772302083969
+second_trade_time=2019-02-07 20:03:10
+predict_price_1m=124.5262956854701
+eurjpy_sma=124.5393
+first_trade_time=2019-02-07 20:02:10
+first_trade_flag=buy
+second_trade_price=124.562
+EXECUTE_ORDER=2019-02-07 20:03:10
+first_trade_price=124.5145
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=124.476
+STL_TIME=2019-02-07 20:23:20
+LOG_MAX_PRICE=124.57499999999999
+####################################
+predict_price_1h=124.69664483197035
+predict_price_5m=124.69775270617008
+second_trade_time=2019-02-07 20:34:10
+predict_price_1m=124.52202069172263
+eurjpy_sma=124.49057499999999
+first_trade_time=2019-02-07 20:34:10
+first_trade_flag=buy
+second_trade_price=124.503
+EXECUTE_ORDER=2019-02-07 20:34:10
+first_trade_price=124.503
+####################################
+PROFIT=-0.11299999999999955
+LOG_MIN_PRICE=124.4065
+STL_TIME=2019-02-07 20:40:20
+LOG_MAX_PRICE=124.503
+####################################
+predict_price_1h=124.69664483197035
+predict_price_5m=124.53340733385086
+second_trade_time=2019-02-07 20:46:10
+predict_price_1m=124.43604569143056
+eurjpy_sma=124.45
+first_trade_time=2019-02-07 20:45:10
+first_trade_flag=buy
+second_trade_price=124.4555
+EXECUTE_ORDER=2019-02-07 20:46:10
+first_trade_price=124.427
+####################################
+PROFIT=-0.10500000000000398
+LOG_MIN_PRICE=124.3675
+STL_TIME=2019-02-07 21:06:20
+LOG_MAX_PRICE=124.494
+####################################
+predict_price_1h=124.82490362769366
+predict_price_5m=124.56554078793525
+second_trade_time=2019-02-07 21:12:10
+predict_price_1m=124.40640019387007
+eurjpy_sma=124.40004999999996
+first_trade_time=2019-02-07 21:11:10
+first_trade_flag=buy
+second_trade_price=124.423
+EXECUTE_ORDER=2019-02-07 21:12:10
+first_trade_price=124.379
+####################################
+PROFIT=0.10900000000000887
+LOG_MIN_PRICE=124.358
+STL_TIME=2019-02-07 23:16:20
+LOG_MAX_PRICE=124.5485
+####################################
+predict_price_1h=124.67925491474568
+predict_price_5m=124.46842011421174
+second_trade_time=2019-02-08 00:40:10
+predict_price_1m=124.6792665271759
+eurjpy_sma=124.66935000000001
+first_trade_time=2019-02-08 00:37:10
+first_trade_flag=sell
+second_trade_price=124.667
+EXECUTE_ORDER=2019-02-08 00:40:10
+first_trade_price=124.685
+####################################
+PROFIT=0.12400000000000944
+LOG_MIN_PRICE=124.5265
+STL_TIME=2019-02-08 01:33:20
+LOG_MAX_PRICE=124.729
+####################################
+predict_price_1h=124.43816541193425
+predict_price_5m=124.57600226080417
+second_trade_time=2019-02-08 01:41:10
+predict_price_1m=124.57551287019253
+eurjpy_sma=124.59375
+first_trade_time=2019-02-08 01:41:10
+first_trade_flag=sell
+second_trade_price=124.5825
+EXECUTE_ORDER=2019-02-08 01:41:10
+first_trade_price=124.5825
+####################################
+PROFIT=-0.10300000000000864
+LOG_MIN_PRICE=124.5615
+STL_TIME=2019-02-08 02:25:20
+LOG_MAX_PRICE=124.6685
+####################################
+predict_price_1h=124.53895123658329
+predict_price_5m=124.58076258984208
+second_trade_time=2019-02-08 02:42:10
+predict_price_1m=124.66242338013649
+eurjpy_sma=124.672525
+first_trade_time=2019-02-08 02:42:10
+first_trade_flag=sell
+second_trade_price=124.6705
+EXECUTE_ORDER=2019-02-08 02:42:10
+first_trade_price=124.6705
+####################################
+PROFIT=0.10299999999999443
+LOG_MIN_PRICE=124.549
+STL_TIME=2019-02-08 06:30:20
+LOG_MAX_PRICE=124.732
+####################################
+predict_price_1h=124.64704478168487
+predict_price_5m=124.62717561599612
+second_trade_time=2019-02-08 06:55:10
+predict_price_1m=124.51456651231646
+eurjpy_sma=124.518625
+first_trade_time=2019-02-08 06:54:10
+first_trade_flag=buy
+second_trade_price=124.52250000000001
+EXECUTE_ORDER=2019-02-08 06:55:10
+first_trade_price=124.5065
+####################################
+PROFIT=-0.117999999999995
+LOG_MIN_PRICE=124.4245
+STL_TIME=2019-02-08 09:57:20
+LOG_MAX_PRICE=124.607
+####################################
+predict_price_1h=124.45736968803405
+predict_price_5m=124.49718306866288
+second_trade_time=2019-02-08 10:06:10
+predict_price_1m=124.48246790498494
+eurjpy_sma=124.47585000000001
+first_trade_time=2019-02-08 10:03:10
+first_trade_flag=buy
+second_trade_price=124.48949999999999
+EXECUTE_ORDER=2019-02-08 10:06:10
+first_trade_price=124.4495
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=124.40299999999999
+STL_TIME=2019-02-08 10:24:20
+LOG_MAX_PRICE=124.48949999999999
+####################################
+predict_price_1h=124.45736968803405
+predict_price_5m=124.45596368895471
+second_trade_time=2019-02-08 10:39:10
+predict_price_1m=124.39891184306144
+eurjpy_sma=124.40939999999998
+first_trade_time=2019-02-08 10:37:10
+first_trade_flag=buy
+second_trade_price=124.4115
+EXECUTE_ORDER=2019-02-08 10:39:10
+first_trade_price=124.394
+####################################
+PROFIT=-0.11299999999999955
+LOG_MIN_PRICE=124.3155
+STL_TIME=2019-02-08 11:08:20
+LOG_MAX_PRICE=124.437
+####################################
+predict_price_1h=124.48334059762955
+predict_price_5m=124.45146281957626
+second_trade_time=2019-02-08 11:17:10
+predict_price_1m=124.37976710265875
+eurjpy_sma=124.37695000000001
+first_trade_time=2019-02-08 11:17:10
+first_trade_flag=buy
+second_trade_price=124.378
+EXECUTE_ORDER=2019-02-08 11:17:10
+first_trade_price=124.378
+####################################
+PROFIT=0.10500000000000398
+LOG_MIN_PRICE=124.3695
+STL_TIME=2019-02-08 12:20:20
+LOG_MAX_PRICE=124.5
+####################################
+predict_price_1h=124.49731059360504
+predict_price_5m=124.4471082624793
+second_trade_time=2019-02-08 12:40:10
+predict_price_1m=124.4489554681778
+eurjpy_sma=124.47389999999999
+first_trade_time=2019-02-08 12:31:10
+first_trade_flag=buy
+second_trade_price=124.4755
+EXECUTE_ORDER=2019-02-08 12:40:10
+first_trade_price=124.446
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=124.3945
+STL_TIME=2019-02-08 15:23:20
+LOG_MAX_PRICE=124.543
+####################################
+predict_price_1h=124.49209682685137
+predict_price_5m=124.43308744704724
+second_trade_time=2019-02-08 15:33:10
+predict_price_1m=124.39331847144663
+eurjpy_sma=124.40787500000002
+first_trade_time=2019-02-08 15:30:10
+first_trade_flag=buy
+second_trade_price=124.412
+EXECUTE_ORDER=2019-02-08 15:33:10
+first_trade_price=124.3835
+####################################
+PROFIT=0.11299999999999955
+LOG_MIN_PRICE=124.3785
+STL_TIME=2019-02-08 19:30:20
+LOG_MAX_PRICE=124.543
+####################################
+predict_price_1h=124.50311652398109
+predict_price_5m=124.4665296320021
+second_trade_time=2019-02-08 19:43:10
+predict_price_1m=124.52906617746501
+eurjpy_sma=124.54167499999998
+first_trade_time=2019-02-08 19:43:10
+first_trade_flag=sell
+second_trade_price=124.536
+EXECUTE_ORDER=2019-02-08 19:43:10
+first_trade_price=124.536
+####################################
+PROFIT=-0.12300000000000466
+LOG_MIN_PRICE=124.527
+STL_TIME=2019-02-08 20:14:20
+LOG_MAX_PRICE=124.6405
+####################################
+predict_price_1h=124.5369370908737
+predict_price_5m=124.58361308932305
+second_trade_time=2019-02-08 20:22:10
+predict_price_1m=124.61696076130868
+eurjpy_sma=124.608025
+first_trade_time=2019-02-08 20:20:10
+first_trade_flag=sell
+second_trade_price=124.597
+EXECUTE_ORDER=2019-02-08 20:22:10
+first_trade_price=124.622
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=124.479
+STL_TIME=2019-02-08 21:43:20
+LOG_MAX_PRICE=124.603
+####################################
+predict_price_1h=124.5279608528614
+predict_price_5m=124.5060265379101
+second_trade_time=2019-02-08 21:47:10
+predict_price_1m=124.49216680699587
+eurjpy_sma=124.49257500000002
+first_trade_time=2019-02-08 21:46:10
+first_trade_flag=buy
+second_trade_price=124.4975
+EXECUTE_ORDER=2019-02-08 21:47:10
+first_trade_price=124.48
+####################################
+PROFIT=0.10800000000000409
+LOG_MIN_PRICE=124.4855
+STL_TIME=2019-02-08 22:31:20
+LOG_MAX_PRICE=124.623
+####################################
+predict_price_1h=124.60147897207736
+predict_price_5m=124.6443762114644
+second_trade_time=2019-02-08 22:52:10
+predict_price_1m=124.66352877134085
+eurjpy_sma=124.66409999999999
+first_trade_time=2019-02-08 22:51:10
+first_trade_flag=sell
+second_trade_price=124.6575
+EXECUTE_ORDER=2019-02-08 22:52:10
+first_trade_price=124.664
+####################################
+PROFIT=0.10299999999999443
+LOG_MIN_PRICE=124.539
+STL_TIME=2019-02-08 23:15:20
+LOG_MAX_PRICE=124.6575
+####################################
+predict_price_1h=124.60360592067242
+predict_price_5m=124.63235763072967
+second_trade_time=2019-02-08 23:27:10
+predict_price_1m=124.56481191262603
+eurjpy_sma=124.55282500000003
+first_trade_time=2019-02-08 23:27:10
+first_trade_flag=buy
+second_trade_price=124.559
+EXECUTE_ORDER=2019-02-08 23:27:10
+first_trade_price=124.559
+####################################
+PROFIT=-0.15099999999999625
+LOG_MIN_PRICE=124.425
+STL_TIME=2019-02-08 23:58:20
+LOG_MAX_PRICE=124.5855
+####################################
+predict_price_1h=124.53199941396713
+predict_price_5m=124.30089051961899
+second_trade_time=2019-02-11 07:19:10
+predict_price_1m=124.30871961554884
+eurjpy_sma=124.30115
+first_trade_time=2019-02-11 07:08:10
+first_trade_flag=buy
+second_trade_price=124.314
+EXECUTE_ORDER=2019-02-11 07:19:10
+first_trade_price=124.28649999999999
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=124.2935
+STL_TIME=2019-02-11 07:27:20
+LOG_MAX_PRICE=124.327
+####################################
+predict_price_1h=124.59724195742606
+predict_price_5m=124.30288704442978
+second_trade_time=2019-02-11 08:06:10
+predict_price_1m=124.3154279550314
+eurjpy_sma=124.31292499999999
+first_trade_time=2019-02-11 08:04:10
+first_trade_flag=buy
+second_trade_price=124.32249999999999
+EXECUTE_ORDER=2019-02-11 08:06:10
+first_trade_price=124.3015
+####################################
+PROFIT=0.11499999999999488
+LOG_MIN_PRICE=124.307
+STL_TIME=2019-02-11 11:50:20
+LOG_MAX_PRICE=124.4575
+####################################
+predict_price_1h=124.53368506413698
+predict_price_5m=124.47185869026184
+second_trade_time=2019-02-11 12:10:10
+predict_price_1m=124.47374556297063
+eurjpy_sma=124.45152499999999
+first_trade_time=2019-02-11 12:10:10
+first_trade_flag=buy
+second_trade_price=124.461
+EXECUTE_ORDER=2019-02-11 12:10:10
+first_trade_price=124.461
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=124.429
+STL_TIME=2019-02-11 15:48:20
+LOG_MAX_PRICE=124.5795
+####################################
+predict_price_1h=124.57609840881824
+predict_price_5m=124.55993332612515
+second_trade_time=2019-02-11 16:01:10
+predict_price_1m=124.54931677296757
+eurjpy_sma=124.563825
+first_trade_time=2019-02-11 16:00:10
+first_trade_flag=sell
+second_trade_price=124.544
+EXECUTE_ORDER=2019-02-11 16:01:10
+first_trade_price=124.5795
+####################################
+PROFIT=0.10799999999998988
+LOG_MIN_PRICE=124.4195
+STL_TIME=2019-02-11 17:16:20
+LOG_MAX_PRICE=124.583
+####################################
+predict_price_1h=124.44749357497692
+predict_price_5m=124.50174225641787
+second_trade_time=2019-02-11 17:22:10
+predict_price_1m=124.45469741995633
+eurjpy_sma=124.46489999999999
+first_trade_time=2019-02-11 17:21:10
+first_trade_flag=buy
+second_trade_price=124.4705
+EXECUTE_ORDER=2019-02-11 17:22:10
+first_trade_price=124.435
+####################################
+PROFIT=0.10500000000000398
+LOG_MIN_PRICE=124.444
+STL_TIME=2019-02-11 18:02:20
+LOG_MAX_PRICE=124.593
+####################################
+predict_price_1h=124.31281384886802
+predict_price_5m=124.49704204106331
+second_trade_time=2019-02-11 18:19:10
+predict_price_1m=124.61239123591781
+eurjpy_sma=124.6739
+first_trade_time=2019-02-11 18:19:10
+first_trade_flag=sell
+second_trade_price=124.673
+EXECUTE_ORDER=2019-02-11 18:19:10
+first_trade_price=124.673
+####################################
+PROFIT=0.10999999999999943
+LOG_MIN_PRICE=124.54599999999999
+STL_TIME=2019-02-11 19:08:20
+LOG_MAX_PRICE=124.7295
+####################################
+predict_price_1h=124.30671150751412
+predict_price_5m=124.57601407986878
+second_trade_time=2019-02-11 19:14:10
+predict_price_1m=124.53216059947013
+eurjpy_sma=124.60000000000002
+first_trade_time=2019-02-11 19:14:10
+first_trade_flag=sell
+second_trade_price=124.5895
+EXECUTE_ORDER=2019-02-11 19:14:10
+first_trade_price=124.5895
+####################################
+PROFIT=-0.10799999999998988
+LOG_MIN_PRICE=124.523
+STL_TIME=2019-02-11 20:38:20
+LOG_MAX_PRICE=124.68
+####################################
+predict_price_1h=124.31656228370964
+predict_price_5m=124.61905816963315
+second_trade_time=2019-02-11 20:45:10
+predict_price_1m=124.64702472305298
+eurjpy_sma=124.65212499999998
+first_trade_time=2019-02-11 20:44:10
+first_trade_flag=sell
+second_trade_price=124.636
+EXECUTE_ORDER=2019-02-11 20:45:10
+first_trade_price=124.6515
+####################################
+PROFIT=-0.1150000000000091
+LOG_MIN_PRICE=124.56700000000001
+STL_TIME=2019-02-11 22:18:20
+LOG_MAX_PRICE=124.7325
+####################################
+predict_price_1h=124.32317761066557
+predict_price_5m=124.73825966674089
+second_trade_time=2019-02-11 22:56:10
+predict_price_1m=124.80010175317526
+eurjpy_sma=124.80499999999999
+first_trade_time=2019-02-11 22:55:10
+first_trade_flag=sell
+second_trade_price=124.8015
+EXECUTE_ORDER=2019-02-11 22:56:10
+first_trade_price=124.807
+####################################
+PROFIT=0.10699999999999932
+LOG_MIN_PRICE=124.67500000000001
+STL_TIME=2019-02-11 23:20:20
+LOG_MAX_PRICE=124.8775
+####################################
+predict_price_1h=124.29080063068866
+predict_price_5m=124.5359387626648
+second_trade_time=2019-02-12 01:40:10
+predict_price_1m=124.53864138406516
+eurjpy_sma=124.5255
+first_trade_time=2019-02-12 01:39:10
+first_trade_flag=sell
+second_trade_price=124.5215
+EXECUTE_ORDER=2019-02-12 01:40:10
+first_trade_price=124.53999999999999
+####################################
+PROFIT=-0.15399999999999636
+LOG_MIN_PRICE=124.43
+STL_TIME=2019-02-12 07:02:20
+LOG_MAX_PRICE=124.642
+####################################
+predict_price_1h=124.48683795608581
+predict_price_5m=124.53586499404908
+second_trade_time=2019-02-12 07:14:10
+predict_price_1m=124.49771714496613
+eurjpy_sma=124.51655000000001
+first_trade_time=2019-02-12 07:11:10
+first_trade_flag=sell
+second_trade_price=124.513
+EXECUTE_ORDER=2019-02-12 07:14:10
+first_trade_price=124.543
+####################################
+PROFIT=-0.10500000000000398
+LOG_MIN_PRICE=124.513
+STL_TIME=2019-02-12 07:15:20
+LOG_MAX_PRICE=124.56800000000001
+####################################
+predict_price_1h=124.49803058959544
+predict_price_5m=124.4869885417223
+second_trade_time=2019-02-12 08:06:10
+predict_price_1m=124.51688180220127
+eurjpy_sma=124.5119
+first_trade_time=2019-02-12 08:04:10
+first_trade_flag=buy
+second_trade_price=124.53800000000001
+EXECUTE_ORDER=2019-02-12 08:06:10
+first_trade_price=124.47800000000001
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=124.4725
+STL_TIME=2019-02-12 08:30:20
+LOG_MAX_PRICE=124.53899999999999
+####################################
+predict_price_1h=124.49803058959544
+predict_price_5m=124.53600092115998
+second_trade_time=2019-02-12 08:39:10
+predict_price_1m=124.50704471945762
+eurjpy_sma=124.4989
+first_trade_time=2019-02-12 08:37:10
+first_trade_flag=buy
+second_trade_price=124.5005
+EXECUTE_ORDER=2019-02-12 08:39:10
+first_trade_price=124.4975
+####################################
+PROFIT=0.10799999999998988
+LOG_MIN_PRICE=124.475
+STL_TIME=2019-02-12 09:54:20
+LOG_MAX_PRICE=124.627
+####################################
+predict_price_1h=124.60994165733456
+predict_price_5m=124.52907999897002
+second_trade_time=2019-02-12 10:01:10
+predict_price_1m=124.61110704898833
+eurjpy_sma=124.59825000000001
+first_trade_time=2019-02-12 10:00:10
+first_trade_flag=sell
+second_trade_price=124.5925
+EXECUTE_ORDER=2019-02-12 10:01:10
+first_trade_price=124.612
+####################################
+PROFIT=-0.1039999999999992
+LOG_MIN_PRICE=124.4795
+STL_TIME=2019-02-12 12:38:20
+LOG_MAX_PRICE=124.678
+####################################
+predict_price_1h=124.62463657973707
+predict_price_5m=124.7917689165473
+second_trade_time=2019-02-12 13:04:10
+predict_price_1m=124.76995637071133
+eurjpy_sma=124.7796
+first_trade_time=2019-02-12 13:01:10
+first_trade_flag=sell
+second_trade_price=124.7705
+EXECUTE_ORDER=2019-02-12 13:04:10
+first_trade_price=124.8005
+####################################
+PROFIT=-0.10200000000000387
+LOG_MIN_PRICE=124.661
+STL_TIME=2019-02-12 17:03:20
+LOG_MAX_PRICE=124.855
+####################################
+predict_price_1h=124.76017090123892
+predict_price_5m=124.77178019154071
+second_trade_time=2019-02-12 17:10:10
+predict_price_1m=124.76905474752188
+eurjpy_sma=124.82250000000002
+first_trade_time=2019-02-12 17:10:10
+first_trade_flag=sell
+second_trade_price=124.81
+EXECUTE_ORDER=2019-02-12 17:10:10
+first_trade_price=124.81
+####################################
+PROFIT=0.10200000000000387
+LOG_MIN_PRICE=124.69
+STL_TIME=2019-02-12 17:24:20
+LOG_MAX_PRICE=124.81
+####################################
+predict_price_1h=124.76017090123892
+predict_price_5m=124.74214698651433
+second_trade_time=2019-02-12 17:45:10
+predict_price_1m=124.62185198614002
+eurjpy_sma=124.60650000000003
+first_trade_time=2019-02-12 17:44:10
+first_trade_flag=buy
+second_trade_price=124.61250000000001
+EXECUTE_ORDER=2019-02-12 17:45:10
+first_trade_price=124.5625
+####################################
+PROFIT=-0.10600000000000875
+LOG_MIN_PRICE=124.5265
+STL_TIME=2019-02-12 17:49:20
+LOG_MAX_PRICE=124.61250000000001
+####################################
+predict_price_1h=124.76017090123892
+predict_price_5m=124.72358975499868
+second_trade_time=2019-02-12 17:51:10
+predict_price_1m=124.5556881800443
+eurjpy_sma=124.58509999999998
+first_trade_time=2019-02-12 17:50:10
+first_trade_flag=buy
+second_trade_price=124.5935
+EXECUTE_ORDER=2019-02-12 17:51:10
+first_trade_price=124.551
+####################################
+PROFIT=0.10699999999999932
+LOG_MIN_PRICE=124.586
+STL_TIME=2019-02-12 21:02:20
+LOG_MAX_PRICE=124.7165
+####################################
+predict_price_1h=124.82381942558288
+predict_price_5m=124.68560607528687
+second_trade_time=2019-02-12 21:27:10
+predict_price_1m=124.68888576533645
+eurjpy_sma=124.71217499999997
+first_trade_time=2019-02-12 21:23:10
+first_trade_flag=buy
+second_trade_price=124.7135
+EXECUTE_ORDER=2019-02-12 21:27:10
+first_trade_price=124.6825
+####################################
+PROFIT=0.10300000000000864
+LOG_MIN_PRICE=124.64
+STL_TIME=2019-02-13 00:54:20
+LOG_MAX_PRICE=124.83250000000001
+####################################
+predict_price_1h=125.00467516720296
+predict_price_5m=124.949685677588
+second_trade_time=2019-02-13 01:31:10
+predict_price_1m=125.02187017345429
+eurjpy_sma=125.0234
+first_trade_time=2019-02-13 01:30:10
+first_trade_flag=sell
+second_trade_price=125.0055
+EXECUTE_ORDER=2019-02-13 01:31:10
+first_trade_price=125.048
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=125.005
+STL_TIME=2019-02-13 01:44:20
+LOG_MAX_PRICE=125.092
+####################################
+predict_price_1h=125.00467516720296
+predict_price_5m=124.90734543007612
+second_trade_time=2019-02-13 01:53:10
+predict_price_1m=125.02910114252568
+eurjpy_sma=125.04432499999999
+first_trade_time=2019-02-13 01:46:10
+first_trade_flag=sell
+second_trade_price=125.03800000000001
+EXECUTE_ORDER=2019-02-13 01:53:10
+first_trade_price=125.071
+####################################
+PROFIT=-0.12600000000000477
+LOG_MIN_PRICE=125.003
+STL_TIME=2019-02-13 02:44:20
+LOG_MAX_PRICE=125.147
+####################################
+predict_price_1h=125.07916472798586
+predict_price_5m=125.08315058457852
+second_trade_time=2019-02-13 02:48:10
+predict_price_1m=125.1185236235857
+eurjpy_sma=125.10715
+first_trade_time=2019-02-13 02:47:10
+first_trade_flag=sell
+second_trade_price=125.098
+EXECUTE_ORDER=2019-02-13 02:48:10
+first_trade_price=125.1245
+####################################
+PROFIT=-0.1389999999999958
+LOG_MIN_PRICE=125.076
+STL_TIME=2019-02-13 03:09:20
+LOG_MAX_PRICE=125.22
+####################################
+predict_price_1h=125.20199845981597
+predict_price_5m=125.16727350580693
+second_trade_time=2019-02-13 03:22:10
+predict_price_1m=125.19699135893583
+eurjpy_sma=125.19305
+first_trade_time=2019-02-13 03:20:10
+first_trade_flag=sell
+second_trade_price=125.189
+EXECUTE_ORDER=2019-02-13 03:22:10
+first_trade_price=125.212
+####################################
+PROFIT=-0.10900000000000887
+LOG_MIN_PRICE=125.114
+STL_TIME=2019-02-13 09:06:20
+LOG_MAX_PRICE=125.281
+####################################
+predict_price_1h=125.13791571462156
+predict_price_5m=125.17434746812285
+second_trade_time=2019-02-13 09:22:10
+predict_price_1m=125.25884047472478
+eurjpy_sma=125.277825
+first_trade_time=2019-02-13 09:22:10
+first_trade_flag=sell
+second_trade_price=125.2685
+EXECUTE_ORDER=2019-02-13 09:22:10
+first_trade_price=125.2685
+####################################
+PROFIT=-0.10199999999998965
+LOG_MIN_PRICE=125.2165
+STL_TIME=2019-02-13 10:25:20
+LOG_MAX_PRICE=125.353
+####################################
+predict_price_1h=125.32231738582253
+predict_price_5m=125.26110261714459
+second_trade_time=2019-02-13 10:30:10
+predict_price_1m=125.3370280675888
+eurjpy_sma=125.325275
+first_trade_time=2019-02-13 10:29:10
+first_trade_flag=sell
+second_trade_price=125.321
+EXECUTE_ORDER=2019-02-13 10:30:10
+first_trade_price=125.347
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=125.2835
+STL_TIME=2019-02-13 12:05:20
+LOG_MAX_PRICE=125.404
+####################################
+predict_price_1h=125.47041623526812
+predict_price_5m=125.4828376404047
+second_trade_time=2019-02-13 12:21:10
+predict_price_1m=125.46968259310722
+eurjpy_sma=125.422425
+first_trade_time=2019-02-13 12:21:10
+first_trade_flag=buy
+second_trade_price=125.461
+EXECUTE_ORDER=2019-02-13 12:21:10
+first_trade_price=125.461
+####################################
+PROFIT=-0.11400000000000432
+LOG_MIN_PRICE=125.365
+STL_TIME=2019-02-13 14:01:20
+LOG_MAX_PRICE=125.525
+####################################
+predict_price_1h=125.33607309699059
+predict_price_5m=125.41780576562881
+second_trade_time=2019-02-13 15:06:10
+predict_price_1m=125.40906700477005
+eurjpy_sma=125.422625
+first_trade_time=2019-02-13 15:04:10
+first_trade_flag=sell
+second_trade_price=125.42099999999999
+EXECUTE_ORDER=2019-02-13 15:06:10
+first_trade_price=125.429
+####################################
+PROFIT=0.10800000000000409
+LOG_MIN_PRICE=125.2975
+STL_TIME=2019-02-13 16:25:20
+LOG_MAX_PRICE=125.43299999999999
+####################################
+predict_price_1h=125.23169102305174
+predict_price_5m=125.3523150177896
+second_trade_time=2019-02-13 16:33:10
+predict_price_1m=125.33914609164
+eurjpy_sma=125.347775
+first_trade_time=2019-02-13 16:32:10
+first_trade_flag=sell
+second_trade_price=125.344
+EXECUTE_ORDER=2019-02-13 16:33:10
+first_trade_price=125.3575
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=125.2615
+STL_TIME=2019-02-13 18:06:20
+LOG_MAX_PRICE=125.429
+####################################
+predict_price_1h=125.16393483483792
+predict_price_5m=125.32446159869433
+second_trade_time=2019-02-13 18:19:10
+predict_price_1m=125.41851854717731
+eurjpy_sma=125.43232500000002
+first_trade_time=2019-02-13 18:19:10
+first_trade_flag=sell
+second_trade_price=125.425
+EXECUTE_ORDER=2019-02-13 18:19:10
+first_trade_price=125.425
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=125.303
+STL_TIME=2019-02-13 19:00:20
+LOG_MAX_PRICE=125.425
+####################################
+predict_price_1h=125.27997792685032
+predict_price_5m=125.26219459193945
+second_trade_time=2019-02-13 20:29:10
+predict_price_1m=125.23559819763899
+eurjpy_sma=125.236325
+first_trade_time=2019-02-13 20:28:10
+first_trade_flag=buy
+second_trade_price=125.25
+EXECUTE_ORDER=2019-02-13 20:29:10
+first_trade_price=125.21799999999999
+####################################
+PROFIT=-0.1039999999999992
+LOG_MIN_PRICE=125.163
+STL_TIME=2019-02-13 22:33:20
+LOG_MAX_PRICE=125.33449999999999
+####################################
+predict_price_1h=125.26163579680026
+predict_price_5m=125.2339650529325
+second_trade_time=2019-02-13 22:43:10
+predict_price_1m=125.16695113539696
+eurjpy_sma=125.16455
+first_trade_time=2019-02-13 22:42:10
+first_trade_flag=buy
+second_trade_price=125.179
+EXECUTE_ORDER=2019-02-13 22:43:10
+first_trade_price=125.14349999999999
+####################################
+PROFIT=-0.11700000000000443
+LOG_MIN_PRICE=125.078
+STL_TIME=2019-02-13 23:10:20
+LOG_MAX_PRICE=125.2525
+####################################
+predict_price_1h=125.29419984321297
+predict_price_5m=125.15121580582857
+second_trade_time=2019-02-13 23:21:10
+predict_price_1m=125.11830577167869
+eurjpy_sma=125.12234999999998
+first_trade_time=2019-02-13 23:20:10
+first_trade_flag=buy
+second_trade_price=125.1225
+EXECUTE_ORDER=2019-02-13 23:21:10
+first_trade_price=125.0975
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=125.0385
+STL_TIME=2019-02-14 02:58:20
+LOG_MAX_PRICE=125.21199999999999
+####################################
+predict_price_1h=125.15715853302181
+predict_price_5m=125.07631847488881
+second_trade_time=2019-02-14 03:04:10
+predict_price_1m=125.03793376630546
+eurjpy_sma=125.05737500000001
+first_trade_time=2019-02-14 02:59:10
+first_trade_flag=buy
+second_trade_price=125.0635
+EXECUTE_ORDER=2019-02-14 03:04:10
+first_trade_price=125.02850000000001
+####################################
+PROFIT=-0.10699999999999932
+LOG_MIN_PRICE=124.99000000000001
+STL_TIME=2019-02-14 07:02:20
+LOG_MAX_PRICE=125.136
+####################################
+predict_price_1h=125.0084444207102
+predict_price_5m=125.06304186105729
+second_trade_time=2019-02-14 07:10:10
+predict_price_1m=125.0040545951724
+eurjpy_sma=125.010775
+first_trade_time=2019-02-14 07:05:10
+first_trade_flag=buy
+second_trade_price=125.02199999999999
+EXECUTE_ORDER=2019-02-14 07:10:10
+first_trade_price=124.99600000000001
+####################################
+PROFIT=-0.14499999999999602
+LOG_MIN_PRICE=124.92699999999999
+STL_TIME=2019-02-14 07:39:20
+LOG_MAX_PRICE=125.041
+####################################
+predict_price_1h=125.0084444207102
+predict_price_5m=125.05906368988752
+second_trade_time=2019-02-14 07:57:10
+predict_price_1m=124.96021640050411
+eurjpy_sma=124.95455
+first_trade_time=2019-02-14 07:55:10
+first_trade_flag=buy
+second_trade_price=124.96799999999999
+EXECUTE_ORDER=2019-02-14 07:57:10
+first_trade_price=124.94300000000001
+####################################
+PROFIT=-0.11499999999999488
+LOG_MIN_PRICE=124.8875
+STL_TIME=2019-02-14 09:24:20
+LOG_MAX_PRICE=125.014
+####################################
+predict_price_1h=125.00580890989305
+predict_price_5m=124.91813224813342
+second_trade_time=2019-02-14 09:36:10
+predict_price_1m=124.88447782683373
+eurjpy_sma=124.9177
+first_trade_time=2019-02-14 09:31:10
+first_trade_flag=buy
+second_trade_price=124.9285
+EXECUTE_ORDER=2019-02-14 09:36:10
+first_trade_price=124.861
+####################################
+PROFIT=0.10999999999999943
+LOG_MIN_PRICE=124.9205
+STL_TIME=2019-02-14 10:38:20
+LOG_MAX_PRICE=125.0555
+####################################
+predict_price_1h=125.08372531318665
+predict_price_5m=125.03338005320727
+second_trade_time=2019-02-14 11:33:10
+predict_price_1m=125.07996765378117
+eurjpy_sma=125.095175
+first_trade_time=2019-02-14 11:33:10
+first_trade_flag=sell
+second_trade_price=125.094
+EXECUTE_ORDER=2019-02-14 11:33:10
+first_trade_price=125.094
+####################################
+PROFIT=-0.10800000000000409
+LOG_MIN_PRICE=125.083
+STL_TIME=2019-02-14 12:42:20
+LOG_MAX_PRICE=125.185
+####################################
+predict_price_1h=125.29739673423768
+predict_price_5m=125.22030702453851
+second_trade_time=2019-02-14 12:49:10
+predict_price_1m=125.21345548057556
+eurjpy_sma=125.16922499999998
+first_trade_time=2019-02-14 12:49:10
+first_trade_flag=buy
+second_trade_price=125.187
+EXECUTE_ORDER=2019-02-14 12:49:10
+first_trade_price=125.187
+####################################
+PROFIT=0.13299999999999557
+LOG_MIN_PRICE=125.187
+STL_TIME=2019-02-14 12:51:20
+LOG_MAX_PRICE=125.339
+####################################
+predict_price_1h=125.29739673423768
+predict_price_5m=125.2707193107605
+second_trade_time=2019-02-14 13:06:10
+predict_price_1m=125.29617669734358
+eurjpy_sma=125.278925
+first_trade_time=2019-02-14 12:58:10
+first_trade_flag=sell
+second_trade_price=125.2695
+EXECUTE_ORDER=2019-02-14 13:06:10
+first_trade_price=125.3105
+####################################
+PROFIT=-0.13700000000000045
+LOG_MIN_PRICE=125.1935
+STL_TIME=2019-02-14 16:02:20
+LOG_MAX_PRICE=125.3895
+####################################
+predict_price_1h=125.32413352876902
+predict_price_5m=125.28563123238087
+second_trade_time=2019-02-14 16:05:10
+predict_price_1m=125.37091983133554
+eurjpy_sma=125.2603
+first_trade_time=2019-02-14 16:05:10
+first_trade_flag=buy
+second_trade_price=125.27000000000001
+EXECUTE_ORDER=2019-02-14 16:05:10
+first_trade_price=125.27000000000001
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=125.257
+STL_TIME=2019-02-14 16:24:20
+LOG_MAX_PRICE=125.3905
+####################################
+predict_price_1h=125.32413352876902
+predict_price_5m=125.32774235033989
+second_trade_time=2019-02-14 16:34:10
+predict_price_1m=125.3439940443635
+eurjpy_sma=125.36387499999998
+first_trade_time=2019-02-14 16:34:10
+first_trade_flag=sell
+second_trade_price=125.351
+EXECUTE_ORDER=2019-02-14 16:34:10
+first_trade_price=125.351
+####################################
+PROFIT=0.10500000000000398
+LOG_MIN_PRICE=125.22999999999999
+STL_TIME=2019-02-14 17:07:20
+LOG_MAX_PRICE=125.3515
+####################################
+predict_price_1h=125.16440739023686
+predict_price_5m=125.13623070418835
+second_trade_time=2019-02-14 17:48:10
+predict_price_1m=125.03469033285975
+eurjpy_sma=125.02377499999997
+first_trade_time=2019-02-14 17:48:10
+first_trade_flag=buy
+second_trade_price=125.024
+EXECUTE_ORDER=2019-02-14 17:48:10
+first_trade_price=125.024
+####################################
+PROFIT=0.10900000000000887
+LOG_MIN_PRICE=124.981
+STL_TIME=2019-02-14 19:02:20
+LOG_MAX_PRICE=125.1495
+####################################
+predict_price_1h=125.07603320932388
+predict_price_5m=125.06186040399969
+second_trade_time=2019-02-14 19:21:10
+predict_price_1m=125.1825467247963
+eurjpy_sma=125.184825
+first_trade_time=2019-02-14 19:20:10
+first_trade_flag=sell
+second_trade_price=125.1815
+EXECUTE_ORDER=2019-02-14 19:21:10
+first_trade_price=125.185
+####################################
+PROFIT=0.10000000000000853
+LOG_MIN_PRICE=125.06450000000001
+STL_TIME=2019-02-14 22:52:20
+LOG_MAX_PRICE=125.244
+####################################
+predict_price_1h=125.08632483589649
+predict_price_5m=125.1067034803033
+second_trade_time=2019-02-14 23:14:10
+predict_price_1m=124.95325855877995
+eurjpy_sma=124.968375
+first_trade_time=2019-02-14 23:12:10
+first_trade_flag=buy
+second_trade_price=124.9725
+EXECUTE_ORDER=2019-02-14 23:14:10
+first_trade_price=124.9415
+####################################
+PROFIT=-0.10799999999998988
+LOG_MIN_PRICE=124.881
+STL_TIME=2019-02-14 23:26:20
+LOG_MAX_PRICE=124.995
+####################################
+predict_price_1h=125.08632483589649
+predict_price_5m=125.00840118262172
+second_trade_time=2019-02-14 23:34:10
+predict_price_1m=124.94497596001625
+eurjpy_sma=124.93402500000002
+first_trade_time=2019-02-14 23:34:10
+first_trade_flag=buy
+second_trade_price=124.9375
+EXECUTE_ORDER=2019-02-14 23:34:10
+first_trade_price=124.9375
+####################################
+PROFIT=-0.14399999999999125
+LOG_MIN_PRICE=124.8135
+STL_TIME=2019-02-15 00:38:20
+LOG_MAX_PRICE=125.0355
+####################################
+predict_price_1h=124.94074030411244
+predict_price_5m=124.88815823173523
+second_trade_time=2019-02-15 00:48:10
+predict_price_1m=124.83612382920087
+eurjpy_sma=124.90390000000002
+first_trade_time=2019-02-15 00:39:10
+first_trade_flag=buy
+second_trade_price=124.9295
+EXECUTE_ORDER=2019-02-15 00:48:10
+first_trade_price=124.798
+####################################
+PROFIT=-0.10500000000000398
+LOG_MIN_PRICE=124.8425
+STL_TIME=2019-02-15 00:54:20
+LOG_MAX_PRICE=124.9295
+####################################
+predict_price_1h=124.9407849342227
+predict_price_5m=124.95690826332569
+second_trade_time=2019-02-15 01:11:10
+predict_price_1m=124.81549536994099
+eurjpy_sma=124.80819999999999
+first_trade_time=2019-02-15 01:11:10
+first_trade_flag=buy
+second_trade_price=124.8145
+EXECUTE_ORDER=2019-02-15 01:11:10
+first_trade_price=124.8145
+####################################
+PROFIT=0.10500000000000398
+LOG_MIN_PRICE=124.7855
+STL_TIME=2019-02-15 02:07:20
+LOG_MAX_PRICE=124.9365
+####################################
+predict_price_1h=124.97938627457619
+predict_price_5m=124.94456100916862
+second_trade_time=2019-02-15 02:51:10
+predict_price_1m=124.9465565468073
+eurjpy_sma=124.93874999999998
+first_trade_time=2019-02-15 02:51:10
+first_trade_flag=buy
+second_trade_price=124.9415
+EXECUTE_ORDER=2019-02-15 02:51:10
+first_trade_price=124.9415
+####################################
+PROFIT=-0.10500000000000398
+LOG_MIN_PRICE=124.854
+STL_TIME=2019-02-15 04:59:20
+LOG_MAX_PRICE=125.011
+####################################
+predict_price_1h=124.95529619464278
+predict_price_5m=124.93707739755511
+second_trade_time=2019-02-15 05:07:10
+predict_price_1m=124.89714289292692
+eurjpy_sma=124.883375
+first_trade_time=2019-02-15 05:07:10
+first_trade_flag=buy
+second_trade_price=124.8965
+EXECUTE_ORDER=2019-02-15 05:07:10
+first_trade_price=124.8965
+####################################
+PROFIT=-0.10999999999999943
+LOG_MIN_PRICE=124.8045
+STL_TIME=2019-02-15 05:58:20
+LOG_MAX_PRICE=124.9225
+####################################
+predict_price_1h=124.98047300846875
+predict_price_5m=124.84737621304393
+second_trade_time=2019-02-15 06:19:10
+predict_price_1m=124.78938260865212
+eurjpy_sma=124.796075
+first_trade_time=2019-02-15 06:18:10
+first_trade_flag=buy
+second_trade_price=124.801
+EXECUTE_ORDER=2019-02-15 06:19:10
+first_trade_price=124.7855
+####################################
+PROFIT=-0.10999999999999943
+LOG_MIN_PRICE=124.708
+STL_TIME=2019-02-15 09:08:20
+LOG_MAX_PRICE=124.863
+####################################
+predict_price_1h=124.7827370017171
+predict_price_5m=124.78590609763563
+second_trade_time=2019-02-15 09:21:10
+predict_price_1m=124.76850660583376
+eurjpy_sma=124.76265000000001
+first_trade_time=2019-02-15 09:19:10
+first_trade_flag=buy
+second_trade_price=124.7765
+EXECUTE_ORDER=2019-02-15 09:21:10
+first_trade_price=124.7685
+####################################
+PROFIT=-0.117999999999995
+LOG_MIN_PRICE=124.6755
+STL_TIME=2019-02-15 09:35:20
+LOG_MAX_PRICE=124.7795
+####################################
+predict_price_1h=124.7827370017171
+predict_price_5m=124.77807128253579
+second_trade_time=2019-02-15 09:48:10
+predict_price_1m=124.73203597867489
+eurjpy_sma=124.70419999999999
+first_trade_time=2019-02-15 09:47:10
+first_trade_flag=buy
+second_trade_price=124.709
+EXECUTE_ORDER=2019-02-15 09:48:10
+first_trade_price=124.687
+####################################
+PROFIT=-0.1110000000000042
+LOG_MIN_PRICE=124.6165
+STL_TIME=2019-02-15 10:05:20
+LOG_MAX_PRICE=124.7355
+####################################
+predict_price_1h=124.67916145157814
+predict_price_5m=124.71186989255249
+second_trade_time=2019-02-15 10:13:10
+predict_price_1m=124.65899918377399
+eurjpy_sma=124.643625
+first_trade_time=2019-02-15 10:13:10
+first_trade_flag=buy
+second_trade_price=124.649
+EXECUTE_ORDER=2019-02-15 10:13:10
+first_trade_price=124.649
+####################################
+PROFIT=-0.1280000000000001
+LOG_MIN_PRICE=124.538
+STL_TIME=2019-02-15 10:31:20
+LOG_MAX_PRICE=124.65549999999999
+####################################
+predict_price_1h=124.67916145157814
+predict_price_5m=124.67098537385465
+second_trade_time=2019-02-15 10:45:10
+predict_price_1m=124.5741000611782
+eurjpy_sma=124.555575
+first_trade_time=2019-02-15 10:45:10
+first_trade_flag=buy
+second_trade_price=124.5605
+EXECUTE_ORDER=2019-02-15 10:45:10
+first_trade_price=124.5605
+####################################
+PROFIT=-0.10000000000000853
+LOG_MIN_PRICE=124.478
+STL_TIME=2019-02-15 11:24:20
+LOG_MAX_PRICE=124.616
+####################################
+predict_price_1h=124.58029723556339
+predict_price_5m=124.60684916210174
+second_trade_time=2019-02-15 11:51:10
+predict_price_1m=124.48757363593579
+eurjpy_sma=124.490075
+first_trade_time=2019-02-15 11:50:10
+first_trade_flag=buy
+second_trade_price=124.495
+EXECUTE_ORDER=2019-02-15 11:51:10
+first_trade_price=124.4785
+####################################
+PROFIT=0.10999999999999943
+LOG_MIN_PRICE=124.4725
+STL_TIME=2019-02-15 15:59:20
+LOG_MAX_PRICE=124.6225
+####################################
+predict_price_1h=124.47936805331707
+predict_price_5m=124.55777855274081
+second_trade_time=2019-02-15 16:01:10
+predict_price_1m=124.58174429339915
+eurjpy_sma=124.587075
+first_trade_time=2019-02-15 16:01:10
+first_trade_flag=sell
+second_trade_price=124.5855
+EXECUTE_ORDER=2019-02-15 16:01:10
+first_trade_price=124.5855
+####################################
+PROFIT=-0.1110000000000042
+LOG_MIN_PRICE=124.5855
+STL_TIME=2019-02-15 16:08:20
+LOG_MAX_PRICE=124.679
+####################################
+predict_price_1h=124.47936805331707
+predict_price_5m=124.58657634171844
+second_trade_time=2019-02-15 16:19:10
+predict_price_1m=124.63208127917349
+eurjpy_sma=124.6407
+first_trade_time=2019-02-15 16:19:10
+first_trade_flag=sell
+second_trade_price=124.638
+EXECUTE_ORDER=2019-02-15 16:19:10
+first_trade_price=124.638
+####################################
+PROFIT=0.10500000000000398
+LOG_MIN_PRICE=124.5175
+STL_TIME=2019-02-15 16:33:20
+LOG_MAX_PRICE=124.638
+####################################
+predict_price_1h=124.47936805331707
+predict_price_5m=124.50710276219249
+second_trade_time=2019-02-15 16:57:10
+predict_price_1m=124.39588885188103
+eurjpy_sma=124.380325
+first_trade_time=2019-02-15 16:56:10
+first_trade_flag=buy
+second_trade_price=124.4
+EXECUTE_ORDER=2019-02-15 16:57:10
+first_trade_price=124.37950000000001
+####################################
+PROFIT=-0.12600000000000477
+LOG_MIN_PRICE=124.291
+STL_TIME=2019-02-15 17:22:20
+LOG_MAX_PRICE=124.43299999999999
+####################################
+predict_price_1h=124.47065160022676
+predict_price_5m=124.4164613441229
+second_trade_time=2019-02-15 17:35:10
+predict_price_1m=124.37414922261239
+eurjpy_sma=124.33245
+first_trade_time=2019-02-15 17:35:10
+first_trade_flag=buy
+second_trade_price=124.3325
+EXECUTE_ORDER=2019-02-15 17:35:10
+first_trade_price=124.3325
+####################################
+PROFIT=0.10600000000000875
+LOG_MIN_PRICE=124.3305
+STL_TIME=2019-02-15 18:24:20
+LOG_MAX_PRICE=124.4555
+####################################
+predict_price_1h=124.93521095466613
+predict_price_5m=124.55145459184051
+second_trade_time=2019-02-15 19:33:10
+predict_price_1m=124.52468614518642
+eurjpy_sma=124.56350000000002
+first_trade_time=2019-02-15 19:32:10
+first_trade_flag=buy
+second_trade_price=124.57849999999999
+EXECUTE_ORDER=2019-02-15 19:33:10
+first_trade_price=124.518
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=124.494
+STL_TIME=2019-02-15 20:45:20
+LOG_MAX_PRICE=124.57849999999999
+####################################
+predict_price_1h=125.00296790170668
+predict_price_5m=124.52020404088498
+second_trade_time=2019-02-15 20:55:10
+predict_price_1m=124.52717665672301
+eurjpy_sma=124.51457500000001
+first_trade_time=2019-02-15 20:55:10
+first_trade_flag=buy
+second_trade_price=124.515
+EXECUTE_ORDER=2019-02-15 20:55:10
+first_trade_price=124.515
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=124.42500000000001
+STL_TIME=2019-02-15 22:05:20
+LOG_MAX_PRICE=124.58449999999999
+####################################
+predict_price_1h=124.89763467049598
+predict_price_5m=124.4636088860035
+second_trade_time=2019-02-15 22:20:10
+predict_price_1m=124.45212191383541
+eurjpy_sma=124.45089999999998
+first_trade_time=2019-02-15 22:17:10
+first_trade_flag=buy
+second_trade_price=124.453
+EXECUTE_ORDER=2019-02-15 22:20:10
+first_trade_price=124.4435
+####################################
+PROFIT=-0.14000000000000057
+LOG_MIN_PRICE=124.33
+STL_TIME=2019-02-15 22:27:20
+LOG_MAX_PRICE=124.4825
+####################################
+predict_price_1h=124.89763467049598
+predict_price_5m=124.41681708741189
+second_trade_time=2019-02-15 22:39:10
+predict_price_1m=124.29870654787125
+eurjpy_sma=124.3615
+first_trade_time=2019-02-15 22:34:10
+first_trade_flag=buy
+second_trade_price=124.372
+EXECUTE_ORDER=2019-02-15 22:39:10
+first_trade_price=124.2895
+####################################
+PROFIT=0.1280000000000001
+LOG_MIN_PRICE=124.372
+STL_TIME=2019-02-15 22:41:20
+LOG_MAX_PRICE=124.517
+####################################
+predict_price_1h=124.89763467049598
+predict_price_5m=124.44904971432686
+second_trade_time=2019-02-15 22:59:10
+predict_price_1m=124.4298395562172
+eurjpy_sma=124.430175
+first_trade_time=2019-02-15 22:58:10
+first_trade_flag=buy
+second_trade_price=124.44
+EXECUTE_ORDER=2019-02-15 22:59:10
+first_trade_price=124.416
+####################################
+PROFIT=0.13400000000000034
+LOG_MIN_PRICE=124.42250000000001
+STL_TIME=2019-02-15 23:29:20
+LOG_MAX_PRICE=124.5915
+####################################
+predict_price_1h=124.8441254054904
+predict_price_5m=124.51428290051221
+second_trade_time=2019-02-15 23:42:10
+predict_price_1m=124.52522968524694
+eurjpy_sma=124.52977500000001
+first_trade_time=2019-02-15 23:41:10
+first_trade_flag=buy
+second_trade_price=124.556
+EXECUTE_ORDER=2019-02-15 23:42:10
+first_trade_price=124.503
+####################################
+PROFIT=-0.10200000000000387
+LOG_MIN_PRICE=124.47149999999999
+STL_TIME=2019-02-15 23:58:20
+LOG_MAX_PRICE=124.563
+####################################
+predict_price_1h=124.8441254054904
+predict_price_5m=124.51159535786509
+second_trade_time=2019-02-18 07:08:10
+predict_price_1m=124.52422597372532
+eurjpy_sma=124.72500000000002
+first_trade_time=2019-02-15 23:59:10
+first_trade_flag=buy
+second_trade_price=124.74199999999999
+EXECUTE_ORDER=2019-02-18 07:08:10
+first_trade_price=124.465
+####################################
+PROFIT=0.10200000000000387
+LOG_MIN_PRICE=124.714
+STL_TIME=2019-02-18 08:52:20
+LOG_MAX_PRICE=124.875
+####################################
+predict_price_1h=124.83282863378525
+predict_price_5m=124.84472223341464
+second_trade_time=2019-02-18 09:01:10
+predict_price_1m=124.84561356848478
+eurjpy_sma=124.85400000000001
+first_trade_time=2019-02-18 08:59:10
+first_trade_flag=sell
+second_trade_price=124.844
+EXECUTE_ORDER=2019-02-18 09:01:10
+first_trade_price=124.894
+####################################
+PROFIT=-0.10300000000000864
+LOG_MIN_PRICE=124.815
+STL_TIME=2019-02-18 09:52:20
+LOG_MAX_PRICE=124.929
+####################################
+predict_price_1h=124.9721994278431
+predict_price_5m=124.93898634713888
+second_trade_time=2019-02-18 10:26:10
+predict_price_1m=124.94234753789753
+eurjpy_sma=124.964625
+first_trade_time=2019-02-18 10:21:10
+first_trade_flag=buy
+second_trade_price=124.969
+EXECUTE_ORDER=2019-02-18 10:26:10
+first_trade_price=124.935
+####################################
+PROFIT=0.1559999999999917
+LOG_MIN_PRICE=124.962
+STL_TIME=2019-02-18 11:09:20
+LOG_MAX_PRICE=125.1425
+####################################
+predict_price_1h=125.06696886825561
+predict_price_5m=125.01051385073364
+second_trade_time=2019-02-18 11:27:10
+predict_price_1m=125.08175824522972
+eurjpy_sma=125.085275
+first_trade_time=2019-02-18 11:25:10
+first_trade_flag=sell
+second_trade_price=125.071
+EXECUTE_ORDER=2019-02-18 11:27:10
+first_trade_price=125.089
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=125.071
+STL_TIME=2019-02-18 11:46:20
+LOG_MAX_PRICE=125.156
+####################################
+predict_price_1h=125.06696886825561
+predict_price_5m=125.11946205484867
+second_trade_time=2019-02-18 11:54:10
+predict_price_1m=125.12778538122774
+eurjpy_sma=125.12327499999999
+first_trade_time=2019-02-18 11:53:10
+first_trade_flag=sell
+second_trade_price=125.1215
+EXECUTE_ORDER=2019-02-18 11:54:10
+first_trade_price=125.1315
+####################################
+PROFIT=0.10699999999999932
+LOG_MIN_PRICE=124.9985
+STL_TIME=2019-02-18 14:36:20
+LOG_MAX_PRICE=125.128
+####################################
+predict_price_1h=124.9986456489563
+predict_price_5m=125.01813221520186
+second_trade_time=2019-02-18 14:57:10
+predict_price_1m=124.99963539618254
+eurjpy_sma=124.9929
+first_trade_time=2019-02-18 14:57:10
+first_trade_flag=buy
+second_trade_price=124.998
+EXECUTE_ORDER=2019-02-18 14:57:10
+first_trade_price=124.998
+####################################
+PROFIT=0.11899999999999977
+LOG_MIN_PRICE=124.9315
+STL_TIME=2019-02-18 18:39:20
+LOG_MAX_PRICE=125.134
+####################################
+predict_price_1h=125.0277416216135
+predict_price_5m=125.0687337757647
+second_trade_time=2019-02-18 18:51:10
+predict_price_1m=125.08101389104128
+eurjpy_sma=125.0906
+first_trade_time=2019-02-18 18:51:10
+first_trade_flag=sell
+second_trade_price=125.08500000000001
+EXECUTE_ORDER=2019-02-18 18:51:10
+first_trade_price=125.08500000000001
+####################################
+PROFIT=-0.10300000000000864
+LOG_MIN_PRICE=125.049
+STL_TIME=2019-02-18 19:40:20
+LOG_MAX_PRICE=125.1705
+####################################
+predict_price_1h=125.19225916349887
+predict_price_5m=125.17165863740445
+second_trade_time=2019-02-18 19:54:10
+predict_price_1m=125.1882462785244
+eurjpy_sma=125.18687499999996
+first_trade_time=2019-02-18 19:50:10
+first_trade_flag=sell
+second_trade_price=125.1865
+EXECUTE_ORDER=2019-02-18 19:54:10
+first_trade_price=125.193
+####################################
+PROFIT=-0.10000000000000853
+LOG_MIN_PRICE=125.1815
+STL_TIME=2019-02-18 21:11:20
+LOG_MAX_PRICE=125.269
+####################################
+predict_price_1h=125.23486110013722
+predict_price_5m=125.22212416809798
+second_trade_time=2019-02-18 21:14:10
+predict_price_1m=125.24846708095075
+eurjpy_sma=125.24504999999999
+first_trade_time=2019-02-18 21:12:10
+first_trade_flag=sell
+second_trade_price=125.2385
+EXECUTE_ORDER=2019-02-18 21:14:10
+first_trade_price=125.2655
+####################################
+PROFIT=0.10300000000000864
+LOG_MIN_PRICE=125.119
+STL_TIME=2019-02-19 00:26:20
+LOG_MAX_PRICE=125.2615
+####################################
+predict_price_1h=124.76139404076338
+predict_price_5m=125.05409843665362
+second_trade_time=2019-02-19 01:49:10
+predict_price_1m=125.05069651651382
+eurjpy_sma=125.0735
+first_trade_time=2019-02-19 01:49:10
+first_trade_flag=sell
+second_trade_price=125.0685
+EXECUTE_ORDER=2019-02-19 01:49:10
+first_trade_price=125.0685
+####################################
+PROFIT=-0.13700000000000045
+LOG_MIN_PRICE=125.006
+STL_TIME=2019-02-19 06:43:20
+LOG_MAX_PRICE=125.1555
+####################################
+predict_price_1h=125.02093738003074
+predict_price_5m=125.11243145704269
+second_trade_time=2019-02-19 06:51:10
+predict_price_1m=125.1305658338964
+eurjpy_sma=125.12505000000002
+first_trade_time=2019-02-19 06:50:10
+first_trade_flag=sell
+second_trade_price=125.1235
+EXECUTE_ORDER=2019-02-19 06:51:10
+first_trade_price=125.13300000000001
+####################################
+PROFIT=0.10500000000000398
+LOG_MIN_PRICE=124.9845
+STL_TIME=2019-02-19 09:52:20
+LOG_MAX_PRICE=125.1305
+####################################
+predict_price_1h=124.96412780839205
+predict_price_5m=125.03197464716435
+second_trade_time=2019-02-19 10:04:10
+predict_price_1m=124.96885440909863
+eurjpy_sma=124.98782500000002
+first_trade_time=2019-02-19 10:02:10
+first_trade_flag=buy
+second_trade_price=124.9915
+EXECUTE_ORDER=2019-02-19 10:04:10
+first_trade_price=124.9605
+####################################
+PROFIT=-0.1389999999999958
+LOG_MIN_PRICE=124.87049999999999
+STL_TIME=2019-02-19 10:34:20
+LOG_MAX_PRICE=124.999
+####################################
+predict_price_1h=124.96412780839205
+predict_price_5m=125.01775625655056
+second_trade_time=2019-02-19 10:44:10
+predict_price_1m=124.9102212703079
+eurjpy_sma=124.91817499999999
+first_trade_time=2019-02-19 10:42:10
+first_trade_flag=buy
+second_trade_price=124.9455
+EXECUTE_ORDER=2019-02-19 10:44:10
+first_trade_price=124.90899999999999
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=124.8595
+STL_TIME=2019-02-19 11:45:20
+LOG_MAX_PRICE=124.9465
+####################################
+predict_price_1h=124.953265527457
+predict_price_5m=124.90978343683481
+second_trade_time=2019-02-19 11:56:10
+predict_price_1m=124.87230885893106
+eurjpy_sma=124.881375
+first_trade_time=2019-02-19 11:53:10
+first_trade_flag=buy
+second_trade_price=124.884
+EXECUTE_ORDER=2019-02-19 11:56:10
+first_trade_price=124.869
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=124.7985
+STL_TIME=2019-02-19 12:52:20
+LOG_MAX_PRICE=124.8995
+####################################
+predict_price_1h=124.82066072893143
+predict_price_5m=124.83641047081352
+second_trade_time=2019-02-19 13:06:10
+predict_price_1m=124.81236248183251
+eurjpy_sma=124.80257499999998
+first_trade_time=2019-02-19 13:06:10
+first_trade_flag=buy
+second_trade_price=124.807
+EXECUTE_ORDER=2019-02-19 13:06:10
+first_trade_price=124.807
+####################################
+PROFIT=0.16899999999999693
+LOG_MIN_PRICE=124.807
+STL_TIME=2019-02-19 13:29:20
+LOG_MAX_PRICE=124.9925
+####################################
+predict_price_1h=124.82066072893143
+predict_price_5m=124.95507159933447
+second_trade_time=2019-02-19 14:02:10
+predict_price_1m=125.00631412142515
+eurjpy_sma=124.99615000000003
+first_trade_time=2019-02-19 13:58:10
+first_trade_flag=sell
+second_trade_price=124.9765
+EXECUTE_ORDER=2019-02-19 14:02:10
+first_trade_price=125.009
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=124.935
+STL_TIME=2019-02-19 16:04:20
+LOG_MAX_PRICE=125.0655
+####################################
+predict_price_1h=124.85239057636261
+predict_price_5m=125.10092335045337
+second_trade_time=2019-02-19 16:36:10
+predict_price_1m=125.08883504629135
+eurjpy_sma=125.10585
+first_trade_time=2019-02-19 16:36:10
+first_trade_flag=sell
+second_trade_price=125.101
+EXECUTE_ORDER=2019-02-19 16:36:10
+first_trade_price=125.101
+####################################
+PROFIT=-0.15500000000000114
+LOG_MIN_PRICE=124.9875
+STL_TIME=2019-02-19 17:21:20
+LOG_MAX_PRICE=125.239
+####################################
+predict_price_1h=124.87900656485559
+predict_price_5m=125.11907140052318
+second_trade_time=2019-02-19 17:41:10
+predict_price_1m=125.28807404139638
+eurjpy_sma=125.31800000000001
+first_trade_time=2019-02-19 17:41:10
+first_trade_flag=sell
+second_trade_price=125.3125
+EXECUTE_ORDER=2019-02-19 17:41:10
+first_trade_price=125.3125
+####################################
+PROFIT=-0.15099999999999625
+LOG_MIN_PRICE=125.3125
+STL_TIME=2019-02-19 18:00:20
+LOG_MAX_PRICE=125.444
+####################################
+predict_price_1h=124.85534241318703
+predict_price_5m=125.10748233774304
+second_trade_time=2019-02-19 18:05:10
+predict_price_1m=125.38929186671972
+eurjpy_sma=125.3785
+first_trade_time=2019-02-19 18:04:10
+first_trade_flag=sell
+second_trade_price=125.3505
+EXECUTE_ORDER=2019-02-19 18:05:10
+first_trade_price=125.395
+####################################
+PROFIT=0.10299999999999443
+LOG_MIN_PRICE=125.231
+STL_TIME=2019-02-19 18:18:20
+LOG_MAX_PRICE=125.3505
+####################################
+predict_price_1h=124.85534241318703
+predict_price_5m=125.20200799316167
+second_trade_time=2019-02-19 18:20:10
+predict_price_1m=125.19775183179975
+eurjpy_sma=125.301975
+first_trade_time=2019-02-19 18:20:10
+first_trade_flag=sell
+second_trade_price=125.217
+EXECUTE_ORDER=2019-02-19 18:20:10
+first_trade_price=125.217
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=125.16900000000001
+STL_TIME=2019-02-19 19:21:20
+LOG_MAX_PRICE=125.3015
+####################################
+predict_price_1h=124.91248643636705
+predict_price_5m=125.27681505286694
+second_trade_time=2019-02-19 19:27:10
+predict_price_1m=125.26274471634626
+eurjpy_sma=125.272225
+first_trade_time=2019-02-19 19:26:10
+first_trade_flag=sell
+second_trade_price=125.2685
+EXECUTE_ORDER=2019-02-19 19:27:10
+first_trade_price=125.2775
+####################################
+PROFIT=0.14400000000000546
+LOG_MIN_PRICE=125.106
+STL_TIME=2019-02-19 20:20:20
+LOG_MAX_PRICE=125.34649999999999
+####################################
+predict_price_1h=124.96316549038887
+predict_price_5m=125.05854207521676
+second_trade_time=2019-02-19 22:20:10
+predict_price_1m=125.03652873972058
+eurjpy_sma=125.04955
+first_trade_time=2019-02-19 22:18:10
+first_trade_flag=sell
+second_trade_price=125.048
+EXECUTE_ORDER=2019-02-19 22:20:10
+first_trade_price=125.06899999999999
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=124.96799999999999
+STL_TIME=2019-02-19 23:36:20
+LOG_MAX_PRICE=125.1345
+####################################
+predict_price_1h=125.4092279882431
+predict_price_5m=125.22588914501667
+second_trade_time=2019-02-20 00:10:10
+predict_price_1m=125.232832464993
+eurjpy_sma=125.23125
+first_trade_time=2019-02-20 00:09:10
+first_trade_flag=buy
+second_trade_price=125.262
+EXECUTE_ORDER=2019-02-20 00:10:10
+first_trade_price=125.223
+####################################
+PROFIT=0.10800000000000409
+LOG_MIN_PRICE=125.262
+STL_TIME=2019-02-20 00:17:20
+LOG_MAX_PRICE=125.3875
+####################################
+predict_price_1h=125.4092279882431
+predict_price_5m=125.30796617150307
+second_trade_time=2019-02-20 00:46:10
+predict_price_1m=125.27381774389744
+eurjpy_sma=125.27382499999999
+first_trade_time=2019-02-20 00:45:10
+first_trade_flag=buy
+second_trade_price=125.301
+EXECUTE_ORDER=2019-02-20 00:46:10
+first_trade_price=125.2705
+####################################
+PROFIT=0.125
+LOG_MIN_PRICE=125.289
+STL_TIME=2019-02-20 01:13:20
+LOG_MAX_PRICE=125.443
+####################################
+predict_price_1h=125.41302938222886
+predict_price_5m=125.3439111932516
+second_trade_time=2019-02-20 01:36:10
+predict_price_1m=125.34426503139734
+eurjpy_sma=125.33837500000001
+first_trade_time=2019-02-20 01:35:10
+first_trade_flag=buy
+second_trade_price=125.3515
+EXECUTE_ORDER=2019-02-20 01:36:10
+first_trade_price=125.334
+####################################
+PROFIT=0.10500000000000398
+LOG_MIN_PRICE=125.306
+STL_TIME=2019-02-20 02:30:20
+LOG_MAX_PRICE=125.473
+####################################
+predict_price_1h=125.433932472229
+predict_price_5m=125.45249921640755
+second_trade_time=2019-02-20 02:47:10
+predict_price_1m=125.46647326807678
+eurjpy_sma=125.478825
+first_trade_time=2019-02-20 02:46:10
+first_trade_flag=sell
+second_trade_price=125.468
+EXECUTE_ORDER=2019-02-20 02:47:10
+first_trade_price=125.492
+####################################
+PROFIT=-0.10200000000000387
+LOG_MIN_PRICE=125.37100000000001
+STL_TIME=2019-02-20 09:49:20
+LOG_MAX_PRICE=125.55250000000001
+####################################
+predict_price_1h=125.76952793496847
+predict_price_5m=125.62492822232842
+second_trade_time=2019-02-20 10:38:10
+predict_price_1m=125.804505718261
+eurjpy_sma=125.82002499999999
+first_trade_time=2019-02-20 10:38:10
+first_trade_flag=sell
+second_trade_price=125.8095
+EXECUTE_ORDER=2019-02-20 10:38:10
+first_trade_price=125.8095
+####################################
+PROFIT=-0.132000000000005
+LOG_MIN_PRICE=125.80449999999999
+STL_TIME=2019-02-20 10:47:20
+LOG_MAX_PRICE=125.924
+####################################
+predict_price_1h=125.76952793496847
+predict_price_5m=125.85765603780747
+second_trade_time=2019-02-20 11:00:10
+predict_price_1m=125.88271886134149
+eurjpy_sma=125.89090000000002
+first_trade_time=2019-02-20 10:59:10
+first_trade_flag=sell
+second_trade_price=125.8885
+EXECUTE_ORDER=2019-02-20 11:00:10
+first_trade_price=125.8895
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=125.771
+STL_TIME=2019-02-20 12:22:20
+LOG_MAX_PRICE=125.8885
+####################################
+predict_price_1h=125.71966336131095
+predict_price_5m=125.74341691184044
+second_trade_time=2019-02-20 12:56:10
+predict_price_1m=125.68651696035266
+eurjpy_sma=125.67572499999999
+first_trade_time=2019-02-20 12:50:10
+first_trade_flag=buy
+second_trade_price=125.676
+EXECUTE_ORDER=2019-02-20 12:56:10
+first_trade_price=125.665
+####################################
+PROFIT=0.10000000000000853
+LOG_MIN_PRICE=125.6015
+STL_TIME=2019-02-20 16:52:20
+LOG_MAX_PRICE=125.792
+####################################
+predict_price_1h=125.59694837760925
+predict_price_5m=125.71752525609732
+second_trade_time=2019-02-20 17:20:10
+predict_price_1m=125.82682394433021
+eurjpy_sma=125.85494999999999
+first_trade_time=2019-02-20 17:20:10
+first_trade_flag=sell
+second_trade_price=125.8505
+EXECUTE_ORDER=2019-02-20 17:20:10
+first_trade_price=125.8505
+####################################
+PROFIT=0.10499999999998977
+LOG_MIN_PRICE=125.72800000000001
+STL_TIME=2019-02-20 17:37:20
+LOG_MAX_PRICE=125.8505
+####################################
+predict_price_1h=125.59694837760925
+predict_price_5m=125.74138532018661
+second_trade_time=2019-02-20 17:55:10
+predict_price_1m=125.78312549048663
+eurjpy_sma=125.77882500000001
+first_trade_time=2019-02-20 17:54:10
+first_trade_flag=sell
+second_trade_price=125.7765
+EXECUTE_ORDER=2019-02-20 17:55:10
+first_trade_price=125.786
+####################################
+PROFIT=-0.1110000000000042
+LOG_MIN_PRICE=125.726
+STL_TIME=2019-02-20 18:21:20
+LOG_MAX_PRICE=125.8695
+####################################
+predict_price_1h=125.6012823420763
+predict_price_5m=125.7579865500927
+second_trade_time=2019-02-20 18:25:10
+predict_price_1m=125.80607756143809
+eurjpy_sma=125.8199
+first_trade_time=2019-02-20 18:24:10
+first_trade_flag=sell
+second_trade_price=125.8135
+EXECUTE_ORDER=2019-02-20 18:25:10
+first_trade_price=125.8395
+####################################
+PROFIT=0.10600000000000875
+LOG_MIN_PRICE=125.6895
+STL_TIME=2019-02-20 19:01:20
+LOG_MAX_PRICE=125.8135
+####################################
+predict_price_1h=125.51895059156418
+predict_price_5m=125.61657769814134
+second_trade_time=2019-02-20 20:55:10
+predict_price_1m=125.61382347798347
+eurjpy_sma=125.60977499999998
+first_trade_time=2019-02-20 20:53:10
+first_trade_flag=sell
+second_trade_price=125.607
+EXECUTE_ORDER=2019-02-20 20:55:10
+first_trade_price=125.6195
+####################################
+PROFIT=-0.11099999999999
+LOG_MIN_PRICE=125.499
+STL_TIME=2019-02-20 21:38:20
+LOG_MAX_PRICE=125.7015
+####################################
+predict_price_1h=125.57460876852274
+predict_price_5m=125.64105434891582
+second_trade_time=2019-02-20 21:45:10
+predict_price_1m=125.62698090784251
+eurjpy_sma=125.64665
+first_trade_time=2019-02-20 21:45:10
+first_trade_flag=sell
+second_trade_price=125.6425
+EXECUTE_ORDER=2019-02-20 21:45:10
+first_trade_price=125.6425
+####################################
+PROFIT=-0.10500000000000398
+LOG_MIN_PRICE=125.545
+STL_TIME=2019-02-21 00:02:20
+LOG_MAX_PRICE=125.73150000000001
+####################################
+predict_price_1h=125.84064519298076
+predict_price_5m=125.69536223435402
+second_trade_time=2019-02-21 00:17:10
+predict_price_1m=125.67995909237862
+eurjpy_sma=125.69607500000002
+first_trade_time=2019-02-21 00:15:10
+first_trade_flag=buy
+second_trade_price=125.70349999999999
+EXECUTE_ORDER=2019-02-21 00:17:10
+first_trade_price=125.6765
+####################################
+PROFIT=0.11399999999999011
+LOG_MIN_PRICE=125.66749999999999
+STL_TIME=2019-02-21 01:50:20
+LOG_MAX_PRICE=125.834
+####################################
+predict_price_1h=125.86590343314408
+predict_price_5m=125.82082992026209
+second_trade_time=2019-02-21 02:03:10
+predict_price_1m=125.83796523976326
+eurjpy_sma=125.835225
+first_trade_time=2019-02-21 02:01:10
+first_trade_flag=buy
+second_trade_price=125.839
+EXECUTE_ORDER=2019-02-21 02:03:10
+first_trade_price=125.82050000000001
+####################################
+PROFIT=-0.10199999999998965
+LOG_MIN_PRICE=125.7535
+STL_TIME=2019-02-21 02:28:20
+LOG_MAX_PRICE=125.8455
+####################################
+predict_price_1h=125.86590343314408
+predict_price_5m=125.75751360026001
+second_trade_time=2019-02-21 02:42:10
+predict_price_1m=125.76303812670709
+eurjpy_sma=125.75855000000001
+first_trade_time=2019-02-21 02:40:10
+first_trade_flag=buy
+second_trade_price=125.76
+EXECUTE_ORDER=2019-02-21 02:42:10
+first_trade_price=125.754
+####################################
+PROFIT=-0.13500000000000512
+LOG_MIN_PRICE=125.6435
+STL_TIME=2019-02-21 04:12:20
+LOG_MAX_PRICE=125.859
+####################################
+predict_price_1h=125.84985577201843
+predict_price_5m=125.74239602091909
+second_trade_time=2019-02-21 04:30:10
+predict_price_1m=125.6737718873322
+eurjpy_sma=125.67997499999998
+first_trade_time=2019-02-21 04:29:10
+first_trade_flag=buy
+second_trade_price=125.69200000000001
+EXECUTE_ORDER=2019-02-21 04:30:10
+first_trade_price=125.6495
+####################################
+PROFIT=-0.10500000000000398
+LOG_MIN_PRICE=125.606
+STL_TIME=2019-02-21 09:09:20
+LOG_MAX_PRICE=125.8
+####################################
+predict_price_1h=125.82813071119786
+predict_price_5m=125.70301421293615
+second_trade_time=2019-02-21 09:31:10
+predict_price_1m=125.63379306048155
+eurjpy_sma=125.62124999999999
+first_trade_time=2019-02-21 09:30:10
+first_trade_flag=buy
+second_trade_price=125.681
+EXECUTE_ORDER=2019-02-21 09:31:10
+first_trade_price=125.604
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=125.6
+STL_TIME=2019-02-21 09:48:20
+LOG_MAX_PRICE=125.681
+####################################
+predict_price_1h=125.57776034885644
+predict_price_5m=125.62673685526848
+second_trade_time=2019-02-21 10:10:10
+predict_price_1m=125.56757233190535
+eurjpy_sma=125.5565
+first_trade_time=2019-02-21 10:10:10
+first_trade_flag=buy
+second_trade_price=125.5595
+EXECUTE_ORDER=2019-02-21 10:10:10
+first_trade_price=125.5595
+####################################
+PROFIT=-0.10200000000000387
+LOG_MIN_PRICE=125.475
+STL_TIME=2019-02-21 10:16:20
+LOG_MAX_PRICE=125.5595
+####################################
+predict_price_1h=125.57776034885644
+predict_price_5m=125.56333175554872
+second_trade_time=2019-02-21 10:37:10
+predict_price_1m=125.42596900016069
+eurjpy_sma=125.429275
+first_trade_time=2019-02-21 10:35:10
+first_trade_flag=buy
+second_trade_price=125.447
+EXECUTE_ORDER=2019-02-21 10:37:10
+first_trade_price=125.415
+####################################
+PROFIT=0.10500000000000398
+LOG_MIN_PRICE=125.437
+STL_TIME=2019-02-21 11:31:20
+LOG_MAX_PRICE=125.568
+####################################
+predict_price_1h=125.58074811822175
+predict_price_5m=125.65556932783126
+second_trade_time=2019-02-21 12:25:10
+predict_price_1m=125.69426119673253
+eurjpy_sma=125.69895
+first_trade_time=2019-02-21 12:24:10
+first_trade_flag=sell
+second_trade_price=125.696
+EXECUTE_ORDER=2019-02-21 12:25:10
+first_trade_price=125.708
+####################################
+PROFIT=-0.11199999999999477
+LOG_MIN_PRICE=125.673
+STL_TIME=2019-02-21 12:42:20
+LOG_MAX_PRICE=125.792
+####################################
+predict_price_1h=125.58074811822175
+predict_price_5m=125.74559062796831
+second_trade_time=2019-02-21 12:48:10
+predict_price_1m=125.7275554046631
+eurjpy_sma=125.735125
+first_trade_time=2019-02-21 12:47:10
+first_trade_flag=sell
+second_trade_price=125.72749999999999
+EXECUTE_ORDER=2019-02-21 12:48:10
+first_trade_price=125.7475
+####################################
+PROFIT=0.10899999999999466
+LOG_MIN_PRICE=125.601
+STL_TIME=2019-02-21 14:44:20
+LOG_MAX_PRICE=125.7805
+####################################
+predict_price_1h=125.49487878614663
+predict_price_5m=125.6171538798362
+second_trade_time=2019-02-21 15:16:10
+predict_price_1m=125.48375901494921
+eurjpy_sma=125.49004999999997
+first_trade_time=2019-02-21 15:14:10
+first_trade_flag=buy
+second_trade_price=125.497
+EXECUTE_ORDER=2019-02-21 15:16:10
+first_trade_price=125.453
+####################################
+PROFIT=0.11800000000000921
+LOG_MIN_PRICE=125.461
+STL_TIME=2019-02-21 16:28:20
+LOG_MAX_PRICE=125.6315
+####################################
+predict_price_1h=125.53144447788596
+predict_price_5m=125.5947672162056
+second_trade_time=2019-02-21 16:41:10
+predict_price_1m=125.59405763077736
+eurjpy_sma=125.58902499999996
+first_trade_time=2019-02-21 16:40:10
+first_trade_flag=sell
+second_trade_price=125.586
+EXECUTE_ORDER=2019-02-21 16:41:10
+first_trade_price=125.598
+####################################
+PROFIT=-0.19299999999999784
+LOG_MIN_PRICE=125.51050000000001
+STL_TIME=2019-02-21 17:16:20
+LOG_MAX_PRICE=125.7615
+####################################
+predict_price_1h=125.5384210717082
+predict_price_5m=125.81071007919311
+second_trade_time=2019-02-21 17:33:10
+predict_price_1m=125.70796182584763
+eurjpy_sma=125.7755
+first_trade_time=2019-02-21 17:30:10
+first_trade_flag=sell
+second_trade_price=125.765
+EXECUTE_ORDER=2019-02-21 17:33:10
+first_trade_price=125.83
+####################################
+PROFIT=0.125
+LOG_MIN_PRICE=125.62299999999999
+STL_TIME=2019-02-21 18:04:20
+LOG_MAX_PRICE=125.7915
+####################################
+predict_price_1h=125.44716555650531
+predict_price_5m=125.51559224516154
+second_trade_time=2019-02-21 18:33:10
+predict_price_1m=125.45297985894977
+eurjpy_sma=125.46437500000002
+first_trade_time=2019-02-21 18:28:10
+first_trade_flag=buy
+second_trade_price=125.4695
+EXECUTE_ORDER=2019-02-21 18:33:10
+first_trade_price=125.423
+####################################
+PROFIT=-0.11099999999999
+LOG_MIN_PRICE=125.3755
+STL_TIME=2019-02-21 18:47:20
+LOG_MAX_PRICE=125.4695
+####################################
+predict_price_1h=125.44716555650531
+predict_price_5m=125.62961120963097
+second_trade_time=2019-02-21 18:57:10
+predict_price_1m=125.41175881242752
+eurjpy_sma=125.38190000000002
+first_trade_time=2019-02-21 18:57:10
+first_trade_flag=buy
+second_trade_price=125.386
+EXECUTE_ORDER=2019-02-21 18:57:10
+first_trade_price=125.386
+####################################
+PROFIT=0.10599999999999454
+LOG_MIN_PRICE=125.37549999999999
+STL_TIME=2019-02-21 19:15:20
+LOG_MAX_PRICE=125.5085
+####################################
+predict_price_1h=125.4899644987732
+predict_price_5m=125.68815843701364
+second_trade_time=2019-02-21 19:34:10
+predict_price_1m=125.49848127862812
+eurjpy_sma=125.49979999999998
+first_trade_time=2019-02-21 19:31:10
+first_trade_flag=buy
+second_trade_price=125.5035
+EXECUTE_ORDER=2019-02-21 19:34:10
+first_trade_price=125.487
+####################################
+PROFIT=0.1039999999999992
+LOG_MIN_PRICE=125.462
+STL_TIME=2019-02-21 20:00:20
+LOG_MAX_PRICE=125.6245
+####################################
+predict_price_1h=125.46544097819924
+predict_price_5m=125.63669396954775
+second_trade_time=2019-02-21 20:22:10
+predict_price_1m=125.63731326642633
+eurjpy_sma=125.66262499999998
+first_trade_time=2019-02-21 20:22:10
+first_trade_flag=sell
+second_trade_price=125.65100000000001
+EXECUTE_ORDER=2019-02-21 20:22:10
+first_trade_price=125.65100000000001
+####################################
+PROFIT=-0.1110000000000042
+LOG_MIN_PRICE=125.58349999999999
+STL_TIME=2019-02-21 21:04:20
+LOG_MAX_PRICE=125.74549999999999
+####################################
+predict_price_1h=125.45876250392197
+predict_price_5m=125.70789708912372
+second_trade_time=2019-02-21 21:14:10
+predict_price_1m=125.72113079354166
+eurjpy_sma=125.71552499999999
+first_trade_time=2019-02-21 21:13:10
+first_trade_flag=sell
+second_trade_price=125.70949999999999
+EXECUTE_ORDER=2019-02-21 21:14:10
+first_trade_price=125.723
+####################################
+PROFIT=0.11499999999999488
+LOG_MIN_PRICE=125.5765
+STL_TIME=2019-02-21 23:27:20
+LOG_MAX_PRICE=125.7685
+####################################
+predict_price_1h=125.43525768989323
+predict_price_5m=125.54061896291375
+second_trade_time=2019-02-22 00:47:10
+predict_price_1m=125.55721490859986
+eurjpy_sma=125.56530000000001
+first_trade_time=2019-02-22 00:46:10
+first_trade_flag=sell
+second_trade_price=125.545
+EXECUTE_ORDER=2019-02-22 00:47:10
+first_trade_price=125.572
+####################################
+PROFIT=-0.10800000000000409
+LOG_MIN_PRICE=125.41399999999999
+STL_TIME=2019-02-22 15:48:20
+LOG_MAX_PRICE=125.635
+####################################
+predict_price_1h=125.64196284437179
+predict_price_5m=125.6312984855771
+second_trade_time=2019-02-22 15:58:10
+predict_price_1m=125.63015258216858
+eurjpy_sma=125.61904999999999
+first_trade_time=2019-02-22 15:58:10
+first_trade_flag=buy
+second_trade_price=125.6285
+EXECUTE_ORDER=2019-02-22 15:58:10
+first_trade_price=125.6285
+####################################
+PROFIT=0.10200000000000387
+LOG_MIN_PRICE=125.6005
+STL_TIME=2019-02-22 19:53:20
+LOG_MAX_PRICE=125.7475
+####################################
+predict_price_1h=125.71667333415151
+predict_price_5m=125.73563048827648
+second_trade_time=2019-02-22 20:13:10
+predict_price_1m=125.74727681468427
+eurjpy_sma=125.75262500000001
+first_trade_time=2019-02-22 20:13:10
+first_trade_flag=sell
+second_trade_price=125.75
+EXECUTE_ORDER=2019-02-22 20:13:10
+first_trade_price=125.75
+####################################
+PROFIT=0.10300000000000864
+LOG_MIN_PRICE=125.631
+STL_TIME=2019-02-22 21:25:20
+LOG_MAX_PRICE=125.768
+####################################
+predict_price_1h=125.70121507292987
+predict_price_5m=125.74757082039118
+second_trade_time=2019-02-22 21:33:10
+predict_price_1m=125.67733937060832
+eurjpy_sma=125.661475
+first_trade_time=2019-02-22 21:33:10
+first_trade_flag=buy
+second_trade_price=125.6635
+EXECUTE_ORDER=2019-02-22 21:33:10
+first_trade_price=125.6635
+####################################
+PROFIT=-0.10600000000000875
+LOG_MIN_PRICE=125.5735
+STL_TIME=2019-02-22 22:00:20
+LOG_MAX_PRICE=125.6635
+####################################
+predict_price_1h=125.71922316139937
+predict_price_5m=125.64073584091663
+second_trade_time=2019-02-22 22:13:10
+predict_price_1m=125.5255811522305
+eurjpy_sma=125.55942499999999
+first_trade_time=2019-02-22 22:05:10
+first_trade_flag=buy
+second_trade_price=125.5615
+EXECUTE_ORDER=2019-02-22 22:13:10
+first_trade_price=125.515
+####################################
+PROFIT=-0.10699999999999932
+LOG_MIN_PRICE=125.472
+STL_TIME=2019-02-22 22:41:20
+LOG_MAX_PRICE=125.5805
+####################################
+predict_price_1h=125.71922316139937
+predict_price_5m=125.66245761540532
+second_trade_time=2019-02-22 22:53:10
+predict_price_1m=125.4679111911282
+eurjpy_sma=125.48505000000003
+first_trade_time=2019-02-22 22:48:10
+first_trade_flag=buy
+second_trade_price=125.492
+EXECUTE_ORDER=2019-02-22 22:53:10
+first_trade_price=125.452
+####################################
+PROFIT=-0.10900000000000887
+LOG_MIN_PRICE=125.4015
+STL_TIME=2019-02-22 23:50:20
+LOG_MAX_PRICE=125.592
+####################################
+predict_price_1h=125.74645946508647
+predict_price_5m=125.49473262542486
+second_trade_time=2019-02-25 07:24:10
+predict_price_1m=125.4360398517251
+eurjpy_sma=125.45857499999997
+first_trade_time=2019-02-22 23:59:10
+first_trade_flag=buy
+second_trade_price=125.464
+EXECUTE_ORDER=2019-02-25 07:24:10
+first_trade_price=125.426
+####################################
+PROFIT=0.12000000000000455
+LOG_MIN_PRICE=125.453
+STL_TIME=2019-02-25 08:27:20
+LOG_MAX_PRICE=125.61850000000001
+####################################
+predict_price_1h=125.72693926292659
+predict_price_5m=125.61280892342329
+second_trade_time=2019-02-25 09:08:10
+predict_price_1m=125.5849267027378
+eurjpy_sma=125.62092499999999
+first_trade_time=2019-02-25 09:03:10
+first_trade_flag=buy
+second_trade_price=125.6225
+EXECUTE_ORDER=2019-02-25 09:08:10
+first_trade_price=125.58449999999999
+####################################
+PROFIT=0.11399999999999011
+LOG_MIN_PRICE=125.6125
+STL_TIME=2019-02-25 09:33:20
+LOG_MAX_PRICE=125.75399999999999
+####################################
+predict_price_1h=125.72693926292659
+predict_price_5m=125.72762074893714
+second_trade_time=2019-02-25 09:50:10
+predict_price_1m=125.73891807830334
+eurjpy_sma=125.75635000000003
+first_trade_time=2019-02-25 09:50:10
+first_trade_flag=sell
+second_trade_price=125.751
+EXECUTE_ORDER=2019-02-25 09:50:10
+first_trade_price=125.751
+####################################
+PROFIT=0.10200000000000387
+LOG_MIN_PRICE=125.6305
+STL_TIME=2019-02-25 10:02:20
+LOG_MAX_PRICE=125.751
+####################################
+predict_price_1h=125.70137594127655
+predict_price_5m=125.6768432071209
+second_trade_time=2019-02-25 10:12:10
+predict_price_1m=125.67511936709285
+eurjpy_sma=125.663575
+first_trade_time=2019-02-25 10:12:10
+first_trade_flag=buy
+second_trade_price=125.664
+EXECUTE_ORDER=2019-02-25 10:12:10
+first_trade_price=125.664
+####################################
+PROFIT=-0.10500000000000398
+LOG_MIN_PRICE=125.5775
+STL_TIME=2019-02-25 10:57:20
+LOG_MAX_PRICE=125.6755
+####################################
+predict_price_1h=125.6559433068037
+predict_price_5m=125.68312318462134
+second_trade_time=2019-02-25 11:14:10
+predict_price_1m=125.59005080723763
+eurjpy_sma=125.57062500000002
+first_trade_time=2019-02-25 11:13:10
+first_trade_flag=buy
+second_trade_price=125.5875
+EXECUTE_ORDER=2019-02-25 11:14:10
+first_trade_price=125.5715
+####################################
+PROFIT=-0.1039999999999992
+LOG_MIN_PRICE=125.5
+STL_TIME=2019-02-25 11:36:20
+LOG_MAX_PRICE=125.5915
+####################################
+predict_price_1h=125.6559433068037
+predict_price_5m=125.52548317189515
+second_trade_time=2019-02-25 11:55:10
+predict_price_1m=125.46860062623024
+eurjpy_sma=125.43789999999998
+first_trade_time=2019-02-25 11:55:10
+first_trade_flag=buy
+second_trade_price=125.4415
+EXECUTE_ORDER=2019-02-25 11:55:10
+first_trade_price=125.4415
+####################################
+PROFIT=0.10299999999999443
+LOG_MIN_PRICE=125.42
+STL_TIME=2019-02-25 16:04:20
+LOG_MAX_PRICE=125.5615
+####################################
+predict_price_1h=125.67187383162975
+predict_price_5m=125.54272340798377
+second_trade_time=2019-02-25 16:26:10
+predict_price_1m=125.63338381946087
+eurjpy_sma=125.654775
+first_trade_time=2019-02-25 16:21:10
+first_trade_flag=sell
+second_trade_price=125.649
+EXECUTE_ORDER=2019-02-25 16:26:10
+first_trade_price=125.673
+####################################
+PROFIT=0.11400000000000432
+LOG_MIN_PRICE=125.51599999999999
+STL_TIME=2019-02-25 17:13:20
+LOG_MAX_PRICE=125.66550000000001
+####################################
+predict_price_1h=125.67688726651669
+predict_price_5m=125.62703976386786
+second_trade_time=2019-02-25 17:20:10
+predict_price_1m=125.56600929293036
+eurjpy_sma=125.58172499999998
+first_trade_time=2019-02-25 17:16:10
+first_trade_flag=buy
+second_trade_price=125.59299999999999
+EXECUTE_ORDER=2019-02-25 17:20:10
+first_trade_price=125.551
+####################################
+PROFIT=0.10300000000000864
+LOG_MIN_PRICE=125.515
+STL_TIME=2019-02-25 19:29:20
+LOG_MAX_PRICE=125.714
+####################################
+predict_price_1h=125.81780544298887
+predict_price_5m=125.75578172928094
+second_trade_time=2019-02-25 20:00:10
+predict_price_1m=125.85038761031628
+eurjpy_sma=125.83892500000002
+first_trade_time=2019-02-25 19:59:10
+first_trade_flag=sell
+second_trade_price=125.8355
+EXECUTE_ORDER=2019-02-25 20:00:10
+first_trade_price=125.8605
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=125.725
+STL_TIME=2019-02-26 01:32:20
+LOG_MAX_PRICE=125.923
+####################################
+predict_price_1h=125.90804784733056
+predict_price_5m=125.91815712594986
+second_trade_time=2019-02-26 01:52:10
+predict_price_1m=125.97156824693084
+eurjpy_sma=125.98052499999999
+first_trade_time=2019-02-26 01:51:10
+first_trade_flag=sell
+second_trade_price=125.9635
+EXECUTE_ORDER=2019-02-26 01:52:10
+first_trade_price=125.98949999999999
+####################################
+PROFIT=-0.11499999999999488
+LOG_MIN_PRICE=125.951
+STL_TIME=2019-02-26 02:17:20
+LOG_MAX_PRICE=126.0615
+####################################
+predict_price_1h=125.97862168943881
+predict_price_5m=126.12843158847093
+second_trade_time=2019-02-26 02:57:10
+predict_price_1m=126.18701714980602
+eurjpy_sma=126.1827
+first_trade_time=2019-02-26 02:54:10
+first_trade_flag=sell
+second_trade_price=126.1815
+EXECUTE_ORDER=2019-02-26 02:57:10
+first_trade_price=126.1905
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=126.1365
+STL_TIME=2019-02-26 04:48:20
+LOG_MAX_PRICE=126.26650000000001
+####################################
+predict_price_1h=126.18233057010174
+predict_price_5m=126.24607319062949
+second_trade_time=2019-02-26 04:56:10
+predict_price_1m=126.25799867981672
+eurjpy_sma=126.25072499999999
+first_trade_time=2019-02-26 04:55:10
+first_trade_flag=sell
+second_trade_price=126.2485
+EXECUTE_ORDER=2019-02-26 04:56:10
+first_trade_price=126.2645
+####################################
+PROFIT=0.1039999999999992
+LOG_MIN_PRICE=126.11500000000001
+STL_TIME=2019-02-26 08:26:20
+LOG_MAX_PRICE=126.3005
+####################################
+predict_price_1h=126.15890780687332
+predict_price_5m=126.14428771948815
+second_trade_time=2019-02-26 08:35:10
+predict_price_1m=126.14861876517534
+eurjpy_sma=126.14275
+first_trade_time=2019-02-26 08:34:10
+first_trade_flag=buy
+second_trade_price=126.143
+EXECUTE_ORDER=2019-02-26 08:35:10
+first_trade_price=126.14
+####################################
+PROFIT=-0.10699999999999932
+LOG_MIN_PRICE=126.05449999999999
+STL_TIME=2019-02-26 10:25:20
+LOG_MAX_PRICE=126.2165
+####################################
+predict_price_1h=125.67649714073539
+predict_price_5m=125.87756478226184
+second_trade_time=2019-02-26 12:50:10
+predict_price_1m=125.88005739115178
+eurjpy_sma=125.88700000000001
+first_trade_time=2019-02-26 12:50:10
+first_trade_flag=sell
+second_trade_price=125.8825
+EXECUTE_ORDER=2019-02-26 12:50:10
+first_trade_price=125.8825
+####################################
+PROFIT=0.10599999999999454
+LOG_MIN_PRICE=125.7595
+STL_TIME=2019-02-26 16:03:20
+LOG_MAX_PRICE=125.9305
+####################################
+predict_price_1h=125.82728142637013
+predict_price_5m=125.87150087657571
+second_trade_time=2019-02-26 16:11:10
+predict_price_1m=125.78061265876889
+eurjpy_sma=125.78625000000002
+first_trade_time=2019-02-26 16:10:10
+first_trade_flag=buy
+second_trade_price=125.7865
+EXECUTE_ORDER=2019-02-26 16:11:10
+first_trade_price=125.77
+####################################
+PROFIT=0.117999999999995
+LOG_MIN_PRICE=125.737
+STL_TIME=2019-02-26 18:11:20
+LOG_MAX_PRICE=125.92150000000001
+####################################
+predict_price_1h=125.92387515214087
+predict_price_5m=125.79152436964213
+second_trade_time=2019-02-26 18:29:10
+predict_price_1m=125.88757848027348
+eurjpy_sma=125.915875
+first_trade_time=2019-02-26 18:25:10
+first_trade_flag=sell
+second_trade_price=125.9115
+EXECUTE_ORDER=2019-02-26 18:29:10
+first_trade_price=125.9375
+####################################
+PROFIT=-0.10999999999999943
+LOG_MIN_PRICE=125.8875
+STL_TIME=2019-02-26 18:59:20
+LOG_MAX_PRICE=126.005
+####################################
+predict_price_1h=125.97601432734729
+predict_price_5m=125.96655875110626
+second_trade_time=2019-02-26 19:13:10
+predict_price_1m=125.95477341008186
+eurjpy_sma=125.966425
+first_trade_time=2019-02-26 19:12:10
+first_trade_flag=sell
+second_trade_price=125.9555
+EXECUTE_ORDER=2019-02-26 19:13:10
+first_trade_price=125.9905
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=125.8375
+STL_TIME=2019-02-26 23:05:20
+LOG_MAX_PRICE=126.021
+####################################
+predict_price_1h=126.00479331858456
+predict_price_5m=125.92424757397174
+second_trade_time=2019-02-26 23:24:10
+predict_price_1m=125.82757358510793
+eurjpy_sma=125.82967499999998
+first_trade_time=2019-02-26 23:23:10
+first_trade_flag=buy
+second_trade_price=125.8365
+EXECUTE_ORDER=2019-02-26 23:24:10
+first_trade_price=125.827
+####################################
+PROFIT=-0.11299999999999955
+LOG_MIN_PRICE=125.74000000000001
+STL_TIME=2019-02-27 00:07:20
+LOG_MAX_PRICE=125.90299999999999
+####################################
+predict_price_1h=126.19108654284477
+predict_price_5m=125.85790452396868
+second_trade_time=2019-02-27 00:17:10
+predict_price_1m=125.7716030754149
+eurjpy_sma=125.78377500000002
+first_trade_time=2019-02-27 00:16:10
+first_trade_flag=buy
+second_trade_price=125.7865
+EXECUTE_ORDER=2019-02-27 00:17:10
+first_trade_price=125.7685
+####################################
+PROFIT=0.12999999999999545
+LOG_MIN_PRICE=125.73349999999999
+STL_TIME=2019-02-27 01:15:20
+LOG_MAX_PRICE=125.934
+####################################
+predict_price_1h=126.17567469066381
+predict_price_5m=125.89270722836255
+second_trade_time=2019-02-27 01:32:10
+predict_price_1m=125.8849771503806
+eurjpy_sma=125.89544999999998
+first_trade_time=2019-02-27 01:26:10
+first_trade_flag=buy
+second_trade_price=125.89699999999999
+EXECUTE_ORDER=2019-02-27 01:32:10
+first_trade_price=125.87950000000001
+####################################
+PROFIT=0.11499999999999488
+LOG_MIN_PRICE=125.886
+STL_TIME=2019-02-27 02:14:20
+LOG_MAX_PRICE=126.0275
+####################################
+predict_price_1h=126.18288247466087
+predict_price_5m=125.96112665748596
+second_trade_time=2019-02-27 03:36:10
+predict_price_1m=125.94947494062782
+eurjpy_sma=125.94047499999999
+first_trade_time=2019-02-27 03:33:10
+first_trade_flag=buy
+second_trade_price=125.9555
+EXECUTE_ORDER=2019-02-27 03:36:10
+first_trade_price=125.9295
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=125.8715
+STL_TIME=2019-02-27 04:26:20
+LOG_MAX_PRICE=126.0055
+####################################
+predict_price_1h=126.10604725408554
+predict_price_5m=125.99972396898269
+second_trade_time=2019-02-27 04:39:10
+predict_price_1m=125.92905690741539
+eurjpy_sma=125.89704999999996
+first_trade_time=2019-02-27 04:39:10
+first_trade_flag=buy
+second_trade_price=125.899
+EXECUTE_ORDER=2019-02-27 04:39:10
+first_trade_price=125.899
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=125.815
+STL_TIME=2019-02-27 12:30:20
+LOG_MAX_PRICE=125.998
+####################################
+predict_price_1h=125.93820764040947
+predict_price_5m=125.84588529884815
+second_trade_time=2019-02-27 12:37:10
+predict_price_1m=125.83893019667268
+eurjpy_sma=125.8441
+first_trade_time=2019-02-27 12:34:10
+first_trade_flag=buy
+second_trade_price=125.8445
+EXECUTE_ORDER=2019-02-27 12:37:10
+first_trade_price=125.83449999999999
+####################################
+PROFIT=-0.10499999999998977
+LOG_MIN_PRICE=125.7565
+STL_TIME=2019-02-27 15:17:20
+LOG_MAX_PRICE=125.883
+####################################
+predict_price_1h=125.92231016588211
+predict_price_5m=125.7163140218258
+second_trade_time=2019-02-27 15:48:10
+predict_price_1m=125.67631776714325
+eurjpy_sma=125.66652500000001
+first_trade_time=2019-02-27 15:46:10
+first_trade_flag=buy
+second_trade_price=125.67500000000001
+EXECUTE_ORDER=2019-02-27 15:48:10
+first_trade_price=125.6555
+####################################
+PROFIT=-0.11599999999999966
+LOG_MIN_PRICE=125.5775
+STL_TIME=2019-02-27 16:19:20
+LOG_MAX_PRICE=125.7245
+####################################
+predict_price_1h=125.8674670547843
+predict_price_5m=125.62281537544727
+second_trade_time=2019-02-27 16:32:10
+predict_price_1m=125.5755348033607
+eurjpy_sma=125.57517499999999
+first_trade_time=2019-02-27 16:28:10
+first_trade_flag=buy
+second_trade_price=125.5805
+EXECUTE_ORDER=2019-02-27 16:32:10
+first_trade_price=125.5545
+####################################
+PROFIT=0.10299999999999443
+LOG_MIN_PRICE=125.5805
+STL_TIME=2019-02-27 17:13:20
+LOG_MAX_PRICE=125.7005
+####################################
+predict_price_1h=125.74257240717114
+predict_price_5m=125.62642321175336
+second_trade_time=2019-02-27 17:55:10
+predict_price_1m=125.78199999326468
+eurjpy_sma=125.79812499999998
+first_trade_time=2019-02-27 17:55:10
+first_trade_flag=sell
+second_trade_price=125.791
+EXECUTE_ORDER=2019-02-27 17:55:10
+first_trade_price=125.791
+####################################
+PROFIT=-0.132000000000005
+LOG_MIN_PRICE=125.7465
+STL_TIME=2019-02-27 20:12:20
+LOG_MAX_PRICE=125.906
+####################################
+predict_price_1h=125.62137714083494
+predict_price_5m=125.86499340829253
+second_trade_time=2019-02-27 20:28:10
+predict_price_1m=125.8981864708662
+eurjpy_sma=125.90674999999999
+first_trade_time=2019-02-27 20:28:10
+first_trade_flag=sell
+second_trade_price=125.9045
+EXECUTE_ORDER=2019-02-27 20:28:10
+first_trade_price=125.9045
+####################################
+PROFIT=-0.11599999999999966
+LOG_MIN_PRICE=125.8325
+STL_TIME=2019-02-27 22:35:20
+LOG_MAX_PRICE=126.003
+####################################
+predict_price_1h=125.64097022274137
+predict_price_5m=126.00676871359349
+second_trade_time=2019-02-27 22:58:10
+predict_price_1m=126.07997097051144
+eurjpy_sma=126.06592500000002
+first_trade_time=2019-02-27 22:57:10
+first_trade_flag=sell
+second_trade_price=126.045
+EXECUTE_ORDER=2019-02-27 22:58:10
+first_trade_price=126.092
+####################################
+PROFIT=-0.13299999999999557
+LOG_MIN_PRICE=126.015
+STL_TIME=2019-02-27 23:23:20
+LOG_MAX_PRICE=126.1615
+####################################
+predict_price_1h=125.62342703847588
+predict_price_5m=125.9520817128271
+second_trade_time=2019-02-27 23:36:10
+predict_price_1m=126.10708860814572
+eurjpy_sma=126.11674999999998
+first_trade_time=2019-02-27 23:33:10
+first_trade_flag=sell
+second_trade_price=126.1075
+EXECUTE_ORDER=2019-02-27 23:36:10
+first_trade_price=126.1335
+####################################
+PROFIT=-0.10799999999998988
+LOG_MIN_PRICE=126.0895
+STL_TIME=2019-02-28 00:08:20
+LOG_MAX_PRICE=126.199
+####################################
+predict_price_1h=125.63870785427093
+predict_price_5m=126.08400461015106
+second_trade_time=2019-02-28 00:11:10
+predict_price_1m=126.13901459467411
+eurjpy_sma=126.14177499999997
+first_trade_time=2019-02-28 00:10:10
+first_trade_flag=sell
+second_trade_price=126.077
+EXECUTE_ORDER=2019-02-28 00:11:10
+first_trade_price=126.207
+####################################
+PROFIT=-0.10600000000000875
+LOG_MIN_PRICE=125.9695
+STL_TIME=2019-02-28 00:21:20
+LOG_MAX_PRICE=126.166
+####################################
+predict_price_1h=125.63870785427093
+predict_price_5m=126.05999768707156
+second_trade_time=2019-02-28 00:35:10
+predict_price_1m=126.0686995922923
+eurjpy_sma=126.13297499999999
+first_trade_time=2019-02-28 00:34:10
+first_trade_flag=sell
+second_trade_price=126.11
+EXECUTE_ORDER=2019-02-28 00:35:10
+first_trade_price=126.147
+####################################
+PROFIT=-0.15399999999999636
+LOG_MIN_PRICE=126.11
+STL_TIME=2019-02-28 00:41:20
+LOG_MAX_PRICE=126.24799999999999
+####################################
+predict_price_1h=125.63870785427093
+predict_price_5m=126.10100069272518
+second_trade_time=2019-02-28 00:56:10
+predict_price_1m=126.22893975564837
+eurjpy_sma=126.26349999999998
+first_trade_time=2019-02-28 00:56:10
+first_trade_flag=sell
+second_trade_price=126.245
+EXECUTE_ORDER=2019-02-28 00:56:10
+first_trade_price=126.245
+####################################
+PROFIT=0.1389999999999958
+LOG_MIN_PRICE=126.09
+STL_TIME=2019-02-28 01:32:20
+LOG_MAX_PRICE=126.305
+####################################
+predict_price_1h=125.64902904713153
+predict_price_5m=126.14676141539216
+second_trade_time=2019-02-28 02:20:10
+predict_price_1m=126.1438549413085
+eurjpy_sma=126.13900000000001
+first_trade_time=2019-02-28 02:19:10
+first_trade_flag=sell
+second_trade_price=126.137
+EXECUTE_ORDER=2019-02-28 02:20:10
+first_trade_price=126.14699999999999
+####################################
+PROFIT=-0.10199999999998965
+LOG_MIN_PRICE=126.0975
+STL_TIME=2019-02-28 03:15:20
+LOG_MAX_PRICE=126.223
+####################################
+predict_price_1h=125.67358971357346
+predict_price_5m=126.1874969739914
+second_trade_time=2019-02-28 03:28:10
+predict_price_1m=126.19781116122007
+eurjpy_sma=126.22817500000001
+first_trade_time=2019-02-28 03:27:10
+first_trade_flag=sell
+second_trade_price=126.2225
+EXECUTE_ORDER=2019-02-28 03:28:10
+first_trade_price=126.232
+####################################
+PROFIT=0.11700000000000443
+LOG_MIN_PRICE=126.08699999999999
+STL_TIME=2019-02-28 10:00:20
+LOG_MAX_PRICE=126.27250000000001
+####################################
+predict_price_1h=125.7539187341407
+predict_price_5m=126.11194551888109
+second_trade_time=2019-02-28 11:16:10
+predict_price_1m=126.15596183395385
+eurjpy_sma=126.17182500000004
+first_trade_time=2019-02-28 11:16:10
+first_trade_flag=sell
+second_trade_price=126.157
+EXECUTE_ORDER=2019-02-28 11:16:10
+first_trade_price=126.157
+####################################
+PROFIT=0.10299999999999443
+LOG_MIN_PRICE=126.0365
+STL_TIME=2019-02-28 15:17:20
+LOG_MAX_PRICE=126.1845
+####################################
+predict_price_1h=125.9248063248694
+predict_price_5m=126.05143401256204
+second_trade_time=2019-02-28 15:39:10
+predict_price_1m=125.9563773136735
+eurjpy_sma=125.97544999999998
+first_trade_time=2019-02-28 15:36:10
+first_trade_flag=buy
+second_trade_price=126.0055
+EXECUTE_ORDER=2019-02-28 15:39:10
+first_trade_price=125.8985
+####################################
+PROFIT=-0.11299999999999955
+LOG_MIN_PRICE=125.91
+STL_TIME=2019-02-28 16:04:20
+LOG_MAX_PRICE=126.0395
+####################################
+predict_price_1h=125.92609130200744
+predict_price_5m=125.98367433361709
+second_trade_time=2019-02-28 16:32:10
+predict_price_1m=126.0316593939662
+eurjpy_sma=126.04567499999999
+first_trade_time=2019-02-28 16:32:10
+first_trade_flag=sell
+second_trade_price=126.045
+EXECUTE_ORDER=2019-02-28 16:32:10
+first_trade_price=126.045
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=126.0205
+STL_TIME=2019-02-28 17:22:20
+LOG_MAX_PRICE=126.1345
+####################################
+predict_price_1h=126.05039090701938
+predict_price_5m=126.02801198856532
+second_trade_time=2019-02-28 17:32:10
+predict_price_1m=126.07307181140781
+eurjpy_sma=126.11257500000002
+first_trade_time=2019-02-28 17:29:10
+first_trade_flag=sell
+second_trade_price=126.0945
+EXECUTE_ORDER=2019-02-28 17:32:10
+first_trade_price=126.116
+####################################
+PROFIT=-0.10200000000000387
+LOG_MIN_PRICE=126.0605
+STL_TIME=2019-02-28 18:02:20
+LOG_MAX_PRICE=126.1795
+####################################
+predict_price_1h=126.04539964318275
+predict_price_5m=126.16117087382078
+second_trade_time=2019-02-28 18:20:10
+predict_price_1m=126.17011025169492
+eurjpy_sma=126.17495000000001
+first_trade_time=2019-02-28 18:19:10
+first_trade_flag=sell
+second_trade_price=126.1705
+EXECUTE_ORDER=2019-02-28 18:20:10
+first_trade_price=126.18299999999999
+####################################
+PROFIT=-0.10699999999999932
+LOG_MIN_PRICE=126.15
+STL_TIME=2019-02-28 19:38:20
+LOG_MAX_PRICE=126.261
+####################################
+predict_price_1h=126.03571298336982
+predict_price_5m=126.20896729364992
+second_trade_time=2019-02-28 19:58:10
+predict_price_1m=126.2500422616005
+eurjpy_sma=126.28294999999999
+first_trade_time=2019-02-28 19:58:10
+first_trade_flag=sell
+second_trade_price=126.274
+EXECUTE_ORDER=2019-02-28 19:58:10
+first_trade_price=126.274
+####################################
+PROFIT=-0.13100000000000023
+LOG_MIN_PRICE=126.2705
+STL_TIME=2019-02-28 20:08:20
+LOG_MAX_PRICE=126.387
+####################################
+predict_price_1h=126.1255244307518
+predict_price_5m=126.38322780501842
+second_trade_time=2019-02-28 20:31:10
+predict_price_1m=126.43203739261627
+eurjpy_sma=126.428
+first_trade_time=2019-02-28 20:30:10
+first_trade_flag=sell
+second_trade_price=126.417
+EXECUTE_ORDER=2019-02-28 20:31:10
+first_trade_price=126.446
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=126.399
+STL_TIME=2019-02-28 20:52:20
+LOG_MAX_PRICE=126.5055
+####################################
+predict_price_1h=126.10096939279138
+predict_price_5m=126.40539956665039
+second_trade_time=2019-02-28 21:03:10
+predict_price_1m=126.44104726555945
+eurjpy_sma=126.471
+first_trade_time=2019-02-28 21:03:10
+first_trade_flag=sell
+second_trade_price=126.45949999999999
+EXECUTE_ORDER=2019-02-28 21:03:10
+first_trade_price=126.45949999999999
+####################################
+PROFIT=-0.10900000000000887
+LOG_MIN_PRICE=126.368
+STL_TIME=2019-02-28 23:29:20
+LOG_MAX_PRICE=126.553
+####################################
+predict_price_1h=125.98083052977918
+predict_price_5m=126.42286590480805
+second_trade_time=2019-02-28 23:39:10
+predict_price_1m=126.53190016841889
+eurjpy_sma=126.519125
+first_trade_time=2019-02-28 23:38:10
+first_trade_flag=sell
+second_trade_price=126.511
+EXECUTE_ORDER=2019-02-28 23:39:10
+first_trade_price=126.536
+####################################
+PROFIT=-0.1280000000000001
+LOG_MIN_PRICE=126.505
+STL_TIME=2019-02-28 23:48:20
+LOG_MAX_PRICE=126.62299999999999
+####################################
+predict_price_1h=126.01762220168114
+predict_price_5m=126.47824216157198
+second_trade_time=2019-03-01 00:04:10
+predict_price_1m=126.58875022518635
+eurjpy_sma=126.608025
+first_trade_time=2019-03-01 00:04:10
+first_trade_flag=sell
+second_trade_price=126.60499999999999
+EXECUTE_ORDER=2019-03-01 00:04:10
+first_trade_price=126.60499999999999
+####################################
+PROFIT=-0.10000000000000853
+LOG_MIN_PRICE=126.527
+STL_TIME=2019-03-01 00:46:20
+LOG_MAX_PRICE=126.6885
+####################################
+predict_price_1h=126.03027452850341
+predict_price_5m=126.58241003060341
+second_trade_time=2019-03-01 01:03:10
+predict_price_1m=126.74235439181328
+eurjpy_sma=126.72079999999998
+first_trade_time=2019-03-01 01:02:10
+first_trade_flag=sell
+second_trade_price=126.7115
+EXECUTE_ORDER=2019-03-01 01:03:10
+first_trade_price=126.7625
+####################################
+PROFIT=-0.1039999999999992
+LOG_MIN_PRICE=126.6875
+STL_TIME=2019-03-01 01:20:20
+LOG_MAX_PRICE=126.798
+####################################
+predict_price_1h=126.03027452850341
+predict_price_5m=126.65922909069062
+second_trade_time=2019-03-01 01:39:10
+predict_price_1m=126.8261734946072
+eurjpy_sma=126.84304999999999
+first_trade_time=2019-03-01 01:38:10
+first_trade_flag=sell
+second_trade_price=126.83699999999999
+EXECUTE_ORDER=2019-03-01 01:39:10
+first_trade_price=126.85849999999999
+####################################
+PROFIT=0.12199999999999989
+LOG_MIN_PRICE=126.6985
+STL_TIME=2019-03-01 02:02:20
+LOG_MAX_PRICE=126.83699999999999
+####################################
+predict_price_1h=126.0436205368042
+predict_price_5m=126.70448937174677
+second_trade_time=2019-03-01 02:10:10
+predict_price_1m=126.7218742263615
+eurjpy_sma=126.76079999999999
+first_trade_time=2019-03-01 02:10:10
+first_trade_flag=sell
+second_trade_price=126.72749999999999
+EXECUTE_ORDER=2019-03-01 02:10:10
+first_trade_price=126.72749999999999
+####################################
+PROFIT=-0.10500000000000398
+LOG_MIN_PRICE=126.655
+STL_TIME=2019-03-01 05:23:20
+LOG_MAX_PRICE=126.8155
+####################################
+predict_price_1h=126.03141374675928
+predict_price_5m=126.77569455999136
+second_trade_time=2019-03-01 05:42:10
+predict_price_1m=126.82268745395541
+eurjpy_sma=126.84115
+first_trade_time=2019-03-01 05:42:10
+first_trade_flag=sell
+second_trade_price=126.824
+EXECUTE_ORDER=2019-03-01 05:42:10
+first_trade_price=126.824
+####################################
+PROFIT=0.10300000000000864
+LOG_MIN_PRICE=126.704
+STL_TIME=2019-03-01 06:38:20
+LOG_MAX_PRICE=126.824
+####################################
+predict_price_1h=126.08069779150188
+predict_price_5m=126.69157081851364
+second_trade_time=2019-03-01 07:15:10
+predict_price_1m=126.691503490448
+eurjpy_sma=126.67142499999997
+first_trade_time=2019-03-01 07:13:10
+first_trade_flag=sell
+second_trade_price=126.66999999999999
+EXECUTE_ORDER=2019-03-01 07:15:10
+first_trade_price=126.702
+####################################
+PROFIT=-0.10300000000000864
+LOG_MIN_PRICE=126.6185
+STL_TIME=2019-03-01 09:46:20
+LOG_MAX_PRICE=126.739
+####################################
+predict_price_1h=126.13270618125796
+predict_price_5m=126.81383872202038
+second_trade_time=2019-03-01 10:37:10
+predict_price_1m=126.91310028398037
+eurjpy_sma=126.92107499999997
+first_trade_time=2019-03-01 10:37:10
+first_trade_flag=sell
+second_trade_price=126.9165
+EXECUTE_ORDER=2019-03-01 10:37:10
+first_trade_price=126.9165
+####################################
+PROFIT=-0.10999999999999943
+LOG_MIN_PRICE=126.91
+STL_TIME=2019-03-01 10:46:20
+LOG_MAX_PRICE=127.0095
+####################################
+predict_price_1h=126.20733266463876
+predict_price_5m=126.836366846174
+second_trade_time=2019-03-01 11:00:10
+predict_price_1m=126.95417264154554
+eurjpy_sma=126.97075
+first_trade_time=2019-03-01 11:00:10
+first_trade_flag=sell
+second_trade_price=126.97
+EXECUTE_ORDER=2019-03-01 11:00:10
+first_trade_price=126.97
+####################################
+PROFIT=-0.11899999999999977
+LOG_MIN_PRICE=126.9375
+STL_TIME=2019-03-01 11:57:20
+LOG_MAX_PRICE=127.0715
+####################################
+predict_price_1h=126.21818563577533
+predict_price_5m=126.9470471053645
+second_trade_time=2019-03-01 12:12:10
+predict_price_1m=127.03603194949031
+eurjpy_sma=127.05839999999998
+first_trade_time=2019-03-01 12:12:10
+first_trade_flag=sell
+second_trade_price=127.057
+EXECUTE_ORDER=2019-03-01 12:12:10
+first_trade_price=127.057
+####################################
+PROFIT=-0.1039999999999992
+LOG_MIN_PRICE=126.957
+STL_TIME=2019-03-01 16:48:20
+LOG_MAX_PRICE=127.144
+####################################
+predict_price_1h=126.68882886886597
+predict_price_5m=127.14296832832694
+second_trade_time=2019-03-01 17:04:10
+predict_price_1m=127.12932230220734
+eurjpy_sma=127.14925000000002
+first_trade_time=2019-03-01 17:04:10
+first_trade_flag=sell
+second_trade_price=127.146
+EXECUTE_ORDER=2019-03-01 17:04:10
+first_trade_price=127.146
+####################################
+PROFIT=0.10000000000000853
+LOG_MIN_PRICE=127.03
+STL_TIME=2019-03-01 17:38:20
+LOG_MAX_PRICE=127.162
+####################################
+predict_price_1h=126.82280915430188
+predict_price_5m=127.08807459911704
+second_trade_time=2019-03-01 18:04:10
+predict_price_1m=127.13570069219173
+eurjpy_sma=127.15362499999999
+first_trade_time=2019-03-01 18:04:10
+first_trade_flag=sell
+second_trade_price=127.149
+EXECUTE_ORDER=2019-03-01 18:04:10
+first_trade_price=127.149
+####################################
+PROFIT=-0.10499999999998977
+LOG_MIN_PRICE=127.1235
+STL_TIME=2019-03-01 18:18:20
+LOG_MAX_PRICE=127.238
+####################################
+predict_price_1h=126.82280915430188
+predict_price_5m=127.11976994955539
+second_trade_time=2019-03-01 18:29:10
+predict_price_1m=127.19131146267055
+eurjpy_sma=127.21037499999997
+first_trade_time=2019-03-01 18:29:10
+first_trade_flag=sell
+second_trade_price=127.207
+EXECUTE_ORDER=2019-03-01 18:29:10
+first_trade_price=127.207
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=127.094
+STL_TIME=2019-03-01 20:42:20
+LOG_MAX_PRICE=127.292
+####################################
+predict_price_1h=127.27615433669091
+predict_price_5m=127.25909747177363
+second_trade_time=2019-03-01 20:51:10
+predict_price_1m=127.26757332509756
+eurjpy_sma=127.277825
+first_trade_time=2019-03-01 20:51:10
+first_trade_flag=sell
+second_trade_price=127.2765
+EXECUTE_ORDER=2019-03-01 20:51:10
+first_trade_price=127.2765
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=127.2405
+STL_TIME=2019-03-01 22:06:20
+LOG_MAX_PRICE=127.36
+####################################
+predict_price_1h=127.08213337734341
+predict_price_5m=127.29015774977206
+second_trade_time=2019-03-01 22:19:10
+predict_price_1m=127.31891621184349
+eurjpy_sma=127.332925
+first_trade_time=2019-03-01 22:19:10
+first_trade_flag=sell
+second_trade_price=127.321
+EXECUTE_ORDER=2019-03-01 22:19:10
+first_trade_price=127.321
+####################################
+PROFIT=-0.11099999999999
+LOG_MIN_PRICE=127.2475
+STL_TIME=2019-03-01 23:50:20
+LOG_MAX_PRICE=127.4145
+####################################
+predict_price_1h=127.26047531211377
+predict_price_5m=127.30258668363093
+second_trade_time=2019-03-04 07:34:10
+predict_price_1m=127.28470377364754
+eurjpy_sma=127.29782499999999
+first_trade_time=2019-03-04 07:33:10
+first_trade_flag=sell
+second_trade_price=127.265
+EXECUTE_ORDER=2019-03-04 07:34:10
+first_trade_price=127.3075
+####################################
+PROFIT=-0.11099999999999
+LOG_MIN_PRICE=127.1645
+STL_TIME=2019-03-04 08:09:20
+LOG_MAX_PRICE=127.339
+####################################
+predict_price_1h=127.3052388906777
+predict_price_5m=127.30039746761322
+second_trade_time=2019-03-04 08:25:10
+predict_price_1m=127.35390770018101
+eurjpy_sma=127.340525
+first_trade_time=2019-03-04 08:24:10
+first_trade_flag=sell
+second_trade_price=127.34
+EXECUTE_ORDER=2019-03-04 08:25:10
+first_trade_price=127.3635
+####################################
+PROFIT=0.10699999999999932
+LOG_MIN_PRICE=127.2165
+STL_TIME=2019-03-04 14:12:20
+LOG_MAX_PRICE=127.38
+####################################
+predict_price_1h=127.30694761651755
+predict_price_5m=127.26453718090058
+second_trade_time=2019-03-04 14:22:10
+predict_price_1m=127.22791586881876
+eurjpy_sma=127.24145000000003
+first_trade_time=2019-03-04 14:20:10
+first_trade_flag=buy
+second_trade_price=127.242
+EXECUTE_ORDER=2019-03-04 14:22:10
+first_trade_price=127.2235
+####################################
+PROFIT=-0.11599999999999966
+LOG_MIN_PRICE=127.1435
+STL_TIME=2019-03-04 16:46:20
+LOG_MAX_PRICE=127.283
+####################################
+predict_price_1h=127.07291300940514
+predict_price_5m=127.07328885528445
+second_trade_time=2019-03-04 17:31:10
+predict_price_1m=126.96076514960826
+eurjpy_sma=126.97079999999998
+first_trade_time=2019-03-04 17:29:10
+first_trade_flag=buy
+second_trade_price=126.98150000000001
+EXECUTE_ORDER=2019-03-04 17:31:10
+first_trade_price=126.9555
+####################################
+PROFIT=-0.16200000000000614
+LOG_MIN_PRICE=126.836
+STL_TIME=2019-03-04 17:35:20
+LOG_MAX_PRICE=126.99549999999999
+####################################
+predict_price_1h=127.07291300940514
+predict_price_5m=127.01240190798045
+second_trade_time=2019-03-04 17:48:10
+predict_price_1m=126.9021786379665
+eurjpy_sma=126.884175
+first_trade_time=2019-03-04 17:47:10
+first_trade_flag=buy
+second_trade_price=126.9055
+EXECUTE_ORDER=2019-03-04 17:48:10
+first_trade_price=126.86
+####################################
+PROFIT=-0.10000000000000853
+LOG_MIN_PRICE=126.8235
+STL_TIME=2019-03-04 18:06:20
+LOG_MAX_PRICE=126.9055
+####################################
+predict_price_1h=127.07603463041782
+predict_price_5m=127.01550414538383
+second_trade_time=2019-03-04 18:08:10
+predict_price_1m=126.854059670493
+eurjpy_sma=126.868625
+first_trade_time=2019-03-04 18:07:10
+first_trade_flag=buy
+second_trade_price=126.8725
+EXECUTE_ORDER=2019-03-04 18:08:10
+first_trade_price=126.83449999999999
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=126.784
+STL_TIME=2019-03-04 20:52:20
+LOG_MAX_PRICE=126.924
+####################################
+predict_price_1h=127.01347055351734
+predict_price_5m=126.83752743786573
+second_trade_time=2019-03-04 21:00:10
+predict_price_1m=126.7628234705925
+eurjpy_sma=126.78895
+first_trade_time=2019-03-04 20:57:10
+first_trade_flag=buy
+second_trade_price=126.7895
+EXECUTE_ORDER=2019-03-04 21:00:10
+first_trade_price=126.7465
+####################################
+PROFIT=0.10799999999998988
+LOG_MIN_PRICE=126.7575
+STL_TIME=2019-03-04 22:05:20
+LOG_MAX_PRICE=126.9165
+####################################
+predict_price_1h=126.90107838465273
+predict_price_5m=126.74658297076822
+second_trade_time=2019-03-05 00:27:10
+predict_price_1m=126.72618298660218
+eurjpy_sma=126.72460000000001
+first_trade_time=2019-03-05 00:25:10
+first_trade_flag=buy
+second_trade_price=126.7385
+EXECUTE_ORDER=2019-03-05 00:27:10
+first_trade_price=126.72200000000001
+####################################
+PROFIT=-0.10500000000000398
+LOG_MIN_PRICE=126.651
+STL_TIME=2019-03-05 00:33:20
+LOG_MAX_PRICE=126.7385
+####################################
+predict_price_1h=126.90107838465273
+predict_price_5m=126.74363341516256
+second_trade_time=2019-03-05 00:49:10
+predict_price_1m=126.66285560846329
+eurjpy_sma=126.654375
+first_trade_time=2019-03-05 00:42:10
+first_trade_flag=buy
+second_trade_price=126.6635
+EXECUTE_ORDER=2019-03-05 00:49:10
+first_trade_price=126.6575
+####################################
+PROFIT=-0.10200000000000387
+LOG_MIN_PRICE=126.578
+STL_TIME=2019-03-05 01:09:20
+LOG_MAX_PRICE=126.67
+####################################
+predict_price_1h=126.82156712692975
+predict_price_5m=126.6116818253994
+second_trade_time=2019-03-05 01:36:10
+predict_price_1m=126.55061778593064
+eurjpy_sma=126.518025
+first_trade_time=2019-03-05 01:36:10
+first_trade_flag=buy
+second_trade_price=126.5205
+EXECUTE_ORDER=2019-03-05 01:36:10
+first_trade_price=126.5205
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=126.4605
+STL_TIME=2019-03-05 03:49:20
+LOG_MAX_PRICE=126.63650000000001
+####################################
+predict_price_1h=126.99388362714647
+predict_price_5m=126.60125524309278
+second_trade_time=2019-03-05 04:23:10
+predict_price_1m=126.56372202205658
+eurjpy_sma=126.55102500000001
+first_trade_time=2019-03-05 04:23:10
+first_trade_flag=buy
+second_trade_price=126.554
+EXECUTE_ORDER=2019-03-05 04:23:10
+first_trade_price=126.554
+####################################
+PROFIT=0.10200000000000387
+LOG_MIN_PRICE=126.554
+STL_TIME=2019-03-05 05:45:20
+LOG_MAX_PRICE=126.673
+####################################
+predict_price_1h=126.93441020989418
+predict_price_5m=126.70732750105857
+second_trade_time=2019-03-05 07:11:10
+predict_price_1m=126.6819725330472
+eurjpy_sma=126.70335
+first_trade_time=2019-03-05 07:09:10
+first_trade_flag=buy
+second_trade_price=126.71000000000001
+EXECUTE_ORDER=2019-03-05 07:11:10
+first_trade_price=126.674
+####################################
+PROFIT=0.12600000000000477
+LOG_MIN_PRICE=126.66399999999999
+STL_TIME=2019-03-05 10:40:20
+LOG_MAX_PRICE=126.8695
+####################################
+predict_price_1h=126.61450949418544
+predict_price_5m=126.84147583317757
+second_trade_time=2019-03-05 10:46:10
+predict_price_1m=126.8367093231678
+eurjpy_sma=126.81640000000002
+first_trade_time=2019-03-05 10:45:10
+first_trade_flag=sell
+second_trade_price=126.78
+EXECUTE_ORDER=2019-03-05 10:46:10
+first_trade_price=126.848
+####################################
+PROFIT=-0.10200000000000387
+LOG_MIN_PRICE=126.67349999999999
+STL_TIME=2019-03-05 17:51:20
+LOG_MAX_PRICE=126.863
+####################################
+predict_price_1h=126.77534616661072
+predict_price_5m=126.74830441139639
+second_trade_time=2019-03-05 18:03:10
+predict_price_1m=126.7434794921875
+eurjpy_sma=126.837825
+first_trade_time=2019-03-05 18:03:10
+first_trade_flag=sell
+second_trade_price=126.833
+EXECUTE_ORDER=2019-03-05 18:03:10
+first_trade_price=126.833
+####################################
+PROFIT=-0.11299999999999955
+LOG_MIN_PRICE=126.72749999999999
+STL_TIME=2019-03-05 21:16:20
+LOG_MAX_PRICE=126.929
+####################################
+predict_price_1h=126.67857249411941
+predict_price_5m=126.8359160630703
+second_trade_time=2019-03-05 21:22:10
+predict_price_1m=126.90437125283479
+eurjpy_sma=126.8946
+first_trade_time=2019-03-05 21:18:10
+first_trade_flag=sell
+second_trade_price=126.8895
+EXECUTE_ORDER=2019-03-05 21:22:10
+first_trade_price=126.92
+####################################
+PROFIT=0.10500000000000398
+LOG_MIN_PRICE=126.768
+STL_TIME=2019-03-05 21:50:20
+LOG_MAX_PRICE=126.9025
+####################################
+predict_price_1h=126.71314272464811
+predict_price_5m=126.79569899478555
+second_trade_time=2019-03-05 22:25:10
+predict_price_1m=126.74652638621627
+eurjpy_sma=126.77859999999998
+first_trade_time=2019-03-05 22:23:10
+first_trade_flag=sell
+second_trade_price=126.7675
+EXECUTE_ORDER=2019-03-05 22:25:10
+first_trade_price=126.79599999999999
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=126.65
+STL_TIME=2019-03-05 23:55:20
+LOG_MAX_PRICE=126.824
+####################################
+predict_price_1h=126.78050684165954
+predict_price_5m=126.75235277545453
+second_trade_time=2019-03-06 00:01:10
+predict_price_1m=126.70397629374267
+eurjpy_sma=126.69772499999999
+first_trade_time=2019-03-05 23:59:10
+first_trade_flag=buy
+second_trade_price=126.702
+EXECUTE_ORDER=2019-03-06 00:01:10
+first_trade_price=126.6635
+####################################
+PROFIT=-0.10299999999999443
+LOG_MIN_PRICE=126.6215
+STL_TIME=2019-03-06 00:12:20
+LOG_MAX_PRICE=126.726
+####################################
+predict_price_1h=126.5937926620245
+predict_price_5m=126.67905824768543
+second_trade_time=2019-03-06 00:31:10
+predict_price_1m=126.59833969950675
+eurjpy_sma=126.563325
+first_trade_time=2019-03-06 00:31:10
+first_trade_flag=buy
+second_trade_price=126.5915
+EXECUTE_ORDER=2019-03-06 00:31:10
+first_trade_price=126.5915
+####################################
+PROFIT=-0.1039999999999992
+LOG_MIN_PRICE=126.505
+STL_TIME=2019-03-06 00:45:20
+LOG_MAX_PRICE=126.6115
+####################################
+predict_price_1h=126.5937926620245
+predict_price_5m=126.62872637635469
+second_trade_time=2019-03-06 00:55:10
+predict_price_1m=126.52713155651092
+eurjpy_sma=126.51357499999999
+first_trade_time=2019-03-06 00:55:10
+first_trade_flag=buy
+second_trade_price=126.5145
+EXECUTE_ORDER=2019-03-06 00:55:10
+first_trade_price=126.5145
+####################################
+PROFIT=-0.14000000000000057
+LOG_MIN_PRICE=126.3905
+STL_TIME=2019-03-06 02:20:20
+LOG_MAX_PRICE=126.54
+####################################
+predict_price_1h=126.79523956680298
+predict_price_5m=126.48430155691504
+second_trade_time=2019-03-06 02:38:10
+predict_price_1m=126.413507019341
+eurjpy_sma=126.38949999999997
+first_trade_time=2019-03-06 02:37:10
+first_trade_flag=buy
+second_trade_price=126.392
+EXECUTE_ORDER=2019-03-06 02:38:10
+first_trade_price=126.3925
+####################################
+PROFIT=0.10200000000000387
+LOG_MIN_PRICE=126.392
+STL_TIME=2019-03-06 04:24:20
+LOG_MAX_PRICE=126.512
+####################################
+predict_price_1h=126.8763493244052
+predict_price_5m=126.47743408715725
+second_trade_time=2019-03-06 04:45:10
+predict_price_1m=126.46769399621337
+eurjpy_sma=126.47424999999998
+first_trade_time=2019-03-06 04:39:10
+first_trade_flag=buy
+second_trade_price=126.4755
+EXECUTE_ORDER=2019-03-06 04:45:10
+first_trade_price=126.46549999999999
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=126.3865
+STL_TIME=2019-03-06 09:44:20
+LOG_MAX_PRICE=126.531
+####################################
+predict_price_1h=126.31387529341876
+predict_price_5m=126.33326639053226
+second_trade_time=2019-03-06 09:52:10
+predict_price_1m=126.33685889890789
+eurjpy_sma=126.399325
+first_trade_time=2019-03-06 09:52:10
+first_trade_flag=sell
+second_trade_price=126.3835
+EXECUTE_ORDER=2019-03-06 09:52:10
+first_trade_price=126.3835
+####################################
+PROFIT=0.10200000000000387
+LOG_MIN_PRICE=126.265
+STL_TIME=2019-03-06 10:08:20
+LOG_MAX_PRICE=126.3835
+####################################
+predict_price_1h=126.46902212882041
+predict_price_5m=126.40330958509446
+second_trade_time=2019-03-06 10:17:10
+predict_price_1m=126.31405402868987
+eurjpy_sma=126.301575
+first_trade_time=2019-03-06 10:13:10
+first_trade_flag=buy
+second_trade_price=126.3175
+EXECUTE_ORDER=2019-03-06 10:17:10
+first_trade_price=126.292
+####################################
+PROFIT=-0.1039999999999992
+LOG_MIN_PRICE=126.2305
+STL_TIME=2019-03-06 12:37:20
+LOG_MAX_PRICE=126.366
+####################################
+predict_price_1h=126.26306762586535
+predict_price_5m=126.25158636215329
+second_trade_time=2019-03-06 13:01:10
+predict_price_1m=126.22339805653691
+eurjpy_sma=126.22219999999997
+first_trade_time=2019-03-06 12:56:10
+first_trade_flag=buy
+second_trade_price=126.229
+EXECUTE_ORDER=2019-03-06 13:01:10
+first_trade_price=126.21000000000001
+####################################
+PROFIT=0.125
+LOG_MIN_PRICE=126.2075
+STL_TIME=2019-03-06 15:51:20
+LOG_MAX_PRICE=126.372
+####################################
+predict_price_1h=126.245776386261
+predict_price_5m=126.3556515136361
+second_trade_time=2019-03-06 16:03:10
+predict_price_1m=126.36272825300694
+eurjpy_sma=126.352125
+first_trade_time=2019-03-06 16:01:10
+first_trade_flag=sell
+second_trade_price=126.32499999999999
+EXECUTE_ORDER=2019-03-06 16:03:10
+first_trade_price=126.364
+####################################
+PROFIT=-0.10600000000000875
+LOG_MIN_PRICE=126.275
+STL_TIME=2019-03-06 17:14:20
+LOG_MAX_PRICE=126.4135
+####################################
+predict_price_1h=126.241979001835
+predict_price_5m=126.3398103491068
+second_trade_time=2019-03-06 17:29:10
+predict_price_1m=126.40448446512222
+eurjpy_sma=126.41325000000002
+first_trade_time=2019-03-06 17:29:10
+first_trade_flag=sell
+second_trade_price=126.411
+EXECUTE_ORDER=2019-03-06 17:29:10
+first_trade_price=126.411
+####################################
+PROFIT=-0.117999999999995
+LOG_MIN_PRICE=126.411
+STL_TIME=2019-03-06 18:34:20
+LOG_MAX_PRICE=126.5125
+####################################
+predict_price_1h=126.24506999856234
+predict_price_5m=126.38892155320197
+second_trade_time=2019-03-06 18:45:10
+predict_price_1m=126.50977221858501
+eurjpy_sma=126.50009999999997
+first_trade_time=2019-03-06 18:44:10
+first_trade_flag=sell
+second_trade_price=126.491
+EXECUTE_ORDER=2019-03-06 18:45:10
+first_trade_price=126.51050000000001
+####################################
+PROFIT=0.10000000000000853
+LOG_MIN_PRICE=126.375
+STL_TIME=2019-03-06 21:23:20
+LOG_MAX_PRICE=126.491
+####################################
+predict_price_1h=126.25338227407636
+predict_price_5m=126.40866832542419
+second_trade_time=2019-03-06 22:27:10
+predict_price_1m=126.42906009414791
+eurjpy_sma=126.43289999999999
+first_trade_time=2019-03-06 22:22:10
+first_trade_flag=sell
+second_trade_price=126.4325
+EXECUTE_ORDER=2019-03-06 22:27:10
+first_trade_price=126.45400000000001
+####################################
+PROFIT=0.13700000000000045
+LOG_MIN_PRICE=126.271
+STL_TIME=2019-03-06 22:32:20
+LOG_MAX_PRICE=126.4325
+####################################
+predict_price_1h=126.25338227407636
+predict_price_5m=126.39207094156743
+second_trade_time=2019-03-06 22:57:10
+predict_price_1m=126.33336054983735
+eurjpy_sma=126.363625
+first_trade_time=2019-03-06 22:49:10
+first_trade_flag=sell
+second_trade_price=126.35849999999999
+EXECUTE_ORDER=2019-03-06 22:57:10
+first_trade_price=126.396
+####################################
+PROFIT=-0.132000000000005
+LOG_MIN_PRICE=126.35849999999999
+STL_TIME=2019-03-06 23:22:20
+LOG_MAX_PRICE=126.473
+####################################
+predict_price_1h=126.2580117622912
+predict_price_5m=126.39838270002603
+second_trade_time=2019-03-06 23:30:10
+predict_price_1m=126.4197377565205
+eurjpy_sma=126.423525
+first_trade_time=2019-03-06 23:30:10
+first_trade_flag=sell
+second_trade_price=126.4225
+EXECUTE_ORDER=2019-03-06 23:30:10
+first_trade_price=126.4225
+####################################
+PROFIT=0.11499999999999488
+LOG_MIN_PRICE=126.2895
+STL_TIME=2019-03-07 00:30:20
+LOG_MAX_PRICE=126.42750000000001
+####################################
+predict_price_1h=126.25273847359419
+predict_price_5m=126.32089338970185
+second_trade_time=2019-03-07 01:01:10
+predict_price_1m=126.4663109586239
+eurjpy_sma=126.43620000000001
+first_trade_time=2019-03-07 00:57:10
+first_trade_flag=sell
+second_trade_price=126.423
+EXECUTE_ORDER=2019-03-07 01:01:10
+first_trade_price=126.48750000000001
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=126.4205
+STL_TIME=2019-03-07 01:08:20
+LOG_MAX_PRICE=126.5135
+####################################
+predict_price_1h=126.23287827429176
+predict_price_5m=126.33835858523845
+second_trade_time=2019-03-07 01:15:10
+predict_price_1m=126.49134357070923
+eurjpy_sma=126.47760000000001
+first_trade_time=2019-03-07 01:14:10
+first_trade_flag=sell
+second_trade_price=126.4755
+EXECUTE_ORDER=2019-03-07 01:15:10
+first_trade_price=126.495
+####################################
+PROFIT=0.10800000000000409
+LOG_MIN_PRICE=126.35149999999999
+STL_TIME=2019-03-07 01:52:20
+LOG_MAX_PRICE=126.489
+####################################
+predict_price_1h=126.23287827429176
+predict_price_5m=126.33093491834403
+second_trade_time=2019-03-07 01:54:10
+predict_price_1m=126.34773132391274
+eurjpy_sma=126.37955000000002
+first_trade_time=2019-03-07 01:54:10
+first_trade_flag=sell
+second_trade_price=126.35050000000001
+EXECUTE_ORDER=2019-03-07 01:54:10
+first_trade_price=126.35050000000001
+####################################
+PROFIT=-0.10499999999998977
+LOG_MIN_PRICE=126.35050000000001
+STL_TIME=2019-03-07 02:02:20
+LOG_MAX_PRICE=126.439
+####################################
+predict_price_1h=126.23118753351272
+predict_price_5m=126.4128885269016
+second_trade_time=2019-03-07 02:15:10
+predict_price_1m=126.407944683671
+eurjpy_sma=126.41590000000001
+first_trade_time=2019-03-07 02:15:10
+first_trade_flag=sell
+second_trade_price=126.414
+EXECUTE_ORDER=2019-03-07 02:15:10
+first_trade_price=126.414
+####################################
+PROFIT=0.1039999999999992
+LOG_MIN_PRICE=126.2925
+STL_TIME=2019-03-07 08:56:20
+LOG_MAX_PRICE=126.4395
+####################################
+predict_price_1h=126.4236706546545
+predict_price_5m=126.34104140084982
+second_trade_time=2019-03-07 09:07:10
+predict_price_1m=126.29243784451485
+eurjpy_sma=126.29105
+first_trade_time=2019-03-07 09:05:10
+first_trade_flag=buy
+second_trade_price=126.2985
+EXECUTE_ORDER=2019-03-07 09:07:10
+first_trade_price=126.283
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=126.22800000000001
+STL_TIME=2019-03-07 17:05:20
+LOG_MAX_PRICE=126.4165
+####################################
+predict_price_1h=126.41077255612612
+predict_price_5m=126.3084060999155
+second_trade_time=2019-03-07 17:10:10
+predict_price_1m=126.40312792754173
+eurjpy_sma=126.39364999999998
+first_trade_time=2019-03-07 17:07:10
+first_trade_flag=sell
+second_trade_price=126.38499999999999
+EXECUTE_ORDER=2019-03-07 17:10:10
+first_trade_price=126.4145
+####################################
+PROFIT=0.22299999999999898
+LOG_MIN_PRICE=126.139
+STL_TIME=2019-03-07 21:46:20
+LOG_MAX_PRICE=126.42250000000001
+####################################
+predict_price_1h=126.1979924594462
+predict_price_5m=126.09831168462337
+second_trade_time=2019-03-07 22:34:10
+predict_price_1m=125.94035350042581
+eurjpy_sma=125.93417499999998
+first_trade_time=2019-03-07 22:34:10
+first_trade_flag=buy
+second_trade_price=125.937
+EXECUTE_ORDER=2019-03-07 22:34:10
+first_trade_price=125.937
+####################################
+PROFIT=-0.10500000000000398
+LOG_MIN_PRICE=125.85
+STL_TIME=2019-03-07 22:49:20
+LOG_MAX_PRICE=125.941
+####################################
+predict_price_1h=126.1979924594462
+predict_price_5m=126.15847533929349
+second_trade_time=2019-03-07 23:18:10
+predict_price_1m=125.85269241148234
+eurjpy_sma=125.73745000000001
+first_trade_time=2019-03-07 22:59:10
+first_trade_flag=buy
+second_trade_price=125.744
+EXECUTE_ORDER=2019-03-07 23:18:10
+first_trade_price=125.839
+####################################
+PROFIT=-0.117999999999995
+LOG_MIN_PRICE=125.643
+STL_TIME=2019-03-07 23:27:20
+LOG_MAX_PRICE=125.744
+####################################
+predict_price_1h=125.54746146076917
+predict_price_5m=125.71626666277648
+second_trade_time=2019-03-08 00:05:10
+predict_price_1m=125.33564915969968
+eurjpy_sma=125.349325
+first_trade_time=2019-03-08 00:02:10
+first_trade_flag=buy
+second_trade_price=125.357
+EXECUTE_ORDER=2019-03-08 00:05:10
+first_trade_price=125.329
+####################################
+PROFIT=-0.12899999999999068
+LOG_MIN_PRICE=125.244
+STL_TIME=2019-03-08 01:01:20
+LOG_MAX_PRICE=125.42750000000001
+####################################
+predict_price_1h=125.57108445864915
+predict_price_5m=125.29298310723901
+second_trade_time=2019-03-08 01:16:10
+predict_price_1m=125.2459761081934
+eurjpy_sma=125.242175
+first_trade_time=2019-03-08 01:15:10
+first_trade_flag=buy
+second_trade_price=125.244
+EXECUTE_ORDER=2019-03-08 01:16:10
+first_trade_price=125.208
+####################################
+PROFIT=-0.17300000000000182
+LOG_MIN_PRICE=125.0885
+STL_TIME=2019-03-08 01:52:20
+LOG_MAX_PRICE=125.328
+####################################
+predict_price_1h=125.2211856571734
+predict_price_5m=125.18970766583085
+second_trade_time=2019-03-08 02:15:10
+predict_price_1m=125.11906495687366
+eurjpy_sma=125.11394999999997
+first_trade_time=2019-03-08 02:15:10
+first_trade_flag=buy
+second_trade_price=125.11500000000001
+EXECUTE_ORDER=2019-03-08 02:15:10
+first_trade_price=125.11500000000001
+####################################
+PROFIT=0.11199999999999477
+LOG_MIN_PRICE=125.107
+STL_TIME=2019-03-08 02:32:20
+LOG_MAX_PRICE=125.244
+####################################
+predict_price_1h=125.2211856571734
+predict_price_5m=125.18435951423645
+second_trade_time=2019-03-08 03:01:10
+predict_price_1m=125.2984344485402
+eurjpy_sma=125.28649999999998
+first_trade_time=2019-03-08 02:59:10
+first_trade_flag=sell
+second_trade_price=125.278
+EXECUTE_ORDER=2019-03-08 03:01:10
+first_trade_price=125.301
+####################################
+PROFIT=0.12400000000000944
+LOG_MIN_PRICE=125.13550000000001
+STL_TIME=2019-03-08 03:40:20
+LOG_MAX_PRICE=125.2895
+####################################
+predict_price_1h=124.80444061756134
+predict_price_5m=125.01366476428508
+second_trade_time=2019-03-08 05:09:10
+predict_price_1m=124.76147302877902
+eurjpy_sma=124.74577499999998
+first_trade_time=2019-03-08 05:04:10
+first_trade_flag=buy
+second_trade_price=124.756
+EXECUTE_ORDER=2019-03-08 05:09:10
+first_trade_price=124.7325
+####################################
+PROFIT=0.10200000000000387
+LOG_MIN_PRICE=124.756
+STL_TIME=2019-03-08 06:06:20
+LOG_MAX_PRICE=124.8745
+####################################
+predict_price_1h=125.03276777267456
+predict_price_5m=124.92615464758873
+second_trade_time=2019-03-08 07:11:10
+predict_price_1m=124.88781548595429
+eurjpy_sma=124.897075
+first_trade_time=2019-03-08 07:10:10
+first_trade_flag=buy
+second_trade_price=124.917
+EXECUTE_ORDER=2019-03-08 07:11:10
+first_trade_price=124.87299999999999
+####################################
+PROFIT=-0.10599999999999454
+LOG_MIN_PRICE=124.845
+STL_TIME=2019-03-08 09:08:20
+LOG_MAX_PRICE=125.024
+####################################
+predict_price_1h=124.99769796133042
+predict_price_5m=124.92107144272327
+second_trade_time=2019-03-08 09:21:10
+predict_price_1m=124.91715036410093
+eurjpy_sma=124.89784999999999
+first_trade_time=2019-03-08 09:21:10
+first_trade_flag=buy
+second_trade_price=124.9105
+EXECUTE_ORDER=2019-03-08 09:21:10
+first_trade_price=124.9105
+####################################
+PROFIT=-0.11499999999999488
+LOG_MIN_PRICE=124.8125
+STL_TIME=2019-03-08 09:43:20
+LOG_MAX_PRICE=124.926
+####################################
+predict_price_1h=125.0471185350418
+predict_price_5m=124.81703638528286
+second_trade_time=2019-03-08 10:04:10
+predict_price_1m=124.7854410135746
+eurjpy_sma=124.79160000000002
+first_trade_time=2019-03-08 10:01:10
+first_trade_flag=buy
+second_trade_price=124.7925
+EXECUTE_ORDER=2019-03-08 10:04:10
+first_trade_price=124.78
+####################################
+PROFIT=-0.10000000000000853
+LOG_MIN_PRICE=124.7105
+STL_TIME=2019-03-08 10:49:20
+LOG_MAX_PRICE=124.826
+####################################
+predict_price_1h=125.0471185350418
+predict_price_5m=124.90864834979176
+second_trade_time=2019-03-08 10:57:10
+predict_price_1m=124.69088020789621
+eurjpy_sma=124.71727500000001
+first_trade_time=2019-03-08 10:52:10
+first_trade_flag=buy
+second_trade_price=124.7265
+EXECUTE_ORDER=2019-03-08 10:57:10
+first_trade_price=124.686
+####################################
+PROFIT=0.10500000000000398
+LOG_MIN_PRICE=124.696
+STL_TIME=2019-03-08 11:27:20
+LOG_MAX_PRICE=124.8485
+####################################
+predict_price_1h=124.97854584741593
+predict_price_5m=124.79861807024479
+second_trade_time=2019-03-08 12:37:10
+predict_price_1m=124.70354147711397
+eurjpy_sma=124.70562500000001
+first_trade_time=2019-03-08 12:35:10
+first_trade_flag=buy
+second_trade_price=124.7105
+EXECUTE_ORDER=2019-03-08 12:37:10
+first_trade_price=124.703
+####################################
+PROFIT=-0.13800000000000523
+LOG_MIN_PRICE=124.589
+STL_TIME=2019-03-08 13:33:20
+LOG_MAX_PRICE=124.7595
+####################################
+predict_price_1h=124.68210165491699
+predict_price_5m=124.59957470151782
+second_trade_time=2019-03-08 14:01:10
+predict_price_1m=124.57874799537659
+eurjpy_sma=124.58212499999998
+first_trade_time=2019-03-08 13:55:10
+first_trade_flag=buy
+second_trade_price=124.598
+EXECUTE_ORDER=2019-03-08 14:01:10
+first_trade_price=124.54
+####################################
+PROFIT=-0.11700000000000443
+LOG_MIN_PRICE=124.49799999999999
+STL_TIME=2019-03-08 14:34:20
+LOG_MAX_PRICE=124.64
+####################################
+predict_price_1h=124.57678555572033
+predict_price_5m=124.50807219673693
+second_trade_time=2019-03-08 15:01:10
+predict_price_1m=124.4128914964199
+eurjpy_sma=124.43167499999997
+first_trade_time=2019-03-08 14:59:10
+first_trade_flag=buy
+second_trade_price=124.4745
+EXECUTE_ORDER=2019-03-08 15:01:10
+first_trade_price=124.3985
+####################################
+PROFIT=-0.11299999999999955
+LOG_MIN_PRICE=124.3775
+STL_TIME=2019-03-08 15:08:20
+LOG_MAX_PRICE=124.4745
+####################################
+predict_price_1h=124.51697084867955
+predict_price_5m=124.49285137870908
+second_trade_time=2019-03-08 15:24:10
+predict_price_1m=124.35068880569935
+eurjpy_sma=124.37879999999998
+first_trade_time=2019-03-08 15:21:10
+first_trade_flag=buy
+second_trade_price=124.381
+EXECUTE_ORDER=2019-03-08 15:24:10
+first_trade_price=124.3395
+####################################
+PROFIT=0.10899999999999466
+LOG_MIN_PRICE=124.304
+STL_TIME=2019-03-08 17:04:20
+LOG_MAX_PRICE=124.507
+####################################
+predict_price_1h=124.85717313849926
+predict_price_5m=124.44285363429785
+second_trade_time=2019-03-08 17:35:10
+predict_price_1m=124.43419399142266
+eurjpy_sma=124.45067499999998
+first_trade_time=2019-03-08 17:34:10
+first_trade_flag=buy
+second_trade_price=124.4525
+EXECUTE_ORDER=2019-03-08 17:35:10
+first_trade_price=124.426
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=124.423
+STL_TIME=2019-03-08 18:48:20
+LOG_MAX_PRICE=124.57
+####################################
+predict_price_1h=125.0153589977026
+predict_price_5m=124.5858241815269
+second_trade_time=2019-03-08 19:27:10
+predict_price_1m=124.58654736860098
+eurjpy_sma=124.58809999999998
+first_trade_time=2019-03-08 19:26:10
+first_trade_flag=buy
+second_trade_price=124.594
+EXECUTE_ORDER=2019-03-08 19:27:10
+first_trade_price=124.583
+####################################
+PROFIT=0.1039999999999992
+LOG_MIN_PRICE=124.594
+STL_TIME=2019-03-08 19:51:20
+LOG_MAX_PRICE=124.7145
+####################################
+predict_price_1h=125.20711638367176
+predict_price_5m=124.70017771470546
+second_trade_time=2019-03-08 21:05:10
+predict_price_1m=124.70180906772613
+eurjpy_sma=124.70442499999999
+first_trade_time=2019-03-08 21:04:10
+first_trade_flag=buy
+second_trade_price=124.71549999999999
+EXECUTE_ORDER=2019-03-08 21:05:10
+first_trade_price=124.699
+####################################
+PROFIT=-0.17199999999999704
+LOG_MIN_PRICE=124.56649999999999
+STL_TIME=2019-03-08 22:31:20
+LOG_MAX_PRICE=124.73150000000001
+####################################
+predict_price_1h=125.10711420488357
+predict_price_5m=124.67693856391311
+second_trade_time=2019-03-08 22:47:10
+predict_price_1m=124.57663911822438
+eurjpy_sma=124.55620000000002
+first_trade_time=2019-03-08 22:46:10
+first_trade_flag=buy
+second_trade_price=124.5585
+EXECUTE_ORDER=2019-03-08 22:47:10
+first_trade_price=124.549
+####################################
+PROFIT=-0.10699999999999932
+LOG_MIN_PRICE=124.4675
+STL_TIME=2019-03-08 23:07:20
+LOG_MAX_PRICE=124.58449999999999
+####################################
+predict_price_1h=125.02533393216133
+predict_price_5m=124.69959199762344
+second_trade_time=2019-03-08 23:14:10
+predict_price_1m=124.44714178846776
+eurjpy_sma=124.50395
+first_trade_time=2019-03-08 23:08:10
+first_trade_flag=buy
+second_trade_price=124.509
+EXECUTE_ORDER=2019-03-08 23:14:10
+first_trade_price=124.44
+####################################
+PROFIT=0.10699999999999932
+LOG_MIN_PRICE=124.509
+STL_TIME=2019-03-08 23:32:20
+LOG_MAX_PRICE=124.6325
+####################################
+predict_price_1h=124.75944450998307
+predict_price_5m=124.80003951260447
+second_trade_time=2019-03-11 07:11:10
+predict_price_1m=124.82810240595788
+eurjpy_sma=124.85059999999999
+first_trade_time=2019-03-11 07:11:10
+first_trade_flag=sell
+second_trade_price=124.844
+EXECUTE_ORDER=2019-03-11 07:11:10
+first_trade_price=124.844
+####################################
+PROFIT=0.11399999999999011
+LOG_MIN_PRICE=124.7
+STL_TIME=2019-03-11 07:38:20
+LOG_MAX_PRICE=124.844
+####################################
+predict_price_1h=124.78178326809407
+predict_price_5m=124.74693550944329
+second_trade_time=2019-03-11 08:19:10
+predict_price_1m=124.84767668038607
+eurjpy_sma=124.862075
+first_trade_time=2019-03-11 08:19:10
+first_trade_flag=sell
+second_trade_price=124.862
+EXECUTE_ORDER=2019-03-11 08:19:10
+first_trade_price=124.862
+####################################
+PROFIT=0.10599999999999454
+LOG_MIN_PRICE=124.738
+STL_TIME=2019-03-11 09:01:20
+LOG_MAX_PRICE=124.869
+####################################
+predict_price_1h=124.68385784113407
+predict_price_5m=124.61248044085502
+second_trade_time=2019-03-11 10:06:10
+predict_price_1m=124.52754707211255
+eurjpy_sma=124.532975
+first_trade_time=2019-03-11 10:03:10
+first_trade_flag=buy
+second_trade_price=124.5335
+EXECUTE_ORDER=2019-03-11 10:06:10
+first_trade_price=124.519
+####################################
+PROFIT=0.12400000000000944
+LOG_MIN_PRICE=124.5335
+STL_TIME=2019-03-11 10:20:20
+LOG_MAX_PRICE=124.673
+####################################
+predict_price_1h=124.68385784113407
+predict_price_5m=124.61358591647446
+second_trade_time=2019-03-11 10:23:10
+predict_price_1m=124.62577473962307
+eurjpy_sma=124.58795
+first_trade_time=2019-03-11 10:23:10
+first_trade_flag=buy
+second_trade_price=124.606
+EXECUTE_ORDER=2019-03-11 10:23:10
+first_trade_price=124.606
+####################################
+PROFIT=0.10099999999999909
+LOG_MIN_PRICE=124.598
+STL_TIME=2019-03-11 10:48:20
+LOG_MAX_PRICE=124.7245
+####################################
+predict_price_1h=124.74348763251305
+predict_price_5m=124.68043040513992
+second_trade_time=2019-03-11 11:07:10
+predict_price_1m=124.76271396264434
+eurjpy_sma=124.75970000000002
+first_trade_time=2019-03-11 11:06:10
+first_trade_flag=sell
+second_trade_price=124.75
+EXECUTE_ORDER=2019-03-11 11:07:10
+first_trade_price=124.7755
+####################################
+PROFIT=-0.10799999999998988
+LOG_MIN_PRICE=124.705
+STL_TIME=2019-03-11 12:13:20
+LOG_MAX_PRICE=124.842
+####################################
+predict_price_1h=124.71553264760972
+predict_price_5m=124.76202339905501
+second_trade_time=2019-03-11 12:26:10
+predict_price_1m=124.80077997779847
+eurjpy_sma=124.83092500000001
+first_trade_time=2019-03-11 12:26:10
+first_trade_flag=sell
+second_trade_price=124.8115
+EXECUTE_ORDER=2019-03-11 12:26:10
+first_trade_price=124.8115
+####################################
+PROFIT=-0.10099999999999909
+LOG_MIN_PRICE=124.7835
+STL_TIME=2019-03-11 15:24:20
+LOG_MAX_PRICE=124.896
+####################################
+predict_price_1h=124.71416457045079
+predict_price_5m=124.9219454073906
+second_trade_time=2019-03-11 15:41:10
+predict_price_1m=124.90441284590959
+eurjpy_sma=124.92232500000003
+first_trade_time=2019-03-11 15:40:10
+first_trade_flag=sell
+second_trade_price=124.916
+EXECUTE_ORDER=2019-03-11 15:41:10
+first_trade_price=124.9225
+####################################
+PROFIT=-0.12099999999999511
+LOG_MIN_PRICE=124.9015
+STL_TIME=2019-03-11 16:14:20
+LOG_MAX_PRICE=125.021
+####################################
+predict_price_1h=125.10817624008655
+predict_price_5m=125.13428933614492
+second_trade_time=2019-03-11 17:07:10
+predict_price_1m=125.1015321406126
+eurjpy_sma=125.14277499999999
+first_trade_time=2019-03-11 17:07:10
+first_trade_flag=sell
+second_trade_price=125.14
+EXECUTE_ORDER=2019-03-11 17:07:10
+first_trade_price=125.14
+####################################
+PROFIT=0.11200000000000898
+LOG_MIN_PRICE=125.012
+STL_TIME=2019-03-11 18:16:20
+LOG_MAX_PRICE=125.14
+####################################
+predict_price_1h=124.89413333389163
+predict_price_5m=125.08708191174269
+second_trade_time=2019-03-11 19:02:10
+predict_price_1m=125.14580272340774
+eurjpy_sma=125.14692499999998
+first_trade_time=2019-03-11 19:01:10
+first_trade_flag=sell
+second_trade_price=125.1285
+EXECUTE_ORDER=2019-03-11 19:02:10
+first_trade_price=125.1495
+####################################
+PROFIT=0.10699999999999932
+LOG_MIN_PRICE=125.00649999999999
+STL_TIME=2019-03-11 19:16:20
+LOG_MAX_PRICE=125.13900000000001
+####################################
+predict_price_1h=125.08369168668985
+predict_price_5m=125.02769550046325
+second_trade_time=2019-03-11 20:14:10
+predict_price_1m=125.09398570388555
+eurjpy_sma=125.1051
+first_trade_time=2019-03-11 20:13:10
+first_trade_flag=sell
+second_trade_price=125.094
+EXECUTE_ORDER=2019-03-11 20:14:10
+first_trade_price=125.1065
+####################################
+PROFIT=0.10699999999999932
+LOG_MIN_PRICE=124.97149999999999
+STL_TIME=2019-03-11 21:03:20
+LOG_MAX_PRICE=125.09450000000001
+####################################
+predict_price_1h=125.1683153604865
+predict_price_5m=125.00335530406237
+second_trade_time=2019-03-11 21:25:10
+predict_price_1m=124.89260925352573
+eurjpy_sma=124.897325
+first_trade_time=2019-03-11 21:24:10
+first_trade_flag=buy
+second_trade_price=124.9
+EXECUTE_ORDER=2019-03-11 21:25:10
+first_trade_price=124.87450000000001

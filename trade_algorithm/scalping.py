@@ -235,12 +235,12 @@ class Scalping(SuperAlgo):
                     if current_price < predict_price_1m and current_price < predict_price_5m and current_price < predict_price_1h:
                         self.first_trade_flag = "buy"
                         self.first_trade_time = base_time
-                        self.take_profit_rate = max([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"]])
+                        self.take_profit_rate = max([predict_price_1m, predict_price_5m, predict_price_1h])
                         self.stop_loss_rate = current_price - (self.take_profit_rate - current_price)
                     elif current_price > predict_price_1m and current_price > predict_price_5m and current_price > predict_price_1h:
                         self.first_trade_flag = "sell"
                         self.first_trade_time = base_time
-                        self.take_profit_rate = min([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"]])
+                        self.take_profit_rate = min([predict_price_1m, predict_price_5m, predict_price_1h])
                         self.stop_loss_rate = current_price + (current_price - self.take_profit_rate)
 
                     if self.first_trade_flag != "":

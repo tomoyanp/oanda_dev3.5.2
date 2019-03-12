@@ -56,6 +56,10 @@ def check_table(base_time, instrument, con, table_type):
         base_time = base_time - timedelta(minutes=1)
     elif table_type == "5m":
         base_time = base_time - timedelta(minutes=5)
+    elif table_type == "15m":
+        base_time = base_time - timedelta(minutes=15)
+    elif table_type == "30m":
+        base_time = base_time - timedelta(minutes=30)
     elif table_type == "1h":
         base_time = base_time - timedelta(hours=1)
     elif table_type == "3h":
@@ -90,6 +94,10 @@ def insert_table(base_time, instrument, con, table_type, count):
         granularity = "M1"
     elif table_type == "5m":
         granularity = "M5"
+    elif table_type == "15m":
+        granularity = "M15"
+    elif table_type == "30m":
+        granularity = "M30"
     elif table_type == "1h":
         granularity = "H1"
     elif table_type == "3h":
@@ -158,7 +166,7 @@ def bulk_insert(start_time, end_time, instrument, con, table_type):
             if type(tmp_time) == str:
                 tmp_time = datetime.strptime(tmp_time, "%Y-%m-%d %H:%M:%S")
                 if tmp_time < start_time:
-                    if table_type == "1m" or table_type == "5m":
+                    if table_type == "1m" or table_type == "5m" or table_type == "15m" or table_type == "30m":
                         start_time = start_time + timedelta(minutes=1)
                     elif table_type == "1h" or table_type == "3h" or table_type == "8h" or table_type == "day":
                         start_time = start_time + timedelta(hours=1)
@@ -180,6 +188,14 @@ if __name__ == "__main__":
 
         table_type = "5m"
         target_time = start_time - timedelta(minutes=5)
+        bulk_insert(target_time, end_time, instrument, con, table_type)
+
+        table_type = "15m"
+        target_time = start_time - timedelta(minutes=15)
+        bulk_insert(target_time, end_time, instrument, con, table_type)
+
+        table_type = "30m"
+        target_time = start_time - timedelta(minutes=30)
         bulk_insert(target_time, end_time, instrument, con, table_type)
 
         table_type = "1h"
@@ -220,6 +236,20 @@ if __name__ == "__main__":
 
                         table_type = "5m"
                         target_time = base_time - timedelta(minutes=50)
+                        target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
+                        target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
+                        insert_table(target_time, instrument, con, table_type, count)
+
+
+                        table_type = "15m"
+                        target_time = base_time - timedelta(minutes=150)
+                        target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
+                        target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
+                        insert_table(target_time, instrument, con, table_type, count)
+
+
+                        table_type = "30m"
+                        target_time = base_time - timedelta(minutes=300)
                         target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
                         target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
                         insert_table(target_time, instrument, con, table_type, count)

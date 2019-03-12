@@ -154,6 +154,7 @@ class Scalping(SuperAlgo):
             else:
                 raise
 
+        stl_flag = False
         return stl_flag
 
     def get_current_price(self, target_time):
@@ -187,16 +188,18 @@ class Scalping(SuperAlgo):
         table_type = "1h"
         predict_price_1h = predict_value(predict_target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
-        self.result_logger.info("%s: Start checkPredict Logic" % base_time)
-        self.result_logger.info("%s: before_close_price=" % base_time, before_close_price)
-        self.result_logger.info("%s: current_close_price=" % base_time, current_close_price)
-        self.result_logger.info("%s: before_predict_price_1h=" % base_time, predict_price_1h)
 
         flag = False
         if before_close_price < current_close_price and before_close_price < predict_price_1h:
             flag = True
         elif before_close_price > current_close_price and before_close_price > predict_price_1h:
             flag = True
+
+        if flag:
+            self.result_logger.info("%s: Start checkPredict Logic" % base_time)
+            self.result_logger.info("%s: before_close_price=%s" % (base_time, before_close_price))
+            self.result_logger.info("%s: current_close_price=%s" % (base_time, current_close_price))
+            self.result_logger.info("%s: before_predict_price_1h=%s" % (base_time, predict_price_1h))
 
         return flag
 

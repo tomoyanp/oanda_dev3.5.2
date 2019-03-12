@@ -188,9 +188,9 @@ class Scalping(SuperAlgo):
         predict_price_1h = predict_value(predict_target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
         self.result_logger.info("%s: Start checkPredict Logic" % base_time)
-        self.result_logger.info("%s: before_close_price = " % base_time, before_close_price)
-        self.result_logger.info("%s: current_close_price = " % base_time, current_close_price)
-        self.result_logger.info("%s: predict_price_1h = " % base_time, predict_price_1h)
+        self.result_logger.info("%s: before_close_price=" % base_time, before_close_price)
+        self.result_logger.info("%s: current_close_price=" % base_time, current_close_price)
+        self.result_logger.info("%s: predict_price_1h=" % base_time, predict_price_1h)
 
         flag = False
         if before_close_price < current_close_price and before_close_price < predict_price_1h:
@@ -240,11 +240,11 @@ class Scalping(SuperAlgo):
                         self.first_trade_time = base_time
 
                     if self.first_trade_flag != "":
-                        self.result_logger("%s: first_trade_flag = %s" % (base_time, self.first_trade_flag))
-                        self.result_logger("%s: predict_price_1m = %s" % (base_time, self.predict_price_1m))
-                        self.result_logger("%s: predict_price_5m = %s" % (base_time, self.predict_price_5m))
-                        self.result_logger("%s: predict_price_1h = %s" % (base_time, self.predict_price_1h))
-                        self.result_logger("%s: first_trade_price = %s" % (base_time, current_price))
+                        self.result_logger.info("%s: first_trade_flag=%s" % (base_time, self.first_trade_flag))
+                        self.result_logger.info("%s: predict_price_1m=%s" % (base_time, self.predict_price_1m))
+                        self.result_logger.info("%s: predict_price_5m=%s" % (base_time, self.predict_price_5m))
+                        self.result_logger.info("%s: predict_price_1h=%s" % (base_time, self.predict_price_1h))
+                        self.result_logger.info("%s: first_trade_price=%s" % (base_time, current_price))
 
             if self.first_trade_flag != "" and 5 < seconds < 15:
                 current_price = self.get_current_price(base_time)
@@ -264,10 +264,10 @@ class Scalping(SuperAlgo):
                     raise
 
                 if trade_flag == "buy" or trade_flag == "sell":
-                    self.result_logger("%s: second_trade_price = " % (base_time, current_price))
-                    self.result_logger("%s: eurjpy_sma = " % (base_time, eurjpy_sma))
-                    self.result_logger("%s: takeprofit_rate = " % (base_time, takeprofit_rate))
-                    self.result_logger("%s: stoploss_rate = " % (base_time, stoploss_rate))
+                    self.result_logger.info("%s: second_trade_price=%s" % (base_time, current_price))
+                    self.result_logger.info("%s: eurjpy_sma=%s" % (base_time, eurjpy_sma))
+                    self.result_logger.info("%s: takeprofit_rate=%s" % (base_time, takeprofit_rate))
+                    self.result_logger.info("%s: stoploss_rate=%s" % (base_time, stoploss_rate))
 
         return trade_flag
 
@@ -309,10 +309,10 @@ class Scalping(SuperAlgo):
         pass
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):
-        self.result_logger("%s: STL_PRICE = " % (base_time, stl_price))
-        self.result_logger("%s: LOG_MAX_PRICE = " % (base_time, self.log_max_price))
-        self.result_logger("%s: LOG_MIN_PRICE = " % (base_time, self.log_min_price))
-        self.result_logger("%s: PROFIT = " % (base_time, profit))
+        self.result_logger.info("%s: STL_PRICE=%s" % (base_time, stl_price))
+        self.result_logger.info("%s: LOG_MAX_PRICE=%s" % (base_time, self.log_max_price))
+        self.result_logger.info("%s: LOG_MIN_PRICE=%s" % (base_time, self.log_min_price))
+        self.result_logger.info("%s: PROFIT=%s" % (base_time, profit))
 
     def load_model(self, model_filename, weights_filename):
         model_filename = "%s/../model/master/%s" % (self.current_path, model_filename)

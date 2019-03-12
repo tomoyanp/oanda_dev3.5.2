@@ -47,10 +47,11 @@ def get_targettime(base_time, table_type):
         target_time = base_time - timedelta(hours=8)
     elif table_type == "day":
         target_time = base_time - timedelta(days=1)
+
     else:
         raise
 
-    retrun target_time
+    return target_time
 
 
 def calculate_time(base_time, instruments, table_type, con, index):

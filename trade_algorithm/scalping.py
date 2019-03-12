@@ -180,6 +180,8 @@ class Scalping(SuperAlgo):
         before_close_price = (response[1][0] + response[1][1])/2
 
         # 予測
+        right_string = "EUR_JPY"
+        instruments = "EUR_JPY"
         window_size = 20 
         output_train_index = 1 
         table_type = "1h"
@@ -204,7 +206,7 @@ class Scalping(SuperAlgo):
             seconds = base_time.second
     
             if self.first_trade_flag == "" and 0 < seconds <= 10:
-                if checkPredict(base_time):
+                if self.checkPredict(base_time):
                     right_string = "EUR_JPY"
                     instruments = "EUR_JPY"
             
@@ -238,11 +240,11 @@ class Scalping(SuperAlgo):
                         self.first_trade_time = base_time
 
                     if self.first_trade_flag != "":
-                        self.result_logger("%s: first_trade_flag = " % (base_time, self.first_trade_flag))
-                        self.result_logger("%s: predict_price_1m = " % (base_time, self.predict_price_1m))
-                        self.result_logger("%s: predict_price_5m = " % (base_time, self.predict_price_5m))
-                        self.result_logger("%s: predict_price_1h = " % (base_time, self.predict_price_1h))
-                        self.result_logger("%s: first_trade_price = " % (base_time, current_price))
+                        self.result_logger("%s: first_trade_flag = %s" % (base_time, self.first_trade_flag))
+                        self.result_logger("%s: predict_price_1m = %s" % (base_time, self.predict_price_1m))
+                        self.result_logger("%s: predict_price_5m = %s" % (base_time, self.predict_price_5m))
+                        self.result_logger("%s: predict_price_1h = %s" % (base_time, self.predict_price_1h))
+                        self.result_logger("%s: first_trade_price = %s" % (base_time, current_price))
 
             if self.first_trade_flag != "" and 5 < seconds < 15:
                 current_price = self.get_current_price(base_time)
@@ -251,12 +253,12 @@ class Scalping(SuperAlgo):
                 if self.first_trade_flag == "buy":
                     if current_price > eurjpy_sma:
                         trade_flag = "buy"
-                        self.take_profit_rate = max([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"])
+                        self.take_profit_rate = max([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"]])
                         self.stop_loss_rate = current_price - (self.take_profit_rate - current_price)
                 elif self.first_trade_flag == "sell":
                     if current_price < eurjpy_sma:
                         trade_flag = "sell"
-                        self.take_profit_rate = min([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"])
+                        self.take_profit_rate = min([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"]])
                         self.stop_loss_rate = current_price + (current_price - self.take_profit_rate)
                 else:
                     raise

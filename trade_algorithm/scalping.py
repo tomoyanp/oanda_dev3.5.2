@@ -105,6 +105,7 @@ class Scalping(SuperAlgo):
                     trade_flag = self.decideReverseTrade(trade_flag, current_price, base_time)
 
 
+            #trade_flag = "buy"
             return trade_flag
         except:
             raise
@@ -158,11 +159,11 @@ class Scalping(SuperAlgo):
             minutes = base_time.minute
             seconds = base_time.second
     
-            if 15 < seconds < 30:
-                target_time = base_time
-                self.set_current_price(target_time)
+#            if 15 < seconds < 30:
+#                target_time = base_time
+#                self.set_current_price(target_time)
 
-            if minutes == 0 and 0 < seconds <= 10:
+            if 0 < seconds <= 10:
                 target_time = base_time
                 right_string = "EUR_JPY"
                 instruments = "EUR_JPY"
@@ -170,19 +171,19 @@ class Scalping(SuperAlgo):
                 window_size = 60 
                 output_train_index = 60
                 table_type = "1m"
-                predict_price_1m = predict_value(target_time, self.mode_1m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+                predict_price_1m = predict_value(target_time, self.model_1m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
         
         
                 window_size = 60 
                 output_train_index = 12 
                 table_type = "5m"
-                predict_price_5m = predict_value(target_time, self.mode_5m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+                predict_price_5m = predict_value(target_time, self.model_5m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
         
         
                 window_size = 60 
                 output_train_index = 1 
                 table_type = "1h"
-                predict_price_1h = predict_value(target_time, self.mode_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+                predict_price_1h = predict_value(target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
                 current_price = self.get_current_price(base_time)
 
@@ -258,7 +259,7 @@ class Scalping(SuperAlgo):
         key_list = self.log_object.keys()
         logger.info("####################################")
         for key in key_list:
-            logger.info("%s=%s" % (key, self.log_object[key])
+            logger.info("%s=%s" % (key, self.log_object[key]))
         
         self.log_object = {}
 

@@ -13,6 +13,7 @@ from multi_algo import MultiAlgo
 from multi_evolv_algo import MultiEvolvAlgo
 from volatility_algo import VolatilityAlgo
 from daytime_algo import DaytimeAlgo
+from scalping import Scalping
 from oanda_wrapper import OandaWrapper
 from lstm_algo import LstmAlgo
 from common import instrument_init, account_init
@@ -28,6 +29,7 @@ class TradeWrapper:
 
         # rootの絶対パス
         self.base_path = base_path
+        self.mode = mode
 
         # デモもしくは本番
         account_data = account_init(mode, self.base_path)
@@ -65,7 +67,10 @@ class TradeWrapper:
         else:
             if base_time.second >= 50:
                 balance = self.oanda_wrapper.getBalance()
-                balance = balance * 0.9 * 25
+                if self.mode == "demo":
+                    balance = balance * 0.9 * 10 
+                else:
+                    balance = balance * 0.9 * 25
                 #balance = balance * 0.2 * 20
                 units = balance / current_price
                 tmp = int(units / 1000)
@@ -260,6 +265,7 @@ class TradeWrapper:
                 trade_id = 12345
             else:
                 response = self.oanda_wrapper.order(trade_flag, self.instrument, threshold_list["stoploss"], threshold_list["takeprofit"])
+                self.debug_logger.info(response)
                 print(response)
                 order_price = response["orderFillTransaction"]["price"]
                 #trade_id = response["tradeOpened"]["id"]

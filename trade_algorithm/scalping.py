@@ -235,9 +235,13 @@ class Scalping(SuperAlgo):
                     if current_price < predict_price_1m and current_price < predict_price_5m and current_price < predict_price_1h:
                         self.first_trade_flag = "buy"
                         self.first_trade_time = base_time
+                        self.take_profit_rate = max([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"]])
+                        self.stop_loss_rate = current_price - (self.take_profit_rate - current_price)
                     elif current_price > predict_price_1m and current_price > predict_price_5m and current_price > predict_price_1h:
                         self.first_trade_flag = "sell"
                         self.first_trade_time = base_time
+                        self.take_profit_rate = min([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"]])
+                        self.stop_loss_rate = current_price + (current_price - self.take_profit_rate)
 
                     if self.first_trade_flag != "":
                         self.result_logger.info("%s: first_trade_flag=%s" % (base_time, self.first_trade_flag))
@@ -247,21 +251,18 @@ class Scalping(SuperAlgo):
                         self.result_logger.info("%s: first_trade_price=%s" % (base_time, current_price))
 
             if self.first_trade_flag != "" and 5 < seconds < 15:
-                current_price = self.get_current_price(base_time)
-                eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="1m", length=20, con=self.mysql_connector)
-            
-                if self.first_trade_flag == "buy":
-                    if current_price > eurjpy_sma:
-                        trade_flag = "buy"
-                        self.take_profit_rate = max([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"]])
-                        self.stop_loss_rate = current_price - (self.take_profit_rate - current_price)
-                elif self.first_trade_flag == "sell":
-                    if current_price < eurjpy_sma:
-                        trade_flag = "sell"
-                        self.take_profit_rate = min([self.log_object["predict_price_1m"], self.log_object["predict_price_5m"], self.log_object["predict_price_1h"]])
-                        self.stop_loss_rate = current_price + (current_price - self.take_profit_rate)
-                else:
-                    raise
+                trade_flag = self.first_trade_flag
+#                current_price = self.get_current_price(base_time)
+#                eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="1m", length=20, con=self.mysql_connector)
+#            
+#                if self.first_trade_flag == "buy":
+#                    if current_price > eurjpy_sma:
+#                        trade_flag = "buy"
+#                elif self.first_trade_flag == "sell":
+#                    if current_price < eurjpy_sma:
+#                        trade_flag = "sell"
+#                else:
+#                    raise
 
                 if trade_flag == "buy" or trade_flag == "sell":
                     self.result_logger.info("%s: second_trade_price=%s" % (base_time, current_price))

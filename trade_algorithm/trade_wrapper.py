@@ -267,7 +267,7 @@ class TradeWrapper:
                 response = self.oanda_wrapper.order(trade_flag, self.instrument, threshold_list["stoploss"], threshold_list["takeprofit"])
                 self.debug_logger.info(response)
                 print(response)
-                order_price = response["orderFillTransaction"]["price"]
+                order_price = float(response["orderFillTransaction"]["price"])
                 #trade_id = response["tradeOpened"]["id"]
                 trade_id = 12345
 

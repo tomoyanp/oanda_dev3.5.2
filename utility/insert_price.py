@@ -90,6 +90,7 @@ def check_table(base_time, instrument, con, table_type):
 
 def insert_table(base_time, instrument, con, table_type, count):
     debug_logger.info("%s: Start insert_table logic" % (base_time))
+    debug_logger.info("%s: table_type=%s" % (base_time, table_type))
     if table_type == "1m":
         granularity = "M1"
     elif table_type == "5m":
@@ -118,8 +119,6 @@ def insert_table(base_time, instrument, con, table_type, count):
     req = instruments.InstrumentsCandles(instrument=instrument, params=params)
     client.request(req)
     response = req.response
-    if table_type == "1h":
-        print(response)
 
     if len(response) == 0:
         pass
@@ -182,14 +181,14 @@ if __name__ == "__main__":
         end_time = base_time.now()
         start_time = base_time
 
-        table_type = "1m"
-        target_time = start_time - timedelta(minutes=1)
-        bulk_insert(target_time, end_time, instrument, con, table_type)
-
-        table_type = "5m"
-        target_time = start_time - timedelta(minutes=5)
-        bulk_insert(target_time, end_time, instrument, con, table_type)
-
+#        table_type = "1m"
+#        target_time = start_time - timedelta(minutes=1)
+#        bulk_insert(target_time, end_time, instrument, con, table_type)
+#
+#        table_type = "5m"
+#        target_time = start_time - timedelta(minutes=5)
+#        bulk_insert(target_time, end_time, instrument, con, table_type)
+#
         table_type = "15m"
         target_time = start_time - timedelta(minutes=15)
         bulk_insert(target_time, end_time, instrument, con, table_type)
@@ -198,21 +197,21 @@ if __name__ == "__main__":
         target_time = start_time - timedelta(minutes=30)
         bulk_insert(target_time, end_time, instrument, con, table_type)
 
-        table_type = "1h"
-        target_time = start_time - timedelta(hours=1)
-        bulk_insert(target_time, end_time, instrument, con, table_type)
-
-        table_type = "3h"
-        target_time = start_time - timedelta(hours=3)
-        bulk_insert(target_time, end_time, instrument, con, table_type)
-
-        table_type = "8h"
-        target_time = start_time - timedelta(hours=8)
-        bulk_insert(target_time, end_time, instrument, con, table_type)
-
-        table_type = "day"
-        target_time = start_time - timedelta(days=1)
-        bulk_insert(target_time, end_time, instrument, con, table_type)
+#        table_type = "1h"
+#        target_time = start_time - timedelta(hours=1)
+#        bulk_insert(target_time, end_time, instrument, con, table_type)
+#
+#        table_type = "3h"
+#        target_time = start_time - timedelta(hours=3)
+#        bulk_insert(target_time, end_time, instrument, con, table_type)
+#
+#        table_type = "8h"
+#        target_time = start_time - timedelta(hours=8)
+#        bulk_insert(target_time, end_time, instrument, con, table_type)
+#
+#        table_type = "day"
+#        target_time = start_time - timedelta(days=1)
+#        bulk_insert(target_time, end_time, instrument, con, table_type)
 
     elif mode == "production":
         while True:

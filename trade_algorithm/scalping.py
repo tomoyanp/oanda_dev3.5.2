@@ -142,19 +142,23 @@ class Scalping(SuperAlgo):
             raise
 
 
+    # 単純に1時間後にする
     def decideReverseStl(self, stl_flag, base_time):
         if self.order_flag:
-            current_price = self.get_current_price(base_time)
-            if self.order_kind == "buy":
-                if current_price > self.take_profit_rate or current_price < self.stop_loss_rate:
-                    stl_flag = True
-            elif self.order_kind == "sell":
-                if current_price < self.take_profit_rate or current_price > self.stop_loss_rate:
-                    stl_flag = True
-            else:
-                raise
+            if self.entry_time + timedelta(hours=1) < base_time:
+                stl_flag = True
 
-        stl_flag = False
+#            current_price = self.get_current_price(base_time)
+#            if self.order_kind == "buy":
+#                if current_price > self.take_profit_rate or current_price < self.stop_loss_rate:
+#                    stl_flag = True
+#            elif self.order_kind == "sell":
+#                if current_price < self.take_profit_rate or current_price > self.stop_loss_rate:
+#                    stl_flag = True
+#            else:
+#                raise
+#
+#        stl_flag = False
         return stl_flag
 
     def get_current_price(self, target_time):
@@ -255,6 +259,7 @@ class Scalping(SuperAlgo):
 
             if self.first_trade_flag != "" and 5 < seconds < 15:
                 trade_flag = self.first_trade_flag
+                self.entry_time = base_time
 #                current_price = self.get_current_price(base_time)
 #                eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="1m", length=20, con=self.mysql_connector)
 #            

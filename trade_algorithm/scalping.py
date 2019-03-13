@@ -142,6 +142,7 @@ class Scalping(SuperAlgo):
             raise
 
 
+    # 単純に1時間後にする
     def decideReverseStl(self, stl_flag, base_time):
         if self.order_flag:
             if self.entry_time + timedelta(hours=1) < base_time:

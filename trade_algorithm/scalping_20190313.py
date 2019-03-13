@@ -1,22 +1,5 @@
 # coding: utf-8
-####################################################
-# Trade Decision
-# if trade timing is between 14:00 - 04:00
-# if upper and lower sigma value difference is smaller than 2 yen
-# if current price is higher or lower than bollinger band 5m 3sigma
-# if current_price is higher or lower than max(min) price last day
-#
-# Stop Loss Decision
-# Same Method Above
-#
-# Take Profit Decision
-# Special Trail mode
-# if current profit is higher than 50Pips, 50Pips trail mode
-# if current profit is higher than 100Pips, 30Pips trail mode
-####################################################
-# 1. decide perfect order and current_price <-> 5m_sma40
-# 2. touch bolligner 2sigma 5m
-# 3. break ewma20 1m value
+# 単純なやつ。決済は1時間後に実施
 
 from super_algo import SuperAlgo
 from mysql_connector import MysqlConnector
@@ -236,14 +219,13 @@ class Scalping(SuperAlgo):
                     predict_price_1h = predict_value(target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
     
                     current_price = self.get_current_price(base_time)
-                    eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="5m", length=20, con=self.mysql_connector)
     
-                    if current_price < predict_price_1m and current_price < predict_price_5m and current_price < predict_price_1h and eurjpy_sma < current_price:
+                    if current_price < predict_price_1m and current_price < predict_price_5m and current_price < predict_price_1h:
                         self.first_trade_flag = "buy"
                         self.first_trade_time = base_time
                         self.take_profit_rate = max([predict_price_1m, predict_price_5m, predict_price_1h])
                         self.stop_loss_rate = current_price - (self.take_profit_rate - current_price)
-                    elif current_price > predict_price_1m and current_price > predict_price_5m and current_price > predict_price_1h and eurjpy_sma > current_price:
+                    elif current_price > predict_price_1m and current_price > predict_price_5m and current_price > predict_price_1h:
                         self.first_trade_flag = "sell"
                         self.first_trade_time = base_time
                         self.take_profit_rate = min([predict_price_1m, predict_price_5m, predict_price_1h])
@@ -260,6 +242,7 @@ class Scalping(SuperAlgo):
                 trade_flag = self.first_trade_flag
                 self.entry_time = base_time
 #                current_price = self.get_current_price(base_time)
+#                eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="1m", length=20, con=self.mysql_connector)
 #            
 #                if self.first_trade_flag == "buy":
 #                    if current_price > eurjpy_sma:
@@ -272,7 +255,7 @@ class Scalping(SuperAlgo):
 
                 if trade_flag == "buy" or trade_flag == "sell":
                     self.result_logger.info("%s: second_trade_price=%s" % (base_time, current_price))
-                    self.result_logger.info("%s: eurjpy_sma=%s" % (base_time, eurjpy_sma))
+                    #self.result_logger.info("%s: eurjpy_sma=%s" % (base_time, eurjpy_sma))
                     self.result_logger.info("%s: takeprofit_rate=%s" % (base_time, self.takeprofit_rate))
                     self.result_logger.info("%s: stoploss_rate=%s" % (base_time, self.stoploss_rate))
 

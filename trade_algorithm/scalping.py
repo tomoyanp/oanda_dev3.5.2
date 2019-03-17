@@ -1,22 +1,5 @@
 # coding: utf-8
-####################################################
-# Trade Decision
-# if trade timing is between 14:00 - 04:00
-# if upper and lower sigma value difference is smaller than 2 yen
-# if current price is higher or lower than bollinger band 5m 3sigma
-# if current_price is higher or lower than max(min) price last day
-#
-# Stop Loss Decision
-# Same Method Above
-#
-# Take Profit Decision
-# Special Trail mode
-# if current profit is higher than 50Pips, 50Pips trail mode
-# if current profit is higher than 100Pips, 30Pips trail mode
-####################################################
-# 1. decide perfect order and current_price <-> 5m_sma40
-# 2. touch bolligner 2sigma 5m
-# 3. break ewma20 1m value
+# 単純なパターン+予測が外れたら決済する
 
 from super_algo import SuperAlgo
 from mysql_connector import MysqlConnector
@@ -145,19 +128,22 @@ class Scalping(SuperAlgo):
     # 単純に1時間後にする
     def decideReverseStl(self, stl_flag, base_time):
         if self.order_flag:
-            if self.entry_time + timedelta(hours=1) < base_time:
+            predict_price_1m, predict_price_5m, predict_price_1h = self.getPredictPrice(base_time)
+            current_price = self.get_current_price(base_time)
+            flag = self.decidePredictList([predict_price_5m, predict_price_1h], current_price)
+
+            if flag == self.order_kind:
+                stl_flag = False
+            else:
                 stl_flag = True
-#            current_price = self.get_current_price(base_time)
-#            if self.order_kind == "buy":
-#                if current_price > self.take_profit_rate or current_price < self.stop_loss_rate:
-#                    stl_flag = True
-#            elif self.order_kind == "sell":
-#                if current_price < self.take_profit_rate or current_price > self.stop_loss_rate:
-#                    stl_flag = True
-#            else:
-#                raise
-#
-#        stl_flag = False
+                self.result_logger.info("%s: ======== Execute Settlement ========" % base_time)
+                self.result_logger.info("%s: current_price=%s" % (base_time, current_price))
+                self.result_logger.info("%s: predict_price_1m=%s" % (base_time, predict_price_1m))
+                self.result_logger.info("%s: predict_price_5m=%s" % (base_time, predict_price_5m))
+                self.result_logger.info("%s: predict_price_1h=%s" % (base_time, predict_price_1h))
+
+
+
         return stl_flag
 
     def get_current_price(self, target_time):
@@ -206,6 +192,53 @@ class Scalping(SuperAlgo):
 
         return flag
 
+    def getPredictPrice(self, base_time):
+        right_string = "EUR_JPY"
+        instruments = "EUR_JPY"
+        
+        target_time = base_time - timedelta(minutes=1)
+        window_size = 20 
+        output_train_index = 60
+        table_type = "1m"
+        predict_price_1m = predict_value(target_time, self.model_1m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+        
+        
+        target_time = base_time - timedelta(minutes=5)
+        window_size = 20 
+        output_train_index = 12 
+        table_type = "5m"
+        predict_price_5m = predict_value(target_time, self.model_5m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+        
+        
+        target_time = base_time - timedelta(hours=1)
+        window_size = 20 
+        output_train_index = 1 
+        table_type = "1h"
+        predict_price_1h = predict_value(target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+
+        return predict_price_1m, predict_price_5m, predict_price_1h
+
+    def decidePredictList(self, predict_list, current_price):
+        flag = "pass"
+        for predict_price in predict_list:
+            if current_price < predict_price:
+                flag = "buy"
+            else:
+                flag = "pass"
+                break
+
+        if flag == "pass":
+            for predict_price in predict_list:
+                if current_price > predict_price:
+                    flag = "sell"
+                else:
+                    flag = "pass"
+                    break
+
+        return flag
+
+        
+ 
     def decideReverseTrade(self, trade_flag, current_price, base_time):
         if self.order_flag == False:
             minutes = base_time.minute
@@ -213,38 +246,16 @@ class Scalping(SuperAlgo):
     
             if self.first_trade_flag == "" and 0 < seconds <= 10:
                 if self.checkPredict(base_time):
-                    right_string = "EUR_JPY"
-                    instruments = "EUR_JPY"
-            
-                    target_time = base_time - timedelta(minutes=1)
-                    window_size = 20 
-                    output_train_index = 60
-                    table_type = "1m"
-                    predict_price_1m = predict_value(target_time, self.model_1m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-            
-            
-                    target_time = base_time - timedelta(minutes=5)
-                    window_size = 20 
-                    output_train_index = 12 
-                    table_type = "5m"
-                    predict_price_5m = predict_value(target_time, self.model_5m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-            
-            
-                    target_time = base_time - timedelta(hours=1)
-                    window_size = 20 
-                    output_train_index = 1 
-                    table_type = "1h"
-                    predict_price_1h = predict_value(target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-    
+                    predict_price_1m, predict_price_5m, predict_price_1h = self.getPredictPrice(base_time)
                     current_price = self.get_current_price(base_time)
-                    eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="5m", length=20, con=self.mysql_connector)
+                    flag = self.decidePredictList([predict_price_1m, predict_price_5m, predict_price_1h], current_price)
     
-                    if current_price < predict_price_1m and current_price < predict_price_5m and current_price < predict_price_1h and eurjpy_sma < current_price:
+                    if flag == "buy":
                         self.first_trade_flag = "buy"
                         self.first_trade_time = base_time
                         self.take_profit_rate = max([predict_price_1m, predict_price_5m, predict_price_1h])
                         self.stop_loss_rate = current_price - (self.take_profit_rate - current_price)
-                    elif current_price > predict_price_1m and current_price > predict_price_5m and current_price > predict_price_1h and eurjpy_sma > current_price:
+                    elif flag == "sell":
                         self.first_trade_flag = "sell"
                         self.first_trade_time = base_time
                         self.take_profit_rate = min([predict_price_1m, predict_price_5m, predict_price_1h])
@@ -273,7 +284,7 @@ class Scalping(SuperAlgo):
 
                 if trade_flag == "buy" or trade_flag == "sell":
                     self.result_logger.info("%s: second_trade_price=%s" % (base_time, current_price))
-                    self.result_logger.info("%s: eurjpy_sma=%s" % (base_time, eurjpy_sma))
+                    #self.result_logger.info("%s: eurjpy_sma=%s" % (base_time, eurjpy_sma))
                     self.result_logger.info("%s: takeprofit_rate=%s" % (base_time, self.takeprofit_rate))
                     self.result_logger.info("%s: stoploss_rate=%s" % (base_time, self.stoploss_rate))
 

@@ -58,8 +58,6 @@ class Scalping(SuperAlgo):
         self.current_path = os.path.abspath(os.path.dirname(__file__))
 
         self.model_1h = self.load_model(model_filename="multi_model_1h.json", weights_filename="multi_model_1h.hdf5")
-        self.model_30m = self.load_model(model_filename="multi_model_30m.json", weights_filename="multi_model_30m.hdf5")
-        self.model_15m = self.load_model(model_filename="multi_model_15m.json", weights_filename="multi_model_15m.hdf5")
         self.model_5m = self.load_model(model_filename="multi_model_5m.json", weights_filename="multi_model_5m.hdf5")
         self.model_1m = self.load_model(model_filename="multi_model_1m.json", weights_filename="multi_model_1m.hdf5")
 
@@ -130,9 +128,9 @@ class Scalping(SuperAlgo):
     # 単純に1時間後にする
     def decideReverseStl(self, stl_flag, base_time):
         if self.order_flag:
-            predict_price_list = self.getPredictPrice(base_time)
+            predict_price_1m, predict_price_5m, predict_price_1h = self.getPredictPrice(base_time)
             current_price = self.get_current_price(base_time)
-            flag = self.decidePredictList(predict_price_list, current_price)
+            flag = self.decidePredictList([predict_price_5m, predict_price_1h], current_price)
 
             if flag == self.order_kind:
                 stl_flag = False
@@ -187,7 +185,7 @@ class Scalping(SuperAlgo):
             flag = True
 
         if flag:
-            self.result_logger.info("%s: ======== Check Predict Logic ========" % base_time)
+            self.result_logger.info("%s: Start checkPredict Logic" % base_time)
             self.result_logger.info("%s: before_close_price=%s" % (base_time, before_close_price))
             self.result_logger.info("%s: current_close_price=%s" % (base_time, current_close_price))
             self.result_logger.info("%s: before_predict_price_1h=%s" % (base_time, predict_price_1h))
@@ -204,31 +202,21 @@ class Scalping(SuperAlgo):
         table_type = "1m"
         predict_price_1m = predict_value(target_time, self.model_1m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
         
+        
         target_time = base_time - timedelta(minutes=5)
         window_size = 20 
         output_train_index = 12 
         table_type = "5m"
         predict_price_5m = predict_value(target_time, self.model_5m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
         
-        target_time = base_time - timedelta(minutes=15)
-        window_size = 20 
-        output_train_index = 1 
-        table_type = "15m"
-        predict_price_1h = predict_value(target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
         
-        target_time = base_time - timedelta(minutes=30)
-        window_size = 20 
-        output_train_index = 1 
-        table_type = "30m"
-        predict_price_1h = predict_value(target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-
         target_time = base_time - timedelta(hours=1)
         window_size = 20 
         output_train_index = 1 
         table_type = "1h"
         predict_price_1h = predict_value(target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
-        return [predict_price_1m, predict_price_5m, predict_price_15m, predict_price_30m, predict_price_1h]
+        return predict_price_1m, predict_price_5m, predict_price_1h
 
     def decidePredictList(self, predict_list, current_price):
         flag = "pass"
@@ -258,31 +246,47 @@ class Scalping(SuperAlgo):
     
             if self.first_trade_flag == "" and 0 < seconds <= 10:
                 if self.checkPredict(base_time):
-                    predict_price_list = self.getPredictPrice(base_time)
+                    predict_price_1m, predict_price_5m, predict_price_1h = self.getPredictPrice(base_time)
                     current_price = self.get_current_price(base_time)
-                    flag = self.decidePredictList(predict_price_list, current_price)
+                    flag = self.decidePredictList([predict_price_1m, predict_price_5m, predict_price_1h], current_price)
     
                     if flag == "buy":
-                        trade_flag = flag
+                        self.first_trade_flag = "buy"
                         self.first_trade_time = base_time
-                        self.take_profit_rate = max(predict_price_list)
+                        self.take_profit_rate = max([predict_price_1m, predict_price_5m, predict_price_1h])
                         self.stop_loss_rate = current_price - (self.take_profit_rate - current_price)
                     elif flag == "sell":
-                        trade_flag = flag
                         self.first_trade_flag = "sell"
                         self.first_trade_time = base_time
-                        self.take_profit_rate = min(predict_price)
+                        self.take_profit_rate = min([predict_price_1m, predict_price_5m, predict_price_1h])
                         self.stop_loss_rate = current_price + (current_price - self.take_profit_rate)
 
-                    if trade_flag != "pass":
-                        self.result_logger.info("%s: ======== Execute Order ========" % base_time)
-                        self.result_logger.info("%s: current_price=%s" % (base_time, current_price))
+                    if self.first_trade_flag != "":
+                        self.result_logger.info("%s: first_trade_flag=%s" % (base_time, self.first_trade_flag))
                         self.result_logger.info("%s: predict_price_1m=%s" % (base_time, predict_price_1m))
                         self.result_logger.info("%s: predict_price_5m=%s" % (base_time, predict_price_5m))
                         self.result_logger.info("%s: predict_price_1h=%s" % (base_time, predict_price_1h))
-                        self.result_logger.info("%s: stoploss_rate=%s" % (base_time, self.stoploss_rate))
-                        self.result_logger.info("%s: takeprofit_rate=%s" % (base_time, self.takeprofit_rate))
+                        self.result_logger.info("%s: first_trade_price=%s" % (base_time, current_price))
 
+            if self.first_trade_flag != "" and 5 < seconds < 15:
+                trade_flag = self.first_trade_flag
+                self.entry_time = base_time
+#                current_price = self.get_current_price(base_time)
+#            
+#                if self.first_trade_flag == "buy":
+#                    if current_price > eurjpy_sma:
+#                        trade_flag = "buy"
+#                elif self.first_trade_flag == "sell":
+#                    if current_price < eurjpy_sma:
+#                        trade_flag = "sell"
+#                else:
+#                    raise
+
+                if trade_flag == "buy" or trade_flag == "sell":
+                    self.result_logger.info("%s: second_trade_price=%s" % (base_time, current_price))
+                    #self.result_logger.info("%s: eurjpy_sma=%s" % (base_time, eurjpy_sma))
+                    self.result_logger.info("%s: takeprofit_rate=%s" % (base_time, self.takeprofit_rate))
+                    self.result_logger.info("%s: stoploss_rate=%s" % (base_time, self.stoploss_rate))
 
         return trade_flag
 

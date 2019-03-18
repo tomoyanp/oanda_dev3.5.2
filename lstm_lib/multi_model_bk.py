@@ -240,7 +240,7 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         print(train_input_dataset.shape)
         print(train_output_dataset.shape)
         learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=200)
-        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=10, batch_size=1, verbose=2, shuffle=True)
+        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=500, batch_size=1, verbose=2, shuffle=True)
         #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
         train_predict = learning_model.predict(train_input_dataset)
 

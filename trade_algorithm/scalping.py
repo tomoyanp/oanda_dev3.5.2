@@ -30,6 +30,7 @@ from keras.models import model_from_json
 from sklearn.preprocessing import MinMaxScaler
 from lstm_model_wrapper import predict_value
 from common import get_sma
+from multi_model import train_save_model
 
 import json
 
@@ -56,17 +57,6 @@ class Scalping(SuperAlgo):
         self.first_trade_time = None
         self.log_object = {}
         self.current_path = os.path.abspath(os.path.dirname(__file__))
-
-        self.model_1h = self.load_model(model_filename="multi_model_1h.json", weights_filename="multi_model_1h.hdf5")
-
-        self.model_30m = self.load_model(model_filename="multi_model_30m.json", weights_filename="multi_model_30m.hdf5")
-
-        self.model_15m = self.load_model(model_filename="multi_model_15m.json", weights_filename="multi_model_15m.hdf5")
-
-        self.model_5m = self.load_model(model_filename="multi_model_5m.json", weights_filename="multi_model_5m.hdf5")
-
-        self.model_1m = self.load_model(model_filename="multi_model_1m.json", weights_filename="multi_model_1m.hdf5")
-
 
     # decide trade entry timing
     def decideTrade(self, base_time):
@@ -120,8 +110,7 @@ class Scalping(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        stl_flag = self.decideReverseStl(stl_flag, base_time)
-                        #pass
+                        pass
 
             else:
                 pass
@@ -131,13 +120,6 @@ class Scalping(SuperAlgo):
             raise
 
 
-    # 単純に1時間後にする
-    def decideReverseStl(self, stl_flag, base_time):
-        if self.order_flag:
-            pass
- 
-
-        return stl_flag
 
     def get_current_price(self, target_time):
         table_type = "1m"
@@ -148,213 +130,37 @@ class Scalping(SuperAlgo):
         self.bid_price = response[0][1]
         return response[0][0], response[0][1]
 
-#    # LSTMがうまく効いているのか妥当性を確認する
-#    def checkPredict(self, base_time):
-#        # 予測は1時間前をインプットに現在値を予測
-#        predict_target_time = base_time - timedelta(hours=2)
-#
-#        # 実際は現在値を1時間足から取得
-#        actual_target_time = base_time - timedelta(hours=1)
-#
-#        # 1時間足から終わり値取得
-#        table_type = "1h"
-#        instruments = "EUR_JPY"
-#        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 2" % (instruments, table_type, actual_target_time) 
-#        response = self.mysql_connector.select_sql(sql)
-#        current_close_price = (response[0][0] + response[0][1])/2
-#        before_close_price = (response[1][0] + response[1][1])/2
-#
-#        # 予測
-#        right_string = "EUR_JPY"
-#        instruments = "EUR_JPY"
-#        window_size = 20 
-#        output_train_index = 1 
-#        table_type = "1h"
-#        predict_price_1h = predict_value(predict_target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-#
-#
-#        flag = False
-#        if before_close_price < current_close_price and before_close_price < predict_price_1h:
-#            flag = True
-#        elif before_close_price > current_close_price and before_close_price > predict_price_1h:
-#            flag = True
-#
-#        if flag:
-#            self.result_logger.info("%s: ======== Check Predict Logic ========" % base_time)
-#            self.result_logger.info("%s: before_close_price=%s" % (base_time, before_close_price))
-#            self.result_logger.info("%s: current_close_price=%s" % (base_time, current_close_price))
-#            self.result_logger.info("%s: before_predict_price_1h=%s" % (base_time, predict_price_1h))
-#
-#        return flag
 
-
-    # LSTMがうまく効いているのか妥当性を確認する
-    def checkPredict(self, base_time):
-        # 予測は1時間前をインプットに現在値を予測
-        predict_target_time = base_time - timedelta(minutes=10)
-
-        # 実際は現在値を1時間足から取得
-        actual_target_time = base_time - timedelta(minutes=5)
-
-        # 1時間足から終わり値取得
-        table_type = "5m"
-        instruments = "EUR_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 2" % (instruments, table_type, actual_target_time) 
-        response = self.mysql_connector.select_sql(sql)
-        current_close_price = (response[0][0] + response[0][1])/2
-        before_close_price = (response[1][0] + response[1][1])/2
-
-        # 予測
-        right_string = "EUR_JPY"
-        instruments = "EUR_JPY"
-        window_size = 20 
-        output_train_index = 1 
-        table_type = "5m"
-        predict_price_5m = predict_value(predict_target_time, self.model_5m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-
-        flag = False
-        if before_close_price < current_close_price and before_close_price < predict_price_5m:
-            flag = True
-        elif before_close_price > current_close_price and before_close_price > predict_price_5m:
-            flag = True
-
-        if flag:
-            self.result_logger.info("%s: ======== Check Predict Logic ========" % base_time)
-            self.result_logger.info("%s: before_close_price=%s" % (base_time, before_close_price))
-            self.result_logger.info("%s: current_close_price=%s" % (base_time, current_close_price))
-            self.result_logger.info("%s: before_predict_price_5m=%s" % (base_time, predict_price_5m))
-
-        return flag
-
-    def getPredictPrice(self, base_time):
-        right_string = "EUR_JPY"
-        instruments = "EUR_JPY"
-        window_size = 20 
-        output_train_index = 1
-        
-        target_time = base_time - timedelta(minutes=1)
-        table_type = "1m"
-        predict_price_1m = predict_value(target_time, self.model_1m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-        
-        target_time = base_time - timedelta(minutes=5)
-        table_type = "5m"
-        predict_price_5m = predict_value(target_time, self.model_5m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-        
-        target_time = base_time - timedelta(minutes=15)
-        table_type = "15m"
-        predict_price_15m = predict_value(target_time, self.model_15m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-        
-        target_time = base_time - timedelta(minutes=30)
-        table_type = "30m"
-        predict_price_30m = predict_value(target_time, self.model_30m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-
-        target_time = base_time - timedelta(hours=1)
-        table_type = "1h"
-        predict_price_1h = predict_value(target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-
-        return [predict_price_1m, predict_price_5m, predict_price_15m, predict_price_30m, predict_price_1h]
-
-    def decidePredictList(self, predict_list, current_price):
-        flag = "pass"
-        for predict_price in predict_list:
-            if current_price < predict_price:
-                flag = "buy"
-            else:
-                flag = "pass"
-                break
-
-        if flag == "pass":
-            for predict_price in predict_list:
-                if current_price > predict_price:
-                    flag = "sell"
-                else:
-                    flag = "pass"
-                    break
-
-        return flag
-
-    def get_bollinger(self, target_time, table_type, instruments, window_size, sigma_valiable):
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (instruments, table_type, target_time, window_size)
-        response = self.mysql_connector.select_sql(sql)
-        price_list = []
-        for res in response:
-            price_list.append((res[0] + res[1])/2)
-        price_list.reverse()
-
-        # pandasの形式に変換
-        price_list = pd.Series(price_list)
-    
-        # シグマと移動平均の計算
-        sigma = price_list.rolling(window=window_size).std(ddof=0)
-        base = price_list.rolling(window=window_size).mean()
-    
-        # ボリンジャーバンドの計算
-        upper_sigmas = base + (sigma*sigma_valiable)
-        lower_sigmas = base - (sigma*sigma_valiable)
-    
-        # 普通の配列型にキャストして返す
-        upper_sigmas = upper_sigmas.values.tolist()
-        lower_sigmas = lower_sigmas.values.tolist()
-        base = base.values.tolist()
-    
-        data_set = { "upper_sigmas": upper_sigmas,
-                     "lower_sigmas": lower_sigmas,
-                     "base_lines": base }
-        return data_set
-
-
- 
     def decideReverseTrade(self, trade_flag, current_price, base_time):
         if self.order_flag == False:
             minutes = base_time.minute
             seconds = base_time.second
-            target_time = base_time - timedelta(hours=1)
-    
-            if self.first_trade_flag == "" and 0 < seconds <= 10:
-                if 1==1:
-                    predict_price_list = self.getPredictPrice(base_time)
-                    ask_price, bid_price = self.get_current_price(base_time)
-                    current_price = (ask_price + bid_price)/2
-                    ask_flag = self.decidePredictList(predict_price_list, ask_price)
-                    bid_flag = self.decidePredictList(predict_price_list, bid_price)
-    
-                    if ask_flag == "buy":
-                        self.take_profit_rate = max(predict_price_list)
-                        self.stop_loss_rate = bid_price - (self.take_profit_rate - current_price)
-                        self.first_trade_flag = "buy"
-                        self.first_trade_time = base_time
-                    elif bid_flag == "sell":
-                        self.take_profit_rate = min(predict_price_list)
-                        self.stop_loss_rate = ask_price + (current_price - self.take_profit_rate)
-                        self.first_trade_flag = "sell"
-                        self.first_trade_time = base_time
 
-                    if self.first_trade_flag != "":
-                        meta_time = base_time - timedelta(hours=7)
-                        self.result_logger.info("%s: ======== Pass First Trade Logic ========" % meta_time)
-                        self.result_logger.info("%s: first_trade_flag=%s" % (meta_time, self.first_trade_flag))
-                        self.result_logger.info("%s: ask_price=%s" % (meta_time, ask_price))
-                        self.result_logger.info("%s: bid_price=%s" % (meta_time, bid_price))
-                        self.result_logger.info("%s: predict_price_1m=%s" % (meta_time, predict_price_list[0]))
-                        self.result_logger.info("%s: predict_price_5m=%s" % (meta_time, predict_price_list[1]))
-                        self.result_logger.info("%s: predict_price_15m=%s" % (meta_time, predict_price_list[2]))
-                        self.result_logger.info("%s: predict_price_30m=%s" % (meta_time, predict_price_list[3]))
-                        self.result_logger.info("%s: predict_price_1h=%s" % (meta_time, predict_price_list[4]))
-                        self.result_logger.info("%s: current_price=%s" % (meta_time, current_price))
+            if minutes % 5 == 0 and 0 < seconds <= 10:
+                target_time = base_time - timedelta(minutes=5)
+                model = self.train_model(target_time)
 
+                table_type = "5m"
+                start_time = base_time - timedelta(hours=1)
+                end_time = base_time
+                model_name = "multi_model"
+                window_size = 12*3
+                output_train_index = 6
+                instruments = "EUR_JPY"
+                right_string = "EUR_JPY"
 
-            if self.first_trade_flag != "" and 0 < seconds <= 10:
-                ask_price, bid_price = self.get_current_price(base_time)
-                current_price = (ask_price + bid_price)/2
+                predict_price = predict_value(target_time, model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
-                if self.first_trade_flag == "buy":
-                    trade_flag = "buy"
-                elif self.first_trade_flag == "sell":
-                    trade_flag = "sell"
-                if trade_flag != "pass": 
-                    meta_time = base_time - timedelta(hours=7)
-                    self.result_logger.info("%s: ======== Execute Order ========" % meta_time)
-                    self.result_logger.info("%s: trade_flag=%s" % (meta_time, trade_flag))
+                target_time = base_time - timdelta(minutes=5)
+                ask_price, bid_price = self.get_current_price(target_time)
+                current_price = (ask_price + bid_price) / 2
+
+                target_time = base_time + timdelta(minutes=30)
+                ask_price, bid_price = self.get_current_price(target_time)
+                actual_price = (ask_price + bid_price) / 2
+
+                self.result_logger.info("base_time: current_price, predict_price, actual_price")
+                self.result_logger.info("%s: %s, %s, %s" % (base_time, current_price, predict_price, actual_price) 
 
 
         return trade_flag
@@ -414,6 +220,18 @@ class Scalping(SuperAlgo):
         learning_model = model_from_json(json_string)
         learning_model.load_weights(weights_filename)
 
+        return learning_model
+
+
+    def train_model(self, base_time):
+        table_type = "5m"
+        start_time = base_time - timedelta(hours=1)
+        end_time = base_time
+        model_name = "multi_model"
+        window_size = 12*3
+        output_train_index = 6
+        filename = "%s_%s" % (model_name, table_type)
+        learning_model = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
         return learning_model
 
 

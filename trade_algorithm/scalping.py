@@ -357,12 +357,12 @@ class Scalping(SuperAlgo):
                     self.first_trade_flag = "sell"
                 if self.first_trade_flag != "":
                     self.first_trade_time = base_time
-                    self.result_logger.info("%s: ======== Pass First Trade Logic ========" % base_time)
+                    self.result_logger.info("=================== Pass First Trade Logic ===================")
                     self.result_logger.info("%s: first_trade_flag=%s" % (base_time, self.first_trade_flag))
                     self.result_logger.info("%s: eurjpy_sma_25=%s" % (base_time, eurjpy_sma_25))
                     self.result_logger.info("%s: eurjpy_sma_75=%s" % (base_time, eurjpy_sma_75))
                     self.result_logger.info("%s: eurjpy_sma_100=%s" % (base_time, eurjpy_sma_100))
-                    self.result_logger.info("=============================================")
+                    self.result_logger.info("==============================================================")
 
 
             elif self.first_trade_flag != "" and 0 < seconds <= 10:
@@ -377,7 +377,7 @@ class Scalping(SuperAlgo):
                     self.take_profit_rate = min(predict_price_list)
                     self.stop_loss_rate = ask_price + (current_price - self.take_profit_rate)
                 if trade_flag != "pass": 
-                    self.result_logger.info("%s: ======== Execute Order ========" % base_time)
+                    self.result_logger.info("====================== Execute Order ========================")
                     self.result_logger.info("%s: trade_flag=%s" % (base_time, trade_flag))
                     self.result_logger.info("%s: ask_price=%s" % (base_time, ask_price))
                     self.result_logger.info("%s: bid_price=%s" % (base_time, bid_price))
@@ -389,7 +389,7 @@ class Scalping(SuperAlgo):
                     self.result_logger.info("%s: predict_price_1h=%s" % (base_time, predict_price_list[4]))
                     self.result_logger.info("%s: stoploss_rate=%s" % (base_time, self.stop_loss_rate))
                     self.result_logger.info("%s: takeprofit_rate=%s" % (base_time, self.take_profit_rate))
-                    self.result_logger.info("=============================================")
+                    self.result_logger.info("==============================================================")
 
 
         return trade_flag

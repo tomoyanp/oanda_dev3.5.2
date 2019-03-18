@@ -130,7 +130,8 @@ class Scalping(SuperAlgo):
     # 単純に1時間後にする
     def decideReverseStl(self, stl_flag, base_time):
         if self.order_flag:
-            pass
+             target_time = base_time - timedelta(minutes=1)
+             ask_price, bid_price = self.get_current_price(target_time)
 #             if self.order_kind == "buy" and self.take_profit_rate < bid_price:
 #                 stl_flag = True
 #             elif self.order_kind == "sell" and self.take_profit_rate > ask_price:
@@ -338,58 +339,77 @@ class Scalping(SuperAlgo):
         if self.order_flag == False:
             minutes = base_time.minute
             seconds = base_time.second
-
-            if 0 < seconds <= 10:
-                target_time = base_time - timedelta(hours=1)
-                eurjpy_sma_25 = get_sma(instrument="EUR_JPY", base_time=target_time, table_type="1h", length=25, con=self.mysql_connector)
-                eurjpy_sma_75 = get_sma(instrument="EUR_JPY", base_time=target_time, table_type="1h", length=75, con=self.mysql_connector)
-                eurjpy_sma_100 = get_sma(instrument="EUR_JPY", base_time=target_time, table_type="1h", length=100, con=self.mysql_connector)
-                predict_price_list = self.getPredictPrice(base_time)
-
-                ask_price, bid_price = self.get_current_price(base_time)
-                current_price = (ask_price + bid_price)/2
-
+            target_time = base_time - timedelta(hours=1)
+            #eurjpy_sma_25 = get_sma(instrument="EUR_JPY", base_time=target_time, table_type="1h", length=25, con=self.mysql_connector)
+            #eurjpy_sma_75 = get_sma(instrument="EUR_JPY", base_time=target_time, table_type="1h", length=75, con=self.mysql_connector)
+            #eurjpy_sma_100 = get_sma(instrument="EUR_JPY", base_time=target_time, table_type="1h", length=100, con=self.mysql_connector)
     
             if self.first_trade_flag == "" and 0 < seconds <= 10:
-                if eurjpy_sma_100 < eurjpy_sma_75 < eurjpy_sma_25:
-                    self.first_trade_flag = "buy"
-                elif eurjpy_sma_25 < eurjpy_sma_75 < eurjpy_sma_100:
-                    self.first_trade_flag = "sell"
-                if self.first_trade_flag != "":
-                    self.first_trade_time = base_time
-                    self.result_logger.info("%s: ======== Pass First Trade Logic ========" % base_time)
-                    self.result_logger.info("%s: first_trade_flag=%s" % (base_time, self.first_trade_flag))
-                    self.result_logger.info("%s: eurjpy_sma_25=%s" % (base_time, eurjpy_sma_25))
-                    self.result_logger.info("%s: eurjpy_sma_75=%s" % (base_time, eurjpy_sma_75))
-                    self.result_logger.info("%s: eurjpy_sma_100=%s" % (base_time, eurjpy_sma_100))
-                    self.result_logger.info("=============================================")
+                if self.checkPredict(base_time):
+                    predict_price_list = self.getPredictPrice(base_time)
+                    ask_price, bid_price = self.get_current_price(base_time)
+                    current_price = (ask_price + bid_price)/2
+                    del(predict_price_list[3:5])
+                    ask_flag = self.decidePredictList(predict_price_list, ask_price)
+                    bid_flag = self.decidePredictList(predict_price_list, bid_price)
+    
+                    if ask_flag == "buy":
+                        self.take_profit_rate = max(predict_price_list)
+                        self.stop_loss_rate = bid_price - (self.take_profit_rate - current_price)
+                        self.first_trade_flag = "buy"
+                        self.first_trade_time = base_time
+                    elif bid_flag == "sell":
+                        self.take_profit_rate = min(predict_price_list)
+                        self.stop_loss_rate = ask_price + (current_price - self.take_profit_rate)
+                        self.first_trade_flag = "sell"
+                        self.first_trade_time = base_time
+
+                    if self.first_trade_flag != "":
+                        self.result_logger.info("%s: ======== Pass First Trade Logic ========" % base_time)
+                        self.result_logger.info("%s: first_trade_flag=%s" % (base_time, self.first_trade_flag))
+                        self.result_logger.info("%s: ask_price=%s" % (base_time, ask_price))
+                        self.result_logger.info("%s: bid_price=%s" % (base_time, bid_price))
+                        self.result_logger.info("%s: predict_price_1m=%s" % (base_time, predict_price_list[0]))
+                        self.result_logger.info("%s: predict_price_5m=%s" % (base_time, predict_price_list[1]))
+                        self.result_logger.info("%s: predict_price_15m=%s" % (base_time, predict_price_list[2]))
+                        #self.result_logger.info("%s: predict_price_30m=%s" % (base_time, predict_price_list[3]))
+                        #self.result_logger.info("%s: predict_price_1h=%s" % (base_time, predict_price_list[4]))
+                        self.result_logger.info("%s: current_price=%s" % (base_time, current_price))
 
 
             elif self.first_trade_flag != "" and 0 < seconds <= 10:
-                ask_flag = self.decidePredictList(predict_price_list, ask_price)
-                bid_flag = self.decidePredictList(predict_price_list, bid_price)
-                if self.first_trade_flag == "buy" and ask_flag == "buy":
+                ask_price, bid_price = self.get_current_price(base_time)
+                current_price = (ask_price + bid_price)/2
+
+                target_time = base_time - timedelta(minutes=1)
+                table_type = "1m"
+                instruments = "EUR_JPY"
+                window_size = 21
+                sigma_valiable = 2
+                data_set = self.get_bollinger(target_time, table_type, instruments, window_size, sigma_valiable)
+                upper_sigma = data_set["upper_sigmas"][-1]
+                lower_sigma = data_set["lower_sigmas"][-1]
+
+                #if self.first_trade_flag == "buy" and ask_price < lower_sigma:
+                if self.first_trade_flag == "buy":
                     trade_flag = "buy"
-                    self.take_profit_rate = max(predict_price_list)
-                    self.stop_loss_rate = bid_price - (self.take_profit_rate - current_price)
-                elif self.first_trade_flag == "sell" and bid_flag == "sell":
+                    #trade_flag = "sell"
+                #elif self.first_trade_flag == "sell" and bid_price > upper_sigma:
+                elif self.first_trade_flag == "sell":
                     trade_flag = "sell"
-                    self.take_profit_rate = min(predict_price_list)
-                    self.stop_loss_rate = ask_price + (current_price - self.take_profit_rate)
+                    #trade_flag = "buy"
+                    #self.take_profit_rate = min(predict_price_list)
+                    #self.stop_loss_rate = ask_price + (current_price - self.take_profit_rate)
                 if trade_flag != "pass": 
                     self.result_logger.info("%s: ======== Execute Order ========" % base_time)
                     self.result_logger.info("%s: trade_flag=%s" % (base_time, trade_flag))
                     self.result_logger.info("%s: ask_price=%s" % (base_time, ask_price))
                     self.result_logger.info("%s: bid_price=%s" % (base_time, bid_price))
                     self.result_logger.info("%s: current_price=%s" % (base_time, current_price))
-                    self.result_logger.info("%s: predict_price_1m=%s" % (base_time, predict_price_list[0]))
-                    self.result_logger.info("%s: predict_price_5m=%s" % (base_time, predict_price_list[1]))
-                    self.result_logger.info("%s: predict_price_15m=%s" % (base_time, predict_price_list[2]))
-                    self.result_logger.info("%s: predict_price_30m=%s" % (base_time, predict_price_list[3]))
-                    self.result_logger.info("%s: predict_price_1h=%s" % (base_time, predict_price_list[4]))
+                    self.result_logger.info("%s: upper_sigma=%s" % (base_time, upper_sigma))
+                    self.result_logger.info("%s: lower_sigma=%s" % (base_time, lower_sigma))
                     self.result_logger.info("%s: stoploss_rate=%s" % (base_time, self.stop_loss_rate))
                     self.result_logger.info("%s: takeprofit_rate=%s" % (base_time, self.take_profit_rate))
-                    self.result_logger.info("=============================================")
 
 
         return trade_flag

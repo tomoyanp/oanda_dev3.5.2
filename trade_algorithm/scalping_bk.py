@@ -132,15 +132,15 @@ class Scalping(SuperAlgo):
         if self.order_flag:
              target_time = base_time - timedelta(minutes=1)
              ask_price, bid_price = self.get_current_price(target_time)
-#             if self.order_kind == "buy" and self.take_profit_rate < bid_price:
-#                 stl_flag = True
-#             elif self.order_kind == "sell" and self.take_profit_rate > ask_price:
-#                 stl_flag = True
-#
-#             if self.order_kind == "buy" and self.stop_loss_rate > bid_price:
-#                 stl_flag = True
-#             elif self.order_kind == "sell" and self.stop_loss_rate < ask_price:
-#                 stl_flag = True
+             if self.order_kind == "buy" and self.take_profit_rate < bid_price:
+                 stl_flag = True
+             elif self.order_kind == "sell" and self.take_profit_rate > ask_price:
+                 stl_flag = True
+
+             if self.order_kind == "buy" and self.stop_loss_rate > bid_price:
+                 stl_flag = True
+             elif self.order_kind == "sell" and self.stop_loss_rate < ask_price:
+                 stl_flag = True
 
 #            if self.first_trade_time + timedelta(minutes=5) < base_time:
 #                stl_flag = True
@@ -339,10 +339,6 @@ class Scalping(SuperAlgo):
         if self.order_flag == False:
             minutes = base_time.minute
             seconds = base_time.second
-            target_time = base_time - timedelta(hours=1)
-            #eurjpy_sma_25 = get_sma(instrument="EUR_JPY", base_time=target_time, table_type="1h", length=25, con=self.mysql_connector)
-            #eurjpy_sma_75 = get_sma(instrument="EUR_JPY", base_time=target_time, table_type="1h", length=75, con=self.mysql_connector)
-            #eurjpy_sma_100 = get_sma(instrument="EUR_JPY", base_time=target_time, table_type="1h", length=100, con=self.mysql_connector)
     
             if self.first_trade_flag == "" and 0 < seconds <= 10:
                 if self.checkPredict(base_time):
@@ -393,11 +389,9 @@ class Scalping(SuperAlgo):
                 #if self.first_trade_flag == "buy" and ask_price < lower_sigma:
                 if self.first_trade_flag == "buy":
                     trade_flag = "buy"
-                    #trade_flag = "sell"
                 #elif self.first_trade_flag == "sell" and bid_price > upper_sigma:
                 elif self.first_trade_flag == "sell":
                     trade_flag = "sell"
-                    #trade_flag = "buy"
                     #self.take_profit_rate = min(predict_price_list)
                     #self.stop_loss_rate = ask_price + (current_price - self.take_profit_rate)
                 if trade_flag != "pass": 

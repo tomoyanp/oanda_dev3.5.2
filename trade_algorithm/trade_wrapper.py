@@ -155,8 +155,7 @@ class TradeWrapper:
                         # 決済した直後であればスリープする
                         trade_id = self.trade_algo.getTradeId()
                         if self.stl_sleep_flag and trade_id != 0:
-                            profit, sleep_time = self.trade_algo.calcProfit()
-                            stl_price = self.trade_algo.getCurrentPrice()
+                            profit, stl_price, sleep_time = self.trade_algo.calcProfit()
 
                             stl_method = "EXECUTE Stop Loss or Take Profit SETTLEMENT"
                             self.trade_algo.settlementLogWrite(profit, base_time, stl_price, stl_method)
@@ -186,14 +185,13 @@ class TradeWrapper:
 
     def executeSettlement(self, base_time, stl_method):
         if self.test_mode:
-            stl_price = self.trade_algo.getCurrentPrice()
+            profit, stl_price, sleep_time = self.trade_algo.calcProfit()
         else:
             trade_id = self.trade_algo.getTradeId()
             response = self.oanda_wrapper.close_trade(self.instrument)
             stl_price = response["orderFillTransaction"]["price"]
             self.trade_algo.setStlPrice(stl_price)
-
-        profit, sleep_time = self.trade_algo.calcProfit()
+            profit, dummy_stl_price, sleep_time = self.trade_algo.calcProfit()
 
         # 計算した利益を結果ファイルに出力
         self.trade_algo.settlementLogWrite(profit, base_time, stl_price, stl_method)

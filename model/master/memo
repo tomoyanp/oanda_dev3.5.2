@@ -1,8 +1,9 @@
-USD_JPY, EUR_USD, GBP_USD, AUD_USDを元にEUR_JPYを予測するやつ
+(python35) [tomoyan@test-server 20190317_scalping]$ cat ../../lstm_lib/learning.sh
+nohup python multi_model.py 1m 20 1 2018-01-10 2019-03-08 > 1m_learning_log &
+nohup python multi_model.py 5m 20 1 2018-01-10 2019-03-08 > 5m_learning_log &
+nohup python multi_model.py 15m 20 1 2018-01-10 2019-03-08 > 15m_learning_log &
+nohup python multi_model.py 30m 20 1 2018-01-10 2019-03-08 > 30m_learning_log &
+nohup python multi_model.py 1h 20 1 2018-01-10 2019-03-08 > 1h_learning_log &
 
-window_size = 一律20
- -> 20移動平均線と同じ考え方
-output_train_index = 一律1時間後(60, 12, 1)
-学習期間：1m = 2019/01/01 - 2019/03/10
-          5m = 2018/08/01 - 2019/03/10
-          1h = 2018/01/01 - 2019/03/10
+
+移動平均20本を参考に、20本を学習データとして、それぞれの足で一つ先を予測するように変更

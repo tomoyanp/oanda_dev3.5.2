@@ -20,7 +20,7 @@ import matplotlib.pyplot as plt
 plt.switch_backend("agg")
 
 from common import get_sma
-from lstm_wrapper import create_model, predict_value
+from lstm_wrapper import LstmWrapper
 
 import json
 
@@ -47,7 +47,6 @@ class Scalping(SuperAlgo):
         self.first_trade_time = None
         self.log_object = {}
         self.current_path = os.path.abspath(os.path.dirname(__file__))
-
         self.window_size = 20
         self.output_train_index = 1
         self.neurons = 400
@@ -134,15 +133,16 @@ class Scalping(SuperAlgo):
 
             if minutes % 5 == 0 and 0 < seconds <= 10:
                 target_time = base_time
-                model5m, model1h = self.train_model(target_time)
+                lstm_wrapper = LstmWrapper()
+                model5m, model1h = self.train_model(target_time, lstm_wrapper)
 
                 target_time = base_time - timedelta(minutes=5)
                 table_type = "5m"
-                predict_price5m = predict_value(target_time, model5m, self.window_size, table_type, self.output_train_index, self.predict_currency)
+                predict_price5m = lstm_wrapper.predict_value(target_time, model5m, self.window_size, table_type, self.output_train_index, self.predict_currency)
 
                 target_time = base_time - timedelta(hours=1)
                 table_type = "1h"
-                predict_price1h = predict_value(target_time, model1h, self.window_size, table_type, self.output_train_index, self.predict_currency)
+                predict_price1h = lstm_wrapper.predict_value(target_time, model1h, self.window_size, table_type, self.output_train_index, self.predict_currency)
 
                 target_time = base_time - timedelta(minutes=5)
                 ask_price, bid_price = self.get_current_price(target_time)
@@ -155,17 +155,7 @@ class Scalping(SuperAlgo):
                 self.result_logger.info("base_time, current_price, predict_price5m, predict_price1h, actual_price")
                 self.result_logger.info("%s, %s, %s, %s, %s" % (base_time, current_price, predict_price5m, predict_price1h, actual_price))
 
-                #profit = 0
-                #if current_price < predict_price:
-                #    flg = "buy"
-                #    profit = actual_price - current_price
-                #else:
-                #    flg = "sell"
-                #    profit = current_price - actual_price
-
-                #self.result_logger.info("base_time: current_price, predict_price, actual_price, trade_flag, profit")
-                #self.result_logger.info("%s: %s, %s, %s, %s, %s" % (base_time, current_price, predict_price, actual_price, flg, profit))
-
+                del lstm_wrapper
 
         return trade_flag
 
@@ -227,14 +217,14 @@ class Scalping(SuperAlgo):
         return learning_model
 
 
-    def train_model(self, base_time):
+    def train_model(self, base_time, lstm_wrapper):
         table_type = "5m"
         start_time = base_time - timedelta(hours=3)
         end_time = start_time + timedelta(minutes=10)
         start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
         end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
 
-        model5m =  create_model(self.window_size, self.output_train_index, table_type, start_time, end_time, self.neurons, self.epochs, self.predict_currency)
+        model5m =  lstm_wrapper.create_model(self.window_size, self.output_train_index, table_type, start_time, end_time, self.neurons, self.epochs, self.predict_currency)
 
         table_type = "1h"
         start_time = base_time - timedelta(hours=24)
@@ -242,8 +232,7 @@ class Scalping(SuperAlgo):
         start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
         end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
 
-        model1h =  create_model(self.window_size, self.output_train_index, table_type, start_time, end_time, self.neurons, self.epochs, self.predict_currency)
-
+        model1h =  lstm_wrapper.create_model(self.window_size, self.output_train_index, table_type, start_time, end_time, self.neurons, self.epochs, self.predict_currency)
 
         return model5m, model1h
 

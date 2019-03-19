@@ -14,19 +14,14 @@ sys.path.append(base_path + "/lstm_lib")
 from mysql_connector import MysqlConnector
 from datetime import timedelta, datetime
 from common import decideMarket
-from logging import getLogger
 
 import traceback
 import subprocess
 import pandas as pd
-pd.set_option("display.max_colwidth", 2000)
-pd.set_option("display.max_columns", None)
-pd.set_option("display.max_rows", None)
+import gc
 
 import numpy as np
-np.set_printoptions(threshold=np.inf)
 import matplotlib.pyplot as plt
-plt.switch_backend("agg")
 
 from keras.models import Sequential
 from keras.layers import Activation, Dense
@@ -182,7 +177,7 @@ class LstmWrapper():
             train_time_dataset.append(tmp_time_output_dataframe)
             train_input_dataset.append(tmp_input_dataframe)
             train_output_dataset.append(tmp_output_dataframe)
-    
+
             if table_type == "1m":
                 target_time = target_time + timedelta(minutes=1)
             elif table_type == "5m":
@@ -201,6 +196,15 @@ class LstmWrapper():
                 target_time = target_time + timedelta(days=1)
             else:
                 raise
+
+            del tmp_dataframe
+            del tmp_output_dataframe
+            del tmp_time_dataframe
+            del tmp_input_dataframe
+            del tmp_np_dataset
+            del normalization_model
+            del tmp_np_normalization_dataset
+
     
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
@@ -212,6 +216,8 @@ class LstmWrapper():
         del train_output_dataset
         del train_time_dataset
     
+        #gc.collect()
+
         return learning_model
 
     def predict_value(self, base_time, learning_model, window_size, table_type, output_train_index, predict_currency):

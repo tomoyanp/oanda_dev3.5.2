@@ -1,5 +1,6 @@
 # coding: utf-8
 # 単純なパターン+予測が外れたら決済する
+
 from super_algo import SuperAlgo
 from mysql_connector import MysqlConnector
 from datetime import timedelta, datetime
@@ -10,6 +11,7 @@ import subprocess
 import os
 
 import pandas as pd
+
 pd.set_option("display.max_colwidth", 2000)
 pd.set_option("display.max_columns", None)
 pd.set_option("display.max_rows", None)
@@ -19,8 +21,16 @@ np.set_printoptions(threshold=np.inf)
 import matplotlib.pyplot as plt
 plt.switch_backend("agg")
 
+from keras.models import Sequential
+from keras.layers import Activation, Dense
+from keras.layers import LSTM
+from keras.layers import Dropout
+from keras.models import model_from_json
+
+from sklearn.preprocessing import MinMaxScaler
+from lstm_model_wrapper import predict_value
 from common import get_sma
-from lstm_wrapper import create_model, predict_value
+from multi_model import train_save_model
 
 import json
 
@@ -47,12 +57,6 @@ class Scalping(SuperAlgo):
         self.first_trade_time = None
         self.log_object = {}
         self.current_path = os.path.abspath(os.path.dirname(__file__))
-
-        self.window_size = 20
-        self.output_train_index = 1
-        self.neurons = 400
-        self.epochs = 20
-        self.predict_currency = "EUR_JPY"
 
     # decide trade entry timing
     def decideTrade(self, base_time):
@@ -133,38 +137,37 @@ class Scalping(SuperAlgo):
             seconds = base_time.second
 
             if minutes % 5 == 0 and 0 < seconds <= 10:
-                target_time = base_time
-                model5m, model1h = self.train_model(target_time)
-
                 target_time = base_time - timedelta(minutes=5)
-                table_type = "5m"
-                predict_price5m = predict_value(target_time, model5m, self.window_size, table_type, self.output_train_index, self.predict_currency)
+                model = self.train_model(target_time)
 
-                target_time = base_time - timedelta(hours=1)
-                table_type = "1h"
-                predict_price1h = predict_value(target_time, model1h, self.window_size, table_type, self.output_train_index, self.predict_currency)
+                table_type = "5m"
+                start_time = base_time - timedelta(hours=1)
+                end_time = base_time
+                model_name = "multi_model"
+                window_size = 12*3
+                output_train_index = 6
+                instruments = "EUR_JPY"
+                right_string = "EUR_JPY"
+
+                predict_price = predict_value(target_time, model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
                 target_time = base_time - timedelta(minutes=5)
                 ask_price, bid_price = self.get_current_price(target_time)
                 current_price = (ask_price + bid_price) / 2
 
-                target_time = base_time + timedelta(hours=1)
+                target_time = base_time + timedelta(minutes=30)
                 ask_price, bid_price = self.get_current_price(target_time)
                 actual_price = (ask_price + bid_price) / 2
+                profit = 0
+                if current_price < predict_price:
+                    flg = "buy"
+                    profit = actual_price - current_price
+                else:
+                    flg = "sell"
+                    profit = current_price - actual_price
 
-                self.result_logger.info("base_time, current_price, predict_price5m, predict_price1h, actual_price")
-                self.result_logger.info("%s, %s, %s, %s, %s" % (base_time, current_price, predict_price5m, predict_price1h, actual_price))
-
-                #profit = 0
-                #if current_price < predict_price:
-                #    flg = "buy"
-                #    profit = actual_price - current_price
-                #else:
-                #    flg = "sell"
-                #    profit = current_price - actual_price
-
-                #self.result_logger.info("base_time: current_price, predict_price, actual_price, trade_flag, profit")
-                #self.result_logger.info("%s: %s, %s, %s, %s, %s" % (base_time, current_price, predict_price, actual_price, flg, profit))
+                self.result_logger.info("base_time: current_price, predict_price, actual_price, trade_flag, profit")
+                self.result_logger.info("%s: %s, %s, %s, %s, %s" % (base_time, current_price, predict_price, actual_price, flg, profit))
 
 
         return trade_flag
@@ -229,22 +232,16 @@ class Scalping(SuperAlgo):
 
     def train_model(self, base_time):
         table_type = "5m"
-        start_time = base_time - timedelta(hours=3)
-        end_time = start_time + timedelta(minutes=10)
+        start_time = base_time - timedelta(hours=2)
+        end_time = start_time + timedelta(hours=1)
         start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
         end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
+        model_name = "multi_model"
+        window_size = 12*3
+        output_train_index = 6
+        filename = "%s_%s" % (model_name, table_type)
+        model = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
 
-        model5m =  create_model(self.window_size, self.output_train_index, table_type, start_time, end_time, self.neurons, self.epochs, self.predict_currency)
-
-        table_type = "1h"
-        start_time = base_time - timedelta(hours=24)
-        end_time = start_time + timedelta(hours=2)
-        start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
-        end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
-
-        model1h =  create_model(self.window_size, self.output_train_index, table_type, start_time, end_time, self.neurons, self.epochs, self.predict_currency)
-
-
-        return model5m, model1h
+        return model
 
 

@@ -83,6 +83,10 @@ def get_original_dataset(target_time, table_type, span, direct):
 
 
     tmp_dataframe = pd.DataFrame(tmp_original_dataset)
+
+    del response
+    del tmp_original_dataset
+
     return tmp_dataframe
 
 def build_to_normalization(dataset):
@@ -91,12 +95,18 @@ def build_to_normalization(dataset):
     scaler = MinMaxScaler(feature_range=(0,1))
     scaler.fit_transform(np_list)
 
+    del tmp_df
+    del np_list
+
     return scaler
 
 def change_to_normalization(model, dataset):
     tmp_df = pd.DataFrame(dataset)
     np_list = np.array(tmp_df)
     normalization_list = model.transform(np_list)
+
+    del tmp_df
+    del np_list
 
     return normalization_list
 
@@ -196,6 +206,10 @@ def create_model(window_size, output_train_index, table_type, start_time, end_ti
     learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=neurons)
     history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=epochs, batch_size=1, verbose=2, shuffle=False)
 
+    del train_input_dataset
+    del train_output_dataset
+    del train_time_dataset
+
     return learning_model
 
 def predict_value(base_time, learning_model, window_size, table_type, output_train_index, predict_currency):
@@ -226,6 +240,10 @@ def predict_value(base_time, learning_model, window_size, table_type, output_tra
     predict_value = test_predict[0][0]
     predict_value = (predict_value*(output_max_price-output_min_price))+output_min_price
 
+    del tmp_dataframe
+    del test_dataframe_dataset
+    del test_normalization_dataset
+    del test_predict
 
     return predict_value
 

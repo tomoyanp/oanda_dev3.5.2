@@ -117,8 +117,8 @@ class LstmWrapper():
         input_train_data = []
         for i in range(0, (learning_span-window_size)):
             temp = dataset[i:i+window_size].copy()
-            model = build_to_normalization(temp)
-            temp = change_to_normalization(model, temp)
+            model = self.build_to_normalization(temp)
+            temp = self.change_to_normalization(model, temp)
             input_train_data.append(temp)
     
         input_train_data = np.array(input_train_data)
@@ -139,8 +139,8 @@ class LstmWrapper():
         return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
     def create_model(self, window_size, output_train_index, table_type, start_time, end_time, neurons, epochs, predict_currency):
-        start_ptime = change_to_ptime(start_time)
-        end_ptime = change_to_ptime(end_time)
+        start_ptime = self.change_to_ptime(start_time)
+        end_ptime = self.change_to_ptime(end_time)
     
         target_time = start_ptime
     
@@ -153,8 +153,8 @@ class LstmWrapper():
         while target_time < end_ptime:
             hour = target_time.hour
             # 未来日付に変えて、教師データと一緒にまとめて取得
-            tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
-            tmp_output_dataframe = get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
+            tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
+            tmp_output_dataframe = self.get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
     
             tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
             tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
@@ -169,8 +169,8 @@ class LstmWrapper():
             tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
     
             tmp_np_dataset = tmp_dataframe.values
-            normalization_model = build_to_normalization(tmp_np_dataset)
-            tmp_np_normalization_dataset = change_to_normalization(normalization_model, tmp_np_dataset)
+            normalization_model = self.build_to_normalization(tmp_np_dataset)
+            tmp_np_normalization_dataset = self.change_to_normalization(normalization_model, tmp_np_dataset)
             tmp_dataframe = pd.DataFrame(tmp_np_normalization_dataset)
     
             tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
@@ -205,7 +205,7 @@ class LstmWrapper():
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
     
-        learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=neurons)
+        learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=neurons)
         history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=epochs, batch_size=1, verbose=2, shuffle=False)
     
         del train_input_dataset
@@ -219,7 +219,7 @@ class LstmWrapper():
         target_time = base_time
     
         # パーフェクトオーダーが出てるときだけを教師データとして入力する
-        tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
+        tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
     
         # 正規化を戻したいので、高値安値を押さえておく
         output_max_price = max(tmp_dataframe[predict_currency])
@@ -230,8 +230,8 @@ class LstmWrapper():
         test_dataframe_dataset = tmp_dataframe.copy().values
     
         # outputは別のモデルで正規化する
-        model = build_to_normalization(test_dataframe_dataset)
-        test_normalization_dataset = change_to_normalization(model, test_dataframe_dataset)
+        model = self.build_to_normalization(test_dataframe_dataset)
+        test_normalization_dataset = self.change_to_normalization(model, test_dataframe_dataset)
     
         # データが1セットなので空配列に追加してndarrayに変換する
         test_input_dataset = []

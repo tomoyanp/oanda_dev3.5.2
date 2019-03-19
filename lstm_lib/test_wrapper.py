@@ -6,6 +6,7 @@ import objgraph
 from memory_profiler import profile
 from lstm_wrapper import LstmWrapper
 
+@profile
 def test_lstm(base_time):
     window_size = 20
     output_train_index = 1
@@ -36,11 +37,11 @@ def test_lstm(base_time):
     table_type = "1h"
     predict_price1h = lstm_wrapper.predict_value(target_time, model1h, window_size, table_type, output_train_index, predict_currency)
     target_time = base_time - timedelta(minutes=5)
-    ask_price, bid_price = get_current_price(target_time)
-    current_price = (ask_price + bid_price) / 2
+#    ask_price, bid_price = get_current_price(target_time)
+#    current_price = (ask_price + bid_price) / 2
     target_time = base_time + timedelta(hours=1)
-    ask_price, bid_price = get_current_price(target_time)
-    actual_price = (ask_price + bid_price) / 2
+#    ask_price, bid_price = get_current_price(target_time)
+#    actual_price = (ask_price + bid_price) / 2
 
 
 if __name__ == "__main__":
@@ -48,6 +49,6 @@ if __name__ == "__main__":
 
     while True:
         test_lstm(base_time)
-        base_time = timedelta(minutes=5)
+        base_time = base_time + timedelta(minutes=5)
 
 

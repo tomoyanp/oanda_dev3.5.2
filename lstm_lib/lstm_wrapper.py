@@ -190,11 +190,11 @@ def create_model(window_size, output_train_index, table_type, start_time, end_ti
         else:
             raise
 
-        train_input_dataset = np.array(train_input_dataset)
-        train_output_dataset = np.array(train_output_dataset)
+    train_input_dataset = np.array(train_input_dataset)
+    train_output_dataset = np.array(train_output_dataset)
 
-        learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=neurons)
-        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=epochs, batch_size=1, verbose=2, shuffle=False)
+    learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=neurons)
+    history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=epochs, batch_size=1, verbose=2, shuffle=False)
 
     return learning_model
 

@@ -18,6 +18,7 @@ from common import decideMarket
 import traceback
 import subprocess
 import pandas as pd
+from memory_profiler import profile
 import gc
 
 import numpy as np
@@ -107,7 +108,7 @@ class LstmWrapper():
     
         return normalization_list
 
-
+    @profile
     def create_train_dataset(self, dataset, learning_span, window_size):
         input_train_data = []
         for i in range(0, (learning_span-window_size)):
@@ -215,8 +216,9 @@ class LstmWrapper():
         del train_input_dataset
         del train_output_dataset
         del train_time_dataset
+        del history
     
-        #gc.collect()
+        gc.collect()
 
         return learning_model
 

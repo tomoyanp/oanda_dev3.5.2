@@ -8,6 +8,8 @@ from logging import getLogger
 import traceback
 import subprocess
 import os
+import gc
+import objgraph
 
 import pandas as pd
 pd.set_option("display.max_colwidth", 2000)
@@ -154,6 +156,14 @@ class Scalping(SuperAlgo):
 
                 self.result_logger.info("base_time, current_price, predict_price5m, predict_price1h, actual_price")
                 self.result_logger.info("%s, %s, %s, %s, %s" % (base_time, current_price, predict_price5m, predict_price1h, actual_price))
+
+                del self.lstm_wrapper
+                del model5m
+                del model1h
+
+                gc.collect()
+                self.result_logger.info(objgraph.show_growth())
+                self.lstm_wrapper = LstmWrapper()
 
         return trade_flag
 

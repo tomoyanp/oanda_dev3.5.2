@@ -7,13 +7,12 @@ from memory_profiler import profile
 from lstm_wrapper import LstmWrapper
 
 @profile
-def test_lstm(base_time):
+def test_lstm(base_time, lstm_wrapper):
     window_size = 20
     output_train_index = 1
     neurons = 400
     epochs = 20
     predict_currency = "EUR_JPY"
-    lstm_wrapper = LstmWrapper()
 
     target_time = base_time
     table_type = "5m"
@@ -47,8 +46,12 @@ def test_lstm(base_time):
 if __name__ == "__main__":
     base_time = datetime.strptime("2019-03-01 00:00:00", "%Y-%m-%d %H:%M:%S")
 
+    window_size = 20
+    neurons = 400
+    lstm_wrapper = LstmWrapper(neurons, window_size)
+
     while True:
-        test_lstm(base_time)
+        test_lstm(base_time, lstm_wrapper)
         base_time = base_time + timedelta(minutes=5)
 
 

@@ -54,7 +54,7 @@ class Scalping(SuperAlgo):
         self.neurons = 400
         self.epochs = 20
         self.predict_currency = "EUR_JPY"
-        self.lstm_wrapper = LstmWrapper()
+        self.lstm_wrapper = LstmWrapper(self.neurons, self.window_size)
 
     # decide trade entry timing
     def decideTrade(self, base_time):
@@ -157,13 +157,11 @@ class Scalping(SuperAlgo):
                 self.result_logger.info("base_time, current_price, predict_price5m, predict_price1h, actual_price")
                 self.result_logger.info("%s, %s, %s, %s, %s" % (base_time, current_price, predict_price5m, predict_price1h, actual_price))
 
-                del self.lstm_wrapper
                 del model5m
                 del model1h
 
                 gc.collect()
                 self.result_logger.info(objgraph.show_growth())
-                self.lstm_wrapper = LstmWrapper()
 
         return trade_flag
 

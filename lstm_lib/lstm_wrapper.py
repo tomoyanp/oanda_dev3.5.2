@@ -34,8 +34,17 @@ from sklearn.preprocessing import MinMaxScaler
 import json
 
 class LstmWrapper():
-    def __init__(self):
+    def __init__(self, neurons, window_size):
         self.mysql_connector = MysqlConnector()
+
+        self.learning_model = Sequential()
+        # add dataset 3dimention size
+        self.learning_model.add(LSTM(neurons, input_shape=(window_size, 5)))
+        self.learning_model.add(Dropout(0.25))
+        self.learning_model.add(Dense(units=1))
+        self.learning_model.add(Activation("linear"))
+        self.learning_model.compile(loss="mae", optimizer="adam")
+ 
 
     def get_original_dataset(self, target_time, table_type, span, direct):
         target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -120,16 +129,6 @@ class LstmWrapper():
     
         return input_train_data
 
-    def build_learning_model(self, inputs, output_size, neurons, activ_func="linear", dropout=0.25, loss="mae", optimizer="adam"):
-        model = Sequential()
-        model.add(LSTM(neurons, input_shape=(inputs.shape[1], inputs.shape[2])))
-        model.add(Dropout(dropout))
-        model.add(Dense(units=output_size))
-        model.add(Activation(activ_func))
-        model.compile(loss=loss, optimizer=optimizer)
-    
-        return model
-
     def change_to_ptime(self, time):
         return datetime.strptime(time, "%Y-%m-%d %H:%M:%S")
 
@@ -209,8 +208,7 @@ class LstmWrapper():
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
     
-        learning_model = self.build_learning_model(train_input_dataset, output_size=1, neurons=neurons)
-        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=epochs, batch_size=1, verbose=2, shuffle=False)
+        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=epochs, batch_size=1, verbose=2, shuffle=False)
     
         del train_input_dataset
         del train_output_dataset
@@ -219,7 +217,7 @@ class LstmWrapper():
     
         gc.collect()
 
-        return learning_model
+        return self.learning_model
 
     def predict_value(self, base_time, learning_model, window_size, table_type, output_train_index, predict_currency):
         predict_value = 0

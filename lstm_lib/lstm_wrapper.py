@@ -108,7 +108,6 @@ class LstmWrapper():
     
         return normalization_list
 
-    @profile
     def create_train_dataset(self, dataset, learning_span, window_size):
         input_train_data = []
         for i in range(0, (learning_span-window_size)):

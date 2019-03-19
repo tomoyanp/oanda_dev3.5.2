@@ -52,7 +52,6 @@ class Scalping(SuperAlgo):
         self.neurons = 400
         self.epochs = 20
         self.predict_currency = "EUR_JPY"
-        self.lstm_wrapper = LstmWrapper()
 
     # decide trade entry timing
     def decideTrade(self, base_time):
@@ -134,15 +133,16 @@ class Scalping(SuperAlgo):
 
             if minutes % 5 == 0 and 0 < seconds <= 10:
                 target_time = base_time
-                model5m, model1h = self.train_model(target_time)
+                lstm_wrapper = LstmWrapper()
+                model5m, model1h = self.train_model(target_time, lstm_wrapper)
 
                 target_time = base_time - timedelta(minutes=5)
                 table_type = "5m"
-                predict_price5m = self.lstm_wrapper.predict_value(target_time, model5m, self.window_size, table_type, self.output_train_index, self.predict_currency)
+                predict_price5m = lstm_wrapper.predict_value(target_time, model5m, self.window_size, table_type, self.output_train_index, self.predict_currency)
 
                 target_time = base_time - timedelta(hours=1)
                 table_type = "1h"
-                predict_price1h = self.lstm_wrapper.predict_value(target_time, model1h, self.window_size, table_type, self.output_train_index, self.predict_currency)
+                predict_price1h = lstm_wrapper.predict_value(target_time, model1h, self.window_size, table_type, self.output_train_index, self.predict_currency)
 
                 target_time = base_time - timedelta(minutes=5)
                 ask_price, bid_price = self.get_current_price(target_time)
@@ -154,6 +154,8 @@ class Scalping(SuperAlgo):
 
                 self.result_logger.info("base_time, current_price, predict_price5m, predict_price1h, actual_price")
                 self.result_logger.info("%s, %s, %s, %s, %s" % (base_time, current_price, predict_price5m, predict_price1h, actual_price))
+
+                del lstm_wrapper
 
         return trade_flag
 
@@ -215,14 +217,14 @@ class Scalping(SuperAlgo):
         return learning_model
 
 
-    def train_model(self, base_time):
+    def train_model(self, base_time, lstm_wrapper):
         table_type = "5m"
         start_time = base_time - timedelta(hours=3)
         end_time = start_time + timedelta(minutes=10)
         start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
         end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
 
-        model5m =  self.lstm_wrapper.create_model(self.window_size, self.output_train_index, table_type, start_time, end_time, self.neurons, self.epochs, self.predict_currency)
+        model5m =  lstm_wrapper.create_model(self.window_size, self.output_train_index, table_type, start_time, end_time, self.neurons, self.epochs, self.predict_currency)
 
         table_type = "1h"
         start_time = base_time - timedelta(hours=24)
@@ -230,7 +232,7 @@ class Scalping(SuperAlgo):
         start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
         end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
 
-        model1h =  self.lstm_wrapper.create_model(self.window_size, self.output_train_index, table_type, start_time, end_time, self.neurons, self.epochs, self.predict_currency)
+        model1h =  lstm_wrapper.create_model(self.window_size, self.output_train_index, table_type, start_time, end_time, self.neurons, self.epochs, self.predict_currency)
 
         return model5m, model1h
 

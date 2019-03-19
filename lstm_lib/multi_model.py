@@ -163,7 +163,8 @@ def decide_market(base_time, table_type):
 def train_save_model(window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time, term):
     command = "ls ../model/ | grep -e %s -e %s | wc -l" % (model_filename, weights_filename)
     out = subprocess.getoutput(command)
-    if int(out) < 2:
+    if 1 == 1:
+#    if int(out) < 2:
         start_ptime = change_to_ptime(start_time)
         end_ptime = change_to_ptime(end_time)
 
@@ -177,9 +178,12 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
         predict_currency = "EUR_JPY"
 
+        print("%s" % target_time)
+        print("%s" % end_ptime)
         while target_time < end_ptime:
             hour = target_time.hour
-            if decide_market(target_time, table_type):
+            if decideMarket(target_time):
+                print("OKOK")
                 if decideTerm(hour) == term or term == "all":
                     if decideConditions(table_type, target_time):
                     #if 1==1:

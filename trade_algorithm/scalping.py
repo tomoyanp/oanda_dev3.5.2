@@ -151,16 +151,23 @@ class Scalping(SuperAlgo):
 
                 predict_price = predict_value(target_time, model, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
-                target_time = base_time - timdelta(minutes=5)
+                target_time = base_time - timedelta(minutes=5)
                 ask_price, bid_price = self.get_current_price(target_time)
                 current_price = (ask_price + bid_price) / 2
 
-                target_time = base_time + timdelta(minutes=30)
+                target_time = base_time + timedelta(minutes=30)
                 ask_price, bid_price = self.get_current_price(target_time)
                 actual_price = (ask_price + bid_price) / 2
+                profit = 0
+                if current_price < predict_price:
+                    flg = "buy"
+                    profit = actual_price - current_price
+                else:
+                    flg = "sell"
+                    profit = current_price - actual_price
 
-                self.result_logger.info("base_time: current_price, predict_price, actual_price")
-                self.result_logger.info("%s: %s, %s, %s" % (base_time, current_price, predict_price, actual_price) 
+                self.result_logger.info("base_time: current_price, predict_price, actual_price, trade_flag, profit")
+                self.result_logger.info("%s: %s, %s, %s, %s, %s" % (base_time, current_price, predict_price, actual_price, flg, profit))
 
 
         return trade_flag
@@ -225,13 +232,16 @@ class Scalping(SuperAlgo):
 
     def train_model(self, base_time):
         table_type = "5m"
-        start_time = base_time - timedelta(hours=1)
-        end_time = base_time
+        start_time = base_time - timedelta(hours=2)
+        end_time = start_time + timedelta(hours=1)
+        start_time = start_time.strftime("%Y-%m-%d %H:%M:%S")
+        end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
         model_name = "multi_model"
         window_size = 12*3
         output_train_index = 6
         filename = "%s_%s" % (model_name, table_type)
-        learning_model = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
-        return learning_model
+        model = train_save_model(window_size=window_size, output_train_index=output_train_index, table_type=table_type, figure_filename="%s.png" % filename, model_filename="%s.json" % filename, weights_filename="%s.hdf5" % filename, start_time=start_time, end_time=end_time, term="all")
+
+        return model
 
 

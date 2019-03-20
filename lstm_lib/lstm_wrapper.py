@@ -19,7 +19,6 @@ import traceback
 import subprocess
 import pandas as pd
 from memory_profiler import profile
-import gc
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -215,7 +214,6 @@ class LstmWrapper():
         del train_time_dataset
         del history
     
-        gc.collect()
 
         return self.learning_model
 

@@ -50,48 +50,13 @@ debug_logger.setLevel(DEBUG)
 
 # python insert_multi_table.py instrument table_type mode
 
-def check_table(base_time, instrument, con, table_type):
-    debug_logger.info("%s: Start check_table logic" %  base_time)
-    if table_type == "1m":
-        base_time = base_time - timedelta(minutes=1)
-    elif table_type == "5m":
-        base_time = base_time - timedelta(minutes=5)
-    elif table_type == "15m":
-        base_time = base_time - timedelta(minutes=15)
-    elif table_type == "30m":
-        base_time = base_time - timedelta(minutes=30)
-    elif table_type == "1h":
-        base_time = base_time - timedelta(hours=1)
-    elif table_type == "3h":
-        base_time = base_time - timedelta(hours=3)
-    elif table_type == "8h":
-        base_time = base_time - timedelta(hours=8)
-    elif table_type == "day":
-        base_time = base_time - timedelta(days=1)
-        season = decideSeason(base_time)
-        if season == "winter":
-            base_time = base_time.strftime("%Y-%m-%d 07:00:00")
-            base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
-        else:
-            base_time = base_time.strftime("%Y-%m-%d 06:00:00")
-            base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
-
-    if decideMarket(base_time):
-        sql = "select insert_time from %s_%s_TABLE where insert_time = \'%s\'" % (instrument, table_type, base_time)
-        ##print(sql)
-        response = con.select_sql(sql)
-    
-        if len(response) == 0:
-            #print("below is *** ng *** %s" % sql)
-            debug_logger.info("%s: No hit record = %s" %  (base_time, sql))
-            insert_table(base_time, instrument, con, table_type, count)
-
-
 
 def insert_table(base_time, instrument, con, table_type, count):
     debug_logger.info("%s: Start insert_table logic" % (base_time))
     debug_logger.info("%s: table_type=%s" % (base_time, table_type))
-    if table_type == "1m":
+    if table_type == "5s":
+        granularity = "S5"
+    elif table_type == "1m":
         granularity = "M1"
     elif table_type == "5m":
         granularity = "M5"
@@ -165,7 +130,9 @@ def bulk_insert(start_time, end_time, instrument, con, table_type):
             if type(tmp_time) == str:
                 tmp_time = datetime.strptime(tmp_time, "%Y-%m-%d %H:%M:%S")
                 if tmp_time < start_time:
-                    if table_type == "1m" or table_type == "5m" or table_type == "15m" or table_type == "30m":
+                    if table_type == "5s":
+                        start_time = start_time + timedelta(seconds=5)
+                    elif table_type == "1m" or table_type == "5m" or table_type == "15m" or table_type == "30m":
                         start_time = start_time + timedelta(minutes=1)
                     elif table_type == "1h" or table_type == "3h" or table_type == "8h" or table_type == "day":
                         start_time = start_time + timedelta(hours=1)
@@ -181,6 +148,10 @@ if __name__ == "__main__":
         end_time = base_time.now()
         start_time = base_time
 
+        table_type = "5s"
+        target_time = start_time - timedelta(seconds=5)
+        bulk_insert(target_time, end_time, instrument, con, table_type)
+
 #        table_type = "1m"
 #        target_time = start_time - timedelta(minutes=1)
 #        bulk_insert(target_time, end_time, instrument, con, table_type)
@@ -189,14 +160,14 @@ if __name__ == "__main__":
 #        target_time = start_time - timedelta(minutes=5)
 #        bulk_insert(target_time, end_time, instrument, con, table_type)
 #
-        table_type = "15m"
-        target_time = start_time - timedelta(minutes=15)
-        bulk_insert(target_time, end_time, instrument, con, table_type)
-
-        table_type = "30m"
-        target_time = start_time - timedelta(minutes=30)
-        bulk_insert(target_time, end_time, instrument, con, table_type)
-
+#        table_type = "15m"
+#        target_time = start_time - timedelta(minutes=15)
+#        bulk_insert(target_time, end_time, instrument, con, table_type)
+#
+#        table_type = "30m"
+#        target_time = start_time - timedelta(minutes=30)
+#        bulk_insert(target_time, end_time, instrument, con, table_type)
+#
 #        table_type = "1h"
 #        target_time = start_time - timedelta(hours=1)
 #        bulk_insert(target_time, end_time, instrument, con, table_type)
@@ -226,7 +197,13 @@ if __name__ == "__main__":
                 if base_time > now:
                     time.sleep(1)
                 else:
-                    if seconds == 30:
+                    if seconds % 2 == 0:
+                        table_type = "5s"
+                        target_time = base_time - timedelta(minutes=1)
+                        target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
+                        target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
+                        insert_table(target_time, instrument, con, table_type, count)
+
                         table_type = "1m"
                         target_time = base_time - timedelta(minutes=10)
                         target_time = target_time.strftime("%Y-%m-%d %H:%M:00")

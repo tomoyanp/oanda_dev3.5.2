@@ -153,7 +153,7 @@ class Scalping(SuperAlgo):
                     self.result_logger.info("# STL_PASS: %s: predict_price5m=%s" % (base_time, predict_price5m))
                     self.result_logger.info("# STL_PASS: %s: predict_price1h=%s" % (base_time, predict_price1h))
 
-    return stl_flag
+        return stl_flag
  
 
  
@@ -166,7 +166,8 @@ class Scalping(SuperAlgo):
         return response[0][0], response[0][1]
 
 
-    def predictPrice(self, target_time):
+    def predictPrice(self, base_time):
+        target_time = base_time
         model1m, model5m, model1h = self.train_model(target_time)
 
         target_time = base_time - timedelta(minutes=1)

@@ -107,8 +107,7 @@ class Scalping(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        pass
-
+                        stl_flga = self.decideReverseStl(base_time, stl_flag)
             else:
                 pass
 
@@ -118,6 +117,46 @@ class Scalping(SuperAlgo):
 
 
 
+    def decideReverseStl(self, base_time, stl_flag):
+        if self.order_flag:
+            minutes = base_time.minute
+            seconds = base_time.second
+
+            if minutes % 5 == 0 and 0 < seconds <= 10:
+                predict_price1m, predict_price5m, predict_price1h = self.predictPrice(base_time)
+
+                ask_price, bid_price = self.get_current_price(base_time)
+                current_price = (ask_price + bid_price) / 2
+
+                if current_price < predict_price5m and current_price < predict_price1h:
+                    direct_flag = "buy"
+                elif current_price > predict_price5m and current_price > predict_price1h:
+                    direct_flag = "sell"
+                else:
+                    direct_flag = "pass"
+
+                if self.order_kind != direct_flag:
+                    stl_flag = True
+                    self.result_logger.info("# STL_EXE: %s: ask_price=%s" % (base_time, ask_price))
+                    self.result_logger.info("# STL_EXE: %s: bid_price=%s" % (base_time, bid_price))
+                    self.result_logger.info("# STL_EXE: %s: current_price=%s" % (base_time, current_price))
+                    self.result_logger.info("# STL_EXE: %s: predict_price1m=%s" % (base_time, predict_price1m))
+                    self.result_logger.info("# STL_EXE: %s: predict_price5m=%s" % (base_time, predict_price5m))
+                    self.result_logger.info("# STL_EXE: %s: predict_price1h=%s" % (base_time, predict_price1h))
+ 
+                else:
+                    stl_flag = False
+                    self.result_logger.info("# STL_PASS: %s: ask_price=%s" % (base_time, ask_price))
+                    self.result_logger.info("# STL_PASS: %s: bid_price=%s" % (base_time, bid_price))
+                    self.result_logger.info("# STL_PASS: %s: current_price=%s" % (base_time, current_price))
+                    self.result_logger.info("# STL_PASS: %s: predict_price1m=%s" % (base_time, predict_price1m))
+                    self.result_logger.info("# STL_PASS: %s: predict_price5m=%s" % (base_time, predict_price5m))
+                    self.result_logger.info("# STL_PASS: %s: predict_price1h=%s" % (base_time, predict_price1h))
+
+    return stl_flag
+ 
+
+ 
     def get_current_price(self, target_time):
         table_type = "1m"
         instruments = "EUR_JPY"
@@ -128,6 +167,28 @@ class Scalping(SuperAlgo):
         return response[0][0], response[0][1]
 
 
+    def predictPrice(self, target_time):
+        model1m, model5m, model1h = self.train_model(target_time)
+
+        target_time = base_time - timedelta(minutes=1)
+        table_type = "1m"
+        predict_price1m = self.lstm_wrapper.predict_value(target_time, model1m, self.window_size, table_type, self.output_train_index, self.predict_currency)
+
+        target_time = base_time - timedelta(minutes=5)
+        table_type = "5m"
+        predict_price5m = self.lstm_wrapper.predict_value(target_time, model5m, self.window_size, table_type, self.output_train_index, self.predict_currency)
+
+        target_time = base_time - timedelta(hours=1)
+        table_type = "1h"
+        predict_price1h = self.lstm_wrapper.predict_value(target_time, model1h, self.window_size, table_type, self.output_train_index, self.predict_currency)
+
+        del model1m
+        del model5m
+        del model1h
+
+        return predict_price1m, predict_price5m, predict_price1h
+
+
     @profile
     def decideReverseTrade(self, trade_flag, current_price, base_time):
         if self.order_flag == False:
@@ -135,55 +196,35 @@ class Scalping(SuperAlgo):
             seconds = base_time.second
 
             if minutes % 5 == 0 and 0 < seconds <= 10:
-                target_time = base_time
-                model1m, model5m, model1h = self.train_model(target_time)
+                predict_price1m, predict_price5m, predict_price1h = self.predictPrice(base_time)
 
-                target_time = base_time - timedelta(minutes=1)
-                table_type = "1m"
-                predict_price1m = self.lstm_wrapper.predict_value(target_time, model1m, self.window_size, table_type, self.output_train_index, self.predict_currency)
-
-                target_time = base_time - timedelta(minutes=5)
-                table_type = "5m"
-                predict_price5m = self.lstm_wrapper.predict_value(target_time, model5m, self.window_size, table_type, self.output_train_index, self.predict_currency)
-
-                target_time = base_time - timedelta(hours=1)
-                table_type = "1h"
-                predict_price1h = self.lstm_wrapper.predict_value(target_time, model1h, self.window_size, table_type, self.output_train_index, self.predict_currency)
-
-                target_time = base_time - timedelta(minutes=5)
-                ask_price, bid_price = self.get_current_price(target_time)
+                ask_price, bid_price = self.get_current_price(base_time)
                 current_price = (ask_price + bid_price) / 2
 
-                target_time = base_time + timedelta(hours=1)
-                ask_price, bid_price = self.get_current_price(target_time)
-                actual_price = (ask_price + bid_price) / 2
-
                 if current_price < predict_price1m and current_price < predict_price5m and current_price < predict_price1h:
-                    self.result_logger.info("FOR Calculate, %s, %s, buy" % (base_time, current_price))
+                    trade_flag = "buy"
                 elif current_price > predict_price1m and current_price > predict_price5m and current_price > predict_price1h:
-                    self.result_logger.info("FOR Calculate, %s, %s, sell" % (base_time, current_price))
+                    trade_flag = "sell"
                 else:
-                    self.result_logger.info("FOR Calculate, %s, %s, stl" % (base_time, current_price))
-                      
+                    trade_flag = "pass"
 
-                if current_price < predict_price1m:
-                    flg1m = "buy"
+                if trade_flag != "pass":
+                    self.result_logger.info("# ORDER_EXE: %s: ask_price=%s" % (base_time, ask_price))
+                    self.result_logger.info("# ORDER_EXE: %s: bid_price=%s" % (base_time, bid_price))
+                    self.result_logger.info("# ORDER_EXE: %s: current_price=%s" % (base_time, current_price))
+                    self.result_logger.info("# ORDER_EXE: %s: predict_price1m=%s" % (base_time, predict_price1m))
+                    self.result_logger.info("# ORDER_EXE: %s: predict_price5m=%s" % (base_time, predict_price5m))
+                    self.result_logger.info("# ORDER_EXE: %s: predict_price1h=%s" % (base_time, predict_price1h))
+                    self.result_logger.info("# ORDER_EXE: %s: trade_flag=%s" % (base_time, trade_flag))
                 else:
-                    flg1m = "sell"
-
-                if current_price < predict_price5m:
-                    flg5m = "buy"
-                else:
-                    flg5m = "sell"
-                if current_price < predict_price1h:
-                    flg1h = "buy"
-                else:
-                    flg1h = "sell"
-                self.result_logger.info("%s, %s, %s, %s, %s, %s, %s, %s" % (base_time, current_price, predict_price5m, predict_price1h, actual_price, flg1m, flg5m, flg1h))
-
-                del model1m
-                del model5m
-                del model1h
+                    self.result_logger.info("$ ORDER_PASS: %s: ask_price=%s" % (base_time, ask_price))
+                    self.result_logger.info("$ ORDER_PASS: %s: bid_price=%s" % (base_time, bid_price))
+                    self.result_logger.info("$ ORDER_PASS: %s: current_price=%s" % (base_time, current_price))
+                    self.result_logger.info("$ ORDER_PASS: %s: predict_price1m=%s" % (base_time, predict_price1m))
+                    self.result_logger.info("$ ORDER_PASS: %s: predict_price5m=%s" % (base_time, predict_price5m))
+                    self.result_logger.info("$ ORDER_PASS: %s: predict_price1h=%s" % (base_time, predict_price1h))
+                    self.result_logger.info("$ ORDER_PASS: %s: trade_flag=%s" % (base_time, trade_flag))
+ 
 
         return trade_flag
 

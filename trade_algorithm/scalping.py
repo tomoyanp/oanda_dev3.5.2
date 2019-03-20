@@ -158,9 +158,8 @@ class Scalping(SuperAlgo):
 
  
     def get_current_price(self, target_time):
-        table_type = "1m"
-        instruments = "EUR_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
+        table_type = "5s"
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time - timedelta(seconds=5)) 
         response = self.mysql_connector.select_sql(sql)
         self.ask_price = response[0][0]
         self.bid_price = response[0][1]

@@ -107,7 +107,8 @@ class Scalping(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        stl_flag = self.decideReverseStl(base_time, stl_flag)
+                        #stl_flag = self.decideReverseStl(base_time, stl_flag)
+                        pass
             else:
                 pass
 

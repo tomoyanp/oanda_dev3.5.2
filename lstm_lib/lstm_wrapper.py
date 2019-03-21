@@ -13,7 +13,7 @@ sys.path.append(base_path + "/lstm_lib")
 
 from mysql_connector import MysqlConnector
 from datetime import timedelta, datetime
-from common import decideMarket
+from common import decideMarket, complement_offlinetime
 
 import traceback
 import subprocess
@@ -134,6 +134,9 @@ class LstmWrapper():
     def create_model(self, window_size, output_train_index, table_type, start_time, end_time, neurons, epochs, predict_currency):
         start_ptime = self.change_to_ptime(start_time)
         end_ptime = self.change_to_ptime(end_time)
+
+        # 土日の取引時間外を補完する
+        start_ptime = complement_offlinetime(start_ptime, end_ptime)
     
         target_time = start_ptime
     
@@ -144,38 +147,51 @@ class LstmWrapper():
         input_min_price = []
     
         while target_time < end_ptime:
-            hour = target_time.hour
-            # 未来日付に変えて、教師データと一緒にまとめて取得
-            tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
-            tmp_output_dataframe = self.get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
-    
-            tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
-            tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
-    
-            input_max_price.append(max(tmp_dataframe[predict_currency]))
-            input_min_price.append(min(tmp_dataframe[predict_currency]))
-    
-            del tmp_dataframe["insert_time"]
-    
-            tmp_time_dataframe = pd.DataFrame(tmp_time_dataframe)
-            tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
-            tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
-    
-            tmp_np_dataset = tmp_dataframe.values
-            normalization_model = self.build_to_normalization(tmp_np_dataset)
-            tmp_np_normalization_dataset = self.change_to_normalization(normalization_model, tmp_np_dataset)
-            tmp_dataframe = pd.DataFrame(tmp_np_normalization_dataset)
-    
-            tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
-            tmp_output_dataframe = tmp_dataframe.copy().iloc[-1, 0]
-    
-            tmp_input_dataframe = tmp_input_dataframe.values
-    
-    
-            train_time_dataset.append(tmp_time_output_dataframe)
-            train_input_dataset.append(tmp_input_dataframe)
-            train_output_dataset.append(tmp_output_dataframe)
+            if decideMarket(target_time):
+                hour = target_time.hour
+                # 未来日付に変えて、教師データと一緒にまとめて取得
+                tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
+                tmp_output_dataframe = self.get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
+        
+                tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
+                tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]
+        
+                input_max_price.append(max(tmp_dataframe[predict_currency]))
+                input_min_price.append(min(tmp_dataframe[predict_currency]))
+        
+                del tmp_dataframe["insert_time"]
+        
+                tmp_time_dataframe = pd.DataFrame(tmp_time_dataframe)
+                tmp_time_input_dataframe = tmp_time_dataframe.iloc[:window_size, 0]
+                tmp_time_output_dataframe = tmp_time_dataframe.iloc[-1, 0]
+        
+                tmp_np_dataset = tmp_dataframe.values
+                normalization_model = self.build_to_normalization(tmp_np_dataset)
+                tmp_np_normalization_dataset = self.change_to_normalization(normalization_model, tmp_np_dataset)
+                tmp_dataframe = pd.DataFrame(tmp_np_normalization_dataset)
+        
+                tmp_input_dataframe = tmp_dataframe.copy().iloc[:window_size, :]
+                tmp_output_dataframe = tmp_dataframe.copy().iloc[-1, 0]
+        
+                tmp_input_dataframe = tmp_input_dataframe.values
+        
+        
+                train_time_dataset.append(tmp_time_output_dataframe)
+                train_input_dataset.append(tmp_input_dataframe)
+                train_output_dataset.append(tmp_output_dataframe)
 
+                del tmp_dataframe
+                del tmp_output_dataframe
+                del tmp_time_dataframe
+                del tmp_input_dataframe
+                del tmp_np_dataset
+                del normalization_model
+                del tmp_np_normalization_dataset
+ 
+            else:
+                pass
+    
+            # usually
             if table_type == "1m":
                 target_time = target_time + timedelta(minutes=1)
             elif table_type == "5m":
@@ -194,15 +210,7 @@ class LstmWrapper():
                 target_time = target_time + timedelta(days=1)
             else:
                 raise
-
-            del tmp_dataframe
-            del tmp_output_dataframe
-            del tmp_time_dataframe
-            del tmp_input_dataframe
-            del tmp_np_dataset
-            del normalization_model
-            del tmp_np_normalization_dataset
-
+    
     
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)

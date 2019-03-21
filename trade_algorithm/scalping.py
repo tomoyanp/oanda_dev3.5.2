@@ -107,8 +107,7 @@ class Scalping(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        #stl_flag = self.decideReverseStl(base_time, stl_flag)
-                        pass
+                        stl_flag = self.decideReverseStl(base_time, stl_flag)
             else:
                 pass
 
@@ -123,15 +122,15 @@ class Scalping(SuperAlgo):
             minutes = base_time.minute
             seconds = base_time.second
 
-            if minutes % 5 == 0 and 0 < seconds <= 10:
+            if 0 < seconds <= 10:
                 predict_price1m, predict_price5m, predict_price1h = self.predictPrice(base_time)
 
                 ask_price, bid_price = self.get_current_price(base_time)
                 current_price = (ask_price + bid_price) / 2
 
-                if current_price < predict_price5m and current_price < predict_price1h:
+                if current_price < predict_price1m and current_price < predict_price5m:
                     direct_flag = "buy"
-                elif current_price > predict_price5m and current_price > predict_price1h:
+                elif current_price > predict_price1m and current_price > predict_price5m:
                     direct_flag = "sell"
                 else:
                     direct_flag = "pass"
@@ -196,15 +195,18 @@ class Scalping(SuperAlgo):
             minutes = base_time.minute
             seconds = base_time.second
 
-            if minutes % 5 == 0 and 0 < seconds <= 10:
+            if 0 < seconds <= 10:
+                target_time = base_time - timedelta(hours=1)
+                sma100 = get_sma(instrument=self.instrument, base_time=target_time, table_type="1h", length="100", con=self.mysql_connector)
+
                 predict_price1m, predict_price5m, predict_price1h = self.predictPrice(base_time)
 
                 ask_price, bid_price = self.get_current_price(base_time)
                 current_price = (ask_price + bid_price) / 2
 
-                if current_price < predict_price1m and current_price < predict_price5m and current_price < predict_price1h:
+                if current_price < predict_price1m and current_price < predict_price5m and sma100 < current_price:
                     trade_flag = "buy"
-                elif current_price > predict_price1m and current_price > predict_price5m and current_price > predict_price1h:
+                elif current_price > predict_price1m and current_price > predict_price5m and sma100 > current_price:
                     trade_flag = "sell"
                 else:
                     trade_flag = "pass"
@@ -216,6 +218,7 @@ class Scalping(SuperAlgo):
                     self.result_logger.info("# ORDER_EXE: %s: predict_price1m=%s" % (base_time, predict_price1m))
                     self.result_logger.info("# ORDER_EXE: %s: predict_price5m=%s" % (base_time, predict_price5m))
                     self.result_logger.info("# ORDER_EXE: %s: predict_price1h=%s" % (base_time, predict_price1h))
+                    self.result_logger.info("# ORDER_EXE: %s: sma100=%s" % (base_time, sma100))
                     self.result_logger.info("# ORDER_EXE: %s: trade_flag=%s" % (base_time, trade_flag))
                 else:
                     self.result_logger.info("$ ORDER_PASS: %s: ask_price=%s" % (base_time, ask_price))
@@ -224,6 +227,7 @@ class Scalping(SuperAlgo):
                     self.result_logger.info("$ ORDER_PASS: %s: predict_price1m=%s" % (base_time, predict_price1m))
                     self.result_logger.info("$ ORDER_PASS: %s: predict_price5m=%s" % (base_time, predict_price5m))
                     self.result_logger.info("$ ORDER_PASS: %s: predict_price1h=%s" % (base_time, predict_price1h))
+                    self.result_logger.info("# ORDER_PASS: %s: sma100=%s" % (base_time, sma100))
                     self.result_logger.info("$ ORDER_PASS: %s: trade_flag=%s" % (base_time, trade_flag))
  
 

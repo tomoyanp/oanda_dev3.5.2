@@ -107,7 +107,8 @@ class Scalping(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        stl_flga = self.decideReverseStl(base_time, stl_flag)
+                        #stl_flag = self.decideReverseStl(base_time, stl_flag)
+                        pass
             else:
                 pass
 
@@ -266,11 +267,12 @@ class Scalping(SuperAlgo):
         pass
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):
-        meta_time = base_time - timedelta(hours=7)
-        self.result_logger.info("%s: STL_PRICE=%s" % (meta_time, stl_price))
-        self.result_logger.info("%s: LOG_MAX_PRICE=%s" % (meta_time, self.log_max_price))
-        self.result_logger.info("%s: LOG_MIN_PRICE=%s" % (meta_time, self.log_min_price))
-        self.result_logger.info("%s: PROFIT=%s" % (meta_time, profit))
+#        meta_time = base_time - timedelta(hours=7)
+        meta_time = base_time
+        self.result_logger.info("# STL_EXE: %s: STL_PRICE=%s" % (meta_time, stl_price))
+        self.result_logger.info("# STL_EXE: %s: LOG_MAX_PRICE=%s" % (meta_time, self.log_max_price))
+        self.result_logger.info("# STL_EXE: %s: LOG_MIN_PRICE=%s" % (meta_time, self.log_min_price))
+        self.result_logger.info("# STL_EXE: %s: PROFIT=%s" % (meta_time, profit))
 
     def load_model(self, model_filename, weights_filename):
         model_filename = "%s/../model/master/%s" % (self.current_path, model_filename)

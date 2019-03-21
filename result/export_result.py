@@ -11,7 +11,7 @@ for rf in file_list:
   write_file = open("profit_export.txt", "a")
   write_file.write("#######################\n")
   write_file.write("# %s\n" % rf)
-  cmd = "cat %s | grep PROFIT| grep -v STL" % rf
+  cmd = "cat %s | grep PROFIT" % rf
   out = subprocess.getoutput(cmd)
   out = out.split("\n")
 

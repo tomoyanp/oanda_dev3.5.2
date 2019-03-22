@@ -1,0 +1,22 @@
+from mysql_connector import MysqlConnector
+
+
+
+con = MysqlConnector()
+
+sql = "select close_ask, close_bid from EUR_JPY_1h_TABLE where insert_time < '2019-03-13 16:00:00' order by insert_time desc limit 10"
+
+
+res = con.select_sql(sql)
+res
+price_list = []
+for i in res:
+    price_list.append((i[0] + i[1])/2)
+
+
+price_list.reverse()
+
+from common import getSlope
+value = getSlope(price_list)
+value
+

@@ -123,15 +123,15 @@ class Scalping(SuperAlgo):
             minutes = base_time.minute
             seconds = base_time.second
 
-            if minutes % 5 == 0 and 0 < seconds <= 10:
+            if 0 < seconds <= 10:
                 predict_price1m, predict_price5m, predict_price1h = self.predictPrice(base_time)
 
                 ask_price, bid_price = self.get_current_price(base_time)
                 current_price = (ask_price + bid_price) / 2
 
-                if current_price < predict_price5m and current_price < predict_price1h:
+                if current_price < predict_price1m and current_price < predict_price5m:
                     direct_flag = "buy"
-                elif current_price > predict_price5m and current_price > predict_price1h:
+                elif current_price > predict_price1m and current_price > predict_price5m:
                     direct_flag = "sell"
                 else:
                     direct_flag = "pass"

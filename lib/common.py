@@ -31,6 +31,29 @@ def iso_jp(iso):
             pass
     return date
 
+
+def complement_offlinetime(start_time, end_time):
+    target_time = start_time
+    offline_minutes = 0
+
+    while target_time < end_time:
+        if decideMarket(target_time):
+            pass
+        else:
+            offline_minutes = offline_minutes + 1
+        target_time = target_time + timedelta(minutes=1)
+
+
+    target_time = start_time
+    while decideMarket(target_time) == False:
+        target_time = target_time - timedelta(minutes=1)
+
+    start_time = target_time
+
+    start_time = start_time - timedelta(minutes=offline_minutes)
+
+    return start_time
+
 def get_targettime(base_time, table_type):
     if type(base_time) is str:
         base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")

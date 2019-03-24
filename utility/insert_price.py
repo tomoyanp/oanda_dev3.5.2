@@ -148,10 +148,10 @@ if __name__ == "__main__":
         end_time = base_time.now()
         start_time = base_time
 
-        table_type = "5s"
-        target_time = start_time - timedelta(seconds=5)
-        bulk_insert(target_time, end_time, instrument, con, table_type)
-
+#        table_type = "5s"
+#        target_time = start_time - timedelta(seconds=5)
+#        bulk_insert(target_time, end_time, instrument, con, table_type)
+#
 #        table_type = "1m"
 #        target_time = start_time - timedelta(minutes=1)
 #        bulk_insert(target_time, end_time, instrument, con, table_type)
@@ -179,10 +179,10 @@ if __name__ == "__main__":
 #        table_type = "8h"
 #        target_time = start_time - timedelta(hours=8)
 #        bulk_insert(target_time, end_time, instrument, con, table_type)
-#
-#        table_type = "day"
-#        target_time = start_time - timedelta(days=1)
-#        bulk_insert(target_time, end_time, instrument, con, table_type)
+
+        table_type = "day"
+        target_time = start_time - timedelta(days=1)
+        bulk_insert(target_time, end_time, instrument, con, table_type)
 
     elif mode == "production":
         while True:

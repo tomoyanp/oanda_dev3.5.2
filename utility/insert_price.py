@@ -148,9 +148,9 @@ if __name__ == "__main__":
         end_time = base_time.now()
         start_time = base_time
 
-#        table_type = "5s"
-#        target_time = start_time - timedelta(seconds=5)
-#        bulk_insert(target_time, end_time, instrument, con, table_type)
+        table_type = "5s"
+        target_time = start_time - timedelta(seconds=5)
+        bulk_insert(target_time, end_time, instrument, con, table_type)
 #
 #        table_type = "1m"
 #        target_time = start_time - timedelta(minutes=1)
@@ -179,10 +179,10 @@ if __name__ == "__main__":
 #        table_type = "8h"
 #        target_time = start_time - timedelta(hours=8)
 #        bulk_insert(target_time, end_time, instrument, con, table_type)
-
-        table_type = "day"
-        target_time = start_time - timedelta(days=1)
-        bulk_insert(target_time, end_time, instrument, con, table_type)
+#
+#        table_type = "day"
+#        target_time = start_time - timedelta(days=1)
+#        bulk_insert(target_time, end_time, instrument, con, table_type)
 
     elif mode == "production":
         while True:
@@ -197,13 +197,14 @@ if __name__ == "__main__":
                 if base_time > now:
                     time.sleep(1)
                 else:
-                    if seconds % 2 == 0:
+                    if seconds % 5 == 0:
                         table_type = "5s"
                         target_time = base_time - timedelta(minutes=1)
                         target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
                         target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
                         insert_table(target_time, instrument, con, table_type, count)
 
+                    if seconds % 15 == 0:
                         table_type = "1m"
                         target_time = base_time - timedelta(minutes=10)
                         target_time = target_time.strftime("%Y-%m-%d %H:%M:00")
@@ -230,6 +231,7 @@ if __name__ == "__main__":
                         target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
                         insert_table(target_time, instrument, con, table_type, count)
 
+                    if minutes % 15 == 0 and seconds % 15 == 0:
                         table_type = "1h"
                         target_time = base_time - timedelta(hours=10)
                         target_time = target_time.strftime("%Y-%m-%d %H:00:00")
@@ -248,6 +250,7 @@ if __name__ == "__main__":
                         target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
                         insert_table(target_time, instrument, con, table_type, count)
     
+                    if minutes == 0 and seconds % 15 == 0:
                         table_type = "day"
                         target_time = base_time - timedelta(days=10)
                         target_time = target_time.strftime("%Y-%m-%d %H:00:00")

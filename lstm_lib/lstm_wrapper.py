@@ -33,17 +33,25 @@ from sklearn.preprocessing import MinMaxScaler
 import json
 
 class LstmWrapper():
-    def __init__(self, neurons, window_size):
+    def __init__(self, neurons, window_size, instrument):
         self.mysql_connector = MysqlConnector()
+        self.instrument_list = ["EUR_USD", "USD_JPY", "AUD_USD", "GBP_USD"]
+        self.predict_instrument = instrument
+        for i in range(0, len(self.instrument_list)):
+            if instrument == self.instrument_list[i]:
+                del(self.instrument_list[i])
+                break
+        self.instrument_list.insert(0, instrument)
+
 
         self.learning_model = Sequential()
         # add dataset 3dimention size
-        self.learning_model.add(LSTM(neurons, input_shape=(window_size, 5)))
+        self.learning_model.add(LSTM(neurons, input_shape=(window_size, len(self.instrument_list))))
         self.learning_model.add(Dropout(0.25))
         self.learning_model.add(Dense(units=1))
         self.learning_model.add(Activation("linear"))
         self.learning_model.compile(loss="mae", optimizer="adam")
- 
+
 
     def get_original_dataset(self, target_time, table_type, span, direct):
         target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -54,10 +62,9 @@ class LstmWrapper():
             where_statement = "insert_time < \'%s\'" % target_time
     
     
-        instrument_list = ["EUR_JPY", "EUR_USD", "USD_JPY", "AUD_USD", "GBP_USD"]
         tmp_original_dataset = {}
     
-        for instrument in instrument_list:
+        for instrument in self.instrument_list:
             tmp_original_dataset[instrument] = []
             train_original_sql = "select close_ask, close_bid from %s_%s_TABLE where %s order by insert_time %s limit %s" % (instrument, table_type, where_statement, direct, span)
             response = self.mysql_connector.select_sql(train_original_sql)
@@ -72,7 +79,7 @@ class LstmWrapper():
     
     
         # insert_timeだけ別でリストを作る
-        instrument = instrument_list[0]
+        instrument = self.instrument_list[0]
         sql = "select insert_time from %s_%s_TABLE where %s order by insert_time %s limit %s" % (instrument, table_type, where_statement, direct, span)
     
         response = self.mysql_connector.select_sql(sql)
@@ -146,12 +153,14 @@ class LstmWrapper():
         input_max_price = []
         input_min_price = []
     
+        print("start")
         while target_time < end_ptime:
             if decideMarket(target_time):
                 hour = target_time.hour
                 # 未来日付に変えて、教師データと一緒にまとめて取得
                 tmp_dataframe = self.get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
                 tmp_output_dataframe = self.get_original_dataset(target_time, table_type, span=output_train_index, direct="ASC")
+                print(tmp_dataframe)
         
                 tmp_dataframe = pd.concat([tmp_dataframe, tmp_output_dataframe])
                 tmp_time_dataframe = tmp_dataframe.copy()["insert_time"]

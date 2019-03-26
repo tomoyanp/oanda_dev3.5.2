@@ -38,8 +38,7 @@ from sklearn.preprocessing import MinMaxScaler
 import json
 
 mysql_connector = MysqlConnector()
-instruments = "EUR_USD"
-
+instruments = "USD_JPY"
 #print(instruments)
 
 def get_original_dataset(target_time, table_type, span, direct):
@@ -51,7 +50,7 @@ def get_original_dataset(target_time, table_type, span, direct):
         where_statement = "insert_time < \'%s\'" % target_time
 
 
-    instrument_list = ["EUR_USD", "USD_JPY", "AUD_USD", "GBP_USD"]
+    instrument_list = ["USD_JPY", "EUR_USD", "AUD_USD", "GBP_USD"]
     tmp_original_dataset = {}
 
     for instrument in instrument_list:
@@ -70,7 +69,7 @@ def get_original_dataset(target_time, table_type, span, direct):
 
 
     # insert_timeだけ別でリストを作る
-    instrument = "EUR_USD"
+    instrument = "USD_JPY"
     sql = "select insert_time from %s_%s_TABLE where %s order by insert_time %s limit %s" % (instrument, table_type, where_statement, direct, span)
     print(sql)
 
@@ -177,7 +176,7 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         input_max_price = []
         input_min_price = []
 
-        predict_currency = "EUR_USD"
+        predict_currency = "USD_JPY"
 
         print("%s" % target_time)
         print("%s" % end_ptime)

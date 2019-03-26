@@ -97,8 +97,8 @@ class LstmWrapper():
     
         tmp_dataframe = pd.DataFrame(tmp_original_dataset)
     
-        del response
-        del tmp_original_dataset
+        #del response
+        #del tmp_original_dataset
     
         return tmp_dataframe
 
@@ -108,8 +108,8 @@ class LstmWrapper():
         scaler = MinMaxScaler(feature_range=(0,1))
         scaler.fit_transform(np_list)
     
-        del tmp_df
-        del np_list
+        #del tmp_df
+        #del np_list
     
         return scaler
 
@@ -118,8 +118,8 @@ class LstmWrapper():
         np_list = np.array(tmp_df)
         normalization_list = model.transform(np_list)
     
-        del tmp_df
-        del np_list
+        #del tmp_df
+        #del np_list
     
         return normalization_list
 
@@ -189,13 +189,13 @@ class LstmWrapper():
                 train_input_dataset.append(tmp_input_dataframe)
                 train_output_dataset.append(tmp_output_dataframe)
 
-                del tmp_dataframe
-                del tmp_output_dataframe
-                del tmp_time_dataframe
-                del tmp_input_dataframe
-                del tmp_np_dataset
-                del normalization_model
-                del tmp_np_normalization_dataset
+                #del tmp_dataframe
+                #del tmp_output_dataframe
+                #del tmp_time_dataframe
+                #del tmp_input_dataframe
+                #del tmp_np_dataset
+                #del normalization_model
+                #del tmp_np_normalization_dataset
  
             else:
                 pass
@@ -226,10 +226,10 @@ class LstmWrapper():
     
         history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=epochs, batch_size=1, verbose=2, shuffle=False)
     
-        del train_input_dataset
-        del train_output_dataset
-        del train_time_dataset
-        del history
+        #del train_input_dataset
+        #del train_output_dataset
+        #del train_time_dataset
+        #del history
     
 
         return self.learning_model
@@ -262,10 +262,10 @@ class LstmWrapper():
         predict_value = test_predict[0][0]
         predict_value = (predict_value*(output_max_price-output_min_price))+output_min_price
     
-        del tmp_dataframe
-        del test_dataframe_dataset
-        del test_normalization_dataset
-        del test_predict
+        #del tmp_dataframe
+        #del test_dataframe_dataset
+        #del test_normalization_dataset
+        #del test_predict
     
         return predict_value
 

@@ -28,7 +28,7 @@ from keras.layers import Activation, Dense
 from keras.layers import LSTM
 from keras.layers import Dropout
 from keras.models import model_from_json
-
+from keras.callbacks import EarlyStopping
 from sklearn.preprocessing import MinMaxScaler
 import json
 
@@ -47,10 +47,12 @@ class LstmWrapper():
         self.learning_model = Sequential()
         # add dataset 3dimention size
         self.learning_model.add(LSTM(neurons, input_shape=(window_size, len(self.instrument_list))))
-        self.learning_model.add(Dropout(0.25))
+        # self.learning_model.add(Dropout(0.25))
         self.learning_model.add(Dense(units=1))
-        self.learning_model.add(Activation("linear"))
-        self.learning_model.compile(loss="mae", optimizer="adam")
+        #self.learning_model.add(Activation("linear"))
+        self.learning_model.add(Activation("sigmoid"))
+        #self.learning_model.compile(loss="mae", optimizer="adam")
+        self.learning_model.compile(loss="mae", optimizer="RMSprop")
 
 
     def get_original_dataset(self, target_time, table_type, span, direct):
@@ -224,7 +226,8 @@ class LstmWrapper():
         train_input_dataset = np.array(train_input_dataset)
         train_output_dataset = np.array(train_output_dataset)
     
-        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=epochs, batch_size=1, verbose=2, shuffle=False)
+        es_cb = EarlyStopping(monitor="val_loss", patience=0, verbose=0, mode="auto")
+        history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=epochs, batch_size=1024, verbose=2, shuffle=False, callbacks=[es_cb])
     
         #del train_input_dataset
         #del train_output_dataset

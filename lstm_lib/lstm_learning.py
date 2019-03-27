@@ -10,8 +10,8 @@ import json
 
 window_size = 20
 output_train_index = 1
-neurons = 400
-epochs = 100
+neurons = 500
+epochs = 1000
 instrument = sys.argv[1]
 start_time = sys.argv[2].strip() + " 00:00:00"
 end_time = sys.argv[3].strip() + " 00:00:00"

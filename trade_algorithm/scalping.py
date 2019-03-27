@@ -52,8 +52,21 @@ class Scalping(SuperAlgo):
         self.output_train_index = 1
         self.neurons = 400
         self.epochs = 20
-        self.predict_currency = "EUR_JPY"
-        self.lstm_wrapper = LstmWrapper(self.neurons, self.window_size, self.instrument)
+        self.usdjpy_lstm_wrapper = LstmWrapper(self.neurons, self.window_size, "USD_JPY")
+        self.eurusd_lstm_wrapper = LstmWrapper(self.neurons, self.window_size, "EUR_USD")
+        self.gbpusd_lstm_wrapper = LstmWrapper(self.neurons, self.window_size, "GBP_USD")
+
+        self.usdjpy1m_model = load_model(self, "USD_JPY_1m")
+        self.usdjpy5m_model = load_model(self, "USD_JPY_5m")
+        self.usdjpy1h_model = load_model(self, "USD_JPY_1h")
+
+        self.eurusd1m_model = load_model(self, "EUR_USD_1m")
+        self.eurusd5m_model = load_model(self, "EUR_USD_5m")
+        self.eurusd1h_model = load_model(self, "EUR_USD_1h")
+
+        self.gbpusd1m_model = load_model(self, "GBP_USD_1m")
+        self.gbpusd5m_model = load_model(self, "GBP_USD_5m")
+        self.gbpusd1h_model = load_model(self, "GBP_USD_1h")
 
     # decide trade entry timing
     def decideTrade(self, base_time):
@@ -162,12 +175,24 @@ class Scalping(SuperAlgo):
  
     def get_current_price(self, target_time):
         table_type = "5s"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time - timedelta(seconds=5)) 
+        instrument = "USD_JPY"
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time - timedelta(seconds=5)) 
         response = self.mysql_connector.select_sql(sql)
-        self.ask_price = response[0][0]
-        self.bid_price = response[0][1]
-        return response[0][0], response[0][1]
+        usdjpy_price = (response[0][0] + response[0][1])
 
+        table_type = "5s"
+        instrument = "EUR_USD"
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time - timedelta(seconds=5)) 
+        response = self.mysql_connector.select_sql(sql)
+        eurusd_price = (response[0][0] + response[0][1])
+
+        table_type = "5s"
+        instrument = "GBP_USD"
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time - timedelta(seconds=5)) 
+        response = self.mysql_connector.select_sql(sql)
+        gbpusd_price = (response[0][0] + response[0][1])
+
+        return usdjpy_price, eurusd_price, gbpusd_price
 
     def predictPrice(self, base_time):
         target_time = base_time
@@ -176,29 +201,39 @@ class Scalping(SuperAlgo):
         minutes = base_time.minute
         seconds = base_time.second
 
-        #if 0 <= seconds < 10:
-        if 1==1:
-            target_time = base_time - timedelta(minutes=1)
-            table_type = "1m"
-            predict_price1m = self.lstm_wrapper.predict_value(target_time, model1m, self.window_size, table_type, self.output_train_index, self.predict_currency)
+        target_time = base_time - timedelta(minutes=1)
+        table_type = "1m"
 
-        #if minutes % 5 == 0 and 0 <= seconds < 10:
-        if 1==1:
-            target_time = base_time - timedelta(minutes=5)
-            table_type = "5m"
-            predict_price5m = self.lstm_wrapper.predict_value(target_time, model5m, self.window_size, table_type, self.output_train_index, self.predict_currency)
+        usdjpy_predict1m = self.usdjpy_lstm_wrapper.predict_value(target_time, self.usdjpy1m_model, self.window_size, table_type, self.output_train_index, "USD_JPY")
+        eurusd_predict1m = self.eurusd_lstm_wrapper.predict_value(target_time, self.eurusd1m_model, self.window_size, table_type, self.output_train_index, "EUR_USD")
+        gbpusd_predict1m = self.gbpusd_lstm_wrapper.predict_value(target_time, self.gbpusd1m_model, self.window_size, table_type, self.output_train_index, "GBP_USD")
 
-        #if minutes == 0 and 0 <= seconds < 10:
-        if 1==1:
-            target_time = base_time - timedelta(hours=1)
-            table_type = "1h"
-            predict_price1h = self.lstm_wrapper.predict_value(target_time, model1h, self.window_size, table_type, self.output_train_index, self.predict_currency)
 
-#        del model1m
-#        del model5m
-#        del model1h
+        target_time = base_time - timedelta(minutes=5)
+        table_type = "5m"
+        usdjpy_predict5m = self.usdjpy_lstm_wrapper.predict_value(target_time, self.usdjpy5m_model, self.window_size, table_type, self.output_train_index, "USD_JPY")
+        eurusd_predict5m = self.eurusd_lstm_wrapper.predict_value(target_time, self.eurusd5m_model, self.window_size, table_type, self.output_train_index, "EUR_USD")
+        gbpusd_predict5m = self.gbpusd_lstm_wrapper.predict_value(target_time, self.gbpusd5m_model, self.window_size, table_type, self.output_train_index, "GBP_USD")
 
-        return predict_price1m, predict_price5m, predict_price1h
+
+        target_time = base_time - timedelta(hours=1)
+        table_type = "1h"
+        usdjpy_predict1h = self.usdjpy_lstm_wrapper.predict_value(target_time, self.usdjpy1h_model, self.window_size, table_type, self.output_train_index, "USD_JPY")
+        eurusd_predict1h = self.eurusd_lstm_wrapper.predict_value(target_time, self.eurusd1h_model, self.window_size, table_type, self.output_train_index, "EUR_USD")
+        gbpusd_predict1h = self.gbpusd_lstm_wrapper.predict_value(target_time, self.gbpusd1h_model, self.window_size, table_type, self.output_train_index, "GBP_USD")
+
+        predict_object = {
+                "usdjpy1m": usdjpy_predict1m,
+                "usdjpy5m": usdjpy_predict5m,
+                "usdjpy1h": usdjpy_predict1h,
+                "eurusd1m": eurusd_predict1m,
+                "eurusd5m": eurusd_predict5m,
+                "eurusd1h": eurusd_predict1h,
+                "gbpusd1m": gbpusd_predict1m,
+                "gbpusd5m": gbpusd_predict5m,
+                "gbpusd1h": gbpusd_predict1h
+                }
+        return predict_object 
 
 
     @profile
@@ -208,43 +243,42 @@ class Scalping(SuperAlgo):
             seconds = base_time.second
 
             if 0 < seconds <= 10:
-                target_time = base_time - timedelta(hours=1)
-                sma25_1h = get_sma(instrument=self.instrument, base_time=target_time, table_type="1h", length="25", con=self.mysql_connector)
-                sma25_5m = get_sma(instrument=self.instrument, base_time=target_time, table_type="5m", length="25", con=self.mysql_connector)
+                predict_object = self.predictPrice(base_time)
+                usdjpy_price, eurusd_price, gbpusd_price = self.get_current_price(base_time)
 
-                predict_price1m, predict_price5m, predict_price1h = self.predictPrice(base_time)
+                table_type = "5s"
+                instrument = "EUR_JPY"
+                sql = "select close_ask, close_bid, insert_timefrom %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time - timedelta(seconds=5)) 
+                response = self.mysql_connector.select_sql(sql)
+                eurjpy_current_price = (response[0][0] + response[0][1])
+                eurjpy_current_time = response[0][2]
+         
+                table_type = "5s"
+                instrument = "GBP_JPY"
+                sql = "select close_ask, close_bid, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time - timedelta(seconds=5)) 
+                response = self.mysql_connector.select_sql(sql)
+                gbpjpy_current_price = (response[0][0] + response[0][1])
+                gbpjpy_current_time = response[0][2]
+        
+        
+        
+                table_type = "5s"
+                instrument = "EUR_JPY"
+                sql = "select close_ask, close_bid, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time + timedelta(hours=1)) 
+                response = self.mysql_connector.select_sql(sql)
+                eurjpy_actual_price = (response[0][0] + response[0][1])
+                eurjpy_actual_time = response[0][2]
+         
+                table_type = "5s"
+                instrument = "GBP_JPY"
+                sql = "select close_ask, close_bid, insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time + timedelta(hours=1)) 
+                response = self.mysql_connector.select_sql(sql)
+                gbpjpy_actual_price = (response[0][0] + response[0][1])
+                gbpjpy_actual_time = response[0][2]
 
-                ask_price, bid_price = self.get_current_price(base_time)
-                current_price = (ask_price + bid_price) / 2
+                self.result_logger.info("base_time, usdjpy, usdjpy1m, usdjpy5m, usdjpy1h, eurusd, eurusd1m, eurusd5m, eurusd1h, gbpusd, gbpusd1m, gbpusd5m, gbpusd1h, eurjpy, eurjpy_actual, eurjpy_actual_time, gbpjpy, gbpjpy_actual, gbpjpy_actual_time")
+                self.result_logger.info("%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s") % (base_time, usdjpy_price, predict_object["usdjpy1m"], predict_object["usdjpy5m"], predict_object["usdjpy1h"], eurusd_price, predict_object["eurusd1m"], predict_object["eurusd5m"], predict_object["eurusd1h"], gbpusd_price, predict_object["gbpusd1m"], predict_object["gbpusd5m"], predict_object["gbpusd1h"], eurjpy_current_price, eurjpy_actual_price, eurjpy_actual_time, gbpjpy_current_price, gbpjpy_actual_price, gbpjpy_actual_time))
 
-                if current_price < predict_price1m and current_price < predict_price5m and sma25_1h < current_price and sma25_5m < current_price:
-                    trade_flag = "buy"
-                elif current_price > predict_price1m and current_price > predict_price5m and sma25_1h > current_price and sma25_5m > current_price:
-                    trade_flag = "sell"
-                else:
-                    trade_flag = "pass"
-
-                if trade_flag != "pass":
-                    self.result_logger.info("# ORDER_EXE: %s: ask_price=%s" % (base_time, ask_price))
-                    self.result_logger.info("# ORDER_EXE: %s: bid_price=%s" % (base_time, bid_price))
-                    self.result_logger.info("# ORDER_EXE: %s: current_price=%s" % (base_time, current_price))
-                    self.result_logger.info("# ORDER_EXE: %s: predict_price1m=%s" % (base_time, predict_price1m))
-                    self.result_logger.info("# ORDER_EXE: %s: predict_price5m=%s" % (base_time, predict_price5m))
-                    self.result_logger.info("# ORDER_EXE: %s: predict_price1h=%s" % (base_time, predict_price1h))
-                    self.result_logger.info("# ORDER_EXE: %s: sma25_1h=%s" % (base_time, sma25_1h))
-                    self.result_logger.info("# ORDER_EXE: %s: sma25_5m=%s" % (base_time, sma25_5m))
-                    self.result_logger.info("# ORDER_EXE: %s: trade_flag=%s" % (base_time, trade_flag))
-                else:
-                    self.result_logger.info("$ ORDER_PASS: %s: ask_price=%s" % (base_time, ask_price))
-                    self.result_logger.info("$ ORDER_PASS: %s: bid_price=%s" % (base_time, bid_price))
-                    self.result_logger.info("$ ORDER_PASS: %s: current_price=%s" % (base_time, current_price))
-                    self.result_logger.info("$ ORDER_PASS: %s: predict_price1m=%s" % (base_time, predict_price1m))
-                    self.result_logger.info("$ ORDER_PASS: %s: predict_price5m=%s" % (base_time, predict_price5m))
-                    self.result_logger.info("$ ORDER_PASS: %s: predict_price1h=%s" % (base_time, predict_price1h))
-                    self.result_logger.info("# ORDER_PASS: %s: sma25_1h=%s" % (base_time, sma25_1h))
-                    self.result_logger.info("# ORDER_PASS: %s: sma25_5m=%s" % (base_time, sma25_5m))
-                    self.result_logger.info("$ ORDER_PASS: %s: trade_flag=%s" % (base_time, trade_flag))
- 
 
         return trade_flag
 
@@ -333,5 +367,18 @@ class Scalping(SuperAlgo):
         model1h =  self.lstm_wrapper.create_model(self.window_size, self.output_train_index, table_type, start_time, end_time, self.neurons, self.epochs, self.predict_currency)
 
         return model1m, model5m, model1h
+
+    def load_model(self, model_filename):
+        model_filename = "%s/../model/master/%s.json" % (self.current_path, model_filename)
+        weights_filename = "%s/../model/master/%s.hdf5" % (self.current_path, model_filename)
+
+        print(model_filename)
+        print(weights_filename)
+
+        json_string = open(model_filename).read()
+        learning_model = model_from_json(json_string)
+        learning_model.load_weights(weights_filename)
+
+        return learning_model
 
 

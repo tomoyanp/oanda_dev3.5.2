@@ -22,7 +22,8 @@ for flag in tmp_flag:
 
 print(trade_flag)
     
-current_price = subprocess.getoutput("cat %s  | grep EXE | grep current_price | awk '{print $5}'" % filename)
+#current_price = subprocess.getoutput("cat %s  | grep EXE | grep current_price | awk '{print $5}'" % filename)
+current_price = subprocess.getoutput("cat %s  | grep EXE | grep gbpjpy_price | awk '{print $5}'" % filename)
 tmp_price = current_price.split("\n")
 
 current_price = []

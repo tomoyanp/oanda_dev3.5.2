@@ -121,8 +121,8 @@ class Scalping(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        stl_flag = self.decideReverseStl(base_time, stl_flag)
-                        #pass
+                        #stl_flag = self.decideReverseStl(base_time, stl_flag)
+                        pass
             else:
                 pass
 
@@ -150,6 +150,8 @@ class Scalping(SuperAlgo):
         sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time - timedelta(seconds=5)) 
         response = self.mysql_connector.select_sql(sql)
         usdjpy_price = (response[0][0] + response[0][1]) / 2
+        self.ask_price = response[0][0]
+        self.bid_price = response[0][1]
 
         table_type = "5s"
         instrument = "EUR_USD"
@@ -169,8 +171,6 @@ class Scalping(SuperAlgo):
         sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time - timedelta(seconds=5)) 
         response = self.mysql_connector.select_sql(sql)
         gbpjpy_price = (response[0][0] + response[0][1]) / 2
-        self.ask_price = response[0][0]
-        self.bid_price = response[0][1]
  
 
         return usdjpy_price, eurusd_price, gbpusd_price, gbpjpy_price
@@ -271,28 +271,36 @@ class Scalping(SuperAlgo):
                 predict_object = self.predictPrice(base_time)
                 usdjpy_price, eurusd_price, gbpusd_price, gbpjpy_price = self.get_current_price(base_time)
 
+                table_type = "1m"
+                target_time = base_time - timedelta(minutes=1)
+                length = "100"
+                usdjpy_sma100 = get_sma(self.instrument, target_time, table_type, length, self.mysql_connector)
+                sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
+                response = self.mysql_connector.select_sql(sql)
+                usdjpy_closeprice = (response[0][0] + response[0][1]) / 2
+
                 usdjpy_flag = "pass"
-                if usdjpy_price < predict_object["usdjpy1m"] and usdjpy_price < predict_object["usdjpy5m"] and usdjpy_price < predict_object["usdjpy1h"]:
+                if usdjpy_price < predict_object["usdjpy5m"] and usdjpy_price < predict_object["usdjpy1h"]:
                     usdjpy_flag = "buy"
-                elif usdjpy_price > predict_object["usdjpy1m"] and usdjpy_price > predict_object["usdjpy5m"] and usdjpy_price > predict_object["usdjpy1h"]:
+                elif usdjpy_price > predict_object["usdjpy5m"] and usdjpy_price > predict_object["usdjpy1h"]:
                     usdjpy_flag = "sell"
 
 
                 eurusd_flag = "pass"
-                if eurusd_price < predict_object["eurusd1m"] and eurusd_price < predict_object["eurusd5m"] and eurusd_price < predict_object["eurusd1h"]:
-                    eurusd_flag = "buy"
-                elif eurusd_price > predict_object["eurusd1m"] and eurusd_price > predict_object["eurusd5m"] and eurusd_price > predict_object["eurusd1h"]:
+                if eurusd_price < predict_object["eurusd5m"] and eurusd_price < predict_object["eurusd1h"]:
                     eurusd_flag = "sell"
+                elif eurusd_price > predict_object["eurusd5m"] and eurusd_price > predict_object["eurusd1h"]:
+                    eurusd_flag = "buy"
 
                 gbpusd_flag = "pass"
-                if gbpusd_price < predict_object["gbpusd1m"] and gbpusd_price < predict_object["gbpusd5m"] and gbpusd_price < predict_object["gbpusd1h"]:
-                    gbpusd_flag = "buy"
-                elif gbpusd_price > predict_object["gbpusd1m"] and gbpusd_price > predict_object["gbpusd5m"] and gbpusd_price > predict_object["gbpusd1h"]:
+                if gbpusd_price < predict_object["gbpusd5m"] and gbpusd_price < predict_object["gbpusd1h"]:
                     gbpusd_flag = "sell"
+                elif gbpusd_price > predict_object["gbpusd5m"] and gbpusd_price > predict_object["gbpusd1h"]:
+                    gbpusd_flag = "buy"
 
-                if usdjpy_flag == "buy" and eurusd_flag == "buy" and gbpusd_flag == "buy":
+                if usdjpy_flag == "buy" and eurusd_flag == "buy" and usdjpy_sma100 < usdjpy_closeprice:
                     trade_flag = "buy"
-                elif usdjpy_flag == "sell" and eurusd_flag == "sell" and gbpusd_flag == "sell":
+                elif usdjpy_flag == "sell" and eurusd_flag == "sell" and usdjpy_sma100 > usdjpy_closeprice:
                     trade_flag = "sell"
 
        
@@ -311,7 +319,8 @@ class Scalping(SuperAlgo):
                     self.result_logger.info("# ORDER_EXE: %s: gbpusd1m=%s" % (base_time, predict_object["gbpusd1m"]))
                     self.result_logger.info("# ORDER_EXE: %s: gbpusd5m=%s" % (base_time, predict_object["gbpusd5m"]))
                     self.result_logger.info("# ORDER_EXE: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
-                    self.result_logger.info("# ORDER_EXE: %s: gbpjpy_price=%s" % (base_time, gbpjpy_price))
+                    self.result_logger.info("# ORDER_EXE: %s: usdjpy_sma100=%s" % (base_time, usdjpy_sma100))
+                    self.result_logger.info("# ORDER_EXE: %s: usdjpy_closeprice=%s" % (base_time, usdjpy_closeprice))
                     self.result_logger.info("# ORDER_EXE: %s: trade_flag=%s" % (base_time, trade_flag))
                 else:
                     self.entry_time = base_time
@@ -327,7 +336,8 @@ class Scalping(SuperAlgo):
                     self.result_logger.info("# ORDER_PASS: %s: gbpusd1m=%s" % (base_time, predict_object["gbpusd1m"]))
                     self.result_logger.info("# ORDER_PASS: %s: gbpusd5m=%s" % (base_time, predict_object["gbpusd5m"]))
                     self.result_logger.info("# ORDER_PASS: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
-                    self.result_logger.info("# ORDER_PASS: %s: gbpjpy_price=%s" % (base_time, gbpjpy_price))
+                    self.result_logger.info("# ORDER_PASS: %s: usdjpy_sma100=%s" % (base_time, usdjpy_sma100))
+                    self.result_logger.info("# ORDER_PASS: %s: usdjpy_closeprice=%s" % (base_time, usdjpy_closeprice))
                     self.result_logger.info("# ORDER_PASS: %s: trade_flag=%s" % (base_time, trade_flag))
  
         return trade_flag

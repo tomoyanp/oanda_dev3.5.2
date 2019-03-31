@@ -33,11 +33,58 @@ from keras.layers import Dropout
 from keras.models import model_from_json
 
 from sklearn.preprocessing import MinMaxScaler
-from multi_model import get_original_dataset
 import json
 
 
 mysql_connector = MysqlConnector()
+
+
+def get_original_dataset(target_time, table_type, span, direct, instruments):
+    target_time = target_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    if direct == "ASC" or direct == "asc":
+        where_statement = "insert_time > \'%s\'" % target_time
+    else:
+        where_statement = "insert_time <= \'%s\'" % target_time
+
+    close_price_list = []
+    high_price_list = []
+    low_price_list = []
+    insert_time_list = []
+
+
+    train_original_sql = "select close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time from %s_%s_TABLE where %s order by insert_time %s limit %s" % (instruments, table_type, where_statement, direct, span)
+    response = mysql_connector.select_sql(train_original_sql)
+
+
+    for res in response:
+        close_price_list.append((res[0]+res[1])/2)
+        high_price_list.append((res[2]+res[3])/2)
+        low_price_list.append((res[4]+res[5])/2)
+        insert_time_list.append(res[6])
+
+    if direct == "ASC" or direct == "asc":
+        pass
+    else:
+        close_price_list.reverse()
+        high_price_list.reverse()
+        low_price_list.reverse()
+        insert_time_list.reverse()
+        print("#########################")
+        print(insert_time_list[0])
+
+    tmp_original_dataset = {
+        "close_price": close_price_list,
+        "high_price": high_price_list,
+        "low_price": low_price_list,
+        "insert_time": insert_time_list
+    }
+
+
+    tmp_dataframe = pd.DataFrame(tmp_original_dataset)
+
+    return tmp_dataframe
+
 
 def build_to_normalization( dataset):
     tmp_df = pd.DataFrame(dataset)
@@ -218,7 +265,7 @@ def predict_value(base_time, learning_model, window_size, table_type, output_tra
     target_time = base_time
 
     # パーフェクトオーダーが出てるときだけを教師データとして入力する
-    tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC")
+    tmp_dataframe = get_original_dataset(target_time, table_type, span=window_size, direct="DESC", instruments=instruments)
 
     # 正規化を戻したいので、高値安値を押さえておく
     output_max_price = max(tmp_dataframe[right_string])

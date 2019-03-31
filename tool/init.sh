@@ -8,5 +8,6 @@ mkdir ../onfile/multi
 mkdir ../onfile/multi_evolv
 mkdir ../onfile/volatility
 mkdir ../onfile/lstm
+mkdir ../onfile/scalping
 mkdir ../model
 cp /property/* ../property

@@ -177,46 +177,47 @@ class LstmAlgo(SuperAlgo):
 
 
     def decideReverseStl(self, stl_flag, base_time):
+        seconds = base_time.second
         if 15 < seconds < 30:
             target_time = base_time
             self.set_current_price(target_time)
 
-        if self.order_flag:
-            hour = base_time.hour
-            minutes = base_time.minute
-            seconds = base_time.second
-
-
-            hour = base_time.hour
-            minutes = base_time.minute
-            seconds = base_time.second
-
-            if minutes == 0 and seconds < 10:
-
-                term = self.decideTerm(hour)
-                if term == "morning":
-                    model_1h = self.learning_model1h_morning
-                    model_5m = self.learning_model5m_morning
-                elif term == "daytime":
-                    model_1h = self.learning_model1h_daytime
-                    model_5m = self.learning_model5m_daytime
-                elif term == "night":
-                    model_1h = self.learning_model1h_night
-                    model_5m = self.learning_model5m_night
-
-                self.predict_value1h = self.predict_value(base_time, model_1h, window_size=24, table_type="1h", output_train_index=1)
-                self.predict_value5m = self.predict_value(base_time, model_5m, window_size=8*12, table_type="5m", output_train_index=12)
-
-                if self.order_kind == "buy":
-                    if self.predict_value5m > self.ask_price and self.predict_value1h > self.ask_price:
-                        pass
-                    else:
-                        stl_flag = True
-                elif self.order_kind == "sell":
-                    if self.predict_value5m < self.bid_price and self.predict_value1h < self.bid_price:
-                        pass
-                    else:
-                        stl_flag = True
+#        if self.order_flag:
+#            hour = base_time.hour
+#            minutes = base_time.minute
+#            seconds = base_time.second
+#
+#
+#            hour = base_time.hour
+#            minutes = base_time.minute
+#            seconds = base_time.second
+#
+#            if minutes == 0 and seconds < 10:
+#
+#                term = self.decideTerm(hour)
+#                if term == "morning":
+#                    model_1h = self.learning_model1h_morning
+#                    model_5m = self.learning_model5m_morning
+#                elif term == "daytime":
+#                    model_1h = self.learning_model1h_daytime
+#                    model_5m = self.learning_model5m_daytime
+#                elif term == "night":
+#                    model_1h = self.learning_model1h_night
+#                    model_5m = self.learning_model5m_night
+#
+#                self.predict_value1h = self.predict_value(base_time, model_1h, window_size=24, table_type="1h", output_train_index=1)
+#                self.predict_value5m = self.predict_value(base_time, model_5m, window_size=8*12, table_type="5m", output_train_index=12)
+#
+#                if self.order_kind == "buy":
+#                    if self.predict_value5m > self.ask_price and self.predict_value1h > self.ask_price:
+#                        pass
+#                    else:
+#                        stl_flag = True
+#                elif self.order_kind == "sell":
+#                    if self.predict_value5m < self.bid_price and self.predict_value1h < self.bid_price:
+#                        pass
+#                    else:
+#                        stl_flag = True
 
         return stl_flag
 

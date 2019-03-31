@@ -190,7 +190,7 @@ class TradeWrapper:
         else:
             trade_id = self.trade_algo.getTradeId()
             response = self.oanda_wrapper.close_trade(self.instrument)
-            stl_price = response["price"]
+            stl_price = response["orderFillTransaction"]["price"]
             self.trade_algo.setStlPrice(stl_price)
 
         profit, sleep_time = self.trade_algo.calcProfit()

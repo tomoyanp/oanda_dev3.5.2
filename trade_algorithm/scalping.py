@@ -300,6 +300,7 @@ class Scalping(SuperAlgo):
                     index = index + 1    
 
                 sma100_list.reverse()
+                self.debug_logger.info(sma100_list)
                 usdjpy_sma100_slope = getSlope(sma100_list)
 
                 if self.first_trade_flag == "buy" and usdjpy_sma100 < usdjpy_closeprice and 0 < usdjpy_sma100_slope:

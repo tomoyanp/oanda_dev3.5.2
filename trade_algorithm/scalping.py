@@ -254,38 +254,39 @@ class Scalping(SuperAlgo):
                     self.first_trade_flag = "buy"
                     self.first_trade_time = base_time
 
-                    self.setLogObject("1", "# ORDER_EXE: %s: usdjpy_price=%s" % (base_time, usdjpy_price))
-                    self.setLogObject("2", "# ORDER_EXE: %s: usdjpy1m=%s" % (base_time, predict_object["usdjpy1m"]))
-                    self.setLogObject("3", "# ORDER_EXE: %s: usdjpy5m=%s" % (base_time, predict_object["usdjpy5m"]))
-                    self.setLogObject("4", "# ORDER_EXE: %s: usdjpy1h=%s" % (base_time, predict_object["usdjpy1h"]))
-                    self.setLogObject("5", "# ORDER_EXE: %s: eurusd_price=%s" % (base_time, eurusd_price))
-                    self.setLogObject("6", "# ORDER_EXE: %s: eurusd1m=%s" % (base_time, predict_object["eurusd1m"]))
-                    self.setLogObject("7", "# ORDER_EXE: %s: eurusd5m=%s" % (base_time, predict_object["eurusd5m"]))
-                    self.setLogObject("8", "# ORDER_EXE: %s: eurusd1h=%s" % (base_time, predict_object["eurusd1h"]))
-                    self.setLogObject("9", "# ORDER_EXE: %s: gbpusd_price=%s" % (base_time, gbpusd_price))
-                    self.setLogObject("10", "# ORDER_EXE: %s: gbpusd1m=%s" % (base_time, predict_object["gbpusd1m"]))
-                    self.setLogObject("11", "# ORDER_EXE: %s: gbpusd5m=%s" % (base_time, predict_object["gbpusd5m"]))
-                    self.setLogObject("12", "# ORDER_EXE: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
-                    self.setLogObject("13", "# ORDER_EXE: %s: frist_trade_time=%s" % (base_time, self.first_trade_time))
+                    self.setLogObject("A", "# ORDER_EXE: %s: usdjpy_price=%s" % (base_time, usdjpy_price))
+                    self.setLogObject("B", "# ORDER_EXE: %s: usdjpy1m=%s" % (base_time, predict_object["usdjpy1m"]))
+                    self.setLogObject("C", "# ORDER_EXE: %s: usdjpy5m=%s" % (base_time, predict_object["usdjpy5m"]))
+                    self.setLogObject("D", "# ORDER_EXE: %s: usdjpy1h=%s" % (base_time, predict_object["usdjpy1h"]))
+                    self.setLogObject("E", "# ORDER_EXE: %s: eurusd_price=%s" % (base_time, eurusd_price))
+                    self.setLogObject("F", "# ORDER_EXE: %s: eurusd1m=%s" % (base_time, predict_object["eurusd1m"]))
+                    self.setLogObject("G", "# ORDER_EXE: %s: eurusd5m=%s" % (base_time, predict_object["eurusd5m"]))
+                    self.setLogObject("H", "# ORDER_EXE: %s: eurusd1h=%s" % (base_time, predict_object["eurusd1h"]))
+                    self.setLogObject("I", "# ORDER_EXE: %s: gbpusd_price=%s" % (base_time, gbpusd_price))
+                    self.setLogObject("J", "# ORDER_EXE: %s: gbpusd1m=%s" % (base_time, predict_object["gbpusd1m"]))
+                    self.setLogObject("K", "# ORDER_EXE: %s: gbpusd5m=%s" % (base_time, predict_object["gbpusd5m"]))
+                    self.setLogObject("L", "# ORDER_EXE: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
+                    self.setLogObject("M", "# ORDER_EXE: %s: frist_trade_time=%s" % (base_time, self.first_trade_time))
 
                 elif usdjpy_flag == "sell" and eurusd_flag == "sell":
                     self.first_trade_flag = "sell"
                     self.first_trade_time = base_time
 
-                    self.setLogObject("1", "# ORDER_EXE: %s: usdjpy_price=%s" % (base_time, usdjpy_price))
-                    self.setLogObject("2", "# ORDER_EXE: %s: usdjpy1m=%s" % (base_time, predict_object["usdjpy1m"]))
-                    self.setLogObject("3", "# ORDER_EXE: %s: usdjpy5m=%s" % (base_time, predict_object["usdjpy5m"]))
-                    self.setLogObject("4", "# ORDER_EXE: %s: usdjpy1h=%s" % (base_time, predict_object["usdjpy1h"]))
-                    self.setLogObject("5", "# ORDER_EXE: %s: eurusd_price=%s" % (base_time, eurusd_price))
-                    self.setLogObject("6", "# ORDER_EXE: %s: eurusd1m=%s" % (base_time, predict_object["eurusd1m"]))
-                    self.setLogObject("7", "# ORDER_EXE: %s: eurusd5m=%s" % (base_time, predict_object["eurusd5m"]))
-                    self.setLogObject("8", "# ORDER_EXE: %s: eurusd1h=%s" % (base_time, predict_object["eurusd1h"]))
-                    self.setLogObject("9", "# ORDER_EXE: %s: gbpusd_price=%s" % (base_time, gbpusd_price))
-                    self.setLogObject("10", "# ORDER_EXE: %s: gbpusd1m=%s" % (base_time, predict_object["gbpusd1m"]))
-                    self.setLogObject("11", "# ORDER_EXE: %s: gbpusd5m=%s" % (base_time, predict_object["gbpusd5m"]))
-                    self.setLogObject("12", "# ORDER_EXE: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
-                    self.setLogObject("13", "# ORDER_EXE: %s: frist_trade_time=%s" % (base_time, self.first_trade_time))
- 
+                    self.setLogObject("A", "# ORDER_EXE: %s: usdjpy_price=%s" % (base_time, usdjpy_price))
+                    self.setLogObject("B", "# ORDER_EXE: %s: usdjpy1m=%s" % (base_time, predict_object["usdjpy1m"]))
+                    self.setLogObject("C", "# ORDER_EXE: %s: usdjpy5m=%s" % (base_time, predict_object["usdjpy5m"]))
+                    self.setLogObject("D", "# ORDER_EXE: %s: usdjpy1h=%s" % (base_time, predict_object["usdjpy1h"]))
+                    self.setLogObject("E", "# ORDER_EXE: %s: eurusd_price=%s" % (base_time, eurusd_price))
+                    self.setLogObject("F", "# ORDER_EXE: %s: eurusd1m=%s" % (base_time, predict_object["eurusd1m"]))
+                    self.setLogObject("G", "# ORDER_EXE: %s: eurusd5m=%s" % (base_time, predict_object["eurusd5m"]))
+                    self.setLogObject("H", "# ORDER_EXE: %s: eurusd1h=%s" % (base_time, predict_object["eurusd1h"]))
+                    self.setLogObject("I", "# ORDER_EXE: %s: gbpusd_price=%s" % (base_time, gbpusd_price))
+                    self.setLogObject("J", "# ORDER_EXE: %s: gbpusd1m=%s" % (base_time, predict_object["gbpusd1m"]))
+                    self.setLogObject("K", "# ORDER_EXE: %s: gbpusd5m=%s" % (base_time, predict_object["gbpusd5m"]))
+                    self.setLogObject("L", "# ORDER_EXE: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
+                    self.setLogObject("M", "# ORDER_EXE: %s: frist_trade_time=%s" % (base_time, self.first_trade_time))
+
+
 
                 sma100_list = []
                 table_type = "1m"
@@ -312,10 +313,10 @@ class Scalping(SuperAlgo):
 
                 if trade_flag != "pass":
                     self.entry_time = base_time
-                    self.setLogObject("14", "# ORDER_EXE: %s: usdjpy_sma100=%s" % (base_time, usdjpy_sma100))
-                    self.setLogObject("15", "# ORDER_EXE: %s: usdjpy_sma100_slope=%s" % (base_time, usdjpy_sma100_slope))
-                    self.setLogObject("16", "# ORDER_EXE: %s: usdjpy_closeprice=%s" % (base_time, usdjpy_closeprice))
-                    self.setLogObject("17", "# ORDER_EXE: %s: trade_flag=%s" % (base_time, trade_flag))
+                    self.setLogObject("N", "# ORDER_EXE: %s: usdjpy_sma100=%s" % (base_time, usdjpy_sma100))
+                    self.setLogObject("O", "# ORDER_EXE: %s: usdjpy_sma100_slope=%s" % (base_time, usdjpy_sma100_slope))
+                    self.setLogObject("P", "# ORDER_EXE: %s: usdjpy_closeprice=%s" % (base_time, usdjpy_closeprice))
+                    self.setLogObject("Q", "# ORDER_EXE: %s: trade_flag=%s" % (base_time, trade_flag))
  
         return trade_flag
 

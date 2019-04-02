@@ -20,7 +20,7 @@ np.set_printoptions(threshold=np.inf)
 import matplotlib.pyplot as plt
 plt.switch_backend("agg")
 
-from common import get_sma
+from common import get_sma, getSlope
 from lstm_wrapper import LstmWrapper
 
 import json
@@ -298,12 +298,35 @@ class Scalping(SuperAlgo):
                 elif gbpusd_price > predict_object["gbpusd5m"] and gbpusd_price > predict_object["gbpusd1h"]:
                     gbpusd_flag = "buy"
 
-                if usdjpy_flag == "buy" and eurusd_flag == "buy" and usdjpy_sma100 < usdjpy_closeprice:
+                if usdjpy_flag == "buy" and eurusd_flag == "buy":
+                    self.first_trade_flag = "buy"
+                    self.first_trade_time = base_time
+                elif usdjpy_flag == "sell" and eurusd_flag == "sell":
+                    self.first_trade_flag = "sell"
+                    self.first_trade_time = base_time
+
+
+                #sma100_list = []
+                #table_type = "1m"
+                #for i in range(1, 11):
+                #    target_time = base_time - timedelta(minutes=i)
+                #    length = "100"
+                #    usdjpy_sma100 = get_sma(self.instrument, target_time, table_type, length, self.mysql_connector)
+                #    sma100_list.append(usdjpy_sma100)
+
+                #sma100_list.reverse()
+                #usdjpy_sma100_slope = getSlope(sma100_list)
+
+                #if self.first_trade_flag == "buy" and usdjpy_sma100 < usdjpy_closeprice and 0 < usdjpy_sma100_slope:
+                if self.first_trade_flag == "buy" and usdjpy_sma100 < usdjpy_closeprice: 
                     trade_flag = "buy"
-                elif usdjpy_flag == "sell" and eurusd_flag == "sell" and usdjpy_sma100 > usdjpy_closeprice:
+                #elif self.first_trade_flag == "sell" and usdjpy_sma100 > usdjpy_closeprice and 0 > usdjpy_sma100_slope:
+                elif self.first_trade_flag == "sell" and usdjpy_sma100 > usdjpy_closeprice: 
                     trade_flag = "sell"
 
-       
+                if self.first_trade_flag != "":
+                    if self.first_trade_time + timedelta(minutes=10) < base_time:
+                        self.resetFlag()
 
                 if trade_flag != "pass":
                     self.entry_time = base_time
@@ -320,7 +343,9 @@ class Scalping(SuperAlgo):
                     self.result_logger.info("# ORDER_EXE: %s: gbpusd5m=%s" % (base_time, predict_object["gbpusd5m"]))
                     self.result_logger.info("# ORDER_EXE: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
                     self.result_logger.info("# ORDER_EXE: %s: usdjpy_sma100=%s" % (base_time, usdjpy_sma100))
+                    #self.result_logger.info("# ORDER_EXE: %s: usdjpy_sma100_slope=%s" % (base_time, usdjpy_sma100_slope))
                     self.result_logger.info("# ORDER_EXE: %s: usdjpy_closeprice=%s" % (base_time, usdjpy_closeprice))
+                    self.result_logger.info("# ORDER_EXE: %s: frist_trade_time=%s" % (base_time, self.first_trade_time))
                     self.result_logger.info("# ORDER_EXE: %s: trade_flag=%s" % (base_time, trade_flag))
                 else:
                     self.entry_time = base_time
@@ -337,7 +362,10 @@ class Scalping(SuperAlgo):
                     self.result_logger.info("# ORDER_PASS: %s: gbpusd5m=%s" % (base_time, predict_object["gbpusd5m"]))
                     self.result_logger.info("# ORDER_PASS: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
                     self.result_logger.info("# ORDER_PASS: %s: usdjpy_sma100=%s" % (base_time, usdjpy_sma100))
+                    #self.result_logger.info("# ORDER_PASS: %s: usdjpy_sma100_slope=%s" % (base_time, usdjpy_sma100_slope))
                     self.result_logger.info("# ORDER_PASS: %s: usdjpy_closeprice=%s" % (base_time, usdjpy_closeprice))
+                    self.result_logger.info("# ORDER_PASS: %s: frist_trade_time=%s" % (base_time, self.first_trade_time))
+                    self.result_logger.info("# ORDER_PASS: %s: trade_flag=%s" % (base_time, trade_flag))
                     self.result_logger.info("# ORDER_PASS: %s: trade_flag=%s" % (base_time, trade_flag))
  
         return trade_flag

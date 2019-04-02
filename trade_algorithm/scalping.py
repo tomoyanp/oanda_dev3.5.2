@@ -83,7 +83,7 @@ class Scalping(SuperAlgo):
 
             else:
                 # if spread rate is greater than 0.5, we will have no entry
-                if (self.ask_price - self.bid_price) >= 0.01:
+                if (self.ask_price - self.bid_price) >= 0.02:
                     pass
 
                 else:
@@ -91,6 +91,10 @@ class Scalping(SuperAlgo):
 
 
             #trade_flag = "buy"
+            self.debug_logger.info("%s: pass" % base_time)
+            #self.debug_logger.info(self.ask_price)
+            #self.debug_logger.info(self.bid_price)
+            #self.debug_logger.info(self.ask_price - self.bid_price)
             return trade_flag
         except:
             raise

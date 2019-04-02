@@ -20,7 +20,7 @@ np.set_printoptions(threshold=np.inf)
 import matplotlib.pyplot as plt
 plt.switch_backend("agg")
 
-from common import get_sma
+from common import get_sma, getBollingerDataSet
 from lstm_wrapper import LstmWrapper
 
 import json
@@ -88,7 +88,7 @@ class Scalping(SuperAlgo):
 
             else:
                 # if spread rate is greater than 0.5, we will have no entry
-                if (self.ask_price - self.bid_price) >= 0.05:
+                if (self.ask_price - self.bid_price) >= 0.02:
                     pass
 
                 else:
@@ -268,6 +268,26 @@ class Scalping(SuperAlgo):
             seconds = base_time.second
 
             if 0 < seconds <= 10:
+
+                window_size = 21
+                sigma_valiable = 2
+                table_type = "5m"
+                target_time = base_time - timedelta(minutes=5)
+                sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (self.instrument, table_type, target_time, window_size)
+                response = self.mysql_connector.select_sql(sql)
+                
+                price_list = []
+                for res in response:
+                    price_list.append((res[0]+res[1])/2)
+                price_list.reverse()
+                
+                dataset =  getBollingerDataSet(price_list, window_size, sigma_valiable)
+                upper_sigma = dataset["upper_sigmas"][-1]
+                lower_sigma = dataset["lower_sigmas"][-1]
+
+
+
+
                 predict_object = self.predictPrice(base_time)
                 usdjpy_price, eurusd_price, gbpusd_price, gbpjpy_price = self.get_current_price(base_time)
 
@@ -298,9 +318,17 @@ class Scalping(SuperAlgo):
                 elif gbpusd_price > predict_object["gbpusd5m"] and gbpusd_price > predict_object["gbpusd1h"]:
                     gbpusd_flag = "buy"
 
-                if usdjpy_flag == "buy" and eurusd_flag == "buy" and usdjpy_sma100 < usdjpy_closeprice:
+                if usdjpy_flag == "buy" and eurusd_flag == "buy":
+                    self.first_trade_flag = "buy"
+                    self.first_trade_time = base_time
+                elif usdjpy_flag == "sell" and eurusd_flag == "sell":
+                    self.first_trade_flag = "sell"
+                    self.first_trade_time = base_time
+
+
+                if self.first_trade_flag  == "buy" and usdjpy_sma100 < usdjpy_closeprice and upper_sigma - usdjpy_price > 0.05:
                     trade_flag = "buy"
-                elif usdjpy_flag == "sell" and eurusd_flag == "sell" and usdjpy_sma100 > usdjpy_closeprice:
+                elif self.first_trade_flag  == "sell" and usdjpy_sma100 > usdjpy_closeprice and usdjpy_price - lower_sigma > 0.05:
                     trade_flag = "sell"
 
        
@@ -321,6 +349,9 @@ class Scalping(SuperAlgo):
                     self.result_logger.info("# ORDER_EXE: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
                     self.result_logger.info("# ORDER_EXE: %s: usdjpy_sma100=%s" % (base_time, usdjpy_sma100))
                     self.result_logger.info("# ORDER_EXE: %s: usdjpy_closeprice=%s" % (base_time, usdjpy_closeprice))
+                    self.result_logger.info("# ORDER_EXE: %s: upper_sigma=%s" % (base_time, upper_sigma))
+                    self.result_logger.info("# ORDER_EXE: %s: lower_sigma=%s" % (base_time, lower_sigma))
+                    self.result_logger.info("# ORDER_EXE: %s: first_trade_time=%s" % (base_time, self.first_trade_time))
                     self.result_logger.info("# ORDER_EXE: %s: trade_flag=%s" % (base_time, trade_flag))
                 else:
                     self.entry_time = base_time
@@ -338,6 +369,9 @@ class Scalping(SuperAlgo):
                     self.result_logger.info("# ORDER_PASS: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
                     self.result_logger.info("# ORDER_PASS: %s: usdjpy_sma100=%s" % (base_time, usdjpy_sma100))
                     self.result_logger.info("# ORDER_PASS: %s: usdjpy_closeprice=%s" % (base_time, usdjpy_closeprice))
+                    self.result_logger.info("# ORDER_PASS: %s: upper_sigma=%s" % (base_time, upper_sigma))
+                    self.result_logger.info("# ORDER_PASS: %s: lower_sigma=%s" % (base_time, lower_sigma))
+                    self.result_logger.info("# ORDER_PASS: %s: first_trade_time=%s" % (base_time, self.first_trade_time))
                     self.result_logger.info("# ORDER_PASS: %s: trade_flag=%s" % (base_time, trade_flag))
  
         return trade_flag

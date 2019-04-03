@@ -311,14 +311,16 @@ def getSlope(target_list):
     index_list = []
     tmp_list = []
 
-    for i in range(1, len(target_list)+1):
-        index_list.append(float(i)/10)
-
-    price_list = np.array(target_list)
-    index_list = np.array(index_list)
-
-    z = np.polyfit(index_list, price_list, 1)
-    slope, intercept = np.poly1d(z)
+    slope = np.gradient([target_list[0], target_list[-1]])[0]
+    print(slope)
+#    for i in range(1, len(target_list)+1):
+#        index_list.append(float(i)/10)
+#
+#    price_list = np.array(target_list)
+#    index_list = np.array(index_list)
+#
+#    z = np.polyfit(index_list, price_list, 1)
+#    slope, intercept = np.poly1d(z)
 
     return slope
 

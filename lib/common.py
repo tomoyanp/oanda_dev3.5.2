@@ -88,11 +88,17 @@ def calculate_time(base_time, instruments, table_type, con, index):
 
     return cal_time
  
-def change_basetime(base_time, table_type):
-    if table_type == "1m":
+def change_to_targettime(base_time, table_type):
+    if table_type == "5s":
+        target_time = base_time - timedelta(seconds=5)
+    elif table_type == "1m":
         target_time = base_time - timedelta(minutes=1)
     elif table_type == "5m":
         target_time = base_time - timedelta(minutes=5)
+    elif table_type == "15m":
+        target_time = base_time - timedelta(minutes=15)
+    elif table_type == "30m":
+        target_time = base_time - timedelta(minutes=30)
     elif table_type == "1h":
         target_time = base_time - timedelta(hours=1)
     elif table_type == "3h":
@@ -101,11 +107,37 @@ def change_basetime(base_time, table_type):
         target_time = base_time - timedelta(hours=8)
     elif table_type == "day":
         target_time = base_time - timedelta(days=1)
+    else:
+        raise
 
     return target_time
 
-def get_sma(instrument, base_time, table_type, length, con):
-    target_time = change_basetime(base_time, table_type)
+def change_to_nexttime(base_time, table_type, index):
+    if table_type == "5s":
+        target_time = base_time + timedelta(seconds=5*index)
+    elif table_type == "1m":
+        target_time = base_time + timedelta(minutes=1*index)
+    elif table_type == "5m":
+        target_time = base_time + timedelta(minutes=5*index)
+    elif table_type == "15m":
+        target_time = base_time + timedelta(minutes=15*index)
+    elif table_type == "30m":
+        target_time = base_time + timedelta(minutes=30*index)
+    elif table_type == "1h":
+        target_time = base_time + timedelta(hours=1*index)
+    elif table_type == "3h":
+        target_time = base_time + timedelta(hours=3*index)
+    elif table_type == "8h":
+        target_time = base_time + timedelta(hours=8*index)
+    elif table_type == "day":
+        target_time = base_time + timedelta(days=1*index)
+    else:
+        raise
+
+    return target_time
+
+
+def get_sma(instrument, target_time, table_type, length, con):
     sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (instrument, table_type, target_time, length)
 
     response = con.select_sql(sql)
@@ -219,7 +251,17 @@ def decideMarket(base_time):
 
     return flag
 
-def getBollingerDataSet(price_list, window_size, sigma_valiable):
+def get_bollinger(con, instrument, targettime, tabletype, window_size, sigma_valiable):
+    sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (
+            instrument, tabletype, window_size)
+    response = con.select_sql(sql)
+
+    price_list = []
+    for res in response:
+        price_list.append((res[0]+res[1])/2)
+
+    price_list.reverse()
+
     # pandasの形式に変換
     price_list = pd.Series(price_list)
 
@@ -240,6 +282,11 @@ def getBollingerDataSet(price_list, window_size, sigma_valiable):
                  "lower_sigmas": lower_sigmas,
                  "base_lines": base }
     return data_set
+
+def change_to_ptime(target_time):
+    target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
+
+    return target_time
 
 def extraBollingerDataSet(data_set, sigma_length, candle_width):
     # 過去5本分（50分）のsigmaだけ抽出

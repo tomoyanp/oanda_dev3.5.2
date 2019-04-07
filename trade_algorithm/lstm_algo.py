@@ -20,11 +20,9 @@
 
 from super_algo import SuperAlgo
 from mysql_connector import MysqlConnector
-from datetime import timedelta, datetime
+from datetime import timedelta
 from logging import getLogger
 
-import traceback
-import subprocess
 import os
 
 import pandas as pd
@@ -38,17 +36,10 @@ np.set_printoptions(threshold=np.inf)
 import matplotlib.pyplot as plt
 plt.switch_backend("agg")
 
-from keras.models import Sequential
-from keras.layers import Activation, Dense
-from keras.layers import LSTM
-from keras.layers import Dropout
 from keras.models import model_from_json
 
-from sklearn.preprocessing import MinMaxScaler
-from lstm_model_wrapper import predict_value
 from common import get_sma
-
-import json
+from lstm_wrapper import LstmWrapper
 
 
 class LstmAlgo(SuperAlgo):
@@ -90,26 +81,26 @@ class LstmAlgo(SuperAlgo):
         self.usdjpy_sma = None
         self.eurusd_sma = None
         self.eurjpy_sma = None
+
+        self.window_size = 10
+        self.output_train_index = 1
+        self.neurons = 400
+        self.epochs = 20
+        self.usdjpy_lstm_wrapper = LstmWrapper(self.neurons, self.window_size, "USD_JPY")
+        self.eurusd_lstm_wrapper = LstmWrapper(self.neurons, self.window_size, "EUR_USD")
+        self.eurjpy_lstm_wrapper = LstmWrapper(self.neurons, self.window_size, "EUR_JPY")
         
-        self.usdjpy_1hmodel = self.load_model(model_filename="multi_model_USD_JPY_1h.json", weights_filename="multi_model_USD_JPY_1h.hdf5")
-        self.usdjpy_3hmodel = self.load_model(model_filename="multi_model_USD_JPY_3h.json", weights_filename="multi_model_USD_JPY_3h.hdf5")
-        self.usdjpy_daymodel = self.load_model(model_filename="multi_model_USD_JPY_day.json", weights_filename="multi_model_USD_JPY_day.hdf5")
+        self.usdjpy_1hmodel = self.load_model(model_filename="multi_model_USD_JPY_1h")
+        self.usdjpy_3hmodel = self.load_model(model_filename="multi_model_USD_JPY_3h")
+        self.usdjpy_daymodel = self.load_model(model_filename="multi_model_USD_JPY_day")
 
-        self.eurusd_1hmodel = self.load_model(model_filename="multi_model_EUR_USD_1h.json", weights_filename="multi_model_EUR_USD_1h.hdf5")
-        self.eurusd_3hmodel = self.load_model(model_filename="multi_model_EUR_USD_3h.json", weights_filename="multi_model_EUR_USD_3h.hdf5")
-        self.eurusd_daymodel = self.load_model(model_filename="multi_model_EUR_USD_day.json", weights_filename="multi_model_EUR_USD_day.hdf5")
+        self.eurusd_1hmodel = self.load_model(model_filename="multi_model_EUR_USD_1h")
+        self.eurusd_3hmodel = self.load_model(model_filename="multi_model_EUR_USD_3h")
+        self.eurusd_daymodel = self.load_model(model_filename="multi_model_EUR_USD_day")
 
-        self.gbpusd_1hmodel = self.load_model(model_filename="multi_model_GBP_USD_1h.json", weights_filename="multi_model_GBP_USD_1h.hdf5")
-        self.gbpusd_3hmodel = self.load_model(model_filename="multi_model_GBP_USD_3h.json", weights_filename="multi_model_GBP_USD_3h.hdf5")
-        self.gbpusd_daymodel = self.load_model(model_filename="multi_model_GBP_USD_day.json", weights_filename="multi_model_GBP_USD_day.hdf5")
-
-        self.gbpjpy_1hmodel = self.load_model(model_filename="multi_model_GBP_JPY_1h.json", weights_filename="multi_model_GBP_JPY_1h.hdf5")
-        self.gbpjpy_3hmodel = self.load_model(model_filename="multi_model_GBP_JPY_3h.json", weights_filename="multi_model_GBP_JPY_3h.hdf5")
-        self.gbpjpy_daymodel = self.load_model(model_filename="multi_model_GBP_JPY_day.json", weights_filename="multi_model_GBP_JPY_day.hdf5")
-
-        self.eurjpy_1hmodel = self.load_model(model_filename="multi_model_EUR_JPY_1h.json", weights_filename="multi_model_EUR_JPY_1h.hdf5")
-        self.eurjpy_3hmodel = self.load_model(model_filename="multi_model_EUR_JPY_3h.json", weights_filename="multi_model_EUR_JPY_3h.hdf5")
-        self.eurjpy_daymodel = self.load_model(model_filename="multi_model_EUR_JPY_day.json", weights_filename="multi_model_EUR_JPY_day.hdf5")
+        self.eurjpy_1hmodel = self.load_model(model_filename="multi_model_EUR_JPY_1h")
+        self.eurjpy_3hmodel = self.load_model(model_filename="multi_model_EUR_JPY_3h")
+        self.eurjpy_daymodel = self.load_model(model_filename="multi_model_EUR_JPY_day")
 
 
 
@@ -119,8 +110,6 @@ class LstmAlgo(SuperAlgo):
         try:
             weekday = base_time.weekday()
             hour = base_time.hour
-            minutes = base_time.minute
-            seconds = base_time.second
             current_price = self.getCurrentPrice()
 
             # if weekday == Saturday, we will have no entry.
@@ -153,8 +142,6 @@ class LstmAlgo(SuperAlgo):
                 if ex_stlmode == "on":
                     weekday = base_time.weekday()
                     hour = base_time.hour
-                    minutes = base_time.minute
-                    seconds = base_time.second
                     current_price = self.getCurrentPrice()
 
                     self.updatePrice(current_price)
@@ -177,6 +164,7 @@ class LstmAlgo(SuperAlgo):
 
 
     def decideReverseStl(self, stl_flag, base_time):
+<<<<<<< HEAD
         seconds = base_time.second
         if 15 < seconds < 30:
             target_time = base_time
@@ -218,6 +206,11 @@ class LstmAlgo(SuperAlgo):
 #                        pass
 #                    else:
 #                        stl_flag = True
+        if self.order_flag:
+            seconds = base_time.second
+            if 15 < seconds < 30:
+                sql = "select close_ask from USD_JPY_5s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % base_time
+                response = self.mysql_connector.select_sql(sql)
 
         return stl_flag
 
@@ -279,54 +272,52 @@ class LstmAlgo(SuperAlgo):
 
         return model
 
-    def multi_predict(self, table_type, target_time):
-        right_string = "close_price"
-        window_size = 10 
-        output_train_index = 1
+    def predictPrice(self, table_type, target_time):
+        if table_type == "1h":
+            target_time = target_time - timedelta(hours=1)
+        elif table_type == "3h":
+            target_time = target_time - timedelta(hours=3)
+        elif table_type == "day":
+            target_time = target_time - timedelta(days=1)
+        else:
+            raise
 
-        instruments = "USD_JPY"
-        usdjpy = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+        instrument = "USD_JPY"
+        usdjpy = self.usdjpy_lstm_wrapper.predict_value(target_time, self.get_model(table_type, instrument), self.window_size, table_type, self.output_train_index, instrument)
 
-        instruments = "EUR_USD"
-        eurusd = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+        instrument = "EUR_USD"
+        eurusd = self.eurusd_lstm_wrapper.predict_value(target_time, self.get_model(table_type, instrument), self.window_size, table_type, self.output_train_index, instrument)
 
-        instruments = "GBP_USD"
-        gbpusd = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+        instrument = "EUR_JPY"
+        eurjpy = self.eurjpy_lstm_wrapper.predict_value(target_time, self.get_model(table_type, instrument), self.window_size, table_type, self.output_train_index, instrument)
 
-        instruments = "GBP_JPY"
-        gbpjpy = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-
-        instruments = "EUR_JPY"
-        eurjpy = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-
-
-        return usdjpy, eurusd, gbpusd, gbpjpy, eurjpy
+        return usdjpy, eurusd, eurjpy
 
 
     def set_current_price(self, target_time):
-        table_type = "1m"
+        table_type = "5s"
         instruments = "USD_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(seconds=5)) 
         response = self.mysql_connector.select_sql(sql)
         self.usdjpy_current_price = (response[0][0] + response[0][1]) / 2
 
         instruments = "EUR_USD"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(seconds=5)) 
         response = self.mysql_connector.select_sql(sql)
         self.eurusd_current_price = (response[0][0] + response[0][1]) / 2
 
         instruments = "GBP_USD"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(seconds=5)) 
         response = self.mysql_connector.select_sql(sql)
         self.gbpusd_current_price = (response[0][0] + response[0][1]) / 2
 
         instruments = "GBP_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(seconds=5)) 
         response = self.mysql_connector.select_sql(sql)
         self.gbpjpy_current_price = (response[0][0] + response[0][1]) / 2
 
         instruments = "EUR_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(seconds=5)) 
         response = self.mysql_connector.select_sql(sql)
         self.eurjpy_current_price = (response[0][0] + response[0][1]) / 2
 
@@ -343,20 +334,18 @@ class LstmAlgo(SuperAlgo):
             if minutes == 0 and 0 < seconds <= 10:
                 target_time = base_time
                 
-    
                 table_type = "1h"
-                self.usdjpy1h, self.eurusd1h, self.gbpusd1h, self.gbpjpy1h, self.eurjpy1h = self.multi_predict(table_type, target_time)
+                self.usdjpy1h, self.eurusd1h, self.eurjpy1h = self.predictPrice(table_type, target_time)
     
                 table_type = "3h"
-                self.usdjpy3h, self.eurusd3h, self.gbpusd3h, self.gbpjpy3h, self.eurjpy3h = self.multi_predict(table_type, target_time)
+                self.usdjpy3h, self.eurusd3h, self.eurjpy3h = self.predictPrice(table_type, target_time)
     
                 table_type = "day"
-                self.usdjpyday, self.eurusdday, self.gbpusdday, self.gbpjpyday, self.eurjpyday = self.multi_predict(table_type, target_time)
+                self.usdjpyday, self.eurusdday, self.eurjpyday = self.predictPrice(table_type, target_time)
     
                 trade1h_flag = ""
                 trade3h_flag = ""
                 tradeday_flag = ""
-    
     
                 if self.usdjpy_current_price < self.usdjpy1h and self.eurusd_current_price < self.eurusd1h:
                     trade1h_flag = "buy"
@@ -374,11 +363,9 @@ class LstmAlgo(SuperAlgo):
                     tradeday_flag = "sell"
     
     
-                #if trade1h_flag == trade3h_flag == tradeday_flag == "buy":
                 if trade1h_flag == tradeday_flag == "buy":
                     self.first_trade_flag = "buy"
                     self.first_trade_time = base_time
-                #elif trade1h_flag == trade3h_flag == tradeday_flag == "sell":
                 elif trade1h_flag == tradeday_flag == "sell":
                     self.first_trade_flag = "sell"
                     self.first_trade_time = base_time
@@ -412,27 +399,6 @@ class LstmAlgo(SuperAlgo):
             self.log_min_price = current_price
         elif self.log_min_price > current_price:
             self.log_min_price = current_price
-
-
-
-    def setBollinger(self, base_time):
-        window_size = 21
-        table_type = "5m"
-        sigma_valiable = 3
-        target_time = base_time - timedelta(hours=1)
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (self.instrument, table_type, target_time, window_size)
-        response = self.mysql_connector.select_sql(sql)
-        close_price = []
-        for res in response:
-            close_price.append((res[0]+res[1])/2)
-
-        close_price.reverse()
-
-        dataset = getBollingerDataSet(close_price, window_size, sigma_valiable)
-        self.upper_sigma1h = dataset["upper_sigmas"][-1]
-        self.lower_sigma1h = dataset["lower_sigmas"][-1]
-
-
 
 
 # reset flag and valiables function after settlement
@@ -501,9 +467,9 @@ class LstmAlgo(SuperAlgo):
         self.result_logger.info("# STL_PRICE=%s" % stl_price)
         self.result_logger.info("# PROFIT=%s" % profit)
 
-    def load_model(self, model_filename, weights_filename):
-        model_filename = "%s/../model/master/%s" % (self.current_path, model_filename)
-        weights_filename = "%s/../model/master/%s" % (self.current_path, weights_filename)
+    def load_model(self, filename):
+        model_filename = "%s/../model/master/%s.json" % (self.current_path, filename)
+        weights_filename = "%s/../model/master/%s.hdf5" % (self.current_path, filename)
 
         print(model_filename)
         print(weights_filename)
@@ -513,5 +479,4 @@ class LstmAlgo(SuperAlgo):
         learning_model.load_weights(weights_filename)
 
         return learning_model
-
 

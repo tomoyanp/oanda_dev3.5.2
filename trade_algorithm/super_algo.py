@@ -212,7 +212,7 @@ class SuperAlgo(object):
         self.order_history = self.order_kind
         self.setStlPrice(stl_price)
 
-        return profit, sleep_time
+        return profit, stl_price, sleep_time
 
 
     @abstractmethod

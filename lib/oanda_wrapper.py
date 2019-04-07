@@ -119,14 +119,11 @@ class OandaWrapper:
         return response
 
     def close_trade(self, currency):
-        try:
-            data = {
-                "longUnits": "ALL"
-            }
-            req = positions.PositionClose(accountID=self.account_id, instrument=currency, data=data)
-            response = self.oanda.request(req)
-            return response
-
-        except:
-            raise
+        req = trades.OpenTrades(accountID=self.account_id)
+        response = self.oanda.request(req)
+        trade_id = response["trades"][0]["id"]
+        
+        req = trades.TradeClose(accountID=self.account_id, tradeID=trade_id)
+        response = self.oanda.request(req)
+        return response
 

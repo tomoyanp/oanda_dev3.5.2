@@ -1,7 +1,7 @@
 {
-  "EUR_JPY": {
-    "stop_loss": 0.1,
-    "take_profit": 0.1,
+  "USD_JPY": {
+    "stop_loss": 0.05,
+    "take_profit": 0.05,
     "time_width": 720000,
     "stl_time_width": 720000,
     "sleep_time": 10,

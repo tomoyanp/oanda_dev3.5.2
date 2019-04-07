@@ -38,7 +38,8 @@ from sklearn.preprocessing import MinMaxScaler
 import json
 
 mysql_connector = MysqlConnector()
-instruments = "EUR_JPY"
+instruments = "EUR_USD"
+
 #print(instruments)
 
 def get_original_dataset(target_time, table_type, span, direct):
@@ -50,7 +51,7 @@ def get_original_dataset(target_time, table_type, span, direct):
         where_statement = "insert_time < \'%s\'" % target_time
 
 
-    instrument_list = ["EUR_JPY", "EUR_USD", "USD_JPY", "AUD_USD", "GBP_USD"]
+    instrument_list = ["EUR_USD", "USD_JPY", "AUD_USD", "GBP_USD"]
     tmp_original_dataset = {}
 
     for instrument in instrument_list:
@@ -69,7 +70,7 @@ def get_original_dataset(target_time, table_type, span, direct):
 
 
     # insert_timeだけ別でリストを作る
-    instrument = "USD_JPY"
+    instrument = "EUR_USD"
     sql = "select insert_time from %s_%s_TABLE where %s order by insert_time %s limit %s" % (instrument, table_type, where_statement, direct, span)
     print(sql)
 
@@ -163,7 +164,8 @@ def decide_market(base_time, table_type):
 def train_save_model(window_size, output_train_index, table_type, figure_filename, model_filename, weights_filename, start_time, end_time, term):
     command = "ls ../model/ | grep -e %s -e %s | wc -l" % (model_filename, weights_filename)
     out = subprocess.getoutput(command)
-    if int(out) < 2:
+    if 1 == 1:
+#    if int(out) < 2:
         start_ptime = change_to_ptime(start_time)
         end_ptime = change_to_ptime(end_time)
 
@@ -175,11 +177,14 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
         input_max_price = []
         input_min_price = []
 
-        predict_currency = "EUR_JPY"
+        predict_currency = "EUR_USD"
 
+        print("%s" % target_time)
+        print("%s" % end_ptime)
         while target_time < end_ptime:
             hour = target_time.hour
-            if decide_market(target_time, table_type):
+            if decideMarket(target_time):
+                print("OKOK")
                 if decideTerm(hour) == term or term == "all":
                     if decideConditions(table_type, target_time):
                     #if 1==1:
@@ -219,6 +224,10 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
                 target_time = target_time + timedelta(minutes=1)
             elif table_type == "5m":
                 target_time = target_time + timedelta(minutes=5)
+            elif table_type == "15m":
+                target_time = target_time + timedelta(minutes=15)
+            elif table_type == "30m":
+                target_time = target_time + timedelta(minutes=30)
             elif table_type == "1h":
                 target_time = target_time + timedelta(hours=1)
             elif table_type == "3h":
@@ -235,8 +244,8 @@ def train_save_model(window_size, output_train_index, table_type, figure_filenam
 
         print(train_input_dataset.shape)
         print(train_output_dataset.shape)
-        learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=100)
-        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=50, batch_size=1, verbose=2, shuffle=True)
+        learning_model = build_learning_model(train_input_dataset, output_size=1, neurons=200)
+        history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=10, batch_size=1, verbose=2, shuffle=True)
         #history = learning_model.fit(train_input_dataset, train_output_dataset, epochs=1, batch_size=1, verbose=2, shuffle=False)
         train_predict = learning_model.predict(train_input_dataset)
 

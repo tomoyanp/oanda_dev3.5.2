@@ -1,34 +1,12 @@
 # coding: utf-8
-####################################################
-# Trade Decision
-# if trade timing is between 14:00 - 04:00
-# if upper and lower sigma value difference is smaller than 2 yen
-# if current price is higher or lower than bollinger band 5m 3sigma
-# if current_price is higher or lower than max(min) price last day
-#
-# Stop Loss Decision
-# Same Method Above
-#
-# Take Profit Decision
-# Special Trail mode
-# if current profit is higher than 50Pips, 50Pips trail mode
-# if current profit is higher than 100Pips, 30Pips trail mode
-####################################################
-# 1. decide perfect order and current_price <-> 5m_sma40
-# 2. touch bolligner 2sigma 5m
-# 3. break ewma20 1m value
-
+# 単純なパターン+予測が外れたら決済する
 from super_algo import SuperAlgo
 from mysql_connector import MysqlConnector
-from datetime import timedelta, datetime
+from datetime import timedelta
 from logging import getLogger
 
-import traceback
-import subprocess
 import os
-
 import pandas as pd
-
 pd.set_option("display.max_colwidth", 2000)
 pd.set_option("display.max_columns", None)
 pd.set_option("display.max_rows", None)
@@ -38,18 +16,11 @@ np.set_printoptions(threshold=np.inf)
 import matplotlib.pyplot as plt
 plt.switch_backend("agg")
 
-from keras.models import Sequential
-from keras.layers import Activation, Dense
-from keras.layers import LSTM
-from keras.layers import Dropout
+from common import get_sma, getBollingerDataSet
+from lstm_wrapper import LstmWrapper
+
+
 from keras.models import model_from_json
-
-from sklearn.preprocessing import MinMaxScaler
-from lstm_model_wrapper import predict_value
-from common import get_sma
-
-import json
-
 
 class Scalping(SuperAlgo):
     def __init__(self, instrument, base_path, config_name, base_time):
@@ -73,11 +44,25 @@ class Scalping(SuperAlgo):
         self.first_trade_time = None
         self.log_object = {}
         self.current_path = os.path.abspath(os.path.dirname(__file__))
+        self.window_size = 20
+        self.output_train_index = 1
+        self.neurons = 400
+        self.epochs = 20
+        self.usdjpy_lstm_wrapper = LstmWrapper(self.neurons, self.window_size, "USD_JPY")
+        self.eurusd_lstm_wrapper = LstmWrapper(self.neurons, self.window_size, "EUR_USD")
+        self.gbpusd_lstm_wrapper = LstmWrapper(self.neurons, self.window_size, "GBP_USD")
 
-        self.model_1h = self.load_model(model_filename="multi_model_1h.json", weights_filename="multi_model_1h.hdf5")
-        self.model_5m = self.load_model(model_filename="multi_model_5m.json", weights_filename="multi_model_5m.hdf5")
-        self.model_1m = self.load_model(model_filename="multi_model_1m.json", weights_filename="multi_model_1m.hdf5")
+        self.usdjpy1m_model = self.load_model("USD_JPY_1m")
+        self.usdjpy5m_model = self.load_model("USD_JPY_5m")
+        self.usdjpy1h_model = self.load_model("USD_JPY_1h")
 
+        self.eurusd1m_model = self.load_model("EUR_USD_1m")
+        self.eurusd5m_model = self.load_model("EUR_USD_5m")
+        self.eurusd1h_model = self.load_model("EUR_USD_1h")
+
+        self.gbpusd1m_model = self.load_model("GBP_USD_1m")
+        self.gbpusd5m_model = self.load_model("GBP_USD_5m")
+        self.gbpusd1h_model = self.load_model("GBP_USD_1h")
 
     # decide trade entry timing
     def decideTrade(self, base_time):
@@ -98,7 +83,7 @@ class Scalping(SuperAlgo):
 
             else:
                 # if spread rate is greater than 0.5, we will have no entry
-                if (self.ask_price - self.bid_price) >= 0.05:
+                if (self.ask_price - self.bid_price) >= 0.02:
                     pass
 
                 else:
@@ -106,6 +91,10 @@ class Scalping(SuperAlgo):
 
 
             #trade_flag = "buy"
+            self.debug_logger.info("%s: pass" % base_time)
+            #self.debug_logger.info(self.ask_price)
+            #self.debug_logger.info(self.bid_price)
+            #self.debug_logger.info(self.ask_price - self.bid_price)
             return trade_flag
         except:
             raise
@@ -131,9 +120,8 @@ class Scalping(SuperAlgo):
                         stl_flag = True
 
                     else:
-                        stl_flag = self.decideReverseStl(stl_flag, base_time)
-                        #pass
-
+                        #stl_flag = self.decideReverseStl(base_time, stl_flag)
+                        pass
             else:
                 pass
 
@@ -142,91 +130,196 @@ class Scalping(SuperAlgo):
             raise
 
 
-    def decideReverseStl(self, stl_flag, base_time):
+
+    def decideReverseStl(self, base_time, stl_flag):
+        if self.order_flag:
+            minutes = base_time.minute
+            seconds = base_time.second
+
+            if self.entry_time + timedelta(hours=1) < base_time:
+                stl_flag = True
 
         return stl_flag
+ 
 
+ 
     def get_current_price(self, target_time):
-        table_type = "1m"
-        instruments = "EUR_JPY"
-        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instruments, table_type, target_time - timedelta(minutes=1)) 
+        table_type = "5s"
+        instrument = "USD_JPY"
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time - timedelta(seconds=5)) 
         response = self.mysql_connector.select_sql(sql)
-        return ((response[0][0] + response[0][1]) / 2)
+        usdjpy_price = (response[0][0] + response[0][1]) / 2
+        self.ask_price = response[0][0]
+        self.bid_price = response[0][1]
+
+        table_type = "5s"
+        instrument = "EUR_USD"
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time - timedelta(seconds=5)) 
+        response = self.mysql_connector.select_sql(sql)
+        eurusd_price = (response[0][0] + response[0][1]) / 2
+
+        table_type = "5s"
+        instrument = "GBP_USD"
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time - timedelta(seconds=5)) 
+        response = self.mysql_connector.select_sql(sql)
+        gbpusd_price = (response[0][0] + response[0][1]) / 2
+
+
+        table_type = "5s"
+        instrument = "GBP_JPY"
+        sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, table_type, target_time - timedelta(seconds=5)) 
+        response = self.mysql_connector.select_sql(sql)
+        gbpjpy_price = (response[0][0] + response[0][1]) / 2
+ 
+
+        return usdjpy_price, eurusd_price, gbpusd_price, gbpjpy_price
+
+    def predictPrice(self, base_time):
+        target_time = base_time
+        minutes = base_time.minute
+        seconds = base_time.second
+
+        target_time = base_time - timedelta(minutes=1)
+        table_type = "1m"
+
+        usdjpy_predict1m = self.usdjpy_lstm_wrapper.predict_value(target_time, self.usdjpy1m_model, self.window_size, table_type, self.output_train_index, "USD_JPY")
+        eurusd_predict1m = self.eurusd_lstm_wrapper.predict_value(target_time, self.eurusd1m_model, self.window_size, table_type, self.output_train_index, "EUR_USD")
+        gbpusd_predict1m = self.gbpusd_lstm_wrapper.predict_value(target_time, self.gbpusd1m_model, self.window_size, table_type, self.output_train_index, "GBP_USD")
+
+
+        target_time = base_time - timedelta(minutes=5)
+        table_type = "5m"
+        usdjpy_predict5m = self.usdjpy_lstm_wrapper.predict_value(target_time, self.usdjpy5m_model, self.window_size, table_type, self.output_train_index, "USD_JPY")
+        eurusd_predict5m = self.eurusd_lstm_wrapper.predict_value(target_time, self.eurusd5m_model, self.window_size, table_type, self.output_train_index, "EUR_USD")
+        gbpusd_predict5m = self.gbpusd_lstm_wrapper.predict_value(target_time, self.gbpusd5m_model, self.window_size, table_type, self.output_train_index, "GBP_USD")
+
+
+        target_time = base_time - timedelta(hours=1)
+        table_type = "1h"
+        usdjpy_predict1h = self.usdjpy_lstm_wrapper.predict_value(target_time, self.usdjpy1h_model, self.window_size, table_type, self.output_train_index, "USD_JPY")
+        eurusd_predict1h = self.eurusd_lstm_wrapper.predict_value(target_time, self.eurusd1h_model, self.window_size, table_type, self.output_train_index, "EUR_USD")
+        gbpusd_predict1h = self.gbpusd_lstm_wrapper.predict_value(target_time, self.gbpusd1h_model, self.window_size, table_type, self.output_train_index, "GBP_USD")
+
+        predict_object = {
+                "usdjpy1m": usdjpy_predict1m,
+                "usdjpy5m": usdjpy_predict5m,
+                "usdjpy1h": usdjpy_predict1h,
+                "eurusd1m": eurusd_predict1m,
+                "eurusd5m": eurusd_predict5m,
+                "eurusd1h": eurusd_predict1h,
+                "gbpusd1m": gbpusd_predict1m,
+                "gbpusd5m": gbpusd_predict5m,
+                "gbpusd1h": gbpusd_predict1h
+                }
+        return predict_object 
 
 
     def decideReverseTrade(self, trade_flag, current_price, base_time):
         if self.order_flag == False:
             minutes = base_time.minute
             seconds = base_time.second
-    
-#            if 15 < seconds < 30:
-#                target_time = base_time
-#                self.set_current_price(target_time)
 
             if 0 < seconds <= 10:
-                target_time = base_time
-                right_string = "EUR_JPY"
-                instruments = "EUR_JPY"
-        
-                window_size = 20 
-                output_train_index = 60
-                table_type = "1m"
-                predict_price_1m = predict_value(target_time, self.model_1m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-        
-        
-                window_size = 20 
-                output_train_index = 12 
+
+                window_size = 21
+                sigma_valiable = 2
                 table_type = "5m"
-                predict_price_5m = predict_value(target_time, self.model_5m, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
-        
-        
-                window_size = 20 
-                output_train_index = 1 
-                table_type = "1h"
-                predict_price_1h = predict_value(target_time, self.model_1h, window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
+                target_time = base_time - timedelta(minutes=5)
+                sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (self.instrument, table_type, target_time, window_size)
+                response = self.mysql_connector.select_sql(sql)
+                
+                price_list = []
+                for res in response:
+                    price_list.append((res[0]+res[1])/2)
+                price_list.reverse()
+                
+                dataset =  getBollingerDataSet(price_list, window_size, sigma_valiable)
+                upper_sigma = dataset["upper_sigmas"][-1]
+                lower_sigma = dataset["lower_sigmas"][-1]
 
-                current_price = self.get_current_price(base_time)
 
-                if current_price < predict_price_1m and current_price < predict_price_5m and current_price < predict_price_1h:
+                predict_object = self.predictPrice(base_time)
+                usdjpy_price, eurusd_price, gbpusd_price, gbpjpy_price = self.get_current_price(base_time)
+
+                table_type = "1m"
+                target_time = base_time - timedelta(minutes=1)
+                length = "100"
+                usdjpy_sma100 = get_sma(self.instrument, target_time, table_type, length, self.mysql_connector)
+                sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (self.instrument, table_type, target_time)
+                response = self.mysql_connector.select_sql(sql)
+                usdjpy_closeprice = (response[0][0] + response[0][1]) / 2
+
+                usdjpy_flag = "pass"
+                if usdjpy_price < predict_object["usdjpy1m"] and usdjpy_price < predict_object["usdjpy5m"]:
+                    usdjpy_flag = "buy"
+                elif usdjpy_price > predict_object["usdjpy1m"] and usdjpy_price > predict_object["usdjpy5m"]:
+                    usdjpy_flag = "sell"
+
+
+                eurusd_flag = "pass"
+                if eurusd_price < predict_object["eurusd1m"] and eurusd_price < predict_object["eurusd5m"]:
+                    eurusd_flag = "sell"
+                elif eurusd_price > predict_object["eurusd1m"] and eurusd_price > predict_object["eurusd5m"]:
+                    eurusd_flag = "buy"
+
+                gbpusd_flag = "pass"
+                if gbpusd_price < predict_object["gbpusd1m"] and gbpusd_price < predict_object["gbpusd5m"]:
+                    gbpusd_flag = "sell"
+                elif gbpusd_price > predict_object["gbpusd1m"] and gbpusd_price > predict_object["gbpusd5m"]:
+                    gbpusd_flag = "buy"
+
+                if usdjpy_flag == "buy" and eurusd_flag == "buy":
                     self.first_trade_flag = "buy"
                     self.first_trade_time = base_time
-                    self.setLogObject("first_trade_time", base_time)
-                    self.setLogObject("first_trade_flag", self.first_trade_flag)
-                    self.setLogObject("predict_price_1m", predict_price_1m)
-                    self.setLogObject("predict_price_5m", predict_price_5m)
-                    self.setLogObject("predict_price_1h", predict_price_1h)
-                    self.setLogObject("first_trade_price", current_price)
-                elif current_price > predict_price_1m and current_price > predict_price_5m and current_price > predict_price_1h:
+                    self.setLogObject("A", "# ORDER_EXE: %s: usdjpy_price=%s" % (base_time, usdjpy_price))
+                    self.setLogObject("B", "# ORDER_EXE: %s: usdjpy1m=%s" % (base_time, predict_object["usdjpy1m"]))
+                    self.setLogObject("C", "# ORDER_EXE: %s: usdjpy5m=%s" % (base_time, predict_object["usdjpy5m"]))
+                    self.setLogObject("D", "# ORDER_EXE: %s: usdjpy1h=%s" % (base_time, predict_object["usdjpy1h"]))
+                    self.setLogObject("E", "# ORDER_EXE: %s: eurusd_price=%s" % (base_time, eurusd_price))
+                    self.setLogObject("F", "# ORDER_EXE: %s: eurusd1m=%s" % (base_time, predict_object["eurusd1m"]))
+                    self.setLogObject("G", "# ORDER_EXE: %s: eurusd5m=%s" % (base_time, predict_object["eurusd5m"]))
+                    self.setLogObject("H", "# ORDER_EXE: %s: eurusd1h=%s" % (base_time, predict_object["eurusd1h"]))
+                    self.setLogObject("I", "# ORDER_EXE: %s: gbpusd_price=%s" % (base_time, gbpusd_price))
+                    self.setLogObject("J", "# ORDER_EXE: %s: gbpusd1m=%s" % (base_time, predict_object["gbpusd1m"]))
+                    self.setLogObject("K", "# ORDER_EXE: %s: gbpusd5m=%s" % (base_time, predict_object["gbpusd5m"]))
+                    self.setLogObject("L", "# ORDER_EXE: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
+                    self.setLogObject("M", "# ORDER_EXE: %s: frist_trade_time=%s" % (base_time, self.first_trade_time))
+
+                elif usdjpy_flag == "sell" and eurusd_flag == "sell":
                     self.first_trade_flag = "sell"
                     self.first_trade_time = base_time
-                    self.setLogObject("first_trade_time", base_time)
-                    self.setLogObject("first_trade_flag", self.first_trade_flag)
-                    self.setLogObject("predict_price_1m", predict_price_1m)
-                    self.setLogObject("predict_price_5m", predict_price_5m)
-                    self.setLogObject("predict_price_1h", predict_price_1h)
-                    self.setLogObject("first_trade_price", current_price)
-
-            if self.first_trade_flag != "" and 5 < seconds < 15:
-                current_price = self.get_current_price(base_time)
-                eurjpy_sma = get_sma(instrument="EUR_JPY", base_time=base_time, table_type="1m", length=20, con=self.mysql_connector)
-            
-                if self.first_trade_flag == "buy":
-                    if current_price > eurjpy_sma:
-                        trade_flag = "buy"
-                        self.setLogObject("second_trade_time", base_time)
-                        self.setLogObject("second_trade_price", current_price)
-                        self.setLogObject("eurjpy_sma", eurjpy_sma)
+                    self.setLogObject("A", "# ORDER_EXE: %s: usdjpy_price=%s" % (base_time, usdjpy_price))
+                    self.setLogObject("B", "# ORDER_EXE: %s: usdjpy1m=%s" % (base_time, predict_object["usdjpy1m"]))
+                    self.setLogObject("C", "# ORDER_EXE: %s: usdjpy5m=%s" % (base_time, predict_object["usdjpy5m"]))
+                    self.setLogObject("D", "# ORDER_EXE: %s: usdjpy1h=%s" % (base_time, predict_object["usdjpy1h"]))
+                    self.setLogObject("E", "# ORDER_EXE: %s: eurusd_price=%s" % (base_time, eurusd_price))
+                    self.setLogObject("F", "# ORDER_EXE: %s: eurusd1m=%s" % (base_time, predict_object["eurusd1m"]))
+                    self.setLogObject("G", "# ORDER_EXE: %s: eurusd5m=%s" % (base_time, predict_object["eurusd5m"]))
+                    self.setLogObject("H", "# ORDER_EXE: %s: eurusd1h=%s" % (base_time, predict_object["eurusd1h"]))
+                    self.setLogObject("I", "# ORDER_EXE: %s: gbpusd_price=%s" % (base_time, gbpusd_price))
+                    self.setLogObject("J", "# ORDER_EXE: %s: gbpusd1m=%s" % (base_time, predict_object["gbpusd1m"]))
+                    self.setLogObject("K", "# ORDER_EXE: %s: gbpusd5m=%s" % (base_time, predict_object["gbpusd5m"]))
+                    self.setLogObject("L", "# ORDER_EXE: %s: gbpusd1h=%s" % (base_time, predict_object["gbpusd1h"]))
+                    self.setLogObject("M", "# ORDER_EXE: %s: frist_trade_time=%s" % (base_time, self.first_trade_time))
 
 
-                elif self.first_trade_flag == "sell":
-                    if current_price < eurjpy_sma:
-                        trade_flag = "sell"
-                        self.setLogObject("second_trade_time", base_time)
-                        self.setLogObject("second_trade_price", current_price)
-                        self.setLogObject("eurjpy_sma", eurjpy_sma)
-                else:
-                    raise
+                if self.first_trade_flag  == "buy" and usdjpy_sma100 < usdjpy_closeprice and upper_sigma - usdjpy_price > 0.05:
+                    trade_flag = "buy"
+                elif self.first_trade_flag  == "sell" and usdjpy_sma100 > usdjpy_closeprice and usdjpy_price - lower_sigma > 0.05:
+                    trade_flag = "sell"
 
+#                if self.first_trade_flag != "":
+#                    if self.first_trade_time + timedelta(minutes=10) < base_time:
+#                        self.resetFlag()
+
+                if trade_flag != "pass":
+                    self.entry_time = base_time
+                    self.setLogObject("N", "# ORDER_EXE: %s: usdjpy_sma100=%s" % (base_time, usdjpy_sma100))
+                    self.setLogObject("O", "# ORDER_EXE: %s: upper_sigma=%s" % (base_time, upper_sigma))
+                    self.setLogObject("P", "# ORDER_EXE: %s: lower_sigma=%s" % (base_time, lower_sigma))
+                    self.setLogObject("Q", "# ORDER_EXE: %s: usdjpy_closeprice=%s" % (base_time, usdjpy_closeprice))
+                    self.setLogObject("R", "# ORDER_EXE: %s: trade_flag=%s" % (base_time, trade_flag))
+ 
         return trade_flag
 
     def updatePrice(self, current_price):
@@ -255,28 +348,29 @@ class Scalping(SuperAlgo):
         self.log_object[key] = value
 
 # write log function
-    def writeLog(self, logger):
-        key_list = self.log_object.keys()
-        logger.info("####################################")
-        for key in key_list:
-            logger.info("%s=%s" % (key, self.log_object[key]))
-        
+    def writeLogObject(self):
+        keys = self.log_object.keys()
+        sorted_keys = sorted(keys)
+        for key in sorted_keys:
+            self.result_logger.info(self.log_object[key])
+
         self.log_object = {}
 
     def entryLogWrite(self, base_time):
-        self.setLogObject("EXECUTE_ORDER", base_time)
-        self.writeLog(self.result_logger)
+        self.writeLogObject()
 
     def settlementLogWrite(self, profit, base_time, stl_price, stl_method):
-        self.setLogObject("STL_TIME", base_time)
-        self.setLogObject("PROFIT", profit)
-        self.setLogObject("LOG_MAX_PRICE", self.log_max_price)
-        self.setLogObject("LOG_MIN_PRICE", self.log_min_price)
-        self.writeLog(self.result_logger)
+#        meta_time = base_time - timedelta(hours=7)
+        meta_time = base_time
+        self.writeLogObject()
+        self.result_logger.info("# STL_EXE: %s: STL_PRICE=%s" % (meta_time, stl_price))
+        self.result_logger.info("# STL_EXE: %s: LOG_MAX_PRICE=%s" % (meta_time, self.log_max_price))
+        self.result_logger.info("# STL_EXE: %s: LOG_MIN_PRICE=%s" % (meta_time, self.log_min_price))
+        self.result_logger.info("# STL_EXE: %s: PROFIT=%s" % (meta_time, profit))
 
-    def load_model(self, model_filename, weights_filename):
-        model_filename = "%s/../model/master/%s" % (self.current_path, model_filename)
-        weights_filename = "%s/../model/master/%s" % (self.current_path, weights_filename)
+    def load_model(self, filename):
+        model_filename = "%s/../model/master/%s.json" % (self.current_path, filename)
+        weights_filename = "%s/../model/master/%s.hdf5" % (self.current_path, filename)
 
         print(model_filename)
         print(weights_filename)

@@ -75,4 +75,3 @@ nohup python insert_price.py AUD_USD 2016-01-01 bulk 5s > /dev/null &
 nohup python insert_price.py GBP_USD 2016-01-01 bulk 5s > /dev/null &
 nohup python insert_price.py USD_JPY 2016-01-01 bulk 5s > /dev/null 
 
-

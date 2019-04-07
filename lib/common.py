@@ -31,35 +31,33 @@ def iso_jp(iso):
             pass
     return date
 
-def calculate_time(base_time, instruments, table_type, con, index):
+
+def complement_offlinetime(start_time, end_time):
+    target_time = start_time
+    offline_minutes = 0
+
+    while target_time < end_time:
+        if decideMarket(target_time):
+            pass
+        else:
+            offline_minutes = offline_minutes + 1
+        target_time = target_time + timedelta(minutes=1)
+
+
+    target_time = start_time
+    while decideMarket(target_time) == False:
+        target_time = target_time - timedelta(minutes=1)
+
+    start_time = target_time
+
+    start_time = start_time - timedelta(minutes=offline_minutes)
+
+    return start_time
+
+def get_targettime(base_time, table_type):
     if type(base_time) is str:
         base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
 
-    if table_type == "1m":
-        initial_time = base_time - timedelta(minutes=1)
-    elif table_type == "5m":
-        initial_time = base_time - timedelta(minutes=5)
-    elif table_type == "1h":
-        initial_time = base_time - timedelta(hours=1)
-    elif table_type == "3h":
-        initial_time = base_time - timedelta(hours=3)
-    elif table_type == "8h":
-        initial_time = base_time - timedelta(hours=8)
-    elif table_type == "day":
-        initial_time = base_time - timedelta(days=1)
-    else:
-        raise
-
-    initial_time = initial_time.strftime("%Y-%m-%d %H:%M:%S")
-
-    sql = "select insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (instruments, table_type, initial_time, index+1)
-
-    response = con.select_sql(sql)
-    cal_time = response[-1][0]
-
-    return cal_time
- 
-def change_basetime(base_time, table_type):
     if table_type == "1m":
         target_time = base_time - timedelta(minutes=1)
     elif table_type == "5m":
@@ -73,10 +71,73 @@ def change_basetime(base_time, table_type):
     elif table_type == "day":
         target_time = base_time - timedelta(days=1)
 
+    else:
+        raise
+
     return target_time
 
-def get_sma(instrument, base_time, table_type, length, con):
-    target_time = change_basetime(base_time, table_type)
+
+def calculate_time(base_time, instruments, table_type, con, index):
+    initial_time = get_targettime(base_time, table_type)
+    initial_time = initial_time.strftime("%Y-%m-%d %H:%M:%S")
+
+    sql = "select insert_time from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (instruments, table_type, initial_time, index+1)
+
+    response = con.select_sql(sql)
+    cal_time = response[-1][0]
+
+    return cal_time
+ 
+def change_to_targettime(base_time, table_type):
+    if table_type == "5s":
+        target_time = base_time - timedelta(seconds=5)
+    elif table_type == "1m":
+        target_time = base_time - timedelta(minutes=1)
+    elif table_type == "5m":
+        target_time = base_time - timedelta(minutes=5)
+    elif table_type == "15m":
+        target_time = base_time - timedelta(minutes=15)
+    elif table_type == "30m":
+        target_time = base_time - timedelta(minutes=30)
+    elif table_type == "1h":
+        target_time = base_time - timedelta(hours=1)
+    elif table_type == "3h":
+        target_time = base_time - timedelta(hours=3)
+    elif table_type == "8h":
+        target_time = base_time - timedelta(hours=8)
+    elif table_type == "day":
+        target_time = base_time - timedelta(days=1)
+    else:
+        raise
+
+    return target_time
+
+def change_to_nexttime(base_time, table_type, index):
+    if table_type == "5s":
+        target_time = base_time + timedelta(seconds=5*index)
+    elif table_type == "1m":
+        target_time = base_time + timedelta(minutes=1*index)
+    elif table_type == "5m":
+        target_time = base_time + timedelta(minutes=5*index)
+    elif table_type == "15m":
+        target_time = base_time + timedelta(minutes=15*index)
+    elif table_type == "30m":
+        target_time = base_time + timedelta(minutes=30*index)
+    elif table_type == "1h":
+        target_time = base_time + timedelta(hours=1*index)
+    elif table_type == "3h":
+        target_time = base_time + timedelta(hours=3*index)
+    elif table_type == "8h":
+        target_time = base_time + timedelta(hours=8*index)
+    elif table_type == "day":
+        target_time = base_time + timedelta(days=1*index)
+    else:
+        raise
+
+    return target_time
+
+
+def get_sma(instrument, target_time, table_type, length, con):
     sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (instrument, table_type, target_time, length)
 
     response = con.select_sql(sql)
@@ -190,7 +251,17 @@ def decideMarket(base_time):
 
     return flag
 
-def getBollingerDataSet(price_list, window_size, sigma_valiable):
+def get_bollinger(con, instrument, targettime, tabletype, window_size, sigma_valiable):
+    sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit %s" % (instrument, tabletype, targettime, window_size)
+            
+    response = con.select_sql(sql)
+
+    price_list = []
+    for res in response:
+        price_list.append((res[0]+res[1])/2)
+
+    price_list.reverse()
+
     # pandasの形式に変換
     price_list = pd.Series(price_list)
 
@@ -211,6 +282,11 @@ def getBollingerDataSet(price_list, window_size, sigma_valiable):
                  "lower_sigmas": lower_sigmas,
                  "base_lines": base }
     return data_set
+
+def change_to_ptime(target_time):
+    target_time = datetime.strptime(target_time, "%Y-%m-%d %H:%M:%S")
+
+    return target_time
 
 def extraBollingerDataSet(data_set, sigma_length, candle_width):
     # 過去5本分（50分）のsigmaだけ抽出
@@ -282,14 +358,16 @@ def getSlope(target_list):
     index_list = []
     tmp_list = []
 
-    for i in range(1, len(target_list)+1):
-        index_list.append(float(i)/10)
-
-    price_list = np.array(target_list)
-    index_list = np.array(index_list)
-
-    z = np.polyfit(index_list, price_list, 1)
-    slope, intercept = np.poly1d(z)
+    slope = np.gradient([target_list[0], target_list[-1]])[0]
+    print(slope)
+#    for i in range(1, len(target_list)+1):
+#        index_list.append(float(i)/10)
+#
+#    price_list = np.array(target_list)
+#    index_list = np.array(index_list)
+#
+#    z = np.polyfit(index_list, price_list, 1)
+#    slope, intercept = np.poly1d(z)
 
     return slope
 

@@ -24,6 +24,9 @@ from keras.layers import Dropout
 from keras.models import model_from_json
 from keras.callbacks import EarlyStopping
 from sklearn.preprocessing import MinMaxScaler
+import numpy as np
+import pandas as pd
+
 
 def __get_price(con, targettime, tabletype, instrument):
     sql = "select close_ask, close_bid, high_ask, high_bid, low_ask, low_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, tabletype, targettime)
@@ -65,11 +68,9 @@ def __get_dataset(con, instrument, targettime, tabletype, y_index):
     x.append(sma100 - closeprice)
     
     y_targettime = change_to_nexttime(targettime, tabletype, index=y_index)
-    sql = "select close_ask, close_bid, high_ask, high_bid, low_ask, low_bid from %s_%s_TABLE where insert_time < \'%s\' order by insert_time desc limit 1" % (instrument, tabletype, y_targettime)
-    response = con.select_sql(sql)
-#    y_closeask = response[0][0]
-    y_closebid = response[0][1]
-    if close_ask < y_closebid:
+    y_close_ask, y_close_bid, y_high_ask, y_high_bid, y_low_ask, y_low_bid = __get_price(con, y_targettime, tabletype, instrument)
+#    if close_ask < y_close_bid:
+    if close_ask < y_close_ask:
         y = 1
     else:
         y = 0
@@ -116,8 +117,8 @@ def get_datasets(con, instrument, starttime, endtime, tabletype, y_index, modeln
 if __name__ == "__main__":
     # set parameters
     instrument = "USD_JPY"
-    starttime = "2019-01-01 06:00:00"
-    endtime = "2019-01-01 09:00:00"
+    starttime = "2019-01-01 06:50:00"
+    endtime = "2019-01-01 07:00:00"
     starttime = change_to_ptime(starttime)
     endtime = change_to_ptime(endtime)
     tabletype = "1m"
@@ -125,48 +126,53 @@ if __name__ == "__main__":
 
     con = MysqlConnector()
 
-    # get train data set
-    modelname = "svm"
-    x, y = get_datasets(con, instrument, starttime, endtime, tabletype,  y_index, modelname)
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=None)
-    # Normalize Dataset
-    sc = StandardScaler()
-    sc.fit(x_train)
-    x_train_std = sc.transform(x_train)
-    x_test_std = sc.transform(x_test)
-
-    ### SVM
-    # create model
-    model = SVC(kernel="linear", random_state=None)
-    # learning
-    model.fit(x_train_std, y_train)
-    pred_train = model.predict(x_train_std)
-    accuracy_train = accuracy_score(y_train, pred_train)
-    print("svm results = %s" % accuracy_train)
-    filename = 'svm.sav'
-    pickle.dump(model, open(filename, 'wb'))
-
-    ### Logistic Regression
-    # create model
-    model = LogisticRegression(random_state=None)
-    # learning
-    model.fit(x_train_std, y_train)
-    pred_train = model.predict(x_train_std)
-    accuracy_train = accuracy_score(y_train, pred_train)
-    print("logistic regression results = %s" % accuracy_train)
-    filename = 'logistic.sav'
-    pickle.dump(model, open(filename, 'wb'))
-
-    ### Random Forest
-    # create model
-    model = RandomForestClassifier()
-    # learning
-    model.fit(x_train_std, y_train)
-    pred_train = model.predict(x_train_std)
-    accuracy_train = accuracy_score(y_train, pred_train)
-    print("random forest results = %s" % accuracy_train)
-    filename = 'rndfrst.sav'
-    pickle.dump(model, open(filename, 'wb'))
+#    # get train data set
+#    modelname = "svm"
+#    x, y = get_datasets(con, instrument, starttime, endtime, tabletype,  y_index, modelname)
+#    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=None)
+#    # Normalize Dataset
+#    sc = StandardScaler()
+#    sc.fit(x_train)
+#    x_train_std = sc.transform(x_train)
+#    x_test_std = sc.transform(x_test)
+#
+#    print(len(x_train_std[0]))
+#    print(len(x_train_std))
+#    print(len(y_train))
+#
+#    
+#    ### SVM
+#    # create model
+#    model = SVC(kernel="linear", random_state=None)
+#    # learning
+#    model.fit(x_train_std, y_train)
+#    pred_train = model.predict(x_train_std)
+#    accuracy_train = accuracy_score(y_train, pred_train)
+#    print("svm results = %s" % accuracy_train)
+#    filename = 'svm.sav'
+#    pickle.dump(model, open(filename, 'wb'))
+#
+#    ### Logistic Regression
+#    # create model
+#    model = LogisticRegression(random_state=None)
+#    # learning
+#    model.fit(x_train_std, y_train)
+#    pred_train = model.predict(x_train_std)
+#    accuracy_train = accuracy_score(y_train, pred_train)
+#    print("logistic regression results = %s" % accuracy_train)
+#    filename = 'logistic.sav'
+#    pickle.dump(model, open(filename, 'wb'))
+#
+#    ### Random Forest
+#    # create model
+#    model = RandomForestClassifier()
+#    # learning
+#    model.fit(x_train_std, y_train)
+#    pred_train = model.predict(x_train_std)
+#    accuracy_train = accuracy_score(y_train, pred_train)
+#    print("random forest results = %s" % accuracy_train)
+#    filename = 'rndfrst.sav'
+#    pickle.dump(model, open(filename, 'wb'))
 
 
     modelname = "lstm"
@@ -177,10 +183,19 @@ if __name__ == "__main__":
     x, y = get_datasets(con, instrument, starttime, endtime, tabletype,  y_index, modelname, window_size)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=None)
     # Normalize Dataset
-    sc = StandardScaler()
-    sc.fit(x_train)
-    x_train_std = sc.transform(x_train)
-    x_test_std = sc.transform(x_test)
+    sc = MinMaxScaler(feature_range=(0, 1))
+
+    df_x_train = pd.DataFrame(x_train)
+    df_x_test = pd.DataFrame(x_test)
+
+    print(df_x_train.shape)
+    print(df_x_test.shape)
+
+    np_x_train = df_x_train.values
+    np_x_test = df_x_test.values
+    x_train_std = sc.fit_transform(np_x_train)
+    x_test_std = sc.fit_transform(np_x_test)
+
     model = Sequential()
     # add dataset 3dimention size
     model.add(LSTM(neurons, input_shape=(window_size, len(x_train[0]))))

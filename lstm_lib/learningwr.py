@@ -89,6 +89,7 @@ def get_datasets(con, instrument, starttime, endtime, tabletype, y_index, modeln
     x_list = []
     y_list = []
     while starttime < endtime:
+        print(starttime)
         if decideMarket(starttime):
             targettime = change_to_targettime(starttime, tabletype)
             if modelname == "lstm":
@@ -100,15 +101,15 @@ def get_datasets(con, instrument, starttime, endtime, tabletype, y_index, modeln
                         x, y = __get_dataset(con, instrument, targettime, tabletype, y_index)
                         count = count + 1
                         x_rows.loc[x_rows.index[-1]+1] = x
-                        x_rows.append(x)
                         y_rows.append(y)
                     else:
                         pass
 
                     targettime = change_to_targettime(targettime, tabletype)
 
-                x_rows.reverse()
-                x = x_rows
+                print(x_rows)
+                x = x_rows.values.tolist()
+                x.reverse()
                 y = y_rows[0]
 
             else:
@@ -118,7 +119,6 @@ def get_datasets(con, instrument, starttime, endtime, tabletype, y_index, modeln
             y_list.append(y)
 
         starttime = change_to_nexttime(starttime, tabletype, index=1)
-        print(starttime)
 
     return x_list, y_list
 

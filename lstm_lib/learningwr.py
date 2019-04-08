@@ -57,15 +57,23 @@ def __get_dataset(con, instrument, targettime, tabletype, y_index):
     sma75 = get_sma(instrument, targettime, tabletype, length=75, con=con)
     sma100 = get_sma(instrument, targettime, tabletype, length=100, con=con)
     
-    x = []
-    x.append(bef_closeprice - closeprice)
-    x.append(high_price - closeprice)
-    x.append(low_price - closeprice)
-    x.append(uppersigma - closeprice)
-    x.append(lowersigma - closeprice)
-    x.append(sma25 - closeprice)
-    x.append(sma75 - closeprice)
-    x.append(sma100 - closeprice)
+    x = {"bef_closeprice": [],
+         "high_price": [],
+         "low_price": [],
+         "uppersigma": [],
+         "lowersigma": [],
+         "sma25": [],
+         "sma75": [],
+         "sma100": []
+        }
+    x["bef_closeprice"] = (bef_closeprice - closeprice)
+    x["high_price"] = (high_price - closeprice)
+    x["low_price"] = (low_price - closeprice)
+    x["uppersigma"] = (uppersigma - closeprice)
+    x["lowersigma"] = (lowersigma - closeprice)
+    x["sma25"] = (sma25 - closeprice)
+    x["sma75"] = (sma75 - closeprice)
+    x["sma100"] = (sma100 - closeprice)
     
     y_targettime = change_to_nexttime(targettime, tabletype, index=y_index)
     y_close_ask, y_close_bid, y_high_ask, y_high_bid, y_low_ask, y_low_bid = __get_price(con, y_targettime, tabletype, instrument)
@@ -85,12 +93,13 @@ def get_datasets(con, instrument, starttime, endtime, tabletype, y_index, modeln
             targettime = change_to_targettime(starttime, tabletype)
             if modelname == "lstm":
                 count = 0
-                x_rows = []
+                x_rows = pd.DataFrame([])
                 y_rows = []
                 while count < window_size:
                     if decideMarket(targettime):
                         x, y = __get_dataset(con, instrument, targettime, tabletype, y_index)
                         count = count + 1
+                        x_rows.loc[x_rows.index[-1]+1] = x
                         x_rows.append(x)
                         y_rows.append(y)
                     else:
@@ -188,7 +197,7 @@ if __name__ == "__main__":
     df_x_train = pd.DataFrame(x_train)
     df_x_test = pd.DataFrame(x_test)
 
-    print(df_x_train.shape)
+    print(df_x_train)
     print(df_x_test.shape)
 
     np_x_train = df_x_train.values

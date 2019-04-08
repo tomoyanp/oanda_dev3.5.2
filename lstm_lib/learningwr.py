@@ -100,7 +100,7 @@ def get_datasets(con, instrument, starttime, endtime, tabletype, y_index, modeln
                     if decideMarket(targettime):
                         x, y = __get_dataset(con, instrument, targettime, tabletype, y_index)
                         count = count + 1
-                        x_rows.loc[x_rows.index[-1]+1] = x
+                        x_rows.append(x, ignore_index=True)
                         y_rows.append(y)
                     else:
                         pass

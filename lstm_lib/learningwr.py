@@ -89,8 +89,8 @@ def __get_dataset(con, instrument, targettime, tabletype, y_index):
 
     y_targettime = change_to_nexttime(targettime, tabletype, index=y_index)
     y_close_ask, y_close_bid, y_high_ask, y_high_bid, y_low_ask, y_low_bid, y_insert_time = __get_price(con, y_targettime, tabletype, instrument)
-#    if close_ask < y_close_bid:
-    if close_ask < y_close_ask:
+    if close_ask < y_close_bid:
+#    if close_ask < y_close_ask:
         y = 1
     else:
         y = 0
@@ -126,7 +126,7 @@ def get_datasets(con, instrument, starttime, endtime, tabletype, y_index, modeln
             else:
                 x, y = __get_dataset(con, instrument, targettime, tabletype, y_index)
                 x = x.values.tolist()[0]
-                print(x)
+                #print(x)
 
             x_list.append(x)
             y_list.append(y)
@@ -149,7 +149,7 @@ def learning(x_train, x_test, y_train, y_test, modelname):
         model = SVC(kernel="linear", random_state=None)
     elif modelname == "lgrg":
         model = LogisticRegression(random_state=None)
-    elif modelname == "rf"
+    elif modelname == "rf":
         model = RandomForestClassifier()
     else:
         raise
@@ -157,7 +157,7 @@ def learning(x_train, x_test, y_train, y_test, modelname):
     # learning
     model.fit(x_train, y_train)
     pred_train = model.predict(x_test)
-    accuracy_train = accuracy_score(y_train, pred_train)
+    accuracy_train = accuracy_score(y_test, pred_train)
     print("%s results = %s" % (modelname, accuracy_train))
     filename = '%s.sav' % modelname
     pickle.dump(model, open(filename, 'wb'))
@@ -165,8 +165,8 @@ def learning(x_train, x_test, y_train, y_test, modelname):
 if __name__ == "__main__":
     # set parameters
     instrument = "USD_JPY"
-    starttime = "2019-04-08 16:55:00"
-    endtime = "2019-04-08 17:00:00"
+    starttime = "2019-03-01 00:00:00"
+    endtime = "2019-03-31 00:00:00"
     starttime = change_to_ptime(starttime)
     endtime = change_to_ptime(endtime)
     tabletype = "1m"
@@ -187,12 +187,11 @@ if __name__ == "__main__":
 
     ### Logistic Regression
     modelname = "lgrg"
-    learning(modelname)
+    learning(x_train_std, x_test_std, y_train, y_test, modelname)
 
     ### Random Forest
     modelname = "rf"
-    learning(modelname)
-
+    learning(x_train_std, x_test_std, y_train, y_test, modelname)
 
     modelname = "lstm"
     window_size = 30

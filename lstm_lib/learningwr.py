@@ -142,6 +142,26 @@ def normalize_data(data):
     
     return data
 
+
+def learning(x_train, x_test, y_train, y_test, modelname):
+    # create model
+    if modelname == "svm":
+        model = SVC(kernel="linear", random_state=None)
+    elif modelname == "lgrg":
+        model = LogisticRegression(random_state=None)
+    elif modelname == "rf"
+        model = RandomForestClassifier()
+    else:
+        raise
+
+    # learning
+    model.fit(x_train, y_train)
+    pred_train = model.predict(x_test)
+    accuracy_train = accuracy_score(y_train, pred_train)
+    print("%s results = %s" % (modelname, accuracy_train))
+    filename = '%s.sav' % modelname
+    pickle.dump(model, open(filename, 'wb'))
+
 if __name__ == "__main__":
     # set parameters
     instrument = "USD_JPY"
@@ -151,57 +171,35 @@ if __name__ == "__main__":
     endtime = change_to_ptime(endtime)
     tabletype = "1m"
     y_index = 5
-
     con = MysqlConnector()
 
     # get train data set
     modelname = "svm"
     x, y = get_datasets(con, instrument, starttime, endtime, tabletype,  y_index, modelname)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=None)
-
     # Normalize Dataset
     x_train_std = normalize_data(np.array(x_train))
     x_test_std = normalize_data(np.array(x_test))
 
     ### SVM
-    # create model
-    model = SVC(kernel="linear", random_state=None)
-    # learning
-    model.fit(x_train_std, y_train)
-    pred_train = model.predict(x_train_std)
-    accuracy_train = accuracy_score(y_train, pred_train)
-    print("svm results = %s" % accuracy_train)
-    filename = 'svm.sav'
-    pickle.dump(model, open(filename, 'wb'))
+    modelname = "svm"
+    learning(x_train_std, x_test_std, y_train, y_test, modelname)
 
     ### Logistic Regression
-    # create model
-    model = LogisticRegression(random_state=None)
-    # learning
-    model.fit(x_train_std, y_train)
-    pred_train = model.predict(x_train_std)
-    accuracy_train = accuracy_score(y_train, pred_train)
-    print("logistic regression results = %s" % accuracy_train)
-    filename = 'logistic.sav'
-    pickle.dump(model, open(filename, 'wb'))
+    modelname = "lgrg"
+    learning(modelname)
 
     ### Random Forest
-    # create model
-    model = RandomForestClassifier()
-    # learning
-    model.fit(x_train_std, y_train)
-    pred_train = model.predict(x_train_std)
-    accuracy_train = accuracy_score(y_train, pred_train)
-    print("random forest results = %s" % accuracy_train)
-    filename = 'rndfrst.sav'
-    pickle.dump(model, open(filename, 'wb'))
+    modelname = "rf"
+    learning(modelname)
+
 
     modelname = "lstm"
     window_size = 30
     #neurons = 1000
     #epochs = 1000
-    neurons = 100
-    epochs = 10
+    neurons = 200
+    epochs = 200
 
     x, y = get_datasets(con, instrument, starttime, endtime, tabletype,  y_index, modelname, window_size)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=None)

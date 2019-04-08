@@ -100,14 +100,13 @@ def get_datasets(con, instrument, starttime, endtime, tabletype, y_index, modeln
                     if decideMarket(targettime):
                         x, y = __get_dataset(con, instrument, targettime, tabletype, y_index)
                         count = count + 1
-                        x_rows.append(x, ignore_index=True)
+                        x_rows = x_rows.append(x, ignore_index=True)
                         y_rows.append(y)
                     else:
                         pass
 
                     targettime = change_to_targettime(targettime, tabletype)
 
-                print(x_rows)
                 x = x_rows.values.tolist()
                 x.reverse()
                 y = y_rows[0]
@@ -139,6 +138,9 @@ if __name__ == "__main__":
 #    modelname = "svm"
 #    x, y = get_datasets(con, instrument, starttime, endtime, tabletype,  y_index, modelname)
 #    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=None)
+#
+#    tmp = pd.DataFrame(x_train)
+#    print(tmp.shape)
 #    # Normalize Dataset
 #    sc = StandardScaler()
 #    sc.fit(x_train)
@@ -197,13 +199,11 @@ if __name__ == "__main__":
     df_x_train = pd.DataFrame(x_train)
     df_x_test = pd.DataFrame(x_test)
 
-    print(df_x_train)
+    print(df_x_train.shape)
     print(df_x_test.shape)
 
-    np_x_train = df_x_train.values
-    np_x_test = df_x_test.values
-    x_train_std = sc.fit_transform(np_x_train)
-    x_test_std = sc.fit_transform(np_x_test)
+    x_train_std = sc.fit_transform(df_x_train)
+    x_test_std = sc.fit_transform(df_x_test)
 
     model = Sequential()
     # add dataset 3dimention size

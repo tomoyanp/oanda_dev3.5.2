@@ -37,7 +37,7 @@ def __get_price(con, targettime, tabletype, instrument):
     high_bid = response[0][3]
     low_ask = response[0][4]
     low_bid = response[0][5]
-    insert_time = respones[0][6]
+    insert_time = response[0][6]
 
     return close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time
 
@@ -69,16 +69,16 @@ def __get_dataset(con, instrument, targettime, tabletype, y_index):
          "bef_insert_time": [],
          "insert_time": []
         }
-    x["bef_closeprice"] = float(bef_closeprice)
-    x["high_price"] = float(high_price)
-    x["low_price"] = float(low_price)
-    x["uppersigma"] = float(uppersigma)
-    x["lowersigma"] = float(lowersigma)
-    x["sma25"] = float(sma25)
-    x["sma75"] = float(sma75)
-    x["sma100"] = float(sma100)
-    x["insert_time"] = insert_time
-    x["bef_insert_time"] = bef_insert_time
+    x["bef_closeprice"].append(float(bef_closeprice))
+    x["high_price"].append(float(high_price))
+    x["low_price"].append(float(low_price))
+    x["uppersigma"].append(float(uppersigma))
+    x["lowersigma"].append(float(lowersigma))
+    x["sma25"].append(float(sma25))
+    x["sma75"].append(float(sma75))
+    x["sma100"].append(float(sma100))
+    x["insert_time"].append(insert_time)
+    x["bef_insert_time"].append(bef_insert_time)
     
     x = pd.DataFrame(x)
     print(x)
@@ -88,7 +88,7 @@ def __get_dataset(con, instrument, targettime, tabletype, y_index):
     x = x - closeprice
 
     y_targettime = change_to_nexttime(targettime, tabletype, index=y_index)
-    y_close_ask, y_close_bid, y_high_ask, y_high_bid, y_low_ask, y_low_bid = __get_price(con, y_targettime, tabletype, instrument)
+    y_close_ask, y_close_bid, y_high_ask, y_high_bid, y_low_ask, y_low_bid, y_insert_time = __get_price(con, y_targettime, tabletype, instrument)
 #    if close_ask < y_close_bid:
     if close_ask < y_close_ask:
         y = 1
@@ -125,6 +125,8 @@ def get_datasets(con, instrument, starttime, endtime, tabletype, y_index, modeln
 
             else:
                 x, y = __get_dataset(con, instrument, targettime, tabletype, y_index)
+                x = x.values.tolist()[0]
+                print(x)
 
             x_list.append(x)
             y_list.append(y)
@@ -143,8 +145,8 @@ def normalize_data(data):
 if __name__ == "__main__":
     # set parameters
     instrument = "USD_JPY"
-    starttime = "2019-04-08 17:30:00"
-    endtime = "2019-04-08 18:00:00"
+    starttime = "2019-04-08 16:55:00"
+    endtime = "2019-04-08 17:00:00"
     starttime = change_to_ptime(starttime)
     endtime = change_to_ptime(endtime)
     tabletype = "1m"
@@ -196,8 +198,10 @@ if __name__ == "__main__":
 
     modelname = "lstm"
     window_size = 30
-    neurons = 1000
-    epochs = 1000
+    #neurons = 1000
+    #epochs = 1000
+    neurons = 100
+    epochs = 10
 
     x, y = get_datasets(con, instrument, starttime, endtime, tabletype,  y_index, modelname, window_size)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=None)
@@ -206,9 +210,13 @@ if __name__ == "__main__":
     x_train_std = normalize_data(np.array(x_train))
     x_test_std = normalize_data(np.array(x_test))
 
+    #tmp = pd.DataFrame(x_train_std)
+    #print(tmp.shape)
+
     model = Sequential()
     # add dataset 3dimention size
-    model.add(LSTM(neurons, input_shape=(window_size, len(x_train[0]))))
+    # model.add(LSTM(neurons, input_shape=(window_size, len(x_train[0]))))
+    model.add(LSTM(neurons, input_shape=(window_size, len(x_train_std[0][0]))))
     # model.add(Dropout(0.25))
     model.add(Dense(units=1))
     #model.add(Activation("linear"))
@@ -216,7 +224,7 @@ if __name__ == "__main__":
     #model.compile(loss="mae", optimizer="adam")
     model.compile(loss="mae", optimizer="RMSprop")
     es_cb = EarlyStopping(monitor="val_loss", patience=0, verbose=0, mode="auto")
-    history = model.fit(x_train, y_train, epochs=epochs, batch_size=256, verbose=2, shuffle=False, callbacks=[es_cb])
+    history = model.fit(x_train_std, y_train, epochs=epochs, batch_size=256, verbose=2, shuffle=False, callbacks=[es_cb])
 
     # モデルの保存
     model_filename = "lstm.json"

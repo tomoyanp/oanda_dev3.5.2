@@ -24,6 +24,8 @@ from keras.layers import Dropout
 from keras.models import model_from_json
 from keras.callbacks import EarlyStopping
 from sklearn.preprocessing import MinMaxScaler
+
+import xgboost as xgb
 import numpy as np
 import pandas as pd
 
@@ -97,37 +99,15 @@ def __get_dataset(con, instrument, targettime, tabletype, y_index):
 
     return x, y
 
-def get_datasets(con, instrument, starttime, endtime, tabletype, y_index, modelname, window_size=1):
+def get_datasets(con, instrument, starttime, endtime, tabletype, y_index):
     x_list = []
     y_list = []
     while starttime < endtime:
         print(starttime)
         if decideMarket(starttime):
             targettime = change_to_targettime(starttime, tabletype)
-            if modelname == "lstm":
-                count = 0
-                x_rows = pd.DataFrame([])
-                y_rows = []
-                while count < window_size:
-                    if decideMarket(targettime):
-                        x, y = __get_dataset(con, instrument, targettime, tabletype, y_index)
-                        count = count + 1
-                        x_rows = x_rows.append(x, ignore_index=True)
-                        y_rows.append(y)
-                    else:
-                        pass
-
-                    targettime = change_to_targettime(targettime, tabletype)
-
-                x = x_rows.values.tolist()
-                x.reverse()
-                y = y_rows[0]
-
-            else:
-                x, y = __get_dataset(con, instrument, targettime, tabletype, y_index)
-                x = x.values.tolist()[0]
-                #print(x)
-
+            x, y = __get_dataset(con, instrument, targettime, tabletype, y_index)
+            x = x.values.tolist()[0]
             x_list.append(x)
             y_list.append(y)
 
@@ -151,12 +131,25 @@ def learning(x_train, x_test, y_train, y_test, modelname):
         model = LogisticRegression(random_state=None)
     elif modelname == "rf":
         model = RandomForestClassifier()
+    elif modelname == "xgb":
+         x_train = xgb.DMatrix(x_train, label=y_train)
+         x_test = xgb.DMatrix(x_test, label=y_test)
+         xgb_params = {
+             "objective": "binary:logistic",
+             "eval_metric": "logloss",
+         }
     else:
         raise
 
     # learning
-    model.fit(x_train, y_train)
+    if modelname == "xgb":
+        model = xgb.train(xgb_params, x_train, num_boost_round=200,)
+        
+    else:
+        model.fit(x_train, y_train)
+
     pred_train = model.predict(x_test)
+    pred_train = np.where(pred_train > 0.5, 1, 0)
     accuracy_train = accuracy_score(y_test, pred_train)
     print("%s results = %s" % (modelname, accuracy_train))
     filename = '%s.sav' % modelname
@@ -165,7 +158,7 @@ def learning(x_train, x_test, y_train, y_test, modelname):
 if __name__ == "__main__":
     # set parameters
     instrument = "USD_JPY"
-    starttime = "2019-03-01 00:00:00"
+    starttime = "2019-01-01 00:00:00"
     endtime = "2019-03-31 00:00:00"
     starttime = change_to_ptime(starttime)
     endtime = change_to_ptime(endtime)
@@ -174,8 +167,7 @@ if __name__ == "__main__":
     con = MysqlConnector()
 
     # get train data set
-    modelname = "svm"
-    x, y = get_datasets(con, instrument, starttime, endtime, tabletype,  y_index, modelname)
+    x, y = get_datasets(con, instrument, starttime, endtime, tabletype,  y_index)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=None)
     # Normalize Dataset
     x_train_std = normalize_data(np.array(x_train))
@@ -193,6 +185,10 @@ if __name__ == "__main__":
     modelname = "rf"
     learning(x_train_std, x_test_std, y_train, y_test, modelname)
 
+    ### XGBoost
+    modelname = "xgb"
+    learning(x_train_std, x_test_std, y_train, y_test, modelname)
+
     modelname = "lstm"
     window_size = 30
     #neurons = 1000
@@ -200,20 +196,33 @@ if __name__ == "__main__":
     neurons = 200
     epochs = 200
 
-    x, y = get_datasets(con, instrument, starttime, endtime, tabletype,  y_index, modelname, window_size)
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=None)
 
-    # Normalize Dataset
-    x_train_std = normalize_data(np.array(x_train))
-    x_test_std = normalize_data(np.array(x_test))
 
-    #tmp = pd.DataFrame(x_train_std)
-    #print(tmp.shape)
+    lstm_x = []
+    lstm_y = []
 
+    print(len(x_train_std))
+    print(len(y_train))
+
+    x_tmp = []
+    y_tmp = []
+    for i in range(0, len(x_train_std)-window_size):
+        x_tmp.append(x_train_std[i:(window_size+i)])
+        y_tmp.append(y_train[window_size+i-1])
+
+    lstm_x.append(x_tmp)
+    lstm_y.append(y_tmp)
+    
+    print("=====================================")
+    print(len(lstm_x))
+    print(len(lstm_x[0]))
+    print(len(lstm_x[0][0]))
+    print(len(lstm_y))
     model = Sequential()
     # add dataset 3dimention size
     # model.add(LSTM(neurons, input_shape=(window_size, len(x_train[0]))))
-    model.add(LSTM(neurons, input_shape=(window_size, len(x_train_std[0][0]))))
+    model.add(LSTM(neurons, input_shape=(window_size, len(lstm_x[0][0][0]))))
+    #model.add(LSTM(neurons, input_shape=(window_size, 8)))
     # model.add(Dropout(0.25))
     model.add(Dense(units=1))
     #model.add(Activation("linear"))
@@ -221,7 +230,7 @@ if __name__ == "__main__":
     #model.compile(loss="mae", optimizer="adam")
     model.compile(loss="mae", optimizer="RMSprop")
     es_cb = EarlyStopping(monitor="val_loss", patience=0, verbose=0, mode="auto")
-    history = model.fit(x_train_std, y_train, epochs=epochs, batch_size=256, verbose=2, shuffle=False, callbacks=[es_cb])
+    history = model.fit(lstm_x, lstm_y, epochs=epochs, batch_size=256, verbose=2, shuffle=False, callbacks=[es_cb])
 
     # モデルの保存
     model_filename = "lstm.json"

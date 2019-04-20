@@ -1,6 +1,7 @@
 #coding: utf-8
 import sys
 import os
+import random
 import pickle
 
 # 実行スクリプトのパスを取得して、追加
@@ -84,7 +85,7 @@ def __get_dataset(con, instrument, targettime, tabletype, y_index):
     x["bef_insert_time"].append(bef_insert_time)
     
     x = pd.DataFrame(x)
-    print(x)
+    #print(x)
 
     del x["insert_time"]
     del x["bef_insert_time"]
@@ -92,13 +93,19 @@ def __get_dataset(con, instrument, targettime, tabletype, y_index):
 
     y_targettime = change_to_nexttime(targettime, tabletype, index=y_index)
     y_close_ask, y_close_bid, y_high_ask, y_high_bid, y_low_ask, y_low_bid, y_insert_time = __get_price(con, y_targettime, tabletype, instrument)
-    if close_ask < y_close_bid:
-#    if close_ask < y_close_ask:
+#    if close_ask < (y_close_bid-0.1):
+#        y = 1
+#    elif (y_close_ask+0.1) < close_bid:
+#        y = 0
+#    else:
+#        y = 0.5
+    if close_ask < (y_close_bid-0.05):
         y = 1
-    elif y_close_ask < close_bid:
+    elif (y_close_ask+0.05) < close_bid:
         y = 0
     else:
         y = 0.5
+
 
     return x, y
 
@@ -201,18 +208,38 @@ def create_lstm_dataset(x, y):
 
     return rt_x, rt_y
 
+def resample_dataset(x, y, labels):
+    count_list = []
+    for label in labels:
+        count_list.append(np.sum(y == label))
+
+    print(count_list)
+    min_count = min(count_list) 
+
+    for label in labels:
+        while min_count != np.sum(y == label):
+            rand_num = random.randint(0, len(y)-1)
+            print(rand_num)
+            if y[rand_num] == label:
+                #print(y[rand_num])
+                y = np.delete(y, rand_num, 0)
+                x = np.delete(x, rand_num, 0)
+    
+
+    return x, y
+
 
 if __name__ == "__main__":
     # set parameters
-    instrument = "USD_JPY"
+    instrument = "GBP_JPY"
     #starttime = "2019-01-01 00:00:00"
-    starttime = "2019-03-01 00:00:00"
+    starttime = "2019-01-01 00:00:00"
     #endtime = "2019-03-31 23:59:59"
     endtime = "2019-04-01 00:00:00"
     starttime = change_to_ptime(starttime)
     endtime = change_to_ptime(endtime)
     tabletype = "1m"
-    y_index = 5
+    y_index = 10 
     con = MysqlConnector()
     #label_map = {"0" : "down", "0.5": "flat", "1": "up"}
     label_map = {"down" : "0.0", "flat": "0.5", "up": "1.0"}
@@ -224,6 +251,7 @@ if __name__ == "__main__":
     # Normalize Dataset
     x_train_std = normalize_data(np.array(x_train))
     x_test_std = normalize_data(np.array(x_test))
+
 
 #    ### SVM
 #    modelname = "svm"
@@ -243,14 +271,36 @@ if __name__ == "__main__":
 
     modelname = "lstm"
     window_size = 30
-    neurons = 100
-    epochs = 10
+    neurons = 500
+    epochs = 100
     #neurons = 1000
     #epochs = 50
 
 
     x_train_std, y_train = create_lstm_dataset(x_train_std, y_train)
     x_test_std, y_test = create_lstm_dataset(x_test_std, y_test)
+
+    print("before")
+#    print(x_train_std)
+    print(y_train)
+
+    x_train_std, y_train = resample_dataset(x_train_std, y_train, [0,0.5,1])
+
+    dw_count = (np.sum(y_train == 0))
+    fl_count = (np.sum(y_train == 0.5))
+    up_count = (np.sum(y_train == 1))
+    print(dw_count)
+    print(fl_count)
+    print(up_count)
+
+           
+    print(x_train_std.shape)
+    print(y_train.shape)
+ 
+
+    print(x_train_std)
+    print(y_train)
+
 
     print("=====================================")
     #x_train_std = x_train_std[0]
@@ -278,14 +328,14 @@ if __name__ == "__main__":
 
     pred_test = model.predict(x_test_std)
 
-    print(pred_test)
+#    print(pred_test)
 
     pred_test = np.where(pred_test < 0.4, 0, pred_test)
     pred_test = np.where((0.4 < pred_test) & (pred_test < 0.8), 0.5, pred_test)
     pred_test = np.where(0.8 < pred_test, 1, pred_test)
 
-    print(pred_test)
-    print(y_test)
+#    print(pred_test)
+#    print(y_test)
 
     #pred_test = np.where(np.array(pred_test) < 0.5, 0, 1)
     #y_test = np.where(np.array(y_test) < 0.5, 0, 1)
@@ -308,6 +358,8 @@ if __name__ == "__main__":
     print("%s confusion_matrix is below" % (modelname))
     print(cfmatrix)
 
+    print(pred_test)
+    print(y_test)
 
     # モデルの保存
     model_filename = "lstm.json"

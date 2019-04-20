@@ -227,6 +227,9 @@ class LstmWrapper():
         train_output_dataset = np.array(train_output_dataset)
     
         es_cb = EarlyStopping(monitor="val_loss", patience=0, verbose=0, mode="auto")
+        print("################################") 
+        print(train_input_dataset.shape)
+        print(train_output_dataset.shape)
         history = self.learning_model.fit(train_input_dataset, train_output_dataset, epochs=epochs, batch_size=256, verbose=2, shuffle=False, callbacks=[es_cb])
     
         #del train_input_dataset

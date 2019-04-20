@@ -26,6 +26,8 @@ response = con.select_sql(sql)
 for table in response:
     #sql = "truncate table %s" % table[0]
     sql = "select insert_time from %s order by insert_time desc limit 1" % table[0]
-    print(sql)
     response = con.select_sql(sql)
-    print(response)
+    if len(response) != 0:
+        print("%s -----> %s" % (table[0], response[0][0]))
+    else:
+        print("%s -----> No Data" % (table[0]))

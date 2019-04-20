@@ -113,6 +113,10 @@ def change_to_targettime(base_time, table_type):
     return target_time
 
 def change_to_nexttime(base_time, table_type, index):
+    print(type(base_time))
+    print(base_time)
+    if type(base_time) is str:
+        base_time = datetime.strptime(base_time, "%Y-%m-%d %H:%M:%S")
     if table_type == "5s":
         target_time = base_time + timedelta(seconds=5*index)
     elif table_type == "1m":

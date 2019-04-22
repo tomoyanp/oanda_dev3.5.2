@@ -1,13 +1,17 @@
 #coding: utf-8
 import sys
 import os
+import random
 import pickle
-
+from datetime import datetime
+from logging import getLogger, FileHandler, DEBUG
 # 実行スクリプトのパスを取得して、追加
 # confusion matrixは横の行が実際、縦の列が予想
 current_path = os.path.abspath(os.path.dirname(__file__))
 sys.path.append(current_path + "/../")
 sys.path.append(current_path + "/../lib")
+
+
 
 from common import get_bollinger, change_to_targettime, decideMarket, get_sma, change_to_nexttime, change_to_ptime
 from sklearn.model_selection import train_test_split
@@ -29,6 +33,20 @@ from sklearn.preprocessing import MinMaxScaler
 import xgboost as xgb
 import numpy as np
 import pandas as pd
+
+# set parameters
+instrument = sys.argv[1]
+window_size = int(sys.argv[2])
+y_index = int(sys.argv[3])
+
+now = datetime.now()
+now = now.strftime("%Y%m%d%H%M%S")
+debug_logfilename = "%s_%s_windowsize_%s.log" %(now, instrument, window_size)
+debug_logger = getLogger("debug")
+debug_fh = FileHandler(debug_logfilename, "a+")
+debug_logger.addHandler(debug_fh)
+debug_logger.setLevel(DEBUG)
+
 
 
 def __get_price(con, targettime, tabletype, instrument):
@@ -72,7 +90,7 @@ def __get_dataset(con, instrument, targettime, tabletype, y_index):
          "bef_insert_time": [],
          "insert_time": []
         }
-    x["bef_closeprice"].append(float(bef_closeprice))
+    x["bef_closeprice"].append(float(closeprice))
     x["high_price"].append(float(high_price))
     x["low_price"].append(float(low_price))
     x["uppersigma"].append(float(uppersigma))
@@ -84,21 +102,20 @@ def __get_dataset(con, instrument, targettime, tabletype, y_index):
     x["bef_insert_time"].append(bef_insert_time)
     
     x = pd.DataFrame(x)
-    print(x)
 
     del x["insert_time"]
     del x["bef_insert_time"]
-    x = x - closeprice
+#    x = x - closeprice
 
     y_targettime = change_to_nexttime(targettime, tabletype, index=y_index)
     y_close_ask, y_close_bid, y_high_ask, y_high_bid, y_low_ask, y_low_bid, y_insert_time = __get_price(con, y_targettime, tabletype, instrument)
-    if close_ask < y_close_bid:
-#    if close_ask < y_close_ask:
+    if close_ask < (y_close_bid-0.05):
         y = 1
-    elif y_close_ask < close_bid:
+    elif (y_close_ask+0.05) < close_bid:
         y = 0
     else:
         y = 0.5
+
 
     return x, y
 
@@ -106,7 +123,7 @@ def get_datasets(con, instrument, starttime, endtime, tabletype, y_index):
     x_list = []
     y_list = []
     while starttime < endtime:
-        print(starttime)
+        debug_logger.info(starttime)
         if decideMarket(starttime):
             targettime = change_to_targettime(starttime, tabletype)
             x, y = __get_dataset(con, instrument, targettime, tabletype, y_index)
@@ -201,29 +218,51 @@ def create_lstm_dataset(x, y):
 
     return rt_x, rt_y
 
+def resample_dataset(x, y, labels):
+    count_list = []
+    for label in labels:
+        count_list.append(np.sum(y == label))
+
+    min_count = min(count_list) 
+    for label in labels:
+        label_count = np.sum(y == label)
+        label_count = label_count - min_count
+
+        for i in range(0, label_count):
+            index_list = np.where(y == label)
+            index_list = index_list[0]
+            index_list = index_list.tolist()
+
+            rand_num = random.choice(index_list)
+            y = np.delete(y, rand_num, 0)
+            x = np.delete(x, rand_num, 0)
+            index_list.remove(rand_num)
+
+        
+        print("label = %s, count = %s" % (label, np.sum(y == label)))
+    return x, y
+
 
 if __name__ == "__main__":
-    # set parameters
-    instrument = "USD_JPY"
+
     #starttime = "2019-01-01 00:00:00"
-    starttime = "2019-03-01 00:00:00"
-    #endtime = "2019-03-31 23:59:59"
-    endtime = "2019-04-01 00:00:00"
+    starttime = "2018-03-01 00:00:00"
+#    endtime = "2019-04-01 00:00:00"
+    endtime = "2018-03-01 12:00:00"
     starttime = change_to_ptime(starttime)
     endtime = change_to_ptime(endtime)
     tabletype = "1m"
-    y_index = 5
     con = MysqlConnector()
-    #label_map = {"0" : "down", "0.5": "flat", "1": "up"}
     label_map = {"down" : "0.0", "flat": "0.5", "up": "1.0"}
 
     # get train data set
     x, y = get_datasets(con, instrument, starttime, endtime, tabletype,  y_index)
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=None, shuffle=False)
-#    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.3, random_state=None)
+
     # Normalize Dataset
     x_train_std = normalize_data(np.array(x_train))
     x_test_std = normalize_data(np.array(x_test))
+
 
 #    ### SVM
 #    modelname = "svm"
@@ -242,58 +281,34 @@ if __name__ == "__main__":
 #    learning(x_train_std, x_test_std, y_train, y_test, modelname)
 
     modelname = "lstm"
-    window_size = 30
     neurons = 100
     epochs = 10
-    #neurons = 1000
-    #epochs = 50
-
 
     x_train_std, y_train = create_lstm_dataset(x_train_std, y_train)
     x_test_std, y_test = create_lstm_dataset(x_test_std, y_test)
 
-    print("=====================================")
-    #x_train_std = x_train_std[0]
-    #x_train_std = np.array(x_train_std)
-    #y_train = np.array(y_train)
-    print(x_train_std.shape)
-    print(y_train.shape)
+    x_train_std, y_train = resample_dataset(x_train_std, y_train, [0,0.5,1])
+
+    dw_count = (np.sum(y_train == 0))
+    fl_count = (np.sum(y_train == 0.5))
+    up_count = (np.sum(y_train == 1))
     model = Sequential()
     # add dataset 3dimention size
-    # model.add(LSTM(neurons, input_shape=(window_size, len(x_train_std[0]))))
-    #model.add(LSTM(neurons, input_shape=(window_size, len(x_train_std[0][0][0]))))
-
     model.add(LSTM(neurons, input_shape=(window_size, 8)))
-    # model.add(Dropout(0.25))
     model.add(Dense(units=1))
-    #model.add(Activation("linear"))
     model.add(Activation("sigmoid"))
-    #model.compile(loss="mae", optimizer="adam")
     model.compile(loss="mae", optimizer="RMSprop")
-    #es_cb = EarlyStopping(monitor="val_loss", patience=0, verbose=0, mode="auto")
-    #history = model.fit(x_train_std, y_train, epochs=epochs, batch_size=256, verbose=2, shuffle=False, callbacks=[es_cb])
-
-    #history = model.fit(x_train_std, y_train, epochs=epochs, batch_size=256, verbose=2, shuffle=False)
-    history = model.fit(x_train_std, y_train, epochs=epochs, batch_size=1, verbose=2, shuffle=False)
+    es_cb = EarlyStopping(monitor="val_loss", patience=0, verbose=0, mode="auto")
+    history = model.fit(x_train_std, y_train, epochs=epochs, batch_size=256, verbose=2, shuffle=False, callbacks=[es_cb])
 
     pred_test = model.predict(x_test_std)
-
-    print(pred_test)
 
     pred_test = np.where(pred_test < 0.4, 0, pred_test)
     pred_test = np.where((0.4 < pred_test) & (pred_test < 0.8), 0.5, pred_test)
     pred_test = np.where(0.8 < pred_test, 1, pred_test)
 
-    print(pred_test)
-    print(y_test)
-
-    #pred_test = np.where(np.array(pred_test) < 0.5, 0, 1)
-    #y_test = np.where(np.array(y_test) < 0.5, 0, 1)
-    #labels=[0,1]
-
     pred_test = np.array(pred_test)
     y_test = np.array(y_test)
-
 
     labels=["down", "flat", "up"]
     pred_test = num_to_label(pred_test, label_map)
@@ -301,13 +316,16 @@ if __name__ == "__main__":
 
     accuracy_test = accuracy_score(y_test, pred_test)
     print("%s accuracy = %s" % (modelname, accuracy_test))
+    debug_logger.info("%s accuracy = %s" % (modelname, accuracy_test))
     fmeasure = f1_score(y_test, pred_test, average='macro')
     print("%s fmeasure = %s" % (modelname, fmeasure))
+    debug_logger.info("%s fmeasure = %s" % (modelname, fmeasure))
     cfmatrix = confusion_matrix(y_test, pred_test, labels=labels)
     cfmatrix = pd.DataFrame(cfmatrix, columns=labels, index=labels)
     print("%s confusion_matrix is below" % (modelname))
+    debug_logger.info("%s confusion_matrix is below" % (modelname))
     print(cfmatrix)
-
+    debug_logger.info(cfmatrix)
 
     # モデルの保存
     model_filename = "lstm.json"

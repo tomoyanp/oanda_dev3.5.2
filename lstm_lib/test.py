@@ -1,10 +1,9 @@
-def test(a, b, c, d, e=1):
-    print(a)
-    print(b)
-    print(c)
-    print(d)
-    print(e)
+from learningwr import resample_dataset
+import numpy as np
 
 
-test(1, 2, 3, 4, 5)
-test(1, 2, 3, 4)
+loaded_data = np.load("datasets.npz")
+x = loaded_data["x"]
+y = loaded_data["y"]
+
+x_train_std, y_train = resample_dataset(x, y, [0,0.5,1], "up")

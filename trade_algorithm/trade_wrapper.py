@@ -162,6 +162,7 @@ class TradeWrapper:
                             self.trade_algo.settlementLogWrite(profit, base_time, stl_price, stl_method)
                             self.stl_sleep_flag = False
                             self.trade_algo.resetFlag()
+                            self.setTradeAlgo("lstm", base_time)
                             self.removeOnfile()
                     else:
                         self.stl_sleep_flag = True
@@ -202,6 +203,7 @@ class TradeWrapper:
         self.trade_algo.resetFlag()
         self.removeOnfile()
         self.stl_sleep_flag = False
+        self.setTradeAlgo("lstm", base_time)
 
     def stlDecisionWrapper(self, base_time):
         sleep_time = 0

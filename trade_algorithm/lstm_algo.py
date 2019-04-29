@@ -339,10 +339,6 @@ class LstmAlgo(SuperAlgo):
             if 15 < seconds < 30:
                 target_time = base_time
                 self.set_current_price(target_time)
-
-            if minutes == 0 and 0 < seconds <= 10:
-                target_time = base_time
-                
     
                 table_type = "1h"
                 self.usdjpy1h, self.eurusd1h, self.gbpusd1h, self.gbpjpy1h, self.eurjpy1h = self.multi_predict(table_type, target_time)

@@ -50,7 +50,7 @@ if __name__ == "__main__":
     print(y_train.shape)
 
     modelname = "lstm"
-    neurons = 1000
+    neurons = 500
     epochs = 50
 
     model = Sequential()

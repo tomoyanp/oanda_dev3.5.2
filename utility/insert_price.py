@@ -55,7 +55,6 @@ debug_logger.setLevel(DEBUG)
 
 def insert_table(base_time, instrument, con, table_type, count):
     debug_logger.info("%s: Start insert_table logic" % (base_time))
-    debug_logger.info("%s: table_type=%s" % (base_time, table_type))
     if table_type == "5s":
         granularity = "S5"
     elif table_type == "1m":
@@ -117,10 +116,8 @@ def insert_table(base_time, instrument, con, table_type, count):
         
             if len(response) == 0:
                 sql = "insert into %s_%s_TABLE(open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time) values(%s, %s, %s, %s, %s, %s, %s, %s, \'%s\')" % (instrument, table_type, open_ask_price, open_bid_price, close_ask_price, close_bid_price, high_ask_price, high_bid_price, low_ask_price, low_bid_price, insert_time)
-                debug_logger.info("%s: insert record = %s" % (base_time, sql))
             else:
                 sql = "update %s_%s_TABLE set open_ask=%s, open_bid=%s, close_ask=%s, close_bid=%s, high_ask=%s, high_bid=%s, low_ask=%s, low_bid=%s, insert_time=\'%s\' where insert_time=\'%s\'" % (instrument, table_type, open_ask_price, open_bid_price, close_ask_price, close_bid_price, high_ask_price, high_bid_price, low_ask_price, low_bid_price, insert_time, insert_time)
-                debug_logger.info("%s: update record = %s" % (base_time, sql))
             try:
                 con.insert_sql(sql)
 

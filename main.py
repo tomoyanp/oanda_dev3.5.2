@@ -57,8 +57,8 @@ if __name__ == '__main__':
         test_args = "live"
 
     if test_args == "test":
-        end_time = datetime.strptime("2018-11-12 00:00:00", "%Y-%m-%d %H:%M:%S")
-        base_time = datetime.strptime("2018-11-04 00:00:00", "%Y-%m-%d %H:%M:%S")
+        end_time = datetime.strptime("2019-05-19 00:00:00", "%Y-%m-%d %H:%M:%S")
+        base_time = datetime.strptime("2019-01-01 00:00:00", "%Y-%m-%d %H:%M:%S")
         test_mode = True
     else:
         base_time = datetime.now()

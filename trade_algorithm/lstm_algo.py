@@ -170,6 +170,25 @@ class LstmAlgo(SuperAlgo):
             self.set_current_price(target_time)
             self.debug_logger.info("Stl Logic base_time = %s" % base_time)
 
+            trade_day = self.first_trade_time.day
+            trade_hour = self.first_trade_time.hour
+            current_day = base_time.day
+            current_hour = base_time.hour
+
+
+            tmp_flag = False
+            if int(trade_day) + 1 == int(current_day) and 6 < current_hour:
+                tmp_flag = True
+            elif int(trade_day) + 1 < int(current_day):
+                tmp_flag = True
+
+            if tmp_flag:
+                if self.order_kind == "buy" and self.order_price < self.eurjpy_current_price:
+                    stl_flag = True
+                elif self.order_kind == "sell" and self.order_price > self.eurjpy_current_price:
+                    stl_flag = True
+            
+
         return stl_flag
 
 

@@ -15,8 +15,9 @@ for rf in file_list:
   out = out.split("\n")
 
 
-  cmd = "cat %s | grep EXECUTE|grep SETTLE" % rf
+  cmd = "cat %s | grep SETTLE" % rf
   stl_day = subprocess.getoutput(cmd)
+  print(stl_day)
   stl_day = stl_day.split("\n")
 
   for i in range(0, len(out)):

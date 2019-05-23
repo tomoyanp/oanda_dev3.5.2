@@ -236,23 +236,18 @@ class LstmAlgo(SuperAlgo):
             target_time = base_time
             self.set_current_price(target_time)
 
+            if 15 < seconds < 30:
 
-            if 15 < seconds < 30 and 5 < minutes < 10: 
                 table_type = "1h"
                 self.eurjpy1h = self.multi_predict(table_type, target_time)
                 table_type = "3h"
                 self.eurjpy3h = self.multi_predict(table_type, target_time)
-    
-            if 15 < seconds < 30 and 5 < minutes < 10 and hour == 7: 
                 table_type = "day"
                 self.eurjpyday = self.multi_predict(table_type, target_time)
-    
                 trade1h_flag = ""
                 trade3h_flag = ""
                 tradeday_flag = ""
     
-    
-            if 15 < seconds < 30 and minutes % 5 == 0:
                 if self.eurjpy_current_price < self.eurjpy1h:
                     trade1h_flag = "buy"
                 if self.eurjpy_current_price > self.eurjpy1h:

@@ -213,6 +213,15 @@ class LstmAlgo(SuperAlgo):
         output_train_index = 1
 
         instruments = "EUR_JPY"
+        if table_type == "1h":
+            target_time = target_time - timedelta(hours=1)
+        elif table_type == "3h":
+            target_time = target_time - timedelta(hours=3)
+        elif table_type == "day":
+            target_time = target_time - timedelta(days=1)
+        else:
+            raise
+
         eurjpy = predict_value(target_time, self.get_model(table_type, instruments), window_size=window_size, table_type=table_type, output_train_index=output_train_index, instruments=instruments, right_string=right_string)
 
 

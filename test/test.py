@@ -16,7 +16,8 @@ import re
 
 from logging import getLogger, FileHandler, DEBUG
 
-debug_logfilename = "%s.log" % datetime.now().strftime("%Y%m%d%H%M%S")
+mode = sys.argv[1]
+debug_logfilename = "%s-%s.log" % (mode, datetime.now().strftime("%Y%m%d%H%M%S"))
 debug_logger = getLogger("debug")
 debug_fh = FileHandler(debug_logfilename, "a+")
 debug_logger.addHandler(debug_fh)
@@ -26,11 +27,10 @@ con = MysqlConnector()
 
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
 #instrument_list = ["EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
-insert_time = '2019-06-18 16:59:00'
+insert_time = '2019-06-25 13:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
 
-mode = sys.argv[1]
 
 def decide_trade(length, insert_time, description):
     result_list = []

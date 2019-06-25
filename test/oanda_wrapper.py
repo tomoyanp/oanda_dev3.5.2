@@ -1,7 +1,5 @@
 # coding: utf-8
 
-from price_obj import PriceObj
-from order_obj import OrderObj
 from datetime import datetime, timedelta
 import time
 
@@ -12,7 +10,7 @@ import oandapyV20.endpoints.trades as trades
 import oandapyV20.endpoints.positions as positions
 import oandapyV20.endpoints.accounts as accounts
 import oandapyV20.endpoints.accounts as accounts
-
+import re
 
 #trade_object = {
 #     "accountId": ,
@@ -21,7 +19,25 @@ import oandapyV20.endpoints.accounts as accounts
 #}
 
 
-def calcUnit(instruments, con):
+def calc_unit(trade_account, instrument, con):
+    balance = get_balance(trade_account)
+
+    calc_instrument = instrument
+    if re.search("JPY", instrument) != None:
+        pass
+    elif re.search("EUR", instrument) != None:
+        calc_instrument = "EUR_JPY"
+    elif re.search("GBP", instrument) != None:
+        calc_instrument = "GBP_JPY"
+    else:
+        raise
+
+    sql = "select close_ask, close_bid from %s_5s_TABLE order by insert_time desc limit 1" % calc_instrument
+
+    response = con.select_sql(sql)    
+    price = (response[0][0]+response[0][1])/2
+    units = (balance/price)*25*0.8
+
     return units
 
 def open_order(trade_account, instrument, l_side, units, stop_loss, take_profit):
@@ -37,7 +53,7 @@ def open_order(trade_account, instrument, l_side, units, stop_loss, take_profit)
         data = {
             "order": {
                 "instrument": instrument, 
-                "units": units,
+#                "units": units,
                 "type": "MARKET",
                 "positionFill": "DEFAULT",
                 "stopLossOnFill": {
@@ -51,7 +67,7 @@ def open_order(trade_account, instrument, l_side, units, stop_loss, take_profit)
 
         print(data)
 
-        req = orders.OrderCreate(accountID=trade_account["account_id"], data=data)
+        req = orders.OrderCreate(accountID=trade_account["accountId"], data=data)
         res = oanda.request(req)
 
         return res
@@ -71,7 +87,7 @@ def check_position(trade_account):
 
     return order_flag
 
-def getBalance(trade_account):
+def get_balance(trade_account):
     try:
         oanda = oandapyV20.API(environment=trade_account["env"], access_token=trade_account["accessToken"])
         req = accounts.AccountSummary(accountID=trade_account["accountId"])
@@ -84,16 +100,7 @@ def getBalance(trade_account):
     except:
         raise
 
-def get_position(trade_account):
-    try:
-        oanda = oandapyV20.API(environment=trade_account["env"], access_token=trade_account["accessToken"])
-        response = oanda.get_trades(trade_account["accountId"])
-    except:
-        raise
-
-    return response
-
-def close_position(trade_account, currency):
+def close_position(trade_account):
     try:
         oanda = oandapyV20.API(environment=trade_account["env"], access_token=trade_account["accessToken"])
         req = trades.OpenTrades(accountID=trade_account["accountId"])
@@ -101,7 +108,7 @@ def close_position(trade_account, currency):
         trade_id = response["trades"][0]["id"]
 
 
-        req = trades.TradeClose(accountID=trade_account["accountId"],, tradeID=trade_id)
+        req = trades.TradeClose(accountID=trade_account["accountId"], tradeID=trade_id)
         response = oanda.request(req)
         return response
 

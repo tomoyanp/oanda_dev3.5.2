@@ -13,8 +13,10 @@ from mysql_connector import MysqlConnector
 from datetime import datetime, timedelta
 import oanda_wrapper
 import re
+import traceback
 
 from logging import getLogger, FileHandler, DEBUG
+from send_mail import SendMail
 
 mode = sys.argv[1]
 debug_logfilename = "%s-%s.log" % (mode, datetime.now().strftime("%Y%m%d%H%M%S"))
@@ -26,8 +28,8 @@ debug_logger.setLevel(DEBUG)
 con = MysqlConnector()
 
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
-#instrument_list = ["EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
-insert_time = '2019-06-25 13:00:00'
+insert_time = '2019-06-18 17:00:00'
+# insert_time = '2019-06-25 13:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
 
@@ -149,52 +151,62 @@ if __name__ == "__main__":
         insert_time = now
 
     while True:
-        if insert_time > now and mode == "test":
-            break
-        elif mode == "demo":
-            insert_time = datetime.now()
-        else:
-            insert_time = insert_time + timedelta(seconds=5)
-
-        print("%s" % insert_time)
-        if trade_obj["flag"] == False:
-            length = 2
-            value5s = decide_trade(length, insert_time, "5 seconds")
-
-            length = 12
-            value1m = decide_trade(length, insert_time, "1 minutes")
-
-            length = 12 * 5
-            value5m = decide_trade(length, insert_time, "5 minutes")
-
-            length = 12 * 60
-            value1h = decide_trade(length, insert_time, "1 hour")
-
-            if len(value5s) > 1 and len(value1m) > 1 and len(value5m) > 1 and len(value1h) > 1:
-                if value5s["key"] == value1m["key"] == value5m["key"] == value1h["key"] and value5s["currency"] == value1m["currency"] == value5m["currency"] == value1h["currency"]:
-                    debug_logger.info("TRADE %s: %s %s" % (insert_time, value5s["currency"], value5s["key"]))
-                    price, instrument, trade_side = trade(insert_time, value5s["currency"], value5s["key"])
-                    trade_obj["flag"] = True
-                    trade_obj["instrument"] = instrument
-                    trade_obj["price"] = price
-                    trade_obj["side"] = trade_side
-                    trade_obj["trade_time"] = insert_time
-
+        try: 
+            if insert_time > now and mode == "test":
+                break
+            elif mode == "demo":
+                insert_time = datetime.now()
+            else:
+                insert_time = insert_time + timedelta(seconds=5)
+    
+            print("%s" % insert_time)
+            if trade_obj["flag"] == False:
+                length = 2
+                value5s = decide_trade(length, insert_time, "5 seconds")
+    
+                length = 12
+                value1m = decide_trade(length, insert_time, "1 minutes")
+    
+                length = 12 * 5
+                value5m = decide_trade(length, insert_time, "5 minutes")
+    
+                length = 12 * 60
+                value1h = decide_trade(length, insert_time, "1 hour")
+    
+                if len(value5s) > 1 and len(value1m) > 1 and len(value5m) > 1 and len(value1h) > 1:
+                    if value5s["key"] == value1m["key"] == value5m["key"] == value1h["key"] and value5s["currency"] == value1m["currency"] == value5m["currency"] == value1h["currency"]:
+                        debug_logger.info("TRADE %s: %s %s" % (insert_time, value5s["currency"], value5s["key"]))
+                        price, instrument, trade_side = trade(insert_time, value5s["currency"], value5s["key"])
+                        trade_obj["flag"] = True
+                        trade_obj["instrument"] = instrument
+                        trade_obj["price"] = price
+                        trade_obj["side"] = trade_side
+                        trade_obj["trade_time"] = insert_time
+    
+                        if mode != "test":
+                        # if 1 == 1:
+                            units = oanda_wrapper.calc_unit(trade_account, instrument, con)
+                            units = 100000
+                            response = oanda_wrapper.open_order(trade_account, instrument, trade_side, units, 0, 0)
+                            print(response)
+                        
+    
+            if trade_obj["flag"]:
+                stl_flag, stl_time, price, profit = stl(insert_time, trade_obj, profit_rate, orderstop_rate)
+                if stl_flag:
+                    debug_logger.info("SETTLE %s %s - %s: %s - %s, %s %s" % (trade_obj["instrument"], trade_obj["trade_time"], stl_time, trade_obj["price"], price, trade_obj["side"], profit))
+                    trade_obj = {"flag": False}
+    
                     if mode != "test":
-                        units = oanda_wrapper.calc_unit(trade_account, instrument, con)
-                        units = 100000
-                        response = oanda_wrapper.open_order(trade_account, instrument, trade_side, units, 0, 0)
+                    # if 1 == 1:
+                        response = oanda_wrapper.close_position(trade_account)
                         print(response)
-                    
+        except:
+            message = traceback.format_exc()
+            debug_logger.info(message)
+            sendmail = SendMail("tomoyanpy@gmail.com", "tomoyanpy@softbank.ne.jp", "../property")
+            sendmail.set_msg(message)
+            sendmail.send_mail()
 
-        if trade_obj["flag"]:
-            stl_flag, stl_time, price, profit = stl(insert_time, trade_obj, profit_rate, orderstop_rate)
-            if stl_flag:
-                debug_logger.info("SETTLE %s %s - %s: %s - %s, %s %s" % (trade_obj["instrument"], trade_obj["trade_time"], stl_time, trade_obj["price"], price, trade_obj["side"], profit))
-                trade_obj = {"flag": False}
-
-                if mode != "test":
-                    response = oanda_wrapper.close_position(trade_account)
-                    print(response)
 
 

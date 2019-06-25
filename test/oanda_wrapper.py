@@ -53,7 +53,7 @@ def open_order(trade_account, instrument, l_side, units, stop_loss, take_profit)
         data = {
             "order": {
                 "instrument": instrument, 
-                "units": units,
+#                "units": units,
                 "type": "MARKET",
                 "positionFill": "DEFAULT",
                 "stopLossOnFill": {

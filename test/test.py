@@ -28,10 +28,11 @@ debug_logger.setLevel(DEBUG)
 con = MysqlConnector()
 
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
-insert_time = '2019-06-18 17:00:00'
+insert_time = '2019-06-01 00:00:00'
 # insert_time = '2019-06-25 13:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
+end_time = datetime.strptime('2019-06-25 00:00:00', "%Y-%m-%d %H:%M:%S")
 
 
 def decide_trade(length, insert_time, description):
@@ -152,7 +153,7 @@ if __name__ == "__main__":
 
     while True:
         try: 
-            if insert_time > now and mode == "test":
+            if insert_time >= end_time and mode == "test":
                 break
             elif mode == "demo":
                 insert_time = datetime.now()

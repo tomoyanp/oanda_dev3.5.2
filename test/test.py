@@ -35,7 +35,7 @@ now = datetime.now()
 end_time = datetime.strptime('2019-06-25 00:00:00', "%Y-%m-%d %H:%M:%S")
 
 
-def decide_trade(length, insert_time, description):
+def calc_instrument(length, insert_time, description):
     result_list = []
     insert_time = insert_time - timedelta(seconds=5)
 
@@ -137,6 +137,42 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     return stl_flag, insert_time, price, profit
 
 
+def decide_trade(insert_time, length_list):
+    value_list = []
+    for length in length_list:
+        value = calc_instrument(length, insert_time, ("%s seconds" % (length*5)))
+        value_list.append(value)
+
+    print(value_list)
+    flag = True
+    for value in value_list:
+        if len(value) > 1:
+            pass
+        else:
+            flag = False
+
+    trade_flag = True
+    if flag:
+        for i in range(1, len(value_list)):
+            if value_list[i-1]["key"] == value_list[i]["key"] and value_list[i-1]["currency"] == value_list[i]["currency"]:
+                pass
+            else:
+                trade_flag = False
+
+    trade_obj = {"flag": False}
+    if trade_flag and flag:
+        debug_logger.info("TRADE %s: %s %s" % (insert_time, value_list[0]["currency"], value_list[0]["key"]))
+        price, instrument, trade_side = trade(insert_time, value_list[0]["currency"], value_list[0]["key"])
+        trade_obj["flag"] = True
+        trade_obj["instrument"] = instrument
+        trade_obj["price"] = price
+        trade_obj["side"] = trade_side
+        trade_obj["trade_time"] = insert_time
+ 
+    print(trade_obj)
+    print("==========================================")
+    return trade_obj
+
 if __name__ == "__main__":
     trade_account = {
         "accountId": "101-009-10684893-001",
@@ -162,34 +198,15 @@ if __name__ == "__main__":
     
             print("%s" % insert_time)
             if trade_obj["flag"] == False:
-                length = 2
-                value5s = decide_trade(length, insert_time, "5 seconds")
-    
-                length = 12
-                value1m = decide_trade(length, insert_time, "1 minutes")
-    
-                length = 12 * 5
-                value5m = decide_trade(length, insert_time, "5 minutes")
-    
-                length = 12 * 60
-                value1h = decide_trade(length, insert_time, "1 hour")
-    
-                if len(value5s) > 1 and len(value1m) > 1 and len(value5m) > 1 and len(value1h) > 1:
-                    if value5s["key"] == value1m["key"] == value5m["key"] == value1h["key"] and value5s["currency"] == value1m["currency"] == value5m["currency"] == value1h["currency"]:
-                        debug_logger.info("TRADE %s: %s %s" % (insert_time, value5s["currency"], value5s["key"]))
-                        price, instrument, trade_side = trade(insert_time, value5s["currency"], value5s["key"])
-                        trade_obj["flag"] = True
-                        trade_obj["instrument"] = instrument
-                        trade_obj["price"] = price
-                        trade_obj["side"] = trade_side
-                        trade_obj["trade_time"] = insert_time
-    
-                        if mode != "test":
-                        # if 1 == 1:
-                            units = oanda_wrapper.calc_unit(trade_account, instrument, con)
-                            units = 100000
-                            response = oanda_wrapper.open_order(trade_account, instrument, trade_side, units, 0, 0)
-                            print(response)
+                length_list = [2, 12, 12*5, 12*16]
+                trade_obj = decide_trade(insert_time, length_list)
+                if trade_obj["flag"]:
+                    if mode != "test":
+                    # if 1 == 1:
+                        units = oanda_wrapper.calc_unit(trade_account, instrument, con)
+                        units = 100000
+                        response = oanda_wrapper.open_order(trade_account, trade_obj["instrument"], trade_obj["trade_side"], units, 0, 0)
+                        print(response)
                         
     
             if trade_obj["flag"]:
@@ -208,6 +225,3 @@ if __name__ == "__main__":
             sendmail = SendMail("tomoyanpy@gmail.com", "tomoyanpy@softbank.ne.jp", "../property")
             sendmail.set_msg(message)
             sendmail.send_mail()
-
-
-

@@ -198,7 +198,7 @@ if __name__ == "__main__":
     
             print("%s" % insert_time)
             if trade_obj["flag"] == False:
-                length_list = [2, 12, 12*5, 12*16]
+                length_list = [2, 12, 12*5, 12*15]
                 trade_obj = decide_trade(insert_time, length_list)
                 if trade_obj["flag"]:
                     if mode != "test":

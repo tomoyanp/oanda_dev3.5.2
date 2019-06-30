@@ -88,7 +88,8 @@ def calc_instrument(length, insert_time, description):
     return value
 
 def trade(insert_time, instrument, trade_side):
-    insert_time = insert_time - timedelta(seconds=5)
+    trade_time = insert_time
+    insert_time = trade_time - timedelta(seconds=5)
 
     sql = "select close_ask, close_bid from %s_5s_TABLE where insert_time < '%s' order by insert_time desc limit 1" % (instrument, insert_time)
     response = con.select_sql(sql)
@@ -133,18 +134,31 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
         stl_flag = True
         debug_logger.info("SETTLE!!! pass 20 minutes")
     # 5分経過後から、陽線、陰線を見て逆だったら決済する
-    elif trade_obj["trade_time"] + timedelta(minutes=5) < stl_time:
-        insert_time = stl_time - timedelta(minutes=5)
-        sql = "select open_ask, open_bid, close_ask, close_bid from %s_5m_TABLE where insert_time < '%s' order by insert_time desc limit 1" % (trade_obj["instrument"], insert_time)
-        response = con.select_sql(sql)
-        open = (response[0][0] + response[0][1])/2 
-        close = (response[0][2] + response[0][3])/2 
-        if trade_obj["side"] == "buy" and open > close:
-            stl_flag = True
-            debug_logger.info("SETTLE!!! 5 minutes goes reverse side")
-        elif trade_obj["side"] == "sell" and open < close:
-            stl_flag = True
-            debug_logger.info("SETTLE!!! 5 minutes goes reverse side")
+    # ここのロジックおかしい
+    # 多分5秒足でがんばらないとダメ
+    #elif trade_obj["trade_time"] + timedelta(minutes=5) < stl_time:
+    #    if stl_time.minute % 5 == 0 and 0 < stl_time.second <= 5:
+    #        print("========= DEBUGGING =========")
+    #        print(trade_obj["trade_time"])
+    #        print(stl_time)
+    #        end_time = stl_time - timedelta(seconds=5)
+    #        start_time = end_time - timedelta(minutes=5)
+    #        sql = "select close_ask, close_bid, insert_time from %s_5s_TABLE where insert_time < '%s' order by insert_time desc limit 1" % (trade_obj["instrument"], start_time)
+    #        response = con.select_sql(sql)
+    #        start_price = (response[0][0]+response[0][1])/2
+    #        start_select_time = response[0][2]
+
+    #        sql = "select close_ask, close_bid, insert_time from %s_5s_TABLE where insert_time < '%s' order by insert_time desc limit 1" % (trade_obj["instrument"], end_time)
+    #        response = con.select_sql(sql)
+    #        end_price = (response[0][0]+response[0][1])/2
+    #        end_select_time = response[0][2]
+
+    #        if trade_obj["side"] == "buy" and start_price > end_price:
+    #            stl_flag = True
+    #            debug_logger.info("SETTLE!!! 5 minutes goes reverse side: %s - %s" % (start_select_time, end_select_time))
+    #        elif trade_obj["side"] == "sell" and start_price < end_price:
+    #            stl_flag = True
+    #            debug_logger.info("SETTLE!!! 5 minutes goes reverse side: %s - %s" % (start_select_time, end_select_time))
 
     # 一応、損切利確判定をする
     if 0 < stl_time.second <= 5:

@@ -93,9 +93,11 @@ def trade(insert_time, instrument, trade_side):
     sql = "select close_ask, close_bid from %s_5s_TABLE where insert_time < '%s' order by insert_time desc limit 1" % (instrument, insert_time)
     response = con.select_sql(sql)
 
+    ask = response[0][0]
+    bid = response[0][1]
     price = (response[0][0]+response[0][1])/2
 
-    return price, instrument, trade_side
+    return ask, bid, price, instrument, trade_side
 
 def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     insert_time = insert_time - timedelta(seconds=5)
@@ -108,6 +110,8 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     else:
         coefficient = 10000
 
+    ask = response[0][0]
+    bid = response[0][1]
     price = (response[0][0]+response[0][1])/2
 
     stl_flag = False
@@ -130,12 +134,11 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     profit = 0
     if stl_flag:
         if trade_obj["side"] == "buy":
-            profit = price - trade_obj["price"]
+            profit = (bid - trade_obj["ask"])*coefficient
         elif trade_obj["side"] == "sell":
-            profit = trade_obj["price"] - price
+            profit = (trade_obj["bid"] - ask)*coefficient
 
     return stl_flag, insert_time, price, profit
-
 
 def decide_trade(insert_time, length_list):
     value_list = []
@@ -162,10 +165,12 @@ def decide_trade(insert_time, length_list):
     trade_obj = {"flag": False}
     if trade_flag and flag:
         debug_logger.info("TRADE %s: %s %s" % (insert_time, value_list[0]["currency"], value_list[0]["key"]))
-        price, instrument, trade_side = trade(insert_time, value_list[0]["currency"], value_list[0]["key"])
+        ask, bid, price, instrument, trade_side = trade(insert_time, value_list[0]["currency"], value_list[0]["key"])
         trade_obj["flag"] = True
         trade_obj["instrument"] = instrument
         trade_obj["price"] = price
+        trade_obj["ask"] = ask 
+        trade_obj["bid"] = bid
         trade_obj["side"] = trade_side
         trade_obj["trade_time"] = insert_time
  

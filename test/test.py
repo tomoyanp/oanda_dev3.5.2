@@ -100,7 +100,8 @@ def trade(insert_time, instrument, trade_side):
     return ask, bid, price, instrument, trade_side
 
 def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
-    insert_time = insert_time - timedelta(seconds=5)
+    stl_time = insert_time
+    insert_time = stl_time - timedelta(seconds=5)
     sql = "select close_ask, close_bid from %s_5s_TABLE where insert_time < '%s' order by insert_time desc limit 1" % (trade_obj["instrument"], insert_time)
     response = con.select_sql(sql)
 
@@ -115,6 +116,7 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     price = (response[0][0]+response[0][1])/2
 
     stl_flag = False
+
     if trade_obj["side"] == "buy":
         # ここの計算おかしいからちゃんと調べる
         # pips = (price/trade_obj["price"] - 1.0) * 10000
@@ -126,10 +128,32 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     else:
         raise
 
-    if pips > profit_rate:
+    # 20分経ったら決済する
+    if trade_obj["trade_time"] + timedelta(minutes=20) < stl_time:
         stl_flag = True
-    elif pips < orderstop_rate:
-        stl_flag = True
+        debug_logger.info("SETTLE!!! pass 20 minutes")
+    # 5分経過後から、陽線、陰線を見て逆だったら決済する
+    elif trade_obj["trade_time"] + timedelta(minutes=5) < stl_time:
+        insert_time = stl_time - timedelta(minutes=5)
+        sql = "select open_ask, open_bid, close_ask, close_bid from %s_5m_TABLE where insert_time < '%s' order by insert_time desc limit 1" % (trade_obj["instrument"], insert_time)
+        response = con.select_sql(sql)
+        open = (response[0][0] + response[0][1])/2 
+        close = (response[0][2] + response[0][3])/2 
+        if trade_obj["side"] == "buy" and open > close:
+            stl_flag = True
+            debug_logger.info("SETTLE!!! 5 minutes goes reverse side")
+        elif trade_obj["side"] == "sell" and open < close:
+            stl_flag = True
+            debug_logger.info("SETTLE!!! 5 minutes goes reverse side")
+
+    # 一応、損切利確判定をする
+    if 0 < stl_time.second <= 5:
+        if pips > profit_rate:
+            stl_flag = True
+            debug_logger.info("SETTLE!!! price goes profit_rate")
+        elif pips < orderstop_rate:
+            stl_flag = True
+            debug_logger.info("SETTLE!!! price goes order_stop_rate")
 
     profit = 0
     if stl_flag:

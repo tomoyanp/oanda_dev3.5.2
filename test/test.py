@@ -242,9 +242,9 @@ if __name__ == "__main__":
                 if trade_obj["flag"]:
                     if mode != "test":
                     # if 1 == 1:
-                        units = oanda_wrapper.calc_unit(trade_account, instrument, con)
+                        #units = oanda_wrapper.calc_unit(trade_account, instrument, con)
                         units = 100000
-                        response = oanda_wrapper.open_order(trade_account, trade_obj["instrument"], trade_obj["trade_side"], units, 0, 0)
+                        response = oanda_wrapper.open_order(trade_account, trade_obj["instrument"], trade_obj["side"], units, 0, 0)
                         print(response)
                         
     

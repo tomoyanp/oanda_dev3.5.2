@@ -29,11 +29,11 @@ debug_logger.setLevel(DEBUG)
 con = MysqlConnector()
 
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
-insert_time = '2019-07-02 20:00:00'
+insert_time = '2019-06-01 00:00:00'
 # insert_time = '2019-06-25 13:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
-end_time = datetime.strptime('2019-07-10 00:00:00', "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime('2019-06-06 00:00:00', "%Y-%m-%d %H:%M:%S")
 
 
 def calc_instrument(length, insert_time, description):

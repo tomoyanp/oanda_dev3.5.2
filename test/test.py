@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 import oanda_wrapper
 import re
 import traceback
+import numpy as np
 
 from logging import getLogger, FileHandler, DEBUG
 from send_mail import SendMail
@@ -28,7 +29,7 @@ debug_logger.setLevel(DEBUG)
 con = MysqlConnector()
 
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
-insert_time = '2019-06-01 00:00:00'
+insert_time = '2019-07-02 20:00:00'
 # insert_time = '2019-06-25 13:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
@@ -39,6 +40,7 @@ def calc_instrument(length, insert_time, description):
     result_list = []
     insert_time = insert_time - timedelta(seconds=5)
 
+    debug_logger.info("==========================================")
     for instrument in instrument_list:
         sql = "select open_ask, open_bid, close_ask, close_bid, insert_time from %s_5s_TABLE where insert_time <= '%s' order by insert_time desc limit %s" % (instrument, insert_time, length)
         response = con.select_sql(sql)
@@ -51,6 +53,7 @@ def calc_instrument(length, insert_time, description):
         end_time = response[0][4]
         result_list.append(result)
     
+        debug_logger.info("%s: %s length=%s %s" % (insert_time, instrument, length, result))
         #print("%s - %s : %s = %s" % (start_time, end_time, instrument, result))
         #print("========================================")
     
@@ -132,7 +135,6 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     # 20分経ったら決済する
     if trade_obj["trade_time"] + timedelta(minutes=20) < stl_time:
         stl_flag = True
-        debug_logger.info("SETTLE!!! pass 20 minutes")
     # 5分経過後から、陽線、陰線を見て逆だったら決済する
     # ここのロジックおかしい
     # 多分5秒足でがんばらないとダメ
@@ -151,19 +153,15 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
 
             if trade_obj["side"] == "buy" and tmp_list[0] < 0 and tmp_list[1] < 0:
                 stl_flag = True
-                debug_logger.info("SETTLE!!! 5 minutes goes reverse side")
             elif trade_obj["side"] == "sell" and tmp_list[0] > 0 and tmp_list[1] > 0:
                 stl_flag = True
-                debug_logger.info("SETTLE!!! 5 minutes goes reverse side")
 
     # 一応、損切利確判定をする
     if 0 < stl_time.second <= 5:
         if pips > profit_rate:
             stl_flag = True
-            debug_logger.info("SETTLE!!! price goes profit_rate")
         elif pips < orderstop_rate:
             stl_flag = True
-            debug_logger.info("SETTLE!!! price goes order_stop_rate")
 
     profit = 0
     if stl_flag:
@@ -173,6 +171,19 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
             profit = (trade_obj["bid"] - ask)*coefficient
 
     return stl_flag, insert_time, price, profit
+
+def get_sma(instrument, insert_time, table_type, length):
+    sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < '%s' order by insert_time desc limit %s" % (instrument, table_type, insert_time, length)
+    response = con.select_sql(sql)
+    tmp_list = []
+    for res in response:
+        tmp_list.append(res[0])
+        tmp_list.append(res[1])
+
+    tmp_list = np.array(tmp_list)
+    sma = np.average(tmp_list)
+
+    return sma
 
 def decide_trade(insert_time, length_list):
     value_list = []
@@ -198,15 +209,28 @@ def decide_trade(insert_time, length_list):
 
     trade_obj = {"flag": False}
     if trade_flag and flag:
-        debug_logger.info("TRADE %s: %s %s" % (insert_time, value_list[0]["currency"], value_list[0]["key"]))
+        table_type = "5m"
+        length = 200
         ask, bid, price, instrument, trade_side = trade(insert_time, value_list[0]["currency"], value_list[0]["key"])
-        trade_obj["flag"] = True
-        trade_obj["instrument"] = instrument
-        trade_obj["price"] = price
-        trade_obj["ask"] = ask 
-        trade_obj["bid"] = bid
-        trade_obj["side"] = trade_side
-        trade_obj["trade_time"] = insert_time
+        sma = get_sma(instrument, insert_time - timedelta(minutes=5), table_type, length)
+        sma_flag = False
+        if trade_side == "buy" and sma < price:
+            sma_flag = True
+        elif trade_side == "sell" and sma > price:
+            sma_flag = True
+
+        if sma_flag:
+            #debug_logger.info("TRADE %s: %s %s" % (insert_time, value_list[0]["currency"], value_list[0]["key"]))
+            trade_obj["flag"] = True
+            trade_obj["instrument"] = instrument
+            trade_obj["price"] = price
+            trade_obj["ask"] = ask 
+            trade_obj["bid"] = bid
+            trade_obj["side"] = trade_side
+            trade_obj["trade_time"] = insert_time
+        else:
+            pass
+            #debug_logger.info("Check SMA Logic")
  
     print(trade_obj)
     print("==========================================")

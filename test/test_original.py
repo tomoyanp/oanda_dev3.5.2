@@ -20,7 +20,9 @@ from logging import getLogger, FileHandler, DEBUG
 from send_mail import SendMail
 
 mode = sys.argv[1]
-debug_logfilename = "%s-%s.log" % (mode, datetime.now().strftime("%Y%m%d%H%M%S"))
+filename = sys.argv[0].split(".")[0]
+print(filename)
+debug_logfilename = "%s-%s-%s.log" % (mode, filename, datetime.now().strftime("%Y%m%d%H%M%S"))
 debug_logger = getLogger("debug")
 debug_fh = FileHandler(debug_logfilename, "a+")
 debug_logger.addHandler(debug_fh)

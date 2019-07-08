@@ -39,10 +39,10 @@ con = MysqlConnector()
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
 instrument_list = ["GBP_JPY", "EUR_JPY", "AUD_JPY", "GBP_USD", "EUR_USD", "AUD_USD", "USD_JPY"]
 #insert_time = '2019-06-01 00:00:00'
-insert_time = '2019-07-02 15:50:00'
+insert_time = '2019-07-01 07:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
-end_time = datetime.strptime('2019-07-04 21:00:00', "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime('2019-07-06 00:00:00', "%Y-%m-%d %H:%M:%S")
 
 def convertTime(insert_time, table_type):
     if table_type == "5s":
@@ -126,7 +126,7 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     else:
         raise
 
-    if stl_time.minutes % 5 == 0:
+    if trade_obj["trade_time"] + timedelta(minutes=20) <= stl_time < trade_obj["trade_time"] + timedelta(minutes=21):
         if pips < 0:
             stl_flag = True
 
@@ -174,11 +174,8 @@ def get_price(instrument, insert_time):
 def decide_trade(insert_time, trade_obj):
     trade_time = insert_time
     for instrument in instrument_list:
-        table_type = "1h"
-        window_size = 10
-        sigma_valiable = 3 
         threshold = 100
-        data_set = get_bollinger(instrument, insert_time, table_type, window_size, sigma_valiable)
+        data_set = get_bollinger(instrument, insert_time, table_type="1h", window_size=10, sigma_valiable=3)
         pips = calc_pips(instrument, data_set["lower_sigmas"][-1], data_set["upper_sigmas"][-1])
 
         bollinger_flag = True if pips < threshold else False
@@ -188,10 +185,7 @@ def decide_trade(insert_time, trade_obj):
             trade_obj["lowersigma_1h10"] = data_set["lower_sigmas"][-1]
             trade_obj["1h10bollinger_pips"] = pips
 
-            table_type = "5m"
-            window_size =21 
-            sigma_valiable = 4 
-            data_set = get_bollinger(instrument, insert_time, table_type, window_size, sigma_valiable)
+            data_set = get_bollinger(instrument, insert_time, table_type="5m", window_size=21, sigma_valiable=4)
             ask, bid = get_price(instrument, insert_time)
             trade_obj["instrument"] = instrument
             trade_obj["ask"] = ask
@@ -222,7 +216,7 @@ if __name__ == "__main__":
     }
 
     trade_obj = {"flag": False}
-    profit_rate = 50
+    profit_rate = 20
     orderstop_rate = -20
 
     if mode == "demo":
@@ -255,7 +249,9 @@ if __name__ == "__main__":
             if trade_obj["flag"]:
                 stl_flag, trade_obj = stl(insert_time, trade_obj, profit_rate, orderstop_rate)
                 if stl_flag:
-                    debug_logger.info(trade_obj)
+                    debug_logger.info("========================================")
+                    for key in trade_obj:
+                        debug_logger.info("%s=%s" % (key, trade_obj[key]))
                     trade_obj = {"flag": False}
     
                     if mode != "test":

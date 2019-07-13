@@ -8,7 +8,6 @@ import subprocess
 fileList = subprocess.getoutput("ls *.log")
 fileList = fileList.split("\n")
 
-print(fileList)
 
 for fl in fileList:
     filename = fl.strip()

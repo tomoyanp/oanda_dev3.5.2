@@ -361,7 +361,8 @@ if __name__ == "__main__":
             elif mode == "demo":
                 insert_time = datetime.now()
             else:
-                insert_time = insert_time + timedelta(minutes=1)
+                #insert_time = insert_time + timedelta(minutes=1)
+                insert_time = insert_time + timedelta(seconds=5)
     
             if decide_market(insert_time):
                 #print("%s" % insert_time)

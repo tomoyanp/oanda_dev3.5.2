@@ -40,8 +40,8 @@ con = MysqlConnector()
 
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
 instrument_list = ["GBP_JPY", "EUR_JPY", "AUD_JPY", "GBP_USD", "EUR_USD", "AUD_USD", "USD_JPY"]
-insert_time = '2019-04-01 07:00:00'
-#insert_time = '2019-07-15 07:00:00'
+#insert_time = '2019-04-01 07:00:00'
+insert_time = '2019-07-15 07:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
 #end_time = datetime.strptime('2019-07-06 00:00:00', "%Y-%m-%d %H:%M:%S")
@@ -206,7 +206,7 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     else:
         raise
 
-    if trade_obj["trade_time"] + timedelta(minutes=120) <= stl_time:
+    if trade_obj["trade_time"] + timedelta(minutes=5) <= stl_time:
         if pips < 0:
             stl_flag = True
 
@@ -218,19 +218,6 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
                 stl_flag = True
             elif trade_obj["side"] == "sell" and price > sma and pips > 0:
                 stl_flag = True
-    #if trade_obj["trade_time"] + timedelta(minutes=20) <= stl_time and stl_time.minute % 20 == 0:
-    #    if pips < 0:
-    #        trade_obj["stl_first_flag"] = True
-    #        print("=========== STL_FIRST_FLAG ON ==============")
-    #        print(insert_time)
-    #        print(trade_obj)
-
-    #print(trade_obj)
-    #if trade_obj["stl_first_flag"]:
-    #    if pips > 0:
-    #        print("=========== STL_FLAG ON ==============")
-    #        print(pips)
-    #        stl_flag = True
 
     # 一応、損切利確判定をする
     if pips > profit_rate:
@@ -275,49 +262,110 @@ def get_price(instrument, insert_time):
 
     return ask, bid
 
+def over_bollinger(insert_time, instrument, trade_obj):
+    trade_time = insert_time
+    threshold = 100
+    data_set = get_bollinger(instrument, insert_time, table_type="1h", window_size=10, sigma_valiable=3)
+    pips = calc_pips(instrument, data_set["lower_sigmas"][-1], data_set["upper_sigmas"][-1])
+
+    bollinger_flag = True if pips < threshold else False
+
+    flag = False
+    if bollinger_flag:
+        trade_obj["uppersigma_1h10"] = data_set["upper_sigmas"][-1]
+        trade_obj["lowersigma_1h10"] = data_set["lower_sigmas"][-1]
+        trade_obj["1h10bollinger_pips"] = pips
+
+        data_set = get_bollinger(instrument, insert_time, table_type="5m", window_size=21, sigma_valiable=2.5)
+        sma_day5 = get_sma(instrument, insert_time, table_type="day", length=5)
+        ask, bid = get_price(instrument, insert_time)
+
+        # bollinger bandからどの程度乖離があるか
+        threshold = 5
+        upper_momentum = calc_pips(instrument, data_set["upper_sigmas"][-1], ask)
+        lower_momentum = calc_pips(instrument, bid, data_set["lower_sigmas"][-1])
+
+        trade_obj["instrument"] = instrument
+        trade_obj["ask"] = ask
+        trade_obj["bid"] = bid
+        trade_obj["trade_time"] = trade_time
+        trade_obj["uppersigma_5m21"] = data_set["upper_sigmas"][-1]
+        trade_obj["lowersigma_5m21"] = data_set["lower_sigmas"][-1]
+        trade_obj["sma_day5"] = sma_day5
+
+        if threshold < upper_momentum and sma_day5 < ask:
+            flag = True
+            trade_obj["side"] = "buy"
+        elif threshold < lower_momentum and sma_day5 > bid:
+            flag = True
+            trade_obj["side"] = "sell"
+        else:
+            trade_obj = reset_tradeobj()
+
+    return flag, trade_obj
+
+def kick_back(insert_time, instrument, trade_obj, length):
+    trade_time = insert_time - timedelta(minutes=length)
+    
+    while trade_time < insert_time:
+        flag, trade_obj = over_bollinger(trade_time, instrument, trade_obj)
+        if flag:
+            trade_obj["bollinger_over_time"] = trade_time
+            break
+
+        trade_time = trade_time + timedelta(minutes=1)
+        print("first bollinger %s" % trade_time)
+
+    while trade_time < insert_time:
+        sma = get_sma(instrument, trade_time, "5m", 21)
+        ask, bid = get_price(trade_time, instrument)
+        if trade_obj["side"] == "buy" and ask < sma:
+            trade_obj["sma_first_time"] = trade_time
+            break
+        elif trade_obj["side"] == "sell" and bid > sma:
+            trade_obj["sma_first_time"] = trade_time
+            break
+
+        trade_time = trade_time + timedelta(minutes=1)
+        print("first sma %s" % trade_time)
+
+
+    while trade_time < insert_time:
+        if trade_time.minutes % 5 == 4 and trade_time.second == 59:
+            sma = get_sma(instrument, trade_time, "5m", 21)
+            ask, bid = get_price(trade_time, instrument)
+            if trade_obj["side"] == "buy" and ask < sma:
+                trade_obj["sma_second_time"] = trade_time
+                trade_obj["flag"] = True
+                break
+            elif trade_obj["side"] == "sell" and bid > sma:
+                trade_obj["sma_second_time"] = trade_time
+                trade_obj["flag"] = True
+                break
+
+        trade_time = trade_time + timedelta(seconds=1)
+        print("second sma %s" % trade_time)
+
+    print("logic end %s" % trade_time)
+       
+    return trade_obj
 
 
 def decide_trade(insert_time, trade_obj):
-    trade_time = insert_time
     for instrument in instrument_list:
-        threshold = 100
-        data_set = get_bollinger(instrument, insert_time, table_type="1h", window_size=10, sigma_valiable=3)
-        pips = calc_pips(instrument, data_set["lower_sigmas"][-1], data_set["upper_sigmas"][-1])
+        flag, trade_obj = over_bollinger(insert_time, instrument, trade_obj)
+        if flag == False:
+            trade_obj = reset_tradeobj()
+            # 120分までさかのぼる
+            trade_obj = kick_back(insert_time, instrument, trade_obj, length=120)
+        else:
+            trade_obj["flag"] = True
 
-        bollinger_flag = True if pips < threshold else False
+        if trade_obj["flag"]:
+            break
 
-        if bollinger_flag:
-            trade_obj["uppersigma_1h10"] = data_set["upper_sigmas"][-1]
-            trade_obj["lowersigma_1h10"] = data_set["lower_sigmas"][-1]
-            trade_obj["1h10bollinger_pips"] = pips
 
-            data_set = get_bollinger(instrument, insert_time, table_type="5m", window_size=21, sigma_valiable=2.5)
-            sma_day5 = get_sma(instrument, insert_time, table_type="day", length=5)
-            ask, bid = get_price(instrument, insert_time)
-
-            # bollinger bandからどの程度乖離があるか
-            threshold = 5
-            upper_momentum = calc_pips(instrument, data_set["upper_sigmas"][-1], ask)
-            lower_momentum = calc_pips(instrument, bid, data_set["lower_sigmas"][-1])
-
-            trade_obj["instrument"] = instrument
-            trade_obj["ask"] = ask
-            trade_obj["bid"] = bid
-            trade_obj["trade_time"] = trade_time
-            trade_obj["uppersigma_5m21"] = data_set["upper_sigmas"][-1]
-            trade_obj["lowersigma_5m21"] = data_set["lower_sigmas"][-1]
-            trade_obj["sma_day5"] = sma_day5
-
-            if threshold < upper_momentum and sma_day5 < ask:
-                trade_obj["flag"] = True
-                trade_obj["side"] = "buy"
-                break
-            elif threshold < lower_momentum and sma_day5 > bid:
-                trade_obj["flag"] = True
-                trade_obj["side"] = "sell"
-                break
-            else:
-                trade_obj = reset_tradeobj()
+            
 
     return trade_obj
          
@@ -377,7 +425,6 @@ if __name__ == "__main__":
                                 response = oanda_wrapper.open_order(trade_account, trade_obj["instrument"], trade_obj["side"], units, 0, 0)
                                 #print(response)
                         else:
-                            #print(trade_obj)
                             pass
 
     

@@ -41,11 +41,11 @@ con = MysqlConnector()
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
 instrument_list = ["GBP_JPY", "EUR_JPY", "AUD_JPY", "GBP_USD", "EUR_USD", "AUD_USD", "USD_JPY"]
 #insert_time = '2019-04-01 07:00:00'
-insert_time = '2019-07-15 07:00:00'
+insert_time = '2019-07-15 13:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
 #end_time = datetime.strptime('2019-07-06 00:00:00', "%Y-%m-%d %H:%M:%S")
-end_time = datetime.strptime('2019-07-16 20:00:00', "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime('2019-07-17 09:00:00', "%Y-%m-%d %H:%M:%S")
 
 def decide_season(base_time):
     year = int(base_time.year)
@@ -318,7 +318,7 @@ def kick_back(insert_time, instrument, trade_obj, length):
 
     while trade_time < insert_time:
         sma = get_sma(instrument, trade_time, "5m", 21)
-        ask, bid = get_price(trade_time, instrument)
+        ask, bid = get_price(instrument, trade_time)
         if trade_obj["side"] == "buy" and ask < sma:
             trade_obj["sma_first_time"] = trade_time
             break
@@ -331,9 +331,9 @@ def kick_back(insert_time, instrument, trade_obj, length):
 
 
     while trade_time < insert_time:
-        if trade_time.minutes % 5 == 4 and trade_time.second == 59:
+        if trade_time.minute % 5 == 4 and trade_time.second == 59:
             sma = get_sma(instrument, trade_time, "5m", 21)
-            ask, bid = get_price(trade_time, instrument)
+            ask, bid = get_price(instrument, trade_time)
             if trade_obj["side"] == "buy" and ask < sma:
                 trade_obj["sma_second_time"] = trade_time
                 trade_obj["flag"] = True

@@ -40,12 +40,12 @@ con = MysqlConnector()
 
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
 instrument_list = ["GBP_JPY", "EUR_JPY", "AUD_JPY", "GBP_USD", "EUR_USD", "AUD_USD", "USD_JPY"]
-#insert_time = '2019-04-01 07:00:00'
-insert_time = '2019-07-10 20:00:00'
+insert_time = '2019-04-01 07:00:00'
+#insert_time = '2019-07-15 07:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
 #end_time = datetime.strptime('2019-07-06 00:00:00', "%Y-%m-%d %H:%M:%S")
-end_time = datetime.strptime('2019-07-13 08:00:00', "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime('2019-07-16 20:00:00', "%Y-%m-%d %H:%M:%S")
 
 def decide_season(base_time):
     year = int(base_time.year)
@@ -206,7 +206,7 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     else:
         raise
 
-    if trade_obj["trade_time"] + timedelta(minutes=20) <= stl_time:
+    if trade_obj["trade_time"] + timedelta(minutes=120) <= stl_time:
         if pips < 0:
             stl_flag = True
 
@@ -349,7 +349,7 @@ if __name__ == "__main__":
     trade_obj = reset_tradeobj()
     stl_obj = {}
     profit_rate = 50 
-    orderstop_rate = -10
+    orderstop_rate = -20
 
     if mode == "demo":
         insert_time = now

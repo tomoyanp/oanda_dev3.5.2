@@ -29,7 +29,7 @@ from send_mail import SendMail
 
 mode = sys.argv[1]
 filename = sys.argv[0].split(".")[0]
-print(filename)
+#print(filename)
 debug_logfilename = "%s-%s-%s.log" % (mode, filename, datetime.now().strftime("%Y%m%d%H%M%S"))
 debug_logger = getLogger("debug")
 debug_fh = FileHandler(debug_logfilename, "a+")
@@ -41,7 +41,7 @@ con = MysqlConnector()
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
 instrument_list = ["GBP_JPY", "EUR_JPY", "AUD_JPY", "GBP_USD", "EUR_USD", "AUD_USD", "USD_JPY"]
 #insert_time = '2019-04-01 07:00:00'
-insert_time = '2019-07-15 13:00:00'
+insert_time = '2019-07-16 13:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
 #end_time = datetime.strptime('2019-07-06 00:00:00', "%Y-%m-%d %H:%M:%S")
@@ -191,6 +191,7 @@ def calc_pips(instrument, start_price, end_price):
     return result
 
 def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
+    print(trade_obj["algo"])
     stl_time = insert_time
     ask, bid = get_price(trade_obj["instrument"], insert_time)
 
@@ -206,7 +207,12 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     else:
         raise
 
-    if trade_obj["trade_time"] + timedelta(minutes=5) <= stl_time:
+    if trade_obj["algo"] == "bollinger":
+        stl_minutes = 5
+    else:
+        stl_minutes = 20
+
+    if trade_obj["trade_time"] + timedelta(minutes=stl_minutes) <= stl_time:
         if pips < 0:
             stl_flag = True
 
@@ -232,7 +238,7 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
         trade_obj["profit"] = pips
 
     trade_obj["stl_flag"] = stl_flag
-    print(trade_obj)
+    #print(trade_obj)
 
     return trade_obj
 
@@ -296,81 +302,62 @@ def over_bollinger(insert_time, instrument, trade_obj):
         if threshold < upper_momentum and sma_day5 < ask:
             flag = True
             trade_obj["side"] = "buy"
+            trade_obj["algo"] = "bollinger"
         elif threshold < lower_momentum and sma_day5 > bid:
             flag = True
             trade_obj["side"] = "sell"
-        else:
-            trade_obj = reset_tradeobj()
+            trade_obj["algo"] = "bollinger"
 
     return flag, trade_obj
 
 def kick_back(insert_time, instrument, trade_obj, length):
-    trade_time = insert_time - timedelta(minutes=length)
-    
-    while trade_time < insert_time:
-        flag, trade_obj = over_bollinger(trade_time, instrument, trade_obj)
-        if flag:
-            trade_obj["bollinger_over_time"] = trade_time
-            break
+    trade_time = insert_time
 
-        trade_time = trade_time + timedelta(minutes=1)
-        print("first bollinger %s" % trade_time)
-
-    while trade_time < insert_time:
+    flag = False
+    if "sma_first_flag" not in trade_obj:
         sma = get_sma(instrument, trade_time, "5m", 21)
         ask, bid = get_price(instrument, trade_time)
         if trade_obj["side"] == "buy" and ask < sma:
             trade_obj["sma_first_time"] = trade_time
-            break
+            trade_obj["sma_first_flag"] = True
         elif trade_obj["side"] == "sell" and bid > sma:
             trade_obj["sma_first_time"] = trade_time
-            break
+            trade_obj["sma_first_flag"] = True
 
-        trade_time = trade_time + timedelta(minutes=1)
-        print("first sma %s" % trade_time)
-
-
-    while trade_time < insert_time:
-        if trade_time.minute % 5 == 4 and trade_time.second == 59:
+    elif trade_obj["sma_first_flag"]:
+        # 終値を狙う
+        if trade_time.minute % 5 == 0 and trade_time.second < 10:
             sma = get_sma(instrument, trade_time, "5m", 21)
             ask, bid = get_price(instrument, trade_time)
             if trade_obj["side"] == "buy" and ask < sma:
                 trade_obj["sma_second_time"] = trade_time
-                trade_obj["flag"] = True
-                break
+                trade_obj["algo"] = "kick_back"
+                flag = True
             elif trade_obj["side"] == "sell" and bid > sma:
                 trade_obj["sma_second_time"] = trade_time
-                trade_obj["flag"] = True
-                break
+                trade_obj["algo"] = "kick_back"
+                flag = True
 
-        trade_time = trade_time + timedelta(seconds=1)
-        print("second sma %s" % trade_time)
 
-    print("logic end %s" % trade_time)
+    #print("logic end %s" % trade_time)
        
-    return trade_obj
+    return flag, trade_obj
 
 
 def decide_trade(insert_time, trade_obj):
-    for instrument in instrument_list:
-        flag, trade_obj = over_bollinger(insert_time, instrument, trade_obj)
-        if flag == False:
-            trade_obj = reset_tradeobj()
-            # 120分までさかのぼる
-            trade_obj = kick_back(insert_time, instrument, trade_obj, length=120)
-        else:
-            trade_obj["flag"] = True
+    if trade_obj["algo"] == "bollinger":
+        print("============== kick back")
+        flag, trade_obj = kick_back(insert_time, trade_obj["instrument"], trade_obj, length=120)
+    else:
+        print("############## bollinger")
+        for instrument in instrument_list:
+            flag, trade_obj = over_bollinger(insert_time, instrument, trade_obj)
 
-        if trade_obj["flag"]:
-            break
-
-
-            
-
+    trade_obj["flag"] = flag
     return trade_obj
          
 def reset_tradeobj():
-    return  {"flag": False, "stl_flag": False, "stl_first_flag": False}
+    return  {"flag": False, "stl_flag": False, "algo": "null"}
 
 def decide_tradetime(insert_time):
     hour = insert_time.hour
@@ -415,7 +402,6 @@ if __name__ == "__main__":
                 #print("%s" % insert_time)
                 if trade_obj["flag"] == False:
                     if decide_tradetime(insert_time):
-                        length_list = [6]
                         trade_obj = decide_trade(insert_time, trade_obj)
                         if trade_obj["flag"]:
                             if mode != "test":
@@ -430,12 +416,16 @@ if __name__ == "__main__":
     
                 if trade_obj["flag"]:
                     trade_obj = stl(insert_time, trade_obj, profit_rate, orderstop_rate)
-                    print(trade_obj)
+                    #print(trade_obj)
                     if trade_obj["stl_flag"]:
                         debug_logger.info("========================================")
                         for key in trade_obj:
                             debug_logger.info("%s=%s" % (key, trade_obj[key]))
-                        trade_obj = reset_tradeobj()
+
+                        if trade_obj["algo"] == "bollinger":
+                            pass
+                        else:
+                            trade_obj = reset_tradeobj()
     
                         if mode != "test":
                         # if 1 == 1:

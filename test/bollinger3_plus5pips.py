@@ -312,9 +312,10 @@ def over_bollinger(insert_time, instrument, trade_obj):
 
 def kick_back(insert_time, instrument, trade_obj, length):
     trade_time = insert_time
-
     flag = False
-    if "sma_first_flag" not in trade_obj:
+    if trade_obj["trade_obj"] + timedelta(minutes=120) < trade_time:
+        trade_obj = reset_tradeobj()
+    elif "sma_first_flag" not in trade_obj:
         sma = get_sma(instrument, trade_time, "5m", 21)
         ask, bid = get_price(instrument, trade_time)
         if trade_obj["side"] == "buy" and ask < sma:
@@ -348,12 +349,15 @@ def decide_trade(insert_time, trade_obj):
     if trade_obj["algo"] == "bollinger":
         print("============== kick back")
         flag, trade_obj = kick_back(insert_time, trade_obj["instrument"], trade_obj, length=120)
+        trade_obj["flag"] = flag
     else:
         print("############## bollinger")
         for instrument in instrument_list:
             flag, trade_obj = over_bollinger(insert_time, instrument, trade_obj)
+            if flag:
+                trade_obj["flag"] = flag
+                break
 
-    trade_obj["flag"] = flag
     return trade_obj
          
 def reset_tradeobj():
@@ -423,7 +427,8 @@ if __name__ == "__main__":
                             debug_logger.info("%s=%s" % (key, trade_obj[key]))
 
                         if trade_obj["algo"] == "bollinger":
-                            pass
+                            trade_obj["flag"] = False
+                            trade_obj["stl_flag"] = False
                         else:
                             trade_obj = reset_tradeobj()
     

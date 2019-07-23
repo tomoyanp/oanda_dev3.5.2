@@ -41,7 +41,7 @@ con = MysqlConnector()
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
 instrument_list = ["GBP_JPY", "EUR_JPY", "AUD_JPY", "GBP_USD", "EUR_USD", "AUD_USD", "USD_JPY"]
 #insert_time = '2019-04-01 07:00:00'
-insert_time = '2019-07-16 13:00:00'
+insert_time = '2019-07-15 13:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
 #end_time = datetime.strptime('2019-07-06 00:00:00', "%Y-%m-%d %H:%M:%S")
@@ -294,7 +294,6 @@ def over_bollinger(insert_time, instrument, trade_obj):
         trade_obj["instrument"] = instrument
         trade_obj["ask"] = ask
         trade_obj["bid"] = bid
-        trade_obj["trade_time"] = trade_time
         trade_obj["uppersigma_5m21"] = data_set["upper_sigmas"][-1]
         trade_obj["lowersigma_5m21"] = data_set["lower_sigmas"][-1]
         trade_obj["sma_day5"] = sma_day5
@@ -313,7 +312,7 @@ def over_bollinger(insert_time, instrument, trade_obj):
 def kick_back(insert_time, instrument, trade_obj, length):
     trade_time = insert_time
     flag = False
-    if trade_obj["trade_obj"] + timedelta(minutes=120) < trade_time:
+    if trade_obj["trade_time"] + timedelta(minutes=120) < trade_time:
         trade_obj = reset_tradeobj()
     elif "sma_first_flag" not in trade_obj:
         sma = get_sma(instrument, trade_time, "5m", 21)
@@ -358,6 +357,8 @@ def decide_trade(insert_time, trade_obj):
                 trade_obj["flag"] = flag
                 break
 
+    if trade_obj["flag"]:
+        trade_obj["trade_time"] = insert_time
     return trade_obj
          
 def reset_tradeobj():
@@ -416,6 +417,8 @@ if __name__ == "__main__":
                                 #print(response)
                         else:
                             pass
+                    else:
+                        trade_obj = reset_tradeobj()
 
     
                 if trade_obj["flag"]:
@@ -426,7 +429,9 @@ if __name__ == "__main__":
                         for key in trade_obj:
                             debug_logger.info("%s=%s" % (key, trade_obj[key]))
 
-                        if trade_obj["algo"] == "bollinger":
+                        if trade_obj["profit"] > 0:
+                            trade_obj = reset_tradeobj()
+                        elif trade_obj["algo"] == "bollinger":
                             trade_obj["flag"] = False
                             trade_obj["stl_flag"] = False
                         else:

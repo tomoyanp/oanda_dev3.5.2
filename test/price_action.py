@@ -10,6 +10,7 @@ import os
 import traceback
 import json
 import pandas as pd
+import math
 
 
 
@@ -41,11 +42,11 @@ con = MysqlConnector()
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
 instrument_list = ["GBP_JPY", "EUR_JPY", "AUD_JPY", "GBP_USD", "EUR_USD", "AUD_USD", "USD_JPY"]
 #insert_time = '2019-04-01 07:00:00'
-insert_time = '2019-07-08 13:00:00'
+insert_time = '2019-07-29 07:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
 #end_time = datetime.strptime('2019-07-06 00:00:00', "%Y-%m-%d %H:%M:%S")
-end_time = datetime.strptime('2019-07-23 09:00:00', "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime('2019-08-02 15:00:00', "%Y-%m-%d %H:%M:%S")
 
 def decide_season(base_time):
     year = int(base_time.year)
@@ -279,6 +280,24 @@ def get_price(instrument, insert_time):
 
     return ask, bid
 
+
+def get_candle(instrument, insert_time, table_type):
+    insert_time = convertTime(insert_time, table_type)
+
+    sql = "select open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid from %s_%s_TABLE where insert_time < '%s' order by insert_time desc limit 1" % (instrument, table_type, insert_time)
+    response = con.select_sql(sql)
+
+    response = response[0]
+    price_obj = {
+        "open": (response[0]+response[1])/2,
+        "close": (response[2]+response[3])/2,
+        "high": (response[4]+response[5])/2,
+        "low": (response[6]+response[7])/2 
+    }
+
+
+    return price_obj
+
 def over_bollinger(insert_time, instrument, trade_obj):
     trade_time = insert_time
     threshold = 100
@@ -391,6 +410,29 @@ def decide_tradetime(insert_time):
 
     return flag
 
+def barbwire(instrument, insert_time, table_type):
+    barbwire_flag = False
+    price_obj = get_candle(instrument="GBP_JPY", insert_time=insert_time, table_type="5m")
+    highlow_pips = price_obj["high"] - price_obj["low"]
+    closeopen_pips = price_obj["close"] - price_obj["open"]
+
+    priceaction_threshold = 0.3
+
+    highlow_pips = highlow_pips * highlow_pips
+    closeopen_pips = closeopen_pips * closeopen_pips
+
+    highlow_pips = math.sqrt(highlow_pips)
+    closeopen_pips = math.sqrt(closeopen_pips)
+
+    if (closeopen_pips / highlow_pips) < 0.3:
+        print(insert_time)
+        print(closeopen_pips)
+        print(highlow_pips)
+        barbwire_flag = True
+
+    return barbwire_flag
+
+
 if __name__ == "__main__":
     trade_account = {
         "accountId": "101-009-10684893-001",
@@ -413,48 +455,36 @@ if __name__ == "__main__":
             elif mode == "demo":
                 insert_time = datetime.now()
             else:
-                insert_time = insert_time + timedelta(minutes=1)
+                insert_time = insert_time + timedelta(minutes=5)
     
             if decide_market(insert_time):
-                #print("%s" % insert_time)
-                if trade_obj["flag"] == False:
-                    if decide_tradetime(insert_time):
-                        trade_obj = decide_trade(insert_time, trade_obj)
-                        if trade_obj["flag"]:
-                            if mode != "test":
-                            # if 1 == 1:
-                                #units = oanda_wrapper.calc_unit(trade_account, instrument, con)
-                                units = 100000
-                                response = oanda_wrapper.open_order(trade_account, trade_obj["instrument"], trade_obj["side"], units, 0, 0)
-                                #print(response)
-                        else:
-                            pass
-                    else:
-                        trade_obj = reset_tradeobj()
+                price_obj = get_candle(instrument="GBP_JPY", insert_time=insert_time, table_type="5m")
+                highlow_pips = price_obj["high"] - price_obj["low"]
+                closeopen_pips = price_obj["close"] - price_obj["open"]
 
-    
-                if trade_obj["flag"]:
-                    trade_obj = stl(insert_time, trade_obj, profit_rate, orderstop_rate)
-                    #print(trade_obj)
-                    if trade_obj["stl_flag"]:
-                        debug_logger.info("========================================")
-                        for key in trade_obj:
-                            debug_logger.info("%s=%s" % (key, trade_obj[key]))
+                priceaction_threshold = 0.3
 
-                        if trade_obj["profit"] > 0:
-                            trade_obj = reset_tradeobj()
-                        elif trade_obj["algo"] == "bollinger":
-                            trade_obj["flag"] = False
-                            trade_obj["stl_flag"] = False
-                        else:
-                            trade_obj = reset_tradeobj()
+                highlow_pips = highlow_pips * highlow_pips
+                closeopen_pips = closeopen_pips * closeopen_pips
 
-                        insert_time = insert_time - timedelta(minutes=10)
-    
-                        if mode != "test":
-                        # if 1 == 1:
-                            response = oanda_wrapper.close_position(trade_account)
-                            #print(response)
+                highlow_pips = math.sqrt(highlow_pips)
+                closeopen_pips = math.sqrt(closeopen_pips)
+
+                # 下ひげトンボ
+                if (closeopen_pips / highlow_pips) < 0.1 and 13 < insert_time.hour < 22:
+                    print("========== ピンバー ==============")
+                    print(insert_time)
+                    print(closeopen_pips)
+                    print(highlow_pips)
+
+#                # ピンバー
+#                if price_obj["close"] == price_obj["high"] and price_obj["open"] > price_obj["low"] and price_obj["open"] < price_obj["close"] and highlow_pips > 0.1:
+#                    print("========= ピンバー ===============")
+#                    print(insert_time)
+#                    print(closeopen_pips)
+#                    print(highlow_pips)
+#
+
         except:
             message = traceback.format_exc()
             debug_logger.info(message)

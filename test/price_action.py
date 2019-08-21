@@ -10,7 +10,6 @@ import os
 import traceback
 import json
 import pandas as pd
-import math
 
 
 
@@ -28,25 +27,25 @@ import numpy as np
 from logging import getLogger, FileHandler, DEBUG
 from send_mail import SendMail
 
-mode = sys.argv[1]
-filename = sys.argv[0].split(".")[0]
-#print(filename)
-debug_logfilename = "%s-%s-%s.log" % (mode, filename, datetime.now().strftime("%Y%m%d%H%M%S"))
-debug_logger = getLogger("debug")
-debug_fh = FileHandler(debug_logfilename, "a+")
-debug_logger.addHandler(debug_fh)
-debug_logger.setLevel(DEBUG)
+#mode = sys.argv[1]
+#filename = sys.argv[0].split(".")[0]
+##print(filename)
+#debug_logfilename = "%s-%s-%s.log" % (mode, filename, datetime.now().strftime("%Y%m%d%H%M%S"))
+#debug_logger = getLogger("debug")
+#debug_fh = FileHandler(debug_logfilename, "a+")
+#debug_logger.addHandler(debug_fh)
+#debug_logger.setLevel(DEBUG)
 
 con = MysqlConnector()
 
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
 instrument_list = ["GBP_JPY", "EUR_JPY", "AUD_JPY", "GBP_USD", "EUR_USD", "AUD_USD", "USD_JPY"]
 #insert_time = '2019-04-01 07:00:00'
-insert_time = '2019-07-29 07:00:00'
+insert_time = '2019-07-15 13:00:00'
 insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
 #end_time = datetime.strptime('2019-07-06 00:00:00', "%Y-%m-%d %H:%M:%S")
-end_time = datetime.strptime('2019-08-02 15:00:00', "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime('2019-07-17 09:00:00', "%Y-%m-%d %H:%M:%S")
 
 def decide_season(base_time):
     year = int(base_time.year)
@@ -208,34 +207,23 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
     else:
         raise
 
-#    if trade_obj["algo"] == "bollinger":
-#        stl_minutes = 5
-#    else:
-#        stl_minutes = 20
-#
-#    if trade_obj["trade_time"] + timedelta(minutes=stl_minutes) <= stl_time:
-#        if pips < 0:
-#            stl_flag = True
-#
-#        if stl_time.minute % 5 == 0:
-#            sma = get_sma(trade_obj["instrument"], stl_time, "5m", 21)
-#            ask, bid = get_price(trade_obj["instrument"], stl_time)
-#            price = (ask + bid) / 2
-#            if trade_obj["side"] == "buy" and price < sma and pips > 0:
-#                stl_flag = True
-#            elif trade_obj["side"] == "sell" and price > sma and pips > 0:
-#                stl_flag = True
+    if trade_obj["algo"] == "bollinger":
+        stl_minutes = 5
+    else:
+        stl_minutes = 20
 
-    if stl_time.minute % 5 == 0:
-        sma = get_sma(trade_obj["instrument"], stl_time, "5m", 21)
-        ask, bid = get_price(trade_obj["instrument"], stl_time)
-        price = (ask + bid) / 2
-        if trade_obj["side"] == "buy" and price < sma:
-            stl_flag = True
-        elif trade_obj["side"] == "sell" and price > sma:
+    if trade_obj["trade_time"] + timedelta(minutes=stl_minutes) <= stl_time:
+        if pips < 0:
             stl_flag = True
 
-
+        if stl_time.minute % 5 == 0:
+            sma = get_sma(trade_obj["instrument"], stl_time, "5m", 21)
+            ask, bid = get_price(trade_obj["instrument"], stl_time)
+            price = (ask + bid) / 2
+            if trade_obj["side"] == "buy" and price < sma and pips > 0:
+                stl_flag = True
+            elif trade_obj["side"] == "sell" and price > sma and pips > 0:
+                stl_flag = True
 
     # 一応、損切利確判定をする
     if pips > profit_rate:
@@ -268,35 +256,30 @@ def get_sma(instrument, insert_time, table_type, length):
 
     return sma
 
-def get_price(instrument, insert_time):
-    table_type = "5s"
+def get_price(instrument, insert_time, table_type, length):
     insert_time = convertTime(insert_time, table_type)
 
-    sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < '%s' order by insert_time desc limit 1" % (instrument, table_type, insert_time)
+    sql = "select open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time from %s_%s_TABLE where insert_time < '%s' order by insert_time desc limit %s" % (instrument, table_type, insert_time, length)
     response = con.select_sql(sql)
 
-    ask = response[0][0]
-    bid = response[0][1]
+    response_list = []
+    for i in reversed(range(0, len(response))):
+        response_list.append(list(response[i]))
 
-    return ask, bid
+    df = pd.DataFrame(response_list)
+    df.rename(columns={
+        0: "open_ask",
+        1: "open_bid",
+        2: "close_ask",
+        3: "close_bid",
+        4: "high_ask",
+        5: "high_bid",
+        6: "low_ask",
+        7: "low_bid",
+        8: "insert_time"
+    }, inplace=True)
 
-
-def get_candle(instrument, insert_time, table_type):
-    insert_time = convertTime(insert_time, table_type)
-
-    sql = "select open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid from %s_%s_TABLE where insert_time < '%s' order by insert_time desc limit 1" % (instrument, table_type, insert_time)
-    response = con.select_sql(sql)
-
-    response = response[0]
-    price_obj = {
-        "open": (response[0]+response[1])/2,
-        "close": (response[2]+response[3])/2,
-        "high": (response[4]+response[5])/2,
-        "low": (response[6]+response[7])/2 
-    }
-
-
-    return price_obj
+    return df
 
 def over_bollinger(insert_time, instrument, trade_obj):
     trade_time = insert_time
@@ -359,12 +342,11 @@ def kick_back(insert_time, instrument, trade_obj, length):
         if trade_time.minute % 5 == 0 and trade_time.second < 10:
             sma = get_sma(instrument, trade_time, "5m", 21)
             ask, bid = get_price(instrument, trade_time)
-            before_ask, before_bid = get_price(instrument, trade_time - timedelta(minutes=5))
-            if trade_obj["side"] == "buy" and ask < sma and before_ask < ask:
+            if trade_obj["side"] == "buy" and ask < sma:
                 trade_obj["sma_second_time"] = trade_time
                 trade_obj["algo"] = "kick_back"
                 flag = True
-            elif trade_obj["side"] == "sell" and bid > sma and before_bid > bid:
+            elif trade_obj["side"] == "sell" and bid > sma:
                 trade_obj["sma_second_time"] = trade_time
                 trade_obj["algo"] = "kick_back"
                 flag = True
@@ -373,6 +355,87 @@ def kick_back(insert_time, instrument, trade_obj, length):
     #print("logic end %s" % trade_time)
        
     return flag, trade_obj
+
+
+# つつみ足
+def outside_bar(instrument, insert_time, table_type):
+    price_df = get_price(instrument, insert_time, table_type, 2)
+    high_bef = (price_df["high_ask"][0] + price_df["high_bid"][0])/2
+    low_bef = (price_df["low_ask"][0] + price_df["low_bid"][0])/2
+
+    high_aft = (price_df["high_ask"][1] + price_df["high_bid"][1])/2
+    low_aft = (price_df["low_ask"][1] + price_df["low_bid"][1])/2
+
+    close = (price_df["close_ask"][0] + price_df["close_bid"][0])/2
+    open = (price_df["open_ask"][0] + price_df["open_bid"][0])/2
+
+    status = {}
+    if high_bef <= high_aft and  low_bef >= low_aft:
+        status["outside_bar"] = True
+    else:
+        status["outside_bar"] = False
+
+    if open < close:
+        status["direction"] = True
+    else:
+        status["direction"] = False
+
+    return status
+
+
+# はらみ足
+def inside_bar(instrument, insert_time, table_type):
+    price_df = get_price(instrument, insert_time, table_type, 2)
+    high_bef = (price_df["high_ask"][0] + price_df["high_bid"][0])/2
+    low_bef = (price_df["low_ask"][0] + price_df["low_bid"][0])/2
+
+    high_aft = (price_df["high_ask"][1] + price_df["high_bid"][1])/2
+    low_aft = (price_df["low_ask"][1] + price_df["low_bid"][1])/2
+
+    close = (price_df["close_ask"][0] + price_df["close_bid"][0])/2
+    open = (price_df["open_ask"][0] + price_df["open_bid"][0])/2
+
+    status = {}
+    if high_bef >= high_aft and  low_bef <= low_aft:
+        status["inside_bar"] = True
+    else:
+        status["inside_bar"] = False
+
+    if open < close:
+        status["direction"] = True
+    else:
+        status["direction"] = False
+
+    return status
+
+# 同時線
+def barbwire(instrument, insert_time, table_type):
+    price_df = get_price(instrument, insert_time, table_type, 1)
+    close = (price_df["close_ask"][0] + price_df["close_bid"][0])/2
+    open = (price_df["open_ask"][0] + price_df["open_bid"][0])/2
+    high = (price_df["high_ask"][0] + price_df["high_bid"][0])/2
+    low = (price_df["low_ask"][0] + price_df["low_bid"][0])/2
+
+    real_stick_diff = (close - open) ** 2
+    line_stick_diff = (high - low) ** 2
+
+    barbwire_threshold = 0.3
+    print(real_stick_diff)
+    print(line_stick_diff)
+
+    # 実線がひげの何割か計算
+    status = {}
+    if real_stick_diff / line_stick_diff < barbwire_threshold:
+        status["barbwire"] = True
+    else:
+        status["barbwire"] = False
+
+    if open < close:
+        status["direction"] = True
+    else:
+        status["direction"] = False
+
+    return status
 
 
 def decide_trade(insert_time, trade_obj):
@@ -410,29 +473,6 @@ def decide_tradetime(insert_time):
 
     return flag
 
-def barbwire(instrument, insert_time, table_type):
-    barbwire_flag = False
-    price_obj = get_candle(instrument="GBP_JPY", insert_time=insert_time, table_type="5m")
-    highlow_pips = price_obj["high"] - price_obj["low"]
-    closeopen_pips = price_obj["close"] - price_obj["open"]
-
-    priceaction_threshold = 0.3
-
-    highlow_pips = highlow_pips * highlow_pips
-    closeopen_pips = closeopen_pips * closeopen_pips
-
-    highlow_pips = math.sqrt(highlow_pips)
-    closeopen_pips = math.sqrt(closeopen_pips)
-
-    if (closeopen_pips / highlow_pips) < 0.3:
-        print(insert_time)
-        print(closeopen_pips)
-        print(highlow_pips)
-        barbwire_flag = True
-
-    return barbwire_flag
-
-
 if __name__ == "__main__":
     trade_account = {
         "accountId": "101-009-10684893-001",
@@ -455,36 +495,46 @@ if __name__ == "__main__":
             elif mode == "demo":
                 insert_time = datetime.now()
             else:
-                insert_time = insert_time + timedelta(minutes=5)
+                insert_time = insert_time + timedelta(minutes=1)
     
             if decide_market(insert_time):
-                price_obj = get_candle(instrument="GBP_JPY", insert_time=insert_time, table_type="5m")
-                highlow_pips = price_obj["high"] - price_obj["low"]
-                closeopen_pips = price_obj["close"] - price_obj["open"]
+                #print("%s" % insert_time)
+                if trade_obj["flag"] == False:
+                    if decide_tradetime(insert_time):
+                        trade_obj = decide_trade(insert_time, trade_obj)
+                        if trade_obj["flag"]:
+                            if mode != "test":
+                            # if 1 == 1:
+                                #units = oanda_wrapper.calc_unit(trade_account, instrument, con)
+                                units = 100000
+                                response = oanda_wrapper.open_order(trade_account, trade_obj["instrument"], trade_obj["side"], units, 0, 0)
+                                #print(response)
+                        else:
+                            pass
+                    else:
+                        trade_obj = reset_tradeobj()
 
-                priceaction_threshold = 0.3
+    
+                if trade_obj["flag"]:
+                    trade_obj = stl(insert_time, trade_obj, profit_rate, orderstop_rate)
+                    #print(trade_obj)
+                    if trade_obj["stl_flag"]:
+                        debug_logger.info("========================================")
+                        for key in trade_obj:
+                            debug_logger.info("%s=%s" % (key, trade_obj[key]))
 
-                highlow_pips = highlow_pips * highlow_pips
-                closeopen_pips = closeopen_pips * closeopen_pips
-
-                highlow_pips = math.sqrt(highlow_pips)
-                closeopen_pips = math.sqrt(closeopen_pips)
-
-                # 下ひげトンボ
-                if (closeopen_pips / highlow_pips) < 0.1 and 13 < insert_time.hour < 22:
-                    print("========== ピンバー ==============")
-                    print(insert_time)
-                    print(closeopen_pips)
-                    print(highlow_pips)
-
-#                # ピンバー
-#                if price_obj["close"] == price_obj["high"] and price_obj["open"] > price_obj["low"] and price_obj["open"] < price_obj["close"] and highlow_pips > 0.1:
-#                    print("========= ピンバー ===============")
-#                    print(insert_time)
-#                    print(closeopen_pips)
-#                    print(highlow_pips)
-#
-
+                        if trade_obj["profit"] > 0:
+                            trade_obj = reset_tradeobj()
+                        elif trade_obj["algo"] == "bollinger":
+                            trade_obj["flag"] = False
+                            trade_obj["stl_flag"] = False
+                        else:
+                            trade_obj = reset_tradeobj()
+    
+                        if mode != "test":
+                        # if 1 == 1:
+                            response = oanda_wrapper.close_position(trade_account)
+                            #print(response)
         except:
             message = traceback.format_exc()
             debug_logger.info(message)

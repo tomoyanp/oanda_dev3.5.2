@@ -9,7 +9,6 @@ import sys
 import os
 import traceback
 import json
-import math
 import pandas as pd
 
 
@@ -28,8 +27,6 @@ import numpy as np
 from logging import getLogger, FileHandler, DEBUG
 from send_mail import SendMail
 
-from create_candle import candle_stick
-
 #mode = sys.argv[1]
 #filename = sys.argv[0].split(".")[0]
 ##print(filename)
@@ -39,18 +36,16 @@ from create_candle import candle_stick
 #debug_logger.addHandler(debug_fh)
 #debug_logger.setLevel(DEBUG)
 
-mode = "test"
 con = MysqlConnector()
 
 instrument_list = ["EUR_GBP", "EUR_USD", "EUR_JPY", "GBP_USD", "GBP_JPY", "USD_JPY"]
 instrument_list = ["GBP_JPY", "EUR_JPY", "AUD_JPY", "GBP_USD", "EUR_USD", "AUD_USD", "USD_JPY"]
-start_time = '2019-07-16 20:00:00'
-end_time = '2019-07-17 00:00:00'
-
-insert_time = datetime.strptime(start_time, "%Y-%m-%d %H:%M:%S")
-end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
-
+#insert_time = '2019-04-01 07:00:00'
+insert_time = '2019-07-15 13:00:00'
+insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
 now = datetime.now()
+#end_time = datetime.strptime('2019-07-06 00:00:00', "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime('2019-07-17 09:00:00', "%Y-%m-%d %H:%M:%S")
 
 def decide_season(base_time):
     year = int(base_time.year)
@@ -155,7 +150,7 @@ def convertTime(insert_time, table_type):
 
 def get_bollinger(instrument, insert_time, table_type, window_size, sigma_valiable):
     insert_time = convertTime(insert_time, table_type)
-    sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time <= '%s' order by insert_time desc limit %s" % (instrument, table_type, insert_time, window_size)
+    sql = "select close_ask, close_bid from %s_%s_TABLE where insert_time < '%s' order by insert_time desc limit %s" % (instrument, table_type, insert_time, window_size)
     response = con.select_sql(sql)
 
     tmp_list = []
@@ -196,6 +191,7 @@ def calc_pips(instrument, start_price, end_price):
     return result
 
 def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
+    print(trade_obj["algo"])
     stl_time = insert_time
     ask, bid = get_price(trade_obj["instrument"], insert_time)
 
@@ -242,6 +238,7 @@ def stl(insert_time, trade_obj, profit_rate, orderstop_rate):
         trade_obj["profit"] = pips
 
     trade_obj["stl_flag"] = stl_flag
+    #print(trade_obj)
 
     return trade_obj
 
@@ -262,7 +259,7 @@ def get_sma(instrument, insert_time, table_type, length):
 def get_price(instrument, insert_time, table_type, length):
     insert_time = convertTime(insert_time, table_type)
 
-    sql = "select open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time from %s_%s_TABLE where insert_time <= '%s' order by insert_time desc limit %s" % (instrument, table_type, insert_time, length)
+    sql = "select open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time from %s_%s_TABLE where insert_time < '%s' order by insert_time desc limit %s" % (instrument, table_type, insert_time, length)
     response = con.select_sql(sql)
 
     response_list = []
@@ -355,6 +352,7 @@ def kick_back(insert_time, instrument, trade_obj, length):
                 flag = True
 
 
+    #print("logic end %s" % trade_time)
        
     return flag, trade_obj
 
@@ -399,7 +397,6 @@ def inside_bar(instrument, insert_time, table_type):
 
     status = {}
     if high_bef >= high_aft and  low_bef <= low_aft:
-        print(price_df)
         status["inside_bar"] = True
     else:
         status["inside_bar"] = False
@@ -422,7 +419,9 @@ def barbwire(instrument, insert_time, table_type):
     real_stick_diff = (close - open) ** 2
     line_stick_diff = (high - low) ** 2
 
-    barbwire_threshold = 0.1
+    barbwire_threshold = 0.3
+    print(real_stick_diff)
+    print(line_stick_diff)
 
     # 実線がひげの何割か計算
     status = {}
@@ -438,31 +437,14 @@ def barbwire(instrument, insert_time, table_type):
 
     return status
 
-# 過去24時間のローソク足実線の平均
-def average_real_stick(instrument, insert_time, table_type):
-    length = 24 * 12
-    price_df = get_price(instrument, insert_time, table_type, length)
-
-    open_price = (price_df["open_ask"]+price_df["open_bid"])
-    close_price = (price_df["close_ask"]+price_df["close_bid"])
-
-    diff = close_price - open_price
-
-    diff = diff**2
-    diff_list = []
-    for elem in diff:
-        diff_list.append(math.sqrt(elem))
-
-    max_diff = max(diff_list)
-    avg_diff = sum(diff_list)/len(diff_list)
-
-    return max_diff, avg_diff
 
 def decide_trade(insert_time, trade_obj):
     if trade_obj["algo"] == "bollinger":
+        print("============== kick back")
         flag, trade_obj = kick_back(insert_time, trade_obj["instrument"], trade_obj, length=120)
         trade_obj["flag"] = flag
     else:
+        print("############## bollinger")
         for instrument in instrument_list:
             flag, trade_obj = over_bollinger(insert_time, instrument, trade_obj)
             if flag:
@@ -503,9 +485,6 @@ if __name__ == "__main__":
     profit_rate = 50 
     orderstop_rate = -20
 
-    instrument = "GBP_JPY"
-    table_type = "5m"
-
     if mode == "demo":
         insert_time = now
 
@@ -516,26 +495,49 @@ if __name__ == "__main__":
             elif mode == "demo":
                 insert_time = datetime.now()
             else:
-                insert_time = insert_time + timedelta(minutes=5)
+                insert_time = insert_time + timedelta(minutes=1)
     
             if decide_market(insert_time):
-                status = outside_bar(instrument, insert_time, table_type)
-                #if status["outside_bar"]:
-                #    print("%s outsidebar, direction=%s" % (insert_time, status["direction"]))
+                #print("%s" % insert_time)
+                if trade_obj["flag"] == False:
+                    if decide_tradetime(insert_time):
+                        trade_obj = decide_trade(insert_time, trade_obj)
+                        if trade_obj["flag"]:
+                            if mode != "test":
+                            # if 1 == 1:
+                                #units = oanda_wrapper.calc_unit(trade_account, instrument, con)
+                                units = 100000
+                                response = oanda_wrapper.open_order(trade_account, trade_obj["instrument"], trade_obj["side"], units, 0, 0)
+                                #print(response)
+                        else:
+                            pass
+                    else:
+                        trade_obj = reset_tradeobj()
 
-                #status = inside_bar(instrument, insert_time, table_type)
-                #if status["inside_bar"]:
-                #    print("%s insidebar, direction=%s" % (insert_time, status["direction"]))
+    
+                if trade_obj["flag"]:
+                    trade_obj = stl(insert_time, trade_obj, profit_rate, orderstop_rate)
+                    #print(trade_obj)
+                    if trade_obj["stl_flag"]:
+                        debug_logger.info("========================================")
+                        for key in trade_obj:
+                            debug_logger.info("%s=%s" % (key, trade_obj[key]))
 
-                status = barbwire(instrument, insert_time, table_type)
-                if status["barbwire"]:
-                    print("%s barbwire, direction=%s" % (insert_time, status["barbwire"]))
-
+                        if trade_obj["profit"] > 0:
+                            trade_obj = reset_tradeobj()
+                        elif trade_obj["algo"] == "bollinger":
+                            trade_obj["flag"] = False
+                            trade_obj["stl_flag"] = False
+                        else:
+                            trade_obj = reset_tradeobj()
+    
+                        if mode != "test":
+                        # if 1 == 1:
+                            response = oanda_wrapper.close_position(trade_account)
+                            #print(response)
         except:
             message = traceback.format_exc()
             debug_logger.info(message)
             sendmail = SendMail("tomoyanpy@gmail.com", "tomoyanpy@softbank.ne.jp", "../property")
             sendmail.set_msg(message)
             sendmail.send_mail()
-
-    candle_stick(con, instrument, table_type, start_time, end_time)

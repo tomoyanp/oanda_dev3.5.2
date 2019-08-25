@@ -7,6 +7,7 @@ sys.path.append(current_path + '../lib')
 
 import matplotlib
 matplotlib.use('Agg')
+from matplotlib.ticker import MultipleLocator
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import mpl_finance
@@ -18,8 +19,8 @@ from mysql_connector import MysqlConnector
 
 con = MysqlConnector()
 
-#sql = "select insert_time, open_ask, open_bid, high_ask, high_bid, low_ask, low_bid, close_ask, close_bid from GBP_JPY_5m_TABLE where insert_time < '2019-07-01 00:00:00' order by insert_time desc limit 100"
-sql = "select insert_time, open_ask, open_bid, high_ask, high_bid, low_ask, low_bid, close_ask, close_bid from GBP_JPY_day_TABLE where insert_time < '2019-07-01 00:00:00' order by insert_time desc limit 100"
+sql = "select insert_time, open_ask, open_bid, high_ask, high_bid, low_ask, low_bid, close_ask, close_bid from GBP_JPY_5m_TABLE where insert_time < '2019-07-01 00:00:00' order by insert_time desc limit 1000"
+#sql = "select insert_time, open_ask, open_bid, high_ask, high_bid, low_ask, low_bid, close_ask, close_bid from GBP_JPY_day_TABLE where insert_time < '2019-07-01 00:00:00' order by insert_time desc limit 100"
 res = con.select_sql(sql)
 
 lst = []
@@ -45,15 +46,31 @@ df['close'] = cl_price
 
 data = df.values
 
-fig = plt.figure(figsize=(12, 4))
+average_data = (df["open"] + df["high"] + df["low"] + df["close"]) / 4
+
+fig = plt.figure(figsize=(100, 5))
 ax = fig.add_subplot(1, 1, 1)
-mpl_finance.candlestick_ohlc(ax, data, width=2, alpha=0.5, colorup="r", colordown="b")
+mpl_finance.candlestick_ohlc(ax, data, width=0.5/(24*12), alpha=0.5, colorup="r", colordown="b")
+
+#average_data = average_data.values
+#ax.plot(average_data, color="Green")
+for i, line in enumerate(average_data):
+    ax.plot(line, label=i)
+
+
+
 ax.grid()
 
-#locator = mdates.AutoDateLocator()
-#ax.xaxis.set_major_locator(locator)
-#ax.xaxis.set_major_formatter(mdates.AutoDateFormatter(locator))
-plt.savefig("sample.png")
+
+
+locator = mdates.MinuteLocator(byminute=None, interval=30, tz=None)
+ax.xaxis.set_major_locator(locator)
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d\n%H:%M"))
+
+#print(average_data.values[0])
+
+
+plt.savefig("minute.svg")
 
 #fig = plt.figure()
 #ax = plt.subplot()

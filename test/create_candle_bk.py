@@ -14,9 +14,6 @@ import mpl_finance
 from matplotlib import ticker
 import pandas as pd
 
-from mysql_connector import MysqlConnector
-from create_supreg import supreg, trend_line
-
 def candle_stick(con, instrument, table_type, start_time, end_time):
     sql = "select insert_time, open_ask, open_bid, high_ask, high_bid, low_ask, low_bid, close_ask, close_bid from %s_%s_TABLE where '%s' < insert_time and insert_time < '%s'" % (instrument, table_type, start_time, end_time)
     res = con.select_sql(sql)
@@ -48,8 +45,6 @@ def candle_stick(con, instrument, table_type, start_time, end_time):
 
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(1, 1, 1)
-
-
     mpl_finance.candlestick_ohlc(ax, data, width=0.5/(24*12), alpha=0.5, colorup="r", colordown="b")
 
     ax.grid()
@@ -58,23 +53,5 @@ def candle_stick(con, instrument, table_type, start_time, end_time):
     ax.xaxis.set_major_locator(locator)
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d\n%H:%M"))
 
-    supreg_list = supreg(con, instrument, table_type, start_time, end_time)
-    for elm in supreg_list:
-        ax.axhline(y=elm["price"], linewidth='1.0', color='red')
-
-
-    trendlines = trend_line(con, instrument, table_type, start_time, end_time)
-    ax.plot(df["insert_time"], trendlines["high_trend"], linewidth="1.0", color="green")
-    ax.plot(df["insert_time"], trendlines["low_trend"], linewidth="1.0", color="green")
-
     plt.savefig("candle.png")
     plt.close()
-
-
-if __name__ == "__main__":
-    con = MysqlConnector()
-    table_type = "5m"
-    start_time = "2019-07-01 22:00:00"
-    end_time = "2019-07-02 00:00:00"
-    instrument = "GBP_JPY"
-    candle_stick(con, instrument, table_type, start_time, end_time)

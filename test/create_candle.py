@@ -14,34 +14,17 @@ import mpl_finance
 from matplotlib import ticker
 import pandas as pd
 
-def candle_stick(con, instrument, table_type, start_time, end_time):
-    sql = "select insert_time, open_ask, open_bid, high_ask, high_bid, low_ask, low_bid, close_ask, close_bid from %s_%s_TABLE where '%s' < insert_time and insert_time < '%s'" % (instrument, table_type, start_time, end_time)
-    res = con.select_sql(sql)
+def candle_stick(price_df):
+    price_df["insert_time"] = mdates.date2num(price_df["insert_time"])
 
-    lst = []
-    for r in res:
-        print(r)
-        lst.append(list(r))
-
-
-    df = pd.DataFrame(lst)
-    insert_time = df[0]
-    op_price = (df[1] + df[2])/2
-    hi_price = (df[3] + df[4])/2
-    lw_price = (df[5] + df[6])/2
-    cl_price = (df[7] + df[8])/2
-
-    df = pd.DataFrame()
-
-    df['insert_time'] = mdates.date2num(insert_time)
-    df['open'] = op_price
-    df['high'] = hi_price
-    df['low'] = lw_price
-    df['close'] = cl_price
-
-    data = df.values
-
-    average_data = (df["open"] + df["high"] + df["low"] + df["close"]) / 4
+    candle_df = pd.DataFrame()
+    candle_df["insert_time"] = price_df["insert_time"]
+    candle_df["open"] = price_df["open"]
+    candle_df["high"] = price_df["high"]
+    candle_df["low"] = price_df["low"]
+    candle_df["close"] = price_df["close"]
+    data = candle_df.values
+    
 
     fig = plt.figure(figsize=(10, 5))
     ax = fig.add_subplot(1, 1, 1)
@@ -53,5 +36,18 @@ def candle_stick(con, instrument, table_type, start_time, end_time):
     ax.xaxis.set_major_locator(locator)
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d\n%H:%M"))
 
-    plt.savefig("candle.png")
+    #plt.savefig("candle.png")
+    #plt.close()
+
+    return plt, ax
+
+if __name__ == "__main__":
+    from main import get_price
+    instrument = "GBP_JPY"
+    table_type = "5m"
+    insert_time = "2019-07-02 10:00:00"
+    price_df = get_price(instrument, insert_time, table_type, length=12*10)
+    plt, ax = candle_stick(price_df)
+    plt.savefig("simple_candle.png")
     plt.close()
+

@@ -29,6 +29,7 @@ from logging import getLogger, FileHandler, DEBUG
 from send_mail import SendMail
 
 from create_candle import candle_stick
+from price_action import trend_line, supreg
 
 #mode = sys.argv[1]
 #filename = sys.argv[0].split(".")[0]
@@ -260,6 +261,8 @@ def get_sma(instrument, insert_time, table_type, length):
     return sma
 
 def get_price(instrument, insert_time, table_type, length):
+    if type(insert_time) == str:
+        insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
     insert_time = convertTime(insert_time, table_type)
 
     sql = "select open_ask, open_bid, close_ask, close_bid, high_ask, high_bid, low_ask, low_bid, insert_time from %s_%s_TABLE where insert_time <= '%s' order by insert_time desc limit %s" % (instrument, table_type, insert_time, length)
@@ -282,181 +285,15 @@ def get_price(instrument, insert_time, table_type, length):
         8: "insert_time"
     }, inplace=True)
 
-    return df
+    return_df = pd.DataFrame()
+    return_df["open"] = (df["open_ask"]+df["open_bid"])/2
+    return_df["close"] = (df["close_ask"]+df["close_bid"])/2
+    return_df["high"] = (df["high_ask"]+df["high_bid"])/2
+    return_df["low"] = (df["low_ask"]+df["low_bid"])/2
+    return_df["insert_time"] = df["insert_time"]
 
-def over_bollinger(insert_time, instrument, trade_obj):
-    trade_time = insert_time
-    threshold = 100
-    data_set = get_bollinger(instrument, insert_time, table_type="1h", window_size=10, sigma_valiable=3)
-    pips = calc_pips(instrument, data_set["lower_sigmas"][-1], data_set["upper_sigmas"][-1])
+    return return_df
 
-    bollinger_flag = True if pips < threshold else False
-
-    flag = False
-    if bollinger_flag:
-        trade_obj["uppersigma_1h10"] = data_set["upper_sigmas"][-1]
-        trade_obj["lowersigma_1h10"] = data_set["lower_sigmas"][-1]
-        trade_obj["1h10bollinger_pips"] = pips
-
-        data_set = get_bollinger(instrument, insert_time, table_type="5m", window_size=21, sigma_valiable=2.5)
-        sma_day5 = get_sma(instrument, insert_time, table_type="day", length=5)
-        ask, bid = get_price(instrument, insert_time)
-
-        # bollinger bandからどの程度乖離があるか
-        threshold = 5
-        upper_momentum = calc_pips(instrument, data_set["upper_sigmas"][-1], ask)
-        lower_momentum = calc_pips(instrument, bid, data_set["lower_sigmas"][-1])
-
-        trade_obj["instrument"] = instrument
-        trade_obj["ask"] = ask
-        trade_obj["bid"] = bid
-        trade_obj["uppersigma_5m21"] = data_set["upper_sigmas"][-1]
-        trade_obj["lowersigma_5m21"] = data_set["lower_sigmas"][-1]
-        trade_obj["sma_day5"] = sma_day5
-
-        if threshold < upper_momentum and sma_day5 < ask:
-            flag = True
-            trade_obj["side"] = "buy"
-            trade_obj["algo"] = "bollinger"
-        elif threshold < lower_momentum and sma_day5 > bid:
-            flag = True
-            trade_obj["side"] = "sell"
-            trade_obj["algo"] = "bollinger"
-
-    return flag, trade_obj
-
-def kick_back(insert_time, instrument, trade_obj, length):
-    trade_time = insert_time
-    flag = False
-    if trade_obj["trade_time"] + timedelta(minutes=120) < trade_time:
-        trade_obj = reset_tradeobj()
-    elif "sma_first_flag" not in trade_obj:
-        sma = get_sma(instrument, trade_time, "5m", 21)
-        ask, bid = get_price(instrument, trade_time)
-        if trade_obj["side"] == "buy" and ask < sma:
-            trade_obj["sma_first_time"] = trade_time
-            trade_obj["sma_first_flag"] = True
-        elif trade_obj["side"] == "sell" and bid > sma:
-            trade_obj["sma_first_time"] = trade_time
-            trade_obj["sma_first_flag"] = True
-
-    elif trade_obj["sma_first_flag"]:
-        # 終値を狙う
-        if trade_time.minute % 5 == 0 and trade_time.second < 10:
-            sma = get_sma(instrument, trade_time, "5m", 21)
-            ask, bid = get_price(instrument, trade_time)
-            if trade_obj["side"] == "buy" and ask < sma:
-                trade_obj["sma_second_time"] = trade_time
-                trade_obj["algo"] = "kick_back"
-                flag = True
-            elif trade_obj["side"] == "sell" and bid > sma:
-                trade_obj["sma_second_time"] = trade_time
-                trade_obj["algo"] = "kick_back"
-                flag = True
-
-
-       
-    return flag, trade_obj
-
-
-# つつみ足
-def outside_bar(instrument, insert_time, table_type):
-    price_df = get_price(instrument, insert_time, table_type, 2)
-    high_bef = (price_df["high_ask"][0] + price_df["high_bid"][0])/2
-    low_bef = (price_df["low_ask"][0] + price_df["low_bid"][0])/2
-
-    high_aft = (price_df["high_ask"][1] + price_df["high_bid"][1])/2
-    low_aft = (price_df["low_ask"][1] + price_df["low_bid"][1])/2
-
-    close = (price_df["close_ask"][0] + price_df["close_bid"][0])/2
-    open = (price_df["open_ask"][0] + price_df["open_bid"][0])/2
-
-    status = {}
-    if high_bef <= high_aft and  low_bef >= low_aft:
-        status["outside_bar"] = True
-    else:
-        status["outside_bar"] = False
-
-    if open < close:
-        status["direction"] = True
-    else:
-        status["direction"] = False
-
-    return status
-
-
-# はらみ足
-def inside_bar(instrument, insert_time, table_type):
-    price_df = get_price(instrument, insert_time, table_type, 2)
-    high_bef = (price_df["high_ask"][0] + price_df["high_bid"][0])/2
-    low_bef = (price_df["low_ask"][0] + price_df["low_bid"][0])/2
-
-    high_aft = (price_df["high_ask"][1] + price_df["high_bid"][1])/2
-    low_aft = (price_df["low_ask"][1] + price_df["low_bid"][1])/2
-
-    close = (price_df["close_ask"][0] + price_df["close_bid"][0])/2
-    open = (price_df["open_ask"][0] + price_df["open_bid"][0])/2
-
-    status = {}
-    if high_bef >= high_aft and  low_bef <= low_aft:
-        print(price_df)
-        status["inside_bar"] = True
-    else:
-        status["inside_bar"] = False
-
-    if open < close:
-        status["direction"] = True
-    else:
-        status["direction"] = False
-
-    return status
-
-# 同時線
-def barbwire(instrument, insert_time, table_type):
-    price_df = get_price(instrument, insert_time, table_type, 1)
-    close = (price_df["close_ask"][0] + price_df["close_bid"][0])/2
-    open = (price_df["open_ask"][0] + price_df["open_bid"][0])/2
-    high = (price_df["high_ask"][0] + price_df["high_bid"][0])/2
-    low = (price_df["low_ask"][0] + price_df["low_bid"][0])/2
-
-    real_stick_diff = (close - open) ** 2
-    line_stick_diff = (high - low) ** 2
-
-    barbwire_threshold = 0.1
-
-    # 実線がひげの何割か計算
-    status = {}
-    if real_stick_diff / line_stick_diff < barbwire_threshold:
-        status["barbwire"] = True
-    else:
-        status["barbwire"] = False
-
-    if open < close:
-        status["direction"] = True
-    else:
-        status["direction"] = False
-
-    return status
-
-# 過去24時間のローソク足実線の平均
-def average_real_stick(instrument, insert_time, table_type):
-    length = 24 * 12
-    price_df = get_price(instrument, insert_time, table_type, length)
-
-    open_price = (price_df["open_ask"]+price_df["open_bid"])
-    close_price = (price_df["close_ask"]+price_df["close_bid"])
-
-    diff = close_price - open_price
-
-    diff = diff**2
-    diff_list = []
-    for elem in diff:
-        diff_list.append(math.sqrt(elem))
-
-    max_diff = max(diff_list)
-    avg_diff = sum(diff_list)/len(diff_list)
-
-    return max_diff, avg_diff
 
 def decide_trade(insert_time, trade_obj):
     if trade_obj["algo"] == "bollinger":
@@ -491,51 +328,125 @@ def decide_tradetime(insert_time):
 
     return flag
 
+
 if __name__ == "__main__":
-    trade_account = {
-        "accountId": "101-009-10684893-001",
-        "accessToken": "d6fa56ee0ced50ea925683cb9c316df1-8daba3977f5335ed52327c5cc54ebf5a",
-        "env": "practice"
-    }
-
-    trade_obj = reset_tradeobj()
-    stl_obj = {}
-    profit_rate = 50 
-    orderstop_rate = -20
-
     instrument = "GBP_JPY"
+    insert_time = datetime.strptime("2019-07-02 02:00:00", "%Y-%m-%d %H:%M:%S")
     table_type = "5m"
 
-    if mode == "demo":
-        insert_time = now
+    price_df = get_price(instrument, insert_time, table_type, length=12*4)
 
-    while True:
-        try: 
-            if insert_time >= end_time and mode == "test":
-                break
-            elif mode == "demo":
-                insert_time = datetime.now()
-            else:
-                insert_time = insert_time + timedelta(minutes=5)
-    
-            if decide_market(insert_time):
-                status = outside_bar(instrument, insert_time, table_type)
-                #if status["outside_bar"]:
-                #    print("%s outsidebar, direction=%s" % (insert_time, status["direction"]))
+    # ローソク足の描画
+    candle_df = price_df.copy()
+    plt, ax = candle_stick(candle_df)
 
-                #status = inside_bar(instrument, insert_time, table_type)
-                #if status["inside_bar"]:
-                #    print("%s insidebar, direction=%s" % (insert_time, status["direction"]))
+    # 短期トレンドラインの計算をする
+    # トレンドラインを直近ので計算するといつまでもブレイクしないので30分前にする
+    trend_df = get_price(instrument, insert_time, table_type, length=12+6)
+    trend_df = trend_df[:-6]
+    trend_fin_df = trend_line(trend_df)
+    # トレンドラインを描画する
+    ax.plot(trend_fin_df["insert_time"], trend_fin_df["high_trend"], linewidth="1.0", color="green")
+    ax.plot(trend_fin_df["insert_time"], trend_fin_df["low_trend"], linewidth="1.0", color="green")
 
-                status = barbwire(instrument, insert_time, table_type)
-                if status["barbwire"]:
-                    print("%s barbwire, direction=%s" % (insert_time, status["barbwire"]))
+    # x軸のインデックスを求める
+    diff = insert_time - trend_fin_df["insert_time"][0]
+    index = diff.seconds / 300
 
-        except:
-            message = traceback.format_exc()
-            debug_logger.info(message)
-            sendmail = SendMail("tomoyanpy@gmail.com", "tomoyanpy@softbank.ne.jp", "../property")
-            sendmail.set_msg(message)
-            sendmail.send_mail()
+    # 現在のトレンドラインを求める
+    current_trend_high = trend_fin_df["high_slope"] * index + trend_fin_df["high_intercept"]
+    current_trend_low = trend_fin_df["low_slope"] * index + trend_fin_df["low_intercept"]
+    print(current_trend_high[0])
+    print(current_trend_low[0])
 
-    candle_stick(con, instrument, table_type, start_time, end_time)
+    # 長期トレンドラインの計算をする
+    # トレンドラインを直近ので計算するといつまでもブレイクしないので30分前にする
+    trend_df = price_df[:-6]
+    trend_fin_df = trend_line(trend_df)
+    # トレンドラインを描画する
+    ax.plot(trend_fin_df["insert_time"], trend_fin_df["high_trend"], linewidth="1.0", color="green")
+    ax.plot(trend_fin_df["insert_time"], trend_fin_df["low_trend"], linewidth="1.0", color="green")
+
+    # x軸のインデックスを求める
+    diff = insert_time - trend_fin_df["insert_time"][0]
+    index = diff.seconds / 300
+
+    # 現在のトレンドラインを求める
+    current_trend_high = trend_fin_df["high_slope"] * index + trend_fin_df["high_intercept"]
+    current_trend_low = trend_fin_df["low_slope"] * index + trend_fin_df["low_intercept"]
+    print(current_trend_high[0])
+    print(current_trend_low[0])
+
+
+
+
+    # サポートライン、レジスタンスラインを求める 
+    supreg_list = supreg(price_df)
+    for supreg in supreg_list:
+        if price_df["close"].values[-1] < supreg["price"] and supreg["direction"] == "high":
+            ax.axhline(y=supreg["price"], linewidth="1.0", color="red")
+        elif price_df["close"].values[-1] > supreg["price"] and supreg["direction"] == "low":
+            ax.axhline(y=supreg["price"], linewidth="1.0", color="blue")
+
+    plt.savefig("sample.png")
+    plt.close()
+
+
+
+#if __name__ == "__main__":
+#    trade_account = {
+#        "accountId": "101-009-10684893-001",
+#        "accessToken": "d6fa56ee0ced50ea925683cb9c316df1-8daba3977f5335ed52327c5cc54ebf5a",
+#        "env": "practice"
+#    }
+#
+#    trade_obj = reset_tradeobj()
+#    stl_obj = {}
+#    profit_rate = 50 
+#    orderstop_rate = -20
+#
+#    instrument = "GBP_JPY"
+#    table_type = "5m"
+#
+#    if mode == "demo":
+#        insert_time = now
+#
+#    while True:
+#        try: 
+#            if insert_time >= end_time and mode == "test":
+#                break
+#            elif mode == "demo":
+#                insert_time = datetime.now()
+#            else:
+#                insert_time = insert_time + timedelta(minutes=5)
+#    
+#            if decide_market(insert_time):
+#                price_df = get_price(instrument, insert_time, table_type, length=48)
+#
+#                # トレンドラインを直近ので計算するといつまでもブレイクしないので2時間前にする
+#                trend_df = price_df.copy()
+#                trend_df = trend_df[:-24]
+#                trend_fin_df = trend_line(trend_df)
+#
+#                candle_stick(price_df)
+#                
+#                #status = outside_bar(instrument, insert_time, table_type)
+#                #if status["outside_bar"]:
+#                #    print("%s outsidebar, direction=%s" % (insert_time, status["direction"]))
+#
+#                #status = inside_bar(instrument, insert_time, table_type)
+#                #if status["inside_bar"]:
+#                #    print("%s insidebar, direction=%s" % (insert_time, status["direction"]))
+#
+#                status = barbwire(instrument, insert_time, table_type)
+#                if status["barbwire"]:
+#                    print("%s barbwire, direction=%s" % (insert_time, status["barbwire"]))
+#
+#        except:
+#            message = traceback.format_exc()
+#            debug_logger.info(message)
+#            sendmail = SendMail("tomoyanpy@gmail.com", "tomoyanpy@softbank.ne.jp", "../property")
+#            sendmail.set_msg(message)
+#            sendmail.send_mail()
+#
+#    candle_stick(con, instrument, table_type, start_time, end_time)

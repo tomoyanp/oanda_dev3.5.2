@@ -333,65 +333,90 @@ if __name__ == "__main__":
     instrument = "GBP_JPY"
     insert_time = datetime.strptime("2019-07-02 02:00:00", "%Y-%m-%d %H:%M:%S")
     table_type = "5m"
+    base_candle_size = 5 #5分足を使う
+    window_size = 12*6 #6時間分
+    show_after_size = 12*2 #表示用は二時間後まで表示するようにする
+    ema_max_size = 100
 
-    price_df = get_price(instrument, insert_time, table_type, length=12*4)
+    # 計算用
+    price_df = get_price(instrument, insert_time, table_type, length=window_size)
+    # 描画用（売買後の値動きを見たいため）
+    all_price_df = get_price(instrument, insert_time + timedelta(minutes=base_candle_size*show_after_size), table_type, length=show_after_size)
+    # EMA用（過去のローソク足がないと計算できないため）
+    all_price_df = get_price(instrument, insert_time + timedelta(minutes=base_candle_size*show_after_size), table_type, length=show_after_size+ema_max_size)
 
-    # ローソク足の描画
-    candle_df = price_df.copy()
-    plt, ax = candle_stick(candle_df)
+    ##########################################################################################################
+    # EMAの計算
+    ema25 = ema_price_df["close"].ewm(span=25).mean()
+    ema100 = ema_price_df["close"].ewm(span=100).mean()
+    ema = pd.DataFrame()
+    ema["ema25"] = ema25.copy()
+    ema["ema100"] = ema100.copy()
+    ema["insert_time"] = ema_price_df["insert_time"].copy()
 
+    # 過去分はそぎ落とす
+    ema = ema[ema_max_size:]
+
+    ##########################################################################################################
     # 短期トレンドラインの計算をする
     # トレンドラインを直近ので計算するといつまでもブレイクしないので30分前にする
-    trend_df = get_price(instrument, insert_time, table_type, length=12+6)
-    trend_df = trend_df[:-6]
-    trend_fin_df = trend_line(trend_df)
-    # トレンドラインを描画する
-    ax.plot(trend_fin_df["insert_time"], trend_fin_df["high_trend"], linewidth="1.0", color="green")
-    ax.plot(trend_fin_df["insert_time"], trend_fin_df["low_trend"], linewidth="1.0", color="green")
+    short_trend_df = get_price(instrument, insert_time, table_type, length=12+6)
+    short_trend_df = short_trend_df[:-6]
+    short_trend_fin_df = trend_line(short_trend_df)
 
     # x軸のインデックスを求める
-    diff = insert_time - trend_fin_df["insert_time"][0]
+    diff = insert_time - short_trend_fin_df["insert_time"][0]
     index = diff.seconds / 300
 
     # 現在のトレンドラインを求める
-    current_trend_high = trend_fin_df["high_slope"] * index + trend_fin_df["high_intercept"]
-    current_trend_low = trend_fin_df["low_slope"] * index + trend_fin_df["low_intercept"]
-    print(current_trend_high[0])
-    print(current_trend_low[0])
+    current_short_trend_high = short_trend_fin_df["high_slope"] * index + short_trend_fin_df["high_intercept"]
+    current_short_trend_low = short_trend_fin_df["low_slope"] * index + short_trend_fin_df["low_intercept"]
 
+    ########################################################################################################
     # 長期トレンドラインの計算をする
     # トレンドラインを直近ので計算するといつまでもブレイクしないので30分前にする
-    trend_df = price_df[:-6]
-    trend_fin_df = trend_line(trend_df)
-    # トレンドラインを描画する
-    ax.plot(trend_fin_df["insert_time"], trend_fin_df["high_trend"], linewidth="1.0", color="green")
-    ax.plot(trend_fin_df["insert_time"], trend_fin_df["low_trend"], linewidth="1.0", color="green")
+    long_trend_df = price_df[:-6]
+    long_trend_fin_df = trend_line(long_trend_df)
 
     # x軸のインデックスを求める
-    diff = insert_time - trend_fin_df["insert_time"][0]
+    diff = insert_time - long_trend_fin_df["insert_time"][0]
     index = diff.seconds / 300
 
     # 現在のトレンドラインを求める
-    current_trend_high = trend_fin_df["high_slope"] * index + trend_fin_df["high_intercept"]
-    current_trend_low = trend_fin_df["low_slope"] * index + trend_fin_df["low_intercept"]
-    print(current_trend_high[0])
-    print(current_trend_low[0])
+    current_long_trend_high = long_trend_fin_df["high_slope"] * index + long_trend_fin_df["high_intercept"]
+    current_long_trend_low = long_trend_fin_df["low_slope"] * index + long_trend_fin_df["low_intercept"]
 
-
-
-
+    ########################################################################################################
     # サポートライン、レジスタンスラインを求める 
     supreg_list = supreg(price_df)
     for supreg in supreg_list:
         if price_df["close"].values[-1] < supreg["price"] and supreg["direction"] == "high":
-            ax.axhline(y=supreg["price"], linewidth="1.0", color="red")
+            registance_line = supreg["price"]
         elif price_df["close"].values[-1] > supreg["price"] and supreg["direction"] == "low":
-            ax.axhline(y=supreg["price"], linewidth="1.0", color="blue")
+            support_line = supreg["price"]
+
+
+    # ローソク足の描画
+    plt, ax = candle_stick(all_price_df)
+
+    # 長期トレンドラインを描画する
+    ax.plot(long_trend_fin_df["insert_time"], long_trend_fin_df["high_trend"], linewidth="1.0", color="green")
+    ax.plot(long_trend_fin_df["insert_time"], long_trend_fin_df["low_trend"], linewidth="1.0", color="green")
+
+    # 短期トレンドラインを描画する
+    ax.plot(short_trend_fin_df["insert_time"], short_trend_fin_df["high_trend"], linewidth="1.0", color="green")
+    ax.plot(short_trend_fin_df["insert_time"], short_trend_fin_df["low_trend"], linewidth="1.0", color="green")
+
+    # EMAを描画する
+    ax.plot(ema["insert_time"], ema["ema25"], linewidth="1.0", color="orange")
+    ax.plot(ema["insert_time"], ema["ema100"], linewidth="1.0", color="red")
+
+    # サポートレジスタンスラインを描画する
+    ax.axhline(y=registance_line, linewidth="1.0", color="red")
+    ax.axhline(y=support_line, linewidth="1.0", color="blue")
 
     plt.savefig("sample.png")
     plt.close()
-
-
 
 #if __name__ == "__main__":
 #    trade_account = {

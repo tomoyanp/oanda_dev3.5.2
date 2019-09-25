@@ -331,70 +331,119 @@ def decide_tradetime(insert_time):
 
 if __name__ == "__main__":
     instrument = "GBP_JPY"
-    insert_time = datetime.strptime("2019-07-02 02:00:00", "%Y-%m-%d %H:%M:%S")
+    insert_time = datetime.strptime("2019-07-02 13:00:00", "%Y-%m-%d %H:%M:%S")
+    end_time = datetime.strptime("2019-07-05 00:00:00", "%Y-%m-%d %H:%M:%S")
     table_type = "5m"
     base_candle_size = 5 #5分足を使う
     window_size = 12*6 #6時間分
     show_after_size = 12*2 #表示用は二時間後まで表示するようにする
     ema_max_size = 100
 
-    # 計算用
-    price_df = get_price(instrument, insert_time, table_type, length=window_size)
-    # 描画用（売買後の値動きを見たいため）
-    all_price_df = get_price(instrument, insert_time + timedelta(minutes=base_candle_size*show_after_size), table_type, length=show_after_size)
-    # EMA用（過去のローソク足がないと計算できないため）
-    all_price_df = get_price(instrument, insert_time + timedelta(minutes=base_candle_size*show_after_size), table_type, length=show_after_size+ema_max_size)
+    while insert_time < end_time:
+        # 計算用
+        price_df = get_price(instrument, insert_time, table_type, length=window_size)
+        # 描画用（売買後の値動きを見たいため）
+        all_price_df = get_price(instrument, insert_time + timedelta(minutes=base_candle_size*show_after_size), table_type, length=show_after_size+window_size)
+        # EMA用（過去のローソク足がないと計算できないため）
+        ema_price_df = get_price(instrument, insert_time + timedelta(minutes=base_candle_size*show_after_size), table_type, length=show_after_size+window_size+ema_max_size)
 
-    ##########################################################################################################
-    # EMAの計算
-    ema25 = ema_price_df["close"].ewm(span=25).mean()
-    ema100 = ema_price_df["close"].ewm(span=100).mean()
-    ema = pd.DataFrame()
-    ema["ema25"] = ema25.copy()
-    ema["ema100"] = ema100.copy()
-    ema["insert_time"] = ema_price_df["insert_time"].copy()
 
-    # 過去分はそぎ落とす
-    ema = ema[ema_max_size:]
+        ##########################################################################################################
+        # EMAの計算
+        ema25 = ema_price_df["close"].ewm(span=25).mean()
+        ema100 = ema_price_df["close"].ewm(span=100).mean()
+        ema = pd.DataFrame()
+        ema["ema25"] = ema25.copy()
+        ema["ema100"] = ema100.copy()
+        ema["insert_time"] = ema_price_df["insert_time"].copy()
 
-    ##########################################################################################################
-    # 短期トレンドラインの計算をする
-    # トレンドラインを直近ので計算するといつまでもブレイクしないので30分前にする
-    short_trend_df = get_price(instrument, insert_time, table_type, length=12+6)
-    short_trend_df = short_trend_df[:-6]
-    short_trend_fin_df = trend_line(short_trend_df)
+        # 過去分はそぎ落とす
+        ema = ema[ema_max_size:]
 
-    # x軸のインデックスを求める
-    diff = insert_time - short_trend_fin_df["insert_time"][0]
-    index = diff.seconds / 300
+        ##########################################################################################################
+        # 短期トレンドラインの計算をする
+        # トレンドラインを直近ので計算するといつまでもブレイクしないので30分前にする
+        short_trend_df = get_price(instrument, insert_time, table_type, length=12+6)
+        short_trend_df = short_trend_df[:-6]
+        short_trend_fin_df = trend_line(short_trend_df)
 
-    # 現在のトレンドラインを求める
-    current_short_trend_high = short_trend_fin_df["high_slope"] * index + short_trend_fin_df["high_intercept"]
-    current_short_trend_low = short_trend_fin_df["low_slope"] * index + short_trend_fin_df["low_intercept"]
+        # x軸のインデックスを求める
+        diff = insert_time - short_trend_fin_df["insert_time"][0]
+        index = diff.seconds / 300
 
-    ########################################################################################################
-    # 長期トレンドラインの計算をする
-    # トレンドラインを直近ので計算するといつまでもブレイクしないので30分前にする
-    long_trend_df = price_df[:-6]
-    long_trend_fin_df = trend_line(long_trend_df)
+        # 現在のトレンドラインを求める
+        current_short_trend_high = short_trend_fin_df["high_slope"] * index + short_trend_fin_df["high_intercept"]
+        current_short_trend_low = short_trend_fin_df["low_slope"] * index + short_trend_fin_df["low_intercept"]
 
-    # x軸のインデックスを求める
-    diff = insert_time - long_trend_fin_df["insert_time"][0]
-    index = diff.seconds / 300
+        ########################################################################################################
+        # 長期トレンドラインの計算をする
+        # トレンドラインを直近ので計算するといつまでもブレイクしないので30分前にする
+        long_trend_df = price_df[:-6]
+        long_trend_fin_df = trend_line(long_trend_df)
 
-    # 現在のトレンドラインを求める
-    current_long_trend_high = long_trend_fin_df["high_slope"] * index + long_trend_fin_df["high_intercept"]
-    current_long_trend_low = long_trend_fin_df["low_slope"] * index + long_trend_fin_df["low_intercept"]
 
-    ########################################################################################################
-    # サポートライン、レジスタンスラインを求める 
-    supreg_list = supreg(price_df)
-    for supreg in supreg_list:
-        if price_df["close"].values[-1] < supreg["price"] and supreg["direction"] == "high":
-            registance_line = supreg["price"]
-        elif price_df["close"].values[-1] > supreg["price"] and supreg["direction"] == "low":
-            support_line = supreg["price"]
+        ########################################################################################################
+        # サポートライン、レジスタンスラインを求める 
+        # price_df = get_price(instrument, insert_time, table_type, length=5000)
+        supreg_list = supreg(price_df["low"], price_df["high"], n=24, min_touches=2, stat_likeness_percent=5, bounce_percent=5)
+        support_line = supreg_list["sup"][supreg_list["sup"] > 0]
+        registance_line = supreg_list["res"][supreg_list["res"] > 0]
 
+        ########################################################################################################
+        # 売買ロジック
+        current_price = price_df.tail(1)["close"].values[0]
+        current_time = pd.to_datetime(price_df.tail(1)["insert_time"], "%Y-%m-%d %H:%M:%S").values[0]
+        ema["insert_time"] = pd.to_datetime(ema["insert_time"], format="%Y-%m-%d %H:%M:%S")
+        current_ema_df = ema[ema["insert_time"] == current_time]
+        print(insert_time)
+        print(current_time)
+        print(current_ema_df)
+
+        # 途中で中断する用
+        stop_flag = False
+
+        # 方向感を決める
+        direction_flag = None
+
+        if stop_flag == False:
+            # 現在値とEMA100が5pips以内にいればやめる
+            current_ema100 = current_ema_df["ema100"].values[0]
+            ema100_diff = abs(current_price - current_ema100)
+
+            if (ema100_diff < 0.05):
+                stop_flag = True
+            elif (current_price > current_ema100):
+                direction_flag = "buy"
+            else:
+                direction_flag = "sell"
+
+
+        if stop_flag == False:
+            # x軸のインデックスを求める
+            # 現在時間との差分から、インデックスをいくつにするか計算する
+            diff = insert_time - long_trend_fin_df["insert_time"][0]
+            index = diff.seconds / 300
+
+            # 現在のトレンドラインを求める
+            current_long_trend_high_df = long_trend_fin_df["high_slope"] * index + long_trend_fin_df["high_intercept"]
+            current_long_trend_low_df = long_trend_fin_df["low_slope"] * index + long_trend_fin_df["low_intercept"]
+            current_long_trend = {}
+            current_long_trend["high"] = current_long_trend_high_df.tail(1).values[0]
+            current_long_trend["low"] = current_long_trend_low_df.tail(1).values[0]
+
+            slope = {}
+            slope["high"] = long_trend_fin_df["high_slope"].tail(1).values[0]
+            slope["low"] = long_trend_fin_df["low_slope"].tail(1).values[0]
+            print(current_long_trend)
+
+            # トレンドライン高値、安値の差分からビルドアップを判断する
+            buildup_flag = False
+            if abs(current_long_trend["high"] - current_long_trend["low"]) < 0.2 and slope["low"] > 0 and slope["high"] < 0:
+                buildup_flag = True
+                break
+
+
+        insert_time = insert_time + timedelta(minutes=5)
 
     # ローソク足の描画
     plt, ax = candle_stick(all_price_df)
@@ -412,8 +461,10 @@ if __name__ == "__main__":
     ax.plot(ema["insert_time"], ema["ema100"], linewidth="1.0", color="red")
 
     # サポートレジスタンスラインを描画する
-    ax.axhline(y=registance_line, linewidth="1.0", color="red")
-    ax.axhline(y=support_line, linewidth="1.0", color="blue")
+    for ln in registance_line:
+        ax.axhline(y=ln, linewidth="1.0", color="red")
+    for ln in support_line:
+        ax.axhline(y=ln, linewidth="1.0", color="blue")
 
     plt.savefig("sample.png")
     plt.close()

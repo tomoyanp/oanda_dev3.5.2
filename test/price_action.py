@@ -13,81 +13,134 @@ import matplotlib.dates as mdates
 import mpl_finance
 from matplotlib import ticker
 import pandas as pd
+import numpy as np
 import math
 from scipy.stats import linregress
 
 from mysql_connector import  MysqlConnector
 
+def supreg(low, high, n, min_touches, stat_likeness_percent, bounce_percent):
+    df = pd.concat([high, low], keys = ['high', 'low'], axis=1)
+    df['sup'] = pd.Series(np.zeros(len(low)))
+    df['res'] = pd.Series(np.zeros(len(low)))
+    df['sup_break'] = pd.Series(np.zeros(len(low)))
+    df['sup_break'] = 0
+    df['res_break'] = pd.Series(np.zeros(len(high)))
+    df['res_break'] = 0
+    
+    for x in range((n-1)+n, len(df)):
+        tempdf = df[x-n:x+1].copy()
+        sup = None
+        res = None
+        maxima = tempdf.high.max()
+        minima = tempdf.low.min()
+        move_range = maxima - minima
+        move_allowance = move_range * (stat_likeness_percent / 100)
+        bounce_distance = move_range * (bounce_percent / 100)
+        touchdown = 0
+        awaiting_bounce = False
+        for y in range(0, len(tempdf)):
+            if abs(maxima - tempdf.high.iloc[y]) < move_allowance and not awaiting_bounce:
+                touchdown = touchdown + 1
+                awaiting_bounce = True
+            elif abs(maxima - tempdf.high.iloc[y]) > bounce_distance:
+                awaiting_bounce = False
+        if touchdown >= min_touches:
+            res = maxima
+ 
+        touchdown = 0
+        awaiting_bounce = False
+        for y in range(0, len(tempdf)):
+            if abs(tempdf.low.iloc[y] - minima) < move_allowance and not awaiting_bounce:
+                touchdown = touchdown + 1
+                awaiting_bounce = True
+            elif abs(tempdf.low.iloc[y] - minima) > bounce_distance:
+                awaiting_bounce = False
+        if touchdown >= min_touches:
+            sup = minima
+        if sup:
+            df['sup'].iloc[x] = sup
+        if res:
+            df['res'].iloc[x] = res
+    res_break_indices = list(df[(np.isnan(df['res']) & ~np.isnan(df.shift(1)['res'])) & (df['high'] > df.shift(1)['res'])].index)
+    for index in res_break_indices:
+        df['res_break'].at[index] = 1
+    sup_break_indices = list(df[(np.isnan(df['sup']) & ~np.isnan(df.shift(1)['sup'])) & (df['low'] < df.shift(1)['sup'])].index)
+    for index in sup_break_indices:
+        df['sup_break'].at[index] = 1
+    ret_df = pd.concat([df['sup'], df['res'], df['sup_break'], df['res_break']], keys = ['sup', 'res', 'sup_break', 'res_break'], axis=1)
+    return ret_df
+
 # support & registance line
-def supreg(price_df):
-    # 高値、安値が近似している足同士をまとめて、より足が集中しているところをラインとする
-    supreg_list = []
-    threshold = 0.025
-
-    # ローソク足の数だけ繰り返す
-    for i in range(len(price_df["open"])):
-        flag = False
-        # サポレジリストの分だけ繰り返す
-        for n in range(len(supreg_list)):
-            # 高値の場合
-            if supreg_list[n]["direction"] == "high":
-                # リストの高値と近似している場合カウントをプラスする
-                if math.sqrt((supreg_list[n]["price"] - price_df["high"][i])**2) < threshold:
-                    supreg_list[n]["count"] += 1
-                    flag = True
-            # 安値の場合
-            if supreg_list[n]["direction"] == "low":
-                # リストの安値と近似している場合カウントをプラスする
-                if math.sqrt((supreg_list[n]["price"] - price_df["low"][i])**2) < threshold:
-                    supreg_list[n]["count"] += 1
-                    flag = True
-
-        # サポレジリスト内と近似しない場合はサポレジリストに追加する
-        if flag == False:
-            append_high = {
-                "direction": "high",
-                "price": price_df["high"][i],
-                "count": 0
-            }
-            append_low = {
-                "direction": "low",
-                "price": price_df["low"][i],
-                "count": 0
-            }
-            supreg_list.append(append_high)
-            supreg_list.append(append_low)
-
-    # 近似しているcount数が閾値以上のものだけサポレジリストとする
-    touchdown_threshold = 5
-    tmp_list = []
-    for sup in supreg_list:
-        if sup["count"] > touchdown_threshold:
-            tmp_list.append(sup)
-    supreg_list = tmp_list
-
-
-    # サポレジリストの中でもさらに近似しているものをまとめる
-    price_threshold = 0.2
-    return_list = []
-    for sup in supreg_list:
-        flag = False
-        for i in range(len(return_list)):
-            if return_list[i]["direction"] == "high" and sup["direction"] == "high":
-                if math.sqrt((sup["price"] - return_list[i]["price"])**2) < price_threshold:
-                    price = (max([sup["price"], return_list[i]["price"]]))
-                    return_list[i]["price"] = price 
-                    flag = True
-                    break
-            elif return_list[i]["direction"] == "low" and sup["direction"] == "low":
-                if math.sqrt((sup["price"] - return_list[i]["price"])**2) < price_threshold:
-                    price = (min([sup["price"], return_list[i]["price"]]))
-                    return_list[i]["price"] = price 
-                    flag = True
-                    break
-        if flag == False:
-            return_list.append(sup)
-
-    return return_list
+#def supreg(price_df):
+#    # 高値、安値が近似している足同士をまとめて、より足が集中しているところをラインとする
+#    supreg_list = []
+#    threshold = 0.025
+#
+#    # ローソク足の数だけ繰り返す
+#    for i in range(len(price_df["open"])):
+#        flag = False
+#        # サポレジリストの分だけ繰り返す
+#        for n in range(len(supreg_list)):
+#            # 高値の場合
+#            if supreg_list[n]["direction"] == "high":
+#                # リストの高値と近似している場合カウントをプラスする
+#                if math.sqrt((supreg_list[n]["price"] - price_df["high"][i])**2) < threshold:
+#                    supreg_list[n]["count"] += 1
+#                    flag = True
+#            # 安値の場合
+#            if supreg_list[n]["direction"] == "low":
+#                # リストの安値と近似している場合カウントをプラスする
+#                if math.sqrt((supreg_list[n]["price"] - price_df["low"][i])**2) < threshold:
+#                    supreg_list[n]["count"] += 1
+#                    flag = True
+#
+#        # サポレジリスト内と近似しない場合はサポレジリストに追加する
+#        if flag == False:
+#            append_high = {
+#                "direction": "high",
+#                "price": price_df["high"][i],
+#                "count": 0
+#            }
+#            append_low = {
+#                "direction": "low",
+#                "price": price_df["low"][i],
+#                "count": 0
+#            }
+#            supreg_list.append(append_high)
+#            supreg_list.append(append_low)
+#
+#    # 近似しているcount数が閾値以上のものだけサポレジリストとする
+#    touchdown_threshold = 5
+#    tmp_list = []
+#    for sup in supreg_list:
+#        if sup["count"] > touchdown_threshold:
+#            tmp_list.append(sup)
+#    supreg_list = tmp_list
+#
+#
+#    # サポレジリストの中でもさらに近似しているものをまとめる
+#    price_threshold = 0.2
+#    return_list = []
+#    for sup in supreg_list:
+#        flag = False
+#        for i in range(len(return_list)):
+#            if return_list[i]["direction"] == "high" and sup["direction"] == "high":
+#                if math.sqrt((sup["price"] - return_list[i]["price"])**2) < price_threshold:
+#                    price = (max([sup["price"], return_list[i]["price"]]))
+#                    return_list[i]["price"] = price 
+#                    flag = True
+#                    break
+#            elif return_list[i]["direction"] == "low" and sup["direction"] == "low":
+#                if math.sqrt((sup["price"] - return_list[i]["price"])**2) < price_threshold:
+#                    price = (min([sup["price"], return_list[i]["price"]]))
+#                    return_list[i]["price"] = price 
+#                    flag = True
+#                    break
+#        if flag == False:
+#            return_list.append(sup)
+#
+#    return return_list
 
 
 def trend_line(price_df):
@@ -113,8 +166,6 @@ def trend_line(price_df):
         else:
             df_low = tmp_df
 
-    print(len(df_low))
-    print(df_low)
     reg_low = linregress(
         x = df_low["time_id"],
         y = df_low["low"]
@@ -133,7 +184,6 @@ def trend_line(price_df):
         else:
             df_high = tmp_df
 
-    print(len(df_high))
     reg_high = linregress(
         x = df_high["time_id"],
         y = df_high["high"]

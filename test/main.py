@@ -53,6 +53,31 @@ end_time = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
 
 now = datetime.now()
 
+def plot_chart(insert_time, all_price_df, long_trend, short_trend, ema, registance_line, support_line):
+    # ローソク足の描画
+    plt, ax = candle_stick(all_price_df)
+
+    # 長期トレンドラインを描画する
+    ax.plot(long_trend["insert_time"], long_trend["high_trend"], linewidth="1.0", color="green")
+    ax.plot(long_trend["insert_time"], long_trend["low_trend"], linewidth="1.0", color="green")
+
+    # 短期トレンドラインを描画する
+    ax.plot(short_trend["insert_time"], short_trend["high_trend"], linewidth="1.0", color="green")
+    ax.plot(short_trend["insert_time"], short_trend["low_trend"], linewidth="1.0", color="green")
+
+    # EMAを描画する
+    ax.plot(ema["insert_time"], ema["ema25"], linewidth="1.0", color="orange")
+    ax.plot(ema["insert_time"], ema["ema100"], linewidth="1.0", color="red")
+
+    # サポートレジスタンスラインを描画する
+    for ln in registance_line:
+        ax.axhline(y=ln, linewidth="1.0", color="red")
+    for ln in support_line:
+        ax.axhline(y=ln, linewidth="1.0", color="blue")
+
+    plt.savefig("%s.png" % insert_time.strftime("%Y%m%d%H%M"))
+    plt.close()
+
 def decide_season(base_time):
     year = int(base_time.year)
     month = int(base_time.month)
@@ -351,7 +376,8 @@ if __name__ == "__main__":
         ##########################################################################################################
         # EMAの計算
         ema25 = ema_price_df["close"].ewm(span=25).mean()
-        ema100 = ema_price_df["close"].ewm(span=100).mean()
+        # ema100 = ema_price_df["close"].ewm(span=100).mean()
+        ema100 = ema_price_df["close"].ewm(span=200).mean()
         ema = pd.DataFrame()
         ema["ema25"] = ema25.copy()
         ema["ema100"] = ema100.copy()
@@ -363,7 +389,7 @@ if __name__ == "__main__":
         ##########################################################################################################
         # 短期トレンドラインの計算をする
         # トレンドラインを直近ので計算するといつまでもブレイクしないので30分前にする
-        short_trend_df = get_price(instrument, insert_time, table_type, length=12+6)
+        short_trend_df = get_price(instrument, insert_time, table_type, length=(12*3)+6)
         short_trend_df = short_trend_df[:-6]
         short_trend_fin_df = trend_line(short_trend_df)
 
@@ -395,9 +421,6 @@ if __name__ == "__main__":
         current_time = pd.to_datetime(price_df.tail(1)["insert_time"], "%Y-%m-%d %H:%M:%S").values[0]
         ema["insert_time"] = pd.to_datetime(ema["insert_time"], format="%Y-%m-%d %H:%M:%S")
         current_ema_df = ema[ema["insert_time"] == current_time]
-        print(insert_time)
-        print(current_time)
-        print(current_ema_df)
 
         # 途中で中断する用
         stop_flag = False
@@ -414,60 +437,46 @@ if __name__ == "__main__":
                 stop_flag = True
             elif (current_price > current_ema100):
                 direction_flag = "buy"
+                print("%s: EMA Flag = buy" % insert_time)
             else:
                 direction_flag = "sell"
+                print("%s: EMA Flag = sell" % insert_time)
 
 
         if stop_flag == False:
+            trendline_df = short_trend_fin_df.copy()
+            #trendline_df = long_trend_fin_df.copy()
+
             # x軸のインデックスを求める
             # 現在時間との差分から、インデックスをいくつにするか計算する
-            diff = insert_time - long_trend_fin_df["insert_time"][0]
+            diff = insert_time - trendline_df["insert_time"][0]
             index = diff.seconds / 300
 
             # 現在のトレンドラインを求める
-            current_long_trend_high_df = long_trend_fin_df["high_slope"] * index + long_trend_fin_df["high_intercept"]
-            current_long_trend_low_df = long_trend_fin_df["low_slope"] * index + long_trend_fin_df["low_intercept"]
-            current_long_trend = {}
-            current_long_trend["high"] = current_long_trend_high_df.tail(1).values[0]
-            current_long_trend["low"] = current_long_trend_low_df.tail(1).values[0]
+            trend_high_df = trendline_df["high_slope"] * index + trendline_df["high_intercept"]
+            trend_low_df = trendline_df["low_slope"] * index + trendline_df["low_intercept"]
+
+            trend = {}
+            trend["high"] = trend_high_df.tail(1).values[0]
+            trend["low"] = trend_low_df.tail(1).values[0]
 
             slope = {}
-            slope["high"] = long_trend_fin_df["high_slope"].tail(1).values[0]
-            slope["low"] = long_trend_fin_df["low_slope"].tail(1).values[0]
-            print(current_long_trend)
+            slope["high"] = trendline_df["high_slope"].tail(1).values[0]
+            slope["low"] = trendline_df["low_slope"].tail(1).values[0]
 
             # トレンドライン高値、安値の差分からビルドアップを判断する
             buildup_flag = False
-            if abs(current_long_trend["high"] - current_long_trend["low"]) < 0.2 and slope["low"] > 0 and slope["high"] < 0:
+            if abs(trend["high"] - trend["low"]) < 0.1 and slope["low"] > 0 and slope["high"] < 0:
+                print("%s: build up = True" % insert_time)
                 buildup_flag = True
-                break
+                plot_chart(insert_time, all_price_df, long_trend_fin_df, short_trend_fin_df, ema, registance_line, support_line)
+                # break
 
 
         insert_time = insert_time + timedelta(minutes=5)
 
-    # ローソク足の描画
-    plt, ax = candle_stick(all_price_df)
 
-    # 長期トレンドラインを描画する
-    ax.plot(long_trend_fin_df["insert_time"], long_trend_fin_df["high_trend"], linewidth="1.0", color="green")
-    ax.plot(long_trend_fin_df["insert_time"], long_trend_fin_df["low_trend"], linewidth="1.0", color="green")
 
-    # 短期トレンドラインを描画する
-    ax.plot(short_trend_fin_df["insert_time"], short_trend_fin_df["high_trend"], linewidth="1.0", color="green")
-    ax.plot(short_trend_fin_df["insert_time"], short_trend_fin_df["low_trend"], linewidth="1.0", color="green")
-
-    # EMAを描画する
-    ax.plot(ema["insert_time"], ema["ema25"], linewidth="1.0", color="orange")
-    ax.plot(ema["insert_time"], ema["ema100"], linewidth="1.0", color="red")
-
-    # サポートレジスタンスラインを描画する
-    for ln in registance_line:
-        ax.axhline(y=ln, linewidth="1.0", color="red")
-    for ln in support_line:
-        ax.axhline(y=ln, linewidth="1.0", color="blue")
-
-    plt.savefig("sample.png")
-    plt.close()
 
 #if __name__ == "__main__":
 #    trade_account = {

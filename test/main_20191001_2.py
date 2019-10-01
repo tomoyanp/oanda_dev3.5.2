@@ -57,8 +57,8 @@ def plot_chart(insert_time, all_price_df, long_trend, short_trend, ema, registan
     plt, ax = candle_stick(all_price_df)
 
     # 現在地点の描画
-    ax.plot(insert_time, current_price, marker=".", color="yellow", markersize=10)
-    ax.axvline(x=insert_time, linewidth="0.5", color="yellow")
+    ax.plot(insert_time, current_price, marker=".", color="black", markersize=10)
+    ax.axvline(x=insert_time, linewidth="0.5", color="black")
 
     # 長期トレンドラインを描画する
     ax.plot(long_trend["insert_time"], long_trend["high_trend"], linewidth="1.0", color="green")
@@ -393,7 +393,9 @@ if __name__ == "__main__":
 
         ##########################################################################################################
         # 短期トレンドラインの計算をする
-        short_trend_df = get_price(instrument, insert_time, table_type, length=12)
+        # トレンドラインを直近ので計算するといつまでもブレイクしないので30分前にする
+        short_trend_df = get_price(instrument, insert_time, table_type, length=(12*3)+6)
+        short_trend_df = short_trend_df[:-6]
         short_trend_fin_df = trend_line(short_trend_df)
 
         # x軸のインデックスを求める
@@ -407,21 +409,14 @@ if __name__ == "__main__":
         ########################################################################################################
         # 長期トレンドラインの計算をする
         # トレンドラインを直近ので計算するといつまでもブレイクしないので30分前にする
-        long_trend_df = price_df
+        long_trend_df = price_df[:-6]
         long_trend_fin_df = trend_line(long_trend_df)
 
 
         ########################################################################################################
         # サポートライン、レジスタンスラインを求める 
         # price_df = get_price(instrument, insert_time, table_type, length=5000)
-
-        ### もっと短期のものにする
-        # supreg_list = supreg(price_df["low"], price_df["high"], n=24, min_touches=2, stat_likeness_percent=5, bounce_percent=5)
-        # support_line = supreg_list["sup"][supreg_list["sup"] > 0]
-        # registance_line = supreg_list["res"][supreg_list["res"] > 0]
-
-
-        supreg_list = supreg(price_df["low"].tail(12), price_df["high"].tail(12), n=6, min_touches=2, stat_likeness_percent=5, bounce_percent=5)
+        supreg_list = supreg(price_df["low"], price_df["high"], n=24, min_touches=2, stat_likeness_percent=5, bounce_percent=5)
         support_line = supreg_list["sup"][supreg_list["sup"] > 0]
         registance_line = supreg_list["res"][supreg_list["res"] > 0]
 

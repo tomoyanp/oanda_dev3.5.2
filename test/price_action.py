@@ -218,9 +218,9 @@ def outside_bar(price_df):
         status["status"] = False
 
     if op < cl:
-        status["direction"] = True
+        status["direction"] = "buy"
     else:
-        status["direction"] = False
+        status["direction"] = "sell"
 
     return status
 
@@ -241,9 +241,9 @@ def inside_bar(price_df):
         status["status"] = False
 
     if op < cl:
-        status["direction"] = True
+        status["direction"] = "buy"
     else:
-        status["direction"] = False
+        status["direction"] = "sell"
 
     return status
 
@@ -254,7 +254,7 @@ def barbwire(price_df):
     high = price_df["high"][0]
     low = price_df["low"][0]
 
-    real_stick_diff = (close - open) ** 2
+    real_stick_diff = (cl - op) ** 2
     line_stick_diff = (high - low) ** 2
 
     barbwire_threshold = 0.1
@@ -267,9 +267,9 @@ def barbwire(price_df):
         status["status"] = False
 
     if op < cl:
-        status["direction"] = True
+        status["direction"] = "buy"
     else:
-        status["direction"] = False
+        status["direction"] = "sell"
 
     return status
 

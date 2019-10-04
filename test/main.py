@@ -91,7 +91,7 @@ def plot_result(trade_flags):
     # ローソク足の描画
     plt, ax = candle_stick(all_price_df)
 
-    print(trade_flags["position"])
+    #print(trade_flags["position"])
     if trade_flags["position"] == "buy":
         trade_color = "blue"
         stl_color = "red"
@@ -545,7 +545,7 @@ if __name__ == "__main__":
                 min_price = buildup_df["low"].min()
 
                 if abs(diff) < 0.05:
-                    print(max_price - min_price)
+                    #print(max_price - min_price)
                     trade_flags["buildup"] = True
                     #trade_flags["position"] = trade_flags["direction"]
                 else:

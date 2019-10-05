@@ -43,8 +43,8 @@ from price_action import trend_line, supreg, inside_bar, outside_bar, barbwire
 mode = "test"
 con = MysqlConnector()
 instrument = "GBP_JPY"
-insert_time = datetime.strptime("2019-05-02 13:00:00", "%Y-%m-%d %H:%M:%S")
-end_time = datetime.strptime("2019-07-05 00:00:00", "%Y-%m-%d %H:%M:%S")
+insert_time = datetime.strptime("2019-09-01 00:00:00", "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime("2019-10-04 00:00:00", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
 base_candle_size = 5 #5分足を使う
 window_size = 12*6 #6時間分

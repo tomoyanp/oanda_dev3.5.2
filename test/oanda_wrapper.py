@@ -10,108 +10,127 @@ import oandapyV20.endpoints.trades as trades
 import oandapyV20.endpoints.positions as positions
 import oandapyV20.endpoints.accounts as accounts
 import oandapyV20.endpoints.accounts as accounts
-import re
 
-#trade_object = {
-#     "accountId": ,
-#     "env",
-#     "accessToken"
-#}
+class OandaWrapper:
+    def __init__(self, env, account_id, token, units):
+        self.oanda = oandapyV20.API(environment=env, access_token=token)
+        self.account_id = account_id
+        self.units = units
 
+    def get_price(self, currency):
+        params = {"instruments": currency}
 
-def calc_unit(trade_account, instrument, con):
-    balance = get_balance(trade_account)
+        req = pricing.PricingInfo(accountID=self.account_id, params=params)
+        response = self.oanda.request(req)
 
-    calc_instrument = instrument
-    if re.search("JPY", instrument) != None:
-        pass
-    elif re.search("EUR", instrument) != None:
-        calc_instrument = "EUR_JPY"
-    elif re.search("GBP", instrument) != None:
-        calc_instrument = "GBP_JPY"
-    else:
-        raise
+        ask_price = response["prices"][0]["asks"][0]["price"]
+        bid_price = response["prices"][0]["bids"][0]["price"]
+        return ask_price, bid_price
 
-    sql = "select close_ask, close_bid from %s_5s_TABLE order by insert_time desc limit 1" % calc_instrument
+    def setUnit(self, units):
+        self.units = units
 
-    response = con.select_sql(sql)    
-    price = (response[0][0]+response[0][1])/2
-    units = (balance/price)*25*0.8
+    def getUnit(self):
+        return self.units
 
-    return units
+    def order(self, l_side, currency, stop_loss, take_profit):
+        try:
+            ask_price, bid_price = self.get_price(currency)
+            if l_side == "buy":
+                units = "+" + str(self.units)
+                print(ask_price)
+                take_profit_price = float(ask_price) + float(take_profit)
+                stop_loss_price = float(ask_price) - float(stop_loss)
+            else:
+                units = "-" + str(self.units)
+                take_profit_price = float(bid_price) - float(take_profit)
+                stop_loss_price = float(bid_price) + float(stop_loss)
 
-def open_order(trade_account, instrument, l_side, units, stop_loss, take_profit):
-    oanda = oandapyV20.API(environment=trade_account["env"], access_token=trade_account["accessToken"])
-    try:
-        stop_loss_price = round(stop_loss, 3)
-        take_profit_price = round(take_profit, 3)
-        if l_side == "buy":
-            units = "+" + str(units)
-        else:
-            units = "-" + str(units)
+            stop_loss_price = round(stop_loss_price, 3)
+            take_profit_price = round(take_profit_price, 3)
 
-        data = {
-            "order": {
-                "instrument": instrument, 
-                "units": units,
-                "type": "MARKET",
-                "positionFill": "DEFAULT"
-                #"stopLossOnFill": {
-                #    "price": str(stop_loss_price)
-                #},
-                #"takeProfitOnFill": {
-                #    "price": str(take_profit_price)
-                #}
+            data = {
+                "order": {
+                    "instrument": currency, 
+                    "units": units,
+                    "type": "MARKET",
+                    "positionFill": "DEFAULT",
+                    "stopLossOnFill": {
+                        "price": str(stop_loss_price)
+                    },
+                    "takeProfitOnFill": {
+                        "price": str(take_profit_price)
+                    }
+                }
             }
-        }
 
-        print(data)
+            req = orders.OrderCreate(accountID=self.account_id, data=data)
+            res = self.oanda.request(req)
 
-        req = orders.OrderCreate(accountID=trade_account["accountId"], data=data)
-        res = oanda.request(req)
+            return res
+        except Exception as e:
+            raise
 
-        return res
-    except Exception as e:
-        raise
+    def modify_trade(self, trade_id, stop_loss, take_profit):
+        try:
+            while True:
+                response = self.oanda.modify_trade(self.account_id,
+                    trade_id,
+                    stopLoss=stop_loss,
+                    takeProfit=take_profit
+                )
 
-def check_position(trade_account):
-    oanda = oandapyV20.API(environment=trade_account["env"], access_token=trade_account["accessToken"])
-    req = trades.OpenTrades(accountID=trade_account["accountId"])
-    response = oanda.request(req)
+                time.sleep(5)
+                if len(response) > 0:
+                    break
+            return response
+        except Exception as e:
+            raise
 
-    trade_list = response["trades"]
+    def get_trade_position(self, instrument):
+        req = trades.OpenTrades(accountID=self.account_id)
+        response = self.oanda.request(req)
 
-    order_flag = False
-    if len(trade_list) > 0:
-        order_flag = True
+        trade_list = response["trades"]
 
-    return order_flag
+        order_flag = False
+        if len(trade_list) > 0:
+            order_flag = True
 
-def get_balance(trade_account):
-    try:
-        oanda = oandapyV20.API(environment=trade_account["env"], access_token=trade_account["accessToken"])
-        req = accounts.AccountSummary(accountID=trade_account["accountId"])
-        response = oanda.request(req)
+        return order_flag
 
-        balance = int(float(response["account"]["balance"]))
+    def getBalance(self):
+        try:
+            req = accounts.AccountSummary(accountID=self.account_id)
+            response = self.oanda.request(req)
 
-        return balance
+            balance = int(float(response["account"]["balance"]))
 
-    except:
-        raise
+            return balance
 
-def close_position(trade_account):
-    try:
-        oanda = oandapyV20.API(environment=trade_account["env"], access_token=trade_account["accessToken"])
-        req = trades.OpenTrades(accountID=trade_account["accountId"])
-        response = oanda.request(req)
-        trade_id = response["trades"][0]["id"]
+        except:
+            raise
 
+    def get_current_trades(self):
+        try:
+            response = self.oanda.get_trades(self.account_id)
+        except:
+            raise
 
-        req = trades.TradeClose(accountID=trade_account["accountId"], tradeID=trade_id)
-        response = oanda.request(req)
         return response
 
-    except:
-        raise
+    def close_trade(self, currency):
+        try:
+
+            req = trades.OpenTrades(accountID=self.account_id)
+            response = self.oanda.request(req)
+            trade_id = response["trades"][0]["id"]
+
+
+            req = trades.TradeClose(accountID=self.account_id, tradeID=trade_id)
+            response = self.oanda.request(req)
+            return response
+
+        except:
+            raise
 

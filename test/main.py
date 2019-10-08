@@ -129,7 +129,7 @@ def plot_result(trade_flags):
 
     # EMAを描画する
     ax.plot(trade_flags["ema"]["insert_time"], trade_flags["ema"]["ema25"], linewidth="1.0", color="orange")
-    ax.plot(ema["insert_time"], ema["ema100"], linewidth="1.0", color="red")
+    ax.plot(trade_flags["ema"]["insert_time"], trade_flags["ema"]["ema100"], linewidth="1.0", color="red")
 
     # サポートレジスタンスラインを描画する
     for ln in trade_flags["registance_line"]:
@@ -396,6 +396,9 @@ def decide_tradetime(insert_time):
     return flag
 
 def decide_trade(trade_flags):
+    current_df = get_price(instrument, insert_time, table_type="5s", length=1)
+    current_price = current_df["close"][0]
+
     if trade_flags["position"] == False and decide_tradetime(insert_time):
         # 計算用
         price_df = get_price(instrument, insert_time, table_type, length=window_size)
@@ -456,7 +459,6 @@ def decide_trade(trade_flags):
         ########################################################################################################
         # 売買ロジック
 
-        current_price = price_df.tail(1)["close"].values[0]
         current_time = pd.to_datetime(price_df.tail(1)["insert_time"], "%Y-%m-%d %H:%M:%S").values[0]
         ema["insert_time"] = pd.to_datetime(ema["insert_time"], format="%Y-%m-%d %H:%M:%S")
         current_ema_df = ema[ema["insert_time"] == current_time]
@@ -560,8 +562,6 @@ def decide_trade(trade_flags):
             trade_flags["support_line"] = support_line
 
     elif trade_flags["position"] != False:
-        price_df = get_price(instrument, insert_time, table_type, length=1)
-        current_price = price_df["close"].tail(1).values[0]
         profit = 0.2
         stoploss = 0.1
 
@@ -600,6 +600,8 @@ if __name__ == "__main__":
         if insert_time < now: 
             trade_flags = decide_trade(trade_flags)
 
+            trade_flags["position"] = "buy"
+            trade_flags["stl"] = True
             if trade_flags["position"] in ("buy", "sell"):
                 response = oanda.order(trade_flags["position"], instrument, 0.5, 0.5)
                 trade_flags["position"] = "%s ordered" % trade_flags["position"]
@@ -615,7 +617,9 @@ if __name__ == "__main__":
                 print(response)
                 print(trade_flags)
 
-            insert_time = insert_time + timedelta(minutes=5)
+                break
+
+            insert_time = insert_time + timedelta(seconds=5)
         else:
             time.sleep(1)
 

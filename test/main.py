@@ -600,8 +600,6 @@ if __name__ == "__main__":
         if insert_time < now: 
             trade_flags = decide_trade(trade_flags)
 
-            trade_flags["position"] = "buy"
-            trade_flags["stl"] = True
             if trade_flags["position"] in ("buy", "sell"):
                 response = oanda.order(trade_flags["position"], instrument, 0.5, 0.5)
                 trade_flags["position"] = "%s ordered" % trade_flags["position"]
@@ -616,8 +614,6 @@ if __name__ == "__main__":
                 print("%s =============== SETTLED =================" % insert_time)
                 print(response)
                 print(trade_flags)
-
-                break
 
             insert_time = insert_time + timedelta(seconds=5)
         else:

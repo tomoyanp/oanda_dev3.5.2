@@ -382,21 +382,6 @@ def get_price(instrument, insert_time, table_type, length):
     return return_df
 
 
-def decide_trade(insert_time, trade_obj):
-    if trade_obj["algo"] == "bollinger":
-        flag, trade_obj = kick_back(insert_time, trade_obj["instrument"], trade_obj, length=120)
-        trade_obj["flag"] = flag
-    else:
-        for instrument in instrument_list:
-            flag, trade_obj = over_bollinger(insert_time, instrument, trade_obj)
-            if flag:
-                trade_obj["flag"] = flag
-                break
-
-    if trade_obj["flag"]:
-        trade_obj["trade_time"] = insert_time
-    return trade_obj
-         
 def reset_trade_flags():
     return  {"direction": "flat", "touched_ema": False, "position": False, "buildup_count": 0, "buildup": False, "price_action_count": 0, "stl": False}
 
@@ -623,6 +608,7 @@ if __name__ == "__main__":
 
             elif trade_flags["stl"]:
                 response = oanda.close_trade(instrument)
+                print(trade_flags)
                 plot_result(trade_flags)
                 trade_flags = reset_trade_flags()
                 print("%s =============== SETTLED =================" % insert_time)

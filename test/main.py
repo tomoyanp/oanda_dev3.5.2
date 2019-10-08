@@ -14,6 +14,8 @@ import pandas as pd
 import subprocess
 import time
 
+mode = sys.argv[1].strip()
+
 account_file = open("account.properties")
 account_json = json.load(account_file)
 account_id = account_json["account_id"]
@@ -41,21 +43,25 @@ from send_mail import SendMail
 from create_candle import candle_stick
 from price_action import trend_line, supreg, inside_bar, outside_bar, barbwire
 
-#mode = sys.argv[1]
-#filename = sys.argv[0].split(".")[0]
-##print(filename)
-#debug_logfilename = "%s-%s-%s.log" % (mode, filename, datetime.now().strftime("%Y%m%d%H%M%S"))
-#debug_logger = getLogger("debug")
-#debug_fh = FileHandler(debug_logfilename, "a+")
-#debug_logger.addHandler(debug_fh)
-#debug_logger.setLevel(DEBUG)
+debug_logfilename = "%s_debug.log" % (datetime.now().strftime("%Y%m%d%H%M%S"))
+debug_logger = getLogger("debug")
+debug_fh = FileHandler(debug_logfilename, "a+")
+debug_logger.addHandler(debug_fh)
+debug_logger.setLevel(DEBUG)
+
+trace_logfilename = "%s_trace.log" % (datetime.now().strftime("%Y%m%d%H%M%S"))
+trace_logger = getLogger("trace")
+trace_fh = FileHandler(trace_logfilename, "a+")
+trace_logger.addHandler(trace_fh)
+trace_logger.setLevel(DEBUG)
+
+
 
 mode = "test"
 con = MysqlConnector()
 instrument = "GBP_JPY"
-insert_time = datetime.now()
-#insert_time = datetime.strptime("2018-09-01 00:00:00", "%Y-%m-%d %H:%M:%S")
-#end_time = datetime.strptime("2019-10-04 00:00:00", "%Y-%m-%d %H:%M:%S")
+insert_time = datetime.strptime("2019-06-01 00:00:30", "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime("2019-08-04 00:00:30", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
 base_candle_size = 5 #5分足を使う
 window_size = 12*6 #6時間分
@@ -407,7 +413,6 @@ def decide_trade(trade_flags):
         # EMA用（過去のローソク足がないと計算できないため）
         ema_price_df = get_price(instrument, insert_time + timedelta(minutes=base_candle_size*show_after_size), table_type, length=show_after_size+window_size+ema_max_size)
 
-
         ##########################################################################################################
         # EMAの計算
         ema25 = ema_price_df["close"].ewm(span=25).mean()
@@ -595,28 +600,55 @@ if __name__ == "__main__":
 
     trade_flags = reset_trade_flags()
 
+    if mode != "test":
+        insert_time = datetime.now()
+
     while True:
         now = datetime.now()
+
         if insert_time < now: 
             trade_flags = decide_trade(trade_flags)
 
             if trade_flags["position"] in ("buy", "sell"):
-                response = oanda.order(trade_flags["position"], instrument, 0.5, 0.5)
+                if mode == "test":
+                    pass
+                else:
+                    response = oanda.order(trade_flags["position"], instrument, 0.5, 0.5)
+
                 trade_flags["position"] = "%s ordered" % trade_flags["position"]
-                print("%s =============== ORDERED =================" % insert_time)
-                print(response)
+                debug_logger.info("%s =============== ORDERED =================" % insert_time)
 
             elif trade_flags["stl"]:
-                response = oanda.close_trade(instrument)
+                if mode == "test":
+                    pass
+                else:
+                    response = oanda.close_trade(instrument)
                 print(trade_flags)
                 plot_result(trade_flags)
-                trade_flags = reset_trade_flags()
-                print("%s =============== SETTLED =================" % insert_time)
-                print(response)
-                print(trade_flags)
+                debug_logger.info("%s =============== SETTLED =================" % insert_time)
+                for key in trade_flags.keys():
+                    debug_logger.info("%s=%s" % (key, trade_flags[key]))
+                debug_logger.info("==========================================================")
 
-            insert_time = insert_time + timedelta(seconds=5)
+                insert_time = insert_time - timedelta(minutes=(insert_time.minute % 5))
+                diff = 30 - insert_time.second
+                insert_time = insert_time + timedelta(seconds=diff)
+
+                trade_flags = reset_trade_flags()
+
+
+            trace_logger.info(insert_time.strftime("%Y-%m-%d %H:%M:%S"))
+
+            if insert_time > end_time:
+                break
+
+            # ポジションがない && トレード時間じゃない場合は早める
+            if decide_tradetime(insert_time) == False and trade_flags["position"] == False:
+                insert_time = insert_time + timedelta(minutes=15)
+            elif trade_flags["position"] != False:
+                insert_time = insert_time + timedelta(seconds=5)
+            else:
+                insert_time = insert_time + timedelta(minutes=5)
+
         else:
             time.sleep(1)
-
-

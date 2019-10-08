@@ -57,7 +57,6 @@ trace_logger.setLevel(DEBUG)
 
 
 
-mode = "test"
 con = MysqlConnector()
 instrument = "GBP_JPY"
 insert_time = datetime.strptime("2019-06-01 00:00:30", "%Y-%m-%d %H:%M:%S")
@@ -602,7 +601,13 @@ if __name__ == "__main__":
 
     if mode != "test":
         insert_time = datetime.now()
+        insert_time = insert_time - timedelta(minutes=(insert_time.minute % 5))
+        diff = 30 - insert_time.second
+        insert_time = insert_time + timedelta(seconds=diff)
 
+
+    print(mode)
+    print(insert_time)
     while True:
         now = datetime.now()
 
@@ -639,7 +644,7 @@ if __name__ == "__main__":
 
             trace_logger.info(insert_time.strftime("%Y-%m-%d %H:%M:%S"))
 
-            if insert_time > end_time:
+            if insert_time > end_time and mode == "test":
                 break
 
             # ポジションがない && トレード時間じゃない場合は早める

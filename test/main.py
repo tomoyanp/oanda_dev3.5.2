@@ -386,6 +386,20 @@ def get_price(instrument, insert_time, table_type, length):
 
     return return_df
 
+def get_current_price(instrument, insert_time):
+    table_type = "5s"
+    if type(insert_time) == str:
+        insert_time = datetime.strptime(insert_time, "%Y-%m-%d %H:%M:%S")
+    insert_time = convertTime(insert_time, table_type)
+
+    sql = "select close_ask, close_bid, insert_time from %s_%s_TABLE where insert_time <= '%s' order by insert_time desc limit 1" % (instrument, table_type, insert_time)
+    response = con.select_sql(sql)
+
+    ask = response[0][0]
+    bid = response[0][1]
+    insert_time = response[0][2]
+
+    return ask, bid, insert_time
 
 def reset_trade_flags():
     return  {"direction": "flat", "touched_ema": False, "position": False, "buildup_count": 0, "buildup": False, "price_action_count": 0, "stl": False}
@@ -400,9 +414,9 @@ def decide_tradetime(insert_time):
 
     return flag
 
-def decide_trade(trade_flags):
-    current_df = get_price(instrument, insert_time, table_type="5s", length=1)
-    current_price = current_df["close"][0]
+def decide_trade(trade_flags, insert_time):
+    current_ask, current_bid, current_insert_time = get_current_price(instrument, insert_time)
+    current_price = (current_ask + current_bid)/2
 
     if trade_flags["position"] == False and decide_tradetime(insert_time):
         # 計算用
@@ -557,7 +571,11 @@ def decide_trade(trade_flags):
                 trade_flags = reset_trade_flags()
 
         if trade_flags["position"] != False:
-            trade_flags["position_price"] = current_price
+            if trade_flags["position"] == "buy":
+                trade_flags["position_price"] = current_ask
+            else:
+                trade_flags["position_price"] = current_bid
+
             trade_flags["start_time"] = insert_time
             trade_flags["long_trend"] = long_trend_fin_df
             trade_flags["short_trend"] = short_trend_fin_df
@@ -570,24 +588,24 @@ def decide_trade(trade_flags):
         stoploss = 0.1
 
         if trade_flags["position"] == "buy":
-            if trade_flags["position_price"] + profit < current_price:
+            if trade_flags["position_price"] + profit < current_bid:
                 trade_flags["end_time"] = insert_time
-                trade_flags["stl_price"] = current_price
+                trade_flags["stl_price"] = current_bid
                 trade_flags["stl"] = True
 
-            elif trade_flags["position_price"] - stoploss > current_price:
+            elif trade_flags["position_price"] - stoploss > current_bid:
                 trade_flags["end_time"] = insert_time
-                trade_flags["stl_price"] = current_price
+                trade_flags["stl_price"] = current_bid
                 trade_flags["stl"] = True
         else:
-            if trade_flags["position_price"] - profit > current_price:
+            if trade_flags["position_price"] - profit > current_ask:
                 trade_flags["end_time"] = insert_time
-                trade_flags["stl_price"] = current_price
+                trade_flags["stl_price"] = current_ask
                 trade_flags["stl"] = True
 
-            elif trade_flags["position_price"] + stoploss < current_price:
+            elif trade_flags["position_price"] + stoploss < current_ask:
                 trade_flags["end_time"] = insert_time
-                trade_flags["stl_price"] = current_price
+                trade_flags["stl_price"] = current_ask
                 trade_flags["stl"] = True
 
     return trade_flags
@@ -612,7 +630,7 @@ if __name__ == "__main__":
         now = datetime.now()
 
         if insert_time < now: 
-            trade_flags = decide_trade(trade_flags)
+            trade_flags = decide_trade(trade_flags, insert_time)
 
             if trade_flags["position"] in ("buy", "sell"):
                 if mode == "test":
@@ -621,7 +639,6 @@ if __name__ == "__main__":
                     response = oanda.order(trade_flags["position"], instrument, 0.5, 0.5)
 
                 trade_flags["position"] = "%s ordered" % trade_flags["position"]
-                debug_logger.info("%s =============== ORDERED =================" % insert_time)
 
             elif trade_flags["stl"]:
                 if mode == "test":
@@ -630,10 +647,17 @@ if __name__ == "__main__":
                     response = oanda.close_trade(instrument)
                 print(trade_flags)
                 plot_result(trade_flags)
-                debug_logger.info("%s =============== SETTLED =================" % insert_time)
-                for key in trade_flags.keys():
-                    debug_logger.info("%s=%s" % (key, trade_flags[key]))
-                debug_logger.info("==========================================================")
+
+                debug_logger.info("=====================")
+                debug_logger.info("Ordered_time=%s" % trade_flags["start_time"])
+                debug_logger.info("Ordered_price=%s" % trade_flags["position_price"])
+                debug_logger.info("Ordered_side=%s" % trade_flags["direction"])
+                debug_logger.info("Stled_time=%s" % trade_flags["end_time"])
+                debug_logger.info("Stled_price=%s" % trade_flags["stl_price"])
+                if trade_flags["direction"] == "buy":
+                    debug_logger.info("Profit=%s" % (trade_flags["stl_price"]-trade_flags["position_price"]))
+                else:
+                    debug_logger.info("Profit=%s" % (trade_flags["position_price"]-trade_flags["stl_price"]))
 
                 insert_time = insert_time - timedelta(minutes=(insert_time.minute % 5))
                 diff = 30 - insert_time.second

@@ -594,8 +594,8 @@ def decide_trade(trade_flags):
 
 
 if __name__ == "__main__":
-    subprocess.getoutput("rm -f images/*.png")
-    subprocess.getoutput("rm -f results/*.png")
+#    subprocess.getoutput("rm -f images/*.png")
+#    subprocess.getoutput("rm -f results/*.png")
 
     trade_flags = reset_trade_flags()
 

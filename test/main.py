@@ -59,7 +59,7 @@ trace_logger.setLevel(DEBUG)
 
 con = MysqlConnector()
 instrument = "GBP_JPY"
-insert_time = datetime.strptime("2019-06-01 00:00:30", "%Y-%m-%d %H:%M:%S")
+insert_time = datetime.strptime("2019-06-03 13:00:30", "%Y-%m-%d %H:%M:%S")
 end_time = datetime.strptime("2019-08-04 00:00:30", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
 base_candle_size = 5 #5分足を使う
@@ -108,7 +108,7 @@ def plot_result(trade_flags):
     plt, ax = candle_stick(all_price_df)
 
     #print(trade_flags["position"])
-    if trade_flags["position"] == "buy":
+    if trade_flags["direction"] == "buy":
         trade_color = "blue"
         stl_color = "red"
     else:
@@ -554,15 +554,15 @@ def decide_trade(trade_flags, insert_time):
 
             if outsidebar_status["status"] and outsidebar_status["direction"] == trade_flags["direction"]:
                 print("============= outside bar ===============")
-                trade_flags["position"] = trade_flags["direction"]
+                trade_flags["position"] = True
 
             elif insidebar_status["status"] and insidebar_status["direction"] == trade_flags["direction"]:
                 print("============= inside bar ===============")
-                trade_flags["position"] = trade_flags["direction"]
+                trade_flags["position"] = True
 
             elif barbwire_status["status"] and barbwire_status["direction"] == trade_flags["direction"]:
                 print("============= barbwire ===============")
-                trade_flags["position"] = trade_flags["direction"]
+                trade_flags["position"] = True
 
             else:
                 trade_flags["price_action_count"] += 1
@@ -570,8 +570,8 @@ def decide_trade(trade_flags, insert_time):
             if trade_flags["price_action_count"] >= 12:
                 trade_flags = reset_trade_flags()
 
-        if trade_flags["position"] != False:
-            if trade_flags["position"] == "buy":
+        if trade_flags["position"]:
+            if trade_flags["direction"] == "buy":
                 trade_flags["position_price"] = current_ask
             else:
                 trade_flags["position_price"] = current_bid
@@ -583,27 +583,35 @@ def decide_trade(trade_flags, insert_time):
             trade_flags["registance_line"] = registance_line
             trade_flags["support_line"] = support_line
 
-    elif trade_flags["position"] != False:
+    elif trade_flags["position"]:
         profit = 0.2
         stoploss = 0.1
 
-        if trade_flags["position"] == "buy":
+        if trade_flags["direction"] == "buy":
             if trade_flags["position_price"] + profit < current_bid:
+                print("PROFIT BUY")
+                print(trade_flags["position_price"]+profit)
                 trade_flags["end_time"] = insert_time
                 trade_flags["stl_price"] = current_bid
                 trade_flags["stl"] = True
 
             elif trade_flags["position_price"] - stoploss > current_bid:
+                print("STOPLOSS BUY")
+                print(trade_flags["position_price"]-stoploss)
                 trade_flags["end_time"] = insert_time
                 trade_flags["stl_price"] = current_bid
                 trade_flags["stl"] = True
         else:
             if trade_flags["position_price"] - profit > current_ask:
+                print("PROFIT SELL")
+                print(trade_flags["position_price"]-profit)
                 trade_flags["end_time"] = insert_time
                 trade_flags["stl_price"] = current_ask
                 trade_flags["stl"] = True
 
             elif trade_flags["position_price"] + stoploss < current_ask:
+                print("STOPLOSS SELL")
+                print(trade_flags["position_price"]+stoploss)
                 trade_flags["end_time"] = insert_time
                 trade_flags["stl_price"] = current_ask
                 trade_flags["stl"] = True
@@ -632,20 +640,19 @@ if __name__ == "__main__":
         if insert_time < now: 
             trade_flags = decide_trade(trade_flags, insert_time)
 
-            if trade_flags["position"] in ("buy", "sell"):
+            if trade_flags["position"] == True and trade_flags["position"] != "done":
                 if mode == "test":
                     pass
                 else:
-                    response = oanda.order(trade_flags["position"], instrument, 0.5, 0.5)
+                    response = oanda.order(trade_flags["direction"], instrument, 0.5, 0.5)
 
-                trade_flags["position"] = "%s ordered" % trade_flags["position"]
+                trade_flags["position"] = "done"
 
             elif trade_flags["stl"]:
                 if mode == "test":
                     pass
                 else:
                     response = oanda.close_trade(instrument)
-                print(trade_flags)
                 plot_result(trade_flags)
 
                 debug_logger.info("=====================")
@@ -674,7 +681,7 @@ if __name__ == "__main__":
             # ポジションがない && トレード時間じゃない場合は早める
             if decide_tradetime(insert_time) == False and trade_flags["position"] == False:
                 insert_time = insert_time + timedelta(minutes=15)
-            elif trade_flags["position"] != False:
+            elif trade_flags["position"]:
                 insert_time = insert_time + timedelta(seconds=5)
             else:
                 insert_time = insert_time + timedelta(minutes=5)

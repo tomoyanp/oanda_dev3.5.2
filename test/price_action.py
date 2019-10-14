@@ -155,13 +155,13 @@ def trend_line(price_df):
 
     # 安値トレンドの計算
     # 安値で回帰分析をして、回帰分析ラインを下回るものだけ残していく
-    while len(df_low["low"])>2:
+    while len(df_low["low"])>3:
         reg_low = linregress(
             x = df_low["time_id"],
             y = df_low["low"],
         )
         tmp_df = df_low.loc[df_low["low"] < reg_low[0] * df_low["time_id"] + reg_low[1]]
-        if len(tmp_df) < 2:
+        if len(tmp_df) < 3:
             break
         else:
             df_low = tmp_df
@@ -173,13 +173,13 @@ def trend_line(price_df):
 
     # 高値トレンドの計算
     # 高値で回帰分析をして、回帰分析ラインを上回るものだけ残していく
-    while len(df_high["high"])>2:
+    while len(df_high["high"])>3:
         reg_high = linregress(
             x = df_high["time_id"],
             y = df_high["high"],
         )
         tmp_df = df_high.loc[df_high["high"] > reg_high[0] * df_high["time_id"] + reg_high[1]]
-        if len(tmp_df) < 2:
+        if len(tmp_df) < 3:
             break
         else:
             df_high = tmp_df

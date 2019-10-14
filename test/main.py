@@ -59,8 +59,9 @@ trace_logger.setLevel(DEBUG)
 
 con = MysqlConnector()
 instrument = "GBP_JPY"
-insert_time = datetime.strptime("2019-06-03 13:00:30", "%Y-%m-%d %H:%M:%S")
-end_time = datetime.strptime("2019-08-04 00:00:30", "%Y-%m-%d %H:%M:%S")
+#insert_time = datetime.strptime("2019-04-01 20:20:30", "%Y-%m-%d %H:%M:%S")
+insert_time = datetime.strptime("2019-04-01 00:00:30", "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime("2019-10-12 05:00:30", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
 base_candle_size = 5 #5分足を使う
 window_size = 12*6 #6時間分
@@ -636,7 +637,7 @@ if __name__ == "__main__":
     print(insert_time)
     while True:
         now = datetime.now()
-
+        trace_logger.info(insert_time.strftime("%Y-%m-%d %H:%M:%S"))
         if insert_time < now: 
             trade_flags = decide_trade(trade_flags, insert_time)
 
@@ -673,7 +674,6 @@ if __name__ == "__main__":
                 trade_flags = reset_trade_flags()
 
 
-            trace_logger.info(insert_time.strftime("%Y-%m-%d %H:%M:%S"))
 
             if insert_time > end_time and mode == "test":
                 break
@@ -688,3 +688,4 @@ if __name__ == "__main__":
 
         else:
             time.sleep(1)
+

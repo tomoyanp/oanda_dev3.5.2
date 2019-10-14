@@ -556,16 +556,19 @@ def decide_trade(trade_flags, insert_time):
             outsidebar_status = outside_bar(price_df.tail(2).reset_index())
             insidebar_status = inside_bar(price_df.tail(2).reset_index())
             barbwire_status = barbwire(price_df.tail(1).reset_index())
+            threshold = 0.05
+            ema25 = current_ema_df["ema25"].values[0]
 
-            if outsidebar_status["status"] and outsidebar_status["direction"] == trade_flags["direction"]:
+
+            if outsidebar_status["status"] and outsidebar_status["direction"] == trade_flags["direction"] and abs(current_price - ema25) < threshold:
                 print("============= outside bar ===============")
                 trade_flags["position"] = True
 
-            elif insidebar_status["status"] and insidebar_status["direction"] == trade_flags["direction"]:
+            elif insidebar_status["status"] and insidebar_status["direction"] == trade_flags["direction"] and abs(current_price - ema25) < threshold:
                 print("============= inside bar ===============")
                 trade_flags["position"] = True
 
-            elif barbwire_status["status"] and barbwire_status["direction"] == trade_flags["direction"]:
+            elif barbwire_status["status"] and barbwire_status["direction"] == trade_flags["direction"] and abs(current_price - ema25) < threshold:
                 print("============= barbwire ===============")
                 trade_flags["position"] = True
 

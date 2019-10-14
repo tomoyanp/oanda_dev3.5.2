@@ -419,7 +419,11 @@ def decide_trade(trade_flags, insert_time):
     current_ask, current_bid, current_insert_time = get_current_price(instrument, insert_time)
     current_price = (current_ask + current_bid)/2
 
-    if trade_flags["position"] == False and decide_tradetime(insert_time):
+    # スプレッドが広い時は両方やらない
+    if current_ask - current_bid > 0.05:
+        pass
+
+    elif trade_flags["position"] == False and decide_tradetime(insert_time):
         # 計算用
         price_df = get_price(instrument, insert_time, table_type, length=window_size)
         # 描画用（売買後の値動きを見たいため）

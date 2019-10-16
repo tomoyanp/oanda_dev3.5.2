@@ -60,8 +60,8 @@ trace_logger.setLevel(DEBUG)
 con = MysqlConnector()
 instrument = "GBP_JPY"
 #insert_time = datetime.strptime("2019-04-01 20:20:30", "%Y-%m-%d %H:%M:%S")
-insert_time = datetime.strptime("2019-04-01 00:00:30", "%Y-%m-%d %H:%M:%S")
-end_time = datetime.strptime("2019-10-12 05:00:30", "%Y-%m-%d %H:%M:%S")
+insert_time = datetime.strptime("2019-10-01 00:00:30", "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime("2019-10-16 05:00:30", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
 base_candle_size = 5 #5分足を使う
 window_size = 12*6 #6時間分
@@ -103,7 +103,9 @@ def plot_result(trade_flags):
     diff = trade_flags["end_time"] - trade_flags["start_time"]
     diff_minutes = int(diff.total_seconds()/60/5)
 
-    all_price_df = get_price(instrument, trade_flags["end_time"], table_type, length=show_after_size+window_size+diff_minutes)
+    future_time = 7200
+
+    all_price_df = get_price(instrument, trade_flags["end_time"] + timedelta(seconds=future_time), table_type, length=show_after_size+window_size+diff_minutes+(future_time/300))
 
     # ローソク足の描画
     plt, ax = candle_stick(all_price_df)
@@ -409,11 +411,12 @@ def decide_tradetime(insert_time):
     hour = insert_time.hour
     minute = insert_time.minute
 
-    flag = False
-    if hour < 4 or 12 < hour:
-        flag = True
-
-    return flag
+    return True
+#    flag = False
+#    if hour < 4 or 12 < hour:
+#        flag = True
+#
+#    return flag
 
 def decide_trade(trade_flags, insert_time):
     current_ask, current_bid, current_insert_time = get_current_price(instrument, insert_time)

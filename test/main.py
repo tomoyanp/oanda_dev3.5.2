@@ -105,7 +105,7 @@ def plot_result(trade_flags):
 
     future_time = 7200
 
-    all_price_df = get_price(instrument, trade_flags["end_time"] + timedelta(seconds=future_time), table_type, length=show_after_size+window_size+diff_minutes+(future_time/300))
+    all_price_df = get_price(instrument, trade_flags["end_time"] + timedelta(seconds=future_time), table_type, length=show_after_size+window_size+diff_minutes+(int(future_time/300)))
 
     # ローソク足の描画
     plt, ax = candle_stick(all_price_df)

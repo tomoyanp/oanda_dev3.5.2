@@ -60,7 +60,7 @@ trace_logger.setLevel(DEBUG)
 con = MysqlConnector()
 instrument = "GBP_JPY"
 #insert_time = datetime.strptime("2019-04-01 20:20:30", "%Y-%m-%d %H:%M:%S")
-insert_time = datetime.strptime("2019-10-01 00:00:30", "%Y-%m-%d %H:%M:%S")
+insert_time = datetime.strptime("2019-06-03 12:00:30", "%Y-%m-%d %H:%M:%S")
 end_time = datetime.strptime("2019-10-16 05:00:30", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
 base_candle_size = 5 #5分足を使う
@@ -489,111 +489,121 @@ def decide_trade(trade_flags, insert_time):
         ema["insert_time"] = pd.to_datetime(ema["insert_time"], format="%Y-%m-%d %H:%M:%S")
         current_ema_df = ema[ema["insert_time"] == current_time]
 
-        # 途中で中断する用
-        stop_flag = False
-
         # 25emaと終値を比較して、連続して上回る（下回る）のであればトレンドが出ていると判断する
-        if stop_flag == False and trade_flags["direction"] == "flat":
-            trend_emas = ema[ema["insert_time"] <= current_time]
+        trend_emas = ema[ema["insert_time"] <= current_time]
 
-            length = 6
+        length = 5 
 
-            up_count = 0
-            down_count = 0
-
-
-            ema100 = trend_emas["ema100"].tail(length).values
-
-            trend_emas = trend_emas["ema25"].tail(length).values
-            open_prices = price_df["open"].tail(length).values
-            close_prices = price_df["close"].tail(length).values
-            high_prices = price_df["high"].tail(length).values
-            low_prices = price_df["low"].tail(length).values
+        up_count = 0
+        down_count = 0
 
 
-            # 短期的にトレンドが出ているか、EMA100との比較もする
-            for index in range(0, length):
-                if (close_prices[index] > trend_emas[index]) and close_prices[index] > ema100[index]:
-                    up_count += 1
-                elif (close_prices[index] < trend_emas[index] and close_prices[index] < ema100[index]):
-                    down_count += 1
+        ema100 = trend_emas["ema100"].tail(length).values
 
-            if (length == up_count):
+        trend_emas = trend_emas["ema25"].tail(length).values
+        open_prices = price_df["open"].tail(length).values
+        close_prices = price_df["close"].tail(length).values
+        high_prices = price_df["high"].tail(length).values
+        low_prices = price_df["low"].tail(length).values
+
+
+        # 短期的にトレンドが出ているか
+        for index in range(0, length):
+            if (low_prices[index] > trend_emas[index]):
+                up_count += 1
+            elif (high_prices[index] < trend_emas[index]):
+                down_count += 1
+
+        if (length == up_count):
+            if trade_flags["direction"] == "buy":
+                pass
+            elif trade_flags["direction"] == "sell":
+                trade_flags = reset_trade_flags()
                 trade_flags["direction"] = "buy"
-            elif (length == down_count):
-                trade_flags["direction"] = "sell"
+                trade_flags["direction_time"] = insert_time
             else:
-                stop_flag = True
+                trade_flags["direction"] = "buy"
+                trade_flags["direction_time"] = insert_time
+
+        elif (length == down_count):
+            if trade_flags["direction"] == "sell":
+                pass
+            elif trade_flags["direction"] == "buy":
+                trade_flags = reset_trade_flags()
+                trade_flags["direction"] = "sell"
+                trade_flags["direction_time"] = insert_time
+            else:
+                trade_flags["direction"] = "sell"
+                trade_flags["direction_time"] = insert_time
+
+        if trade_flags["direction"] != "flat":
+            trace_logger.info("%s: Direction=%s" % (insert_time, trade_flags["direction"]))
+                
 
         # トレンドが出ている場合、ema25にタッチしたことを確認する
-        if stop_flag == False and trade_flags["direction"] != "flat" and trade_flags["touched_ema"] == False:
+        if trade_flags["direction"] != "flat":
             threshold = 0.05
             ema25 = current_ema_df["ema25"].values[0]
-            if abs(current_price - ema25) < threshold:
+            high_price = price_df["high"].tail(1).values[-1]
+            low_price = price_df["low"].tail(1).values[-1]
+
+            if trade_flags["direction"] == "buy" and low_price < ema25:
                 trade_flags["touched_ema"] = True
-                plot_chart(insert_time, all_price_df, long_trend_fin_df, short_trend_fin_df, ema, registance_line, support_line, current_price)
+            elif trade_flags["direction"] == "sell" and high_price < ema25:
+                trade_flags["touched_ema"] = True
+            if trade_flags["touched_ema"]:
+                trade_flags["touched_ema_time"] = insert_time
+            if trade_flags["touched_ema"]:
+                trace_logger.info("%s: TouhcedEMA=True" % (insert_time))
 
-        # buildupを確認してみる
-        # 過去10本の価格変動を見て閾値以下であればフラグを立てる
-        # 過去10本の最高値と最安値を見て閾値以下であればフラグを立てる
-        # なければリセット
-        if stop_flag == False and trade_flags["direction"] != "flat" and trade_flags["touched_ema"] and trade_flags["buildup"] == False:
-            length = 10
-            buildup_df = price_df.copy()
-            buildup_df = buildup_df.tail(length)
+        if trade_flags["direction"] != "flat" and trade_flags["touched_ema"]:
+            open_prices = price_df["open"].tail(3).values
+            close_prices = price_df["close"].tail(3).values
+            high_prices = price_df["high"].tail(3).values
+            low_prices = price_df["low"].tail(3).values
 
-            diff = buildup_df["close"] - buildup_df["open"]
-            diff = diff.sum()
-            max_price = buildup_df["high"].max()
-            min_price = buildup_df["low"].min()
+            barbwire_df = price_df.tail(2).reset_index(drop=True)
+            print(barbwire_df)
 
-            if abs(diff) < 0.05:
-                trade_flags["buildup"] = True
-            else:
-                trade_flags["buildup_count"] += 1
+            if trade_flags["direction"] == "buy":
+                # 最初の足が陰線
+                if open_prices[0] > close_prices[0]:
+                    # 最初の足より安値をつけること。最初の足より高値で終わること
+                    if low_prices[0] > low_prices[1] and (close_prices[0] < close_prices[1] or barbwire(barbwire_df)["status"]):
+                        # 中間の足より高値で終わること
+                        if high_prices[1] < close_prices[2]:
+                            trade_flags["position"] = True
 
-                if trade_flags["buildup_count"] >= 12:
-                    trade_flags = reset_trade_flags()
+            elif trade_flags["direction"] == "sell":
+                # 最初の足が陽線
+                if open_prices[0] < close_prices[0]:
+                    # 最初の足より高値をつけること。最初の足より安値で終わること
+                    if high_prices[0] < high_prices[1] and (close_prices[0] > close_prices[1] or barbwire(barbwire_df)["status"]):
+                        # 中間の足より安値で終わること
+                        if low_prices[1] > close_prices[2]:
+                            trade_flags["position"] = True
 
-        if trade_flags["buildup"]:
-            outsidebar_status = outside_bar(price_df.tail(2).reset_index())
-            insidebar_status = inside_bar(price_df.tail(2).reset_index())
-            barbwire_status = barbwire(price_df.tail(1).reset_index())
-            threshold = 0.05
-            ema25 = current_ema_df["ema25"].values[0]
-
-
-            if outsidebar_status["status"] and outsidebar_status["direction"] == trade_flags["direction"] and abs(current_price - ema25) < threshold:
-                print("============= outside bar ===============")
-                trade_flags["position"] = True
-
-            elif insidebar_status["status"] and insidebar_status["direction"] == trade_flags["direction"] and abs(current_price - ema25) < threshold:
-                print("============= inside bar ===============")
-                trade_flags["position"] = True
-
-            elif barbwire_status["status"] and barbwire_status["direction"] == trade_flags["direction"] and abs(current_price - ema25) < threshold:
-                print("============= barbwire ===============")
-                trade_flags["position"] = True
-
+                    
+            if trade_flags["position"]:
+                if trade_flags["direction"] == "buy":
+                    trade_flags["position_price"] = current_ask
+                else:
+                    trade_flags["position_price"] = current_bid
+    
+                trade_flags["start_time"] = insert_time
+                trade_flags["long_trend"] = long_trend_fin_df
+                trade_flags["short_trend"] = short_trend_fin_df
+                trade_flags["ema"] = ema
+                trade_flags["registance_line"] = registance_line
+                trade_flags["support_line"] = support_line
             else:
                 trade_flags["price_action_count"] += 1
 
+            # 1時間以上たったらリセットする
             if trade_flags["price_action_count"] >= 12:
                 trade_flags = reset_trade_flags()
 
-        if trade_flags["position"]:
-            if trade_flags["direction"] == "buy":
-                trade_flags["position_price"] = current_ask
-            else:
-                trade_flags["position_price"] = current_bid
-
-            trade_flags["start_time"] = insert_time
-            trade_flags["long_trend"] = long_trend_fin_df
-            trade_flags["short_trend"] = short_trend_fin_df
-            trade_flags["ema"] = ema
-            trade_flags["registance_line"] = registance_line
-            trade_flags["support_line"] = support_line
-
+                        
     elif trade_flags["position"]:
         profit = 0.2
         stoploss = 0.1
@@ -667,6 +677,8 @@ if __name__ == "__main__":
                 plot_result(trade_flags)
 
                 debug_logger.info("=====================")
+                debug_logger.info("Direction_time=%s" % trade_flags["direction_time"])
+                debug_logger.info("Touched_EMA_time=%s" % trade_flags["touched_ema_time"])
                 debug_logger.info("Ordered_time=%s" % trade_flags["start_time"])
                 debug_logger.info("Ordered_price=%s" % trade_flags["position_price"])
                 debug_logger.info("Ordered_side=%s" % trade_flags["direction"])

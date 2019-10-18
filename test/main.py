@@ -565,23 +565,27 @@ def decide_trade(trade_flags, insert_time):
             barbwire_df = price_df.tail(2).reset_index(drop=True)
             print(barbwire_df)
 
-            if trade_flags["direction"] == "buy":
-                # 最初の足が陰線
-                if open_prices[0] > close_prices[0]:
-                    # 最初の足より安値をつけること。最初の足より高値で終わること
-                    if low_prices[0] > low_prices[1] and (close_prices[0] < close_prices[1] or barbwire(barbwire_df)["status"]):
-                        # 中間の足より高値で終わること
-                        if high_prices[1] < close_prices[2]:
-                            trade_flags["position"] = True
+            threshold = 0.05
+            diff = abs(ema25 - current_price)
 
-            elif trade_flags["direction"] == "sell":
-                # 最初の足が陽線
-                if open_prices[0] < close_prices[0]:
-                    # 最初の足より高値をつけること。最初の足より安値で終わること
-                    if high_prices[0] < high_prices[1] and (close_prices[0] > close_prices[1] or barbwire(barbwire_df)["status"]):
-                        # 中間の足より安値で終わること
-                        if low_prices[1] > close_prices[2]:
-                            trade_flags["position"] = True
+            if diff < threshold:
+                if trade_flags["direction"] == "buy":
+                    # 最初の足が陰線
+                    if open_prices[0] > close_prices[0]:
+                        # 最初の足より安値をつけること。最初の足より高値で終わること
+                        if low_prices[0] > low_prices[1] and (close_prices[0] < close_prices[1] or barbwire(barbwire_df)["status"]):
+                            # 中間の足より高値で終わること
+                            if high_prices[1] < close_prices[2]:
+                                trade_flags["position"] = True
+
+                elif trade_flags["direction"] == "sell":
+                    # 最初の足が陽線
+                    if open_prices[0] < close_prices[0]:
+                        # 最初の足より高値をつけること。最初の足より安値で終わること
+                        if high_prices[0] < high_prices[1] and (close_prices[0] > close_prices[1] or barbwire(barbwire_df)["status"]):
+                            # 中間の足より安値で終わること
+                            if low_prices[1] > close_prices[2]:
+                                trade_flags["position"] = True
 
                     
             if trade_flags["position"]:

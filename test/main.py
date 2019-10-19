@@ -418,6 +418,21 @@ def decide_tradetime(insert_time):
 #
 #    return flag
 
+def getSlope(target_list):
+    index_list = []
+    tmp_list = []
+
+    for i in range(1, len(target_list)+1):
+        index_list.append(float(i)/10)
+
+    price_list = np.array(target_list)
+    index_list = np.array(index_list)
+
+    z = np.polyfit(index_list, price_list, 1)
+    slope, intercept = np.poly1d(z)
+
+    return slope
+
 def decide_trade(trade_flags, insert_time):
     current_ask, current_bid, current_insert_time = get_current_price(instrument, insert_time)
     current_price = (current_ask + current_bid)/2
@@ -514,15 +529,20 @@ def decide_trade(trade_flags, insert_time):
             elif (high_prices[index] < trend_emas[index]):
                 down_count += 1
 
+        slope_df = price_df["close"].tail(12)
+        slope = getSlope(slope_df)
+
         if (length == up_count):
             if trade_flags["direction"] == "buy":
                 pass
             elif trade_flags["direction"] == "sell":
                 trade_flags = reset_trade_flags()
                 trade_flags["direction"] = "buy"
+                trade_flags["slope"] = slope
                 trade_flags["direction_time"] = insert_time
             else:
                 trade_flags["direction"] = "buy"
+                trade_flags["slope"] = slope
                 trade_flags["direction_time"] = insert_time
 
         elif (length == down_count):
@@ -531,9 +551,11 @@ def decide_trade(trade_flags, insert_time):
             elif trade_flags["direction"] == "buy":
                 trade_flags = reset_trade_flags()
                 trade_flags["direction"] = "sell"
+                trade_flags["slope"] = slope
                 trade_flags["direction_time"] = insert_time
             else:
                 trade_flags["direction"] = "sell"
+                trade_flags["slope"] = slope
                 trade_flags["direction_time"] = insert_time
 
         if trade_flags["direction"] != "flat":
@@ -563,7 +585,7 @@ def decide_trade(trade_flags, insert_time):
             low_prices = price_df["low"].tail(3).values
 
             barbwire_df = price_df.tail(2).reset_index(drop=True)
-            print(barbwire_df)
+
 
             threshold = 0.05
             diff = abs(ema25 - current_price)
@@ -586,6 +608,9 @@ def decide_trade(trade_flags, insert_time):
                             # 中間の足より安値で終わること
                             if low_prices[1] > close_prices[2]:
                                 trade_flags["position"] = True
+            else:
+                trade_flags = reset_trade_flags()
+                
 
                     
             if trade_flags["position"]:
@@ -682,6 +707,7 @@ if __name__ == "__main__":
 
                 debug_logger.info("=====================")
                 debug_logger.info("Direction_time=%s" % trade_flags["direction_time"])
+                debug_logger.info("Direction_slope=%s" % trade_flags["slope"])
                 debug_logger.info("Touched_EMA_time=%s" % trade_flags["touched_ema_time"])
                 debug_logger.info("Ordered_time=%s" % trade_flags["start_time"])
                 debug_logger.info("Ordered_price=%s" % trade_flags["position_price"])

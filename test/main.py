@@ -60,8 +60,8 @@ trace_logger.setLevel(DEBUG)
 con = MysqlConnector()
 instrument = "GBP_JPY"
 #insert_time = datetime.strptime("2019-04-01 20:20:30", "%Y-%m-%d %H:%M:%S")
-insert_time = datetime.strptime("2019-06-03 12:00:30", "%Y-%m-%d %H:%M:%S")
-end_time = datetime.strptime("2019-10-16 05:00:30", "%Y-%m-%d %H:%M:%S")
+insert_time = datetime.strptime("2019-10-01 00:00:30", "%Y-%m-%d %H:%M:%S")
+end_time = datetime.strptime("2019-10-19 05:00:30", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
 base_candle_size = 5 #5分足を使う
 window_size = 12*6 #6時間分

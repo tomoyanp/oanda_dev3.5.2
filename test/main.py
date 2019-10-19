@@ -599,6 +599,8 @@ def decide_trade(trade_flags, insert_time):
                             # 中間の足より高値で終わること
                             if high_prices[1] < close_prices[2]:
                                 trade_flags["position"] = True
+                                # 中間足の安値以下になったら損切
+                                trade_flags["stop_rate"] = low_prices[1]
 
                 elif trade_flags["direction"] == "sell":
                     # 最初の足が陽線
@@ -608,6 +610,8 @@ def decide_trade(trade_flags, insert_time):
                             # 中間の足より安値で終わること
                             if low_prices[1] > close_prices[2]:
                                 trade_flags["position"] = True
+                                # 中間足の高値以上になったら損切
+                                trade_flags["stop_rate"] = high_prices[1]
             else:
                 trade_flags = reset_trade_flags()
                 
@@ -645,7 +649,7 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["stl_price"] = current_bid
                 trade_flags["stl"] = True
 
-            elif trade_flags["position_price"] - stoploss > current_bid:
+            elif trade_flags["position_price"] - stoploss > current_bid or trade_flags["stop_rate"] > current_bid:
                 print("STOPLOSS BUY")
                 print(trade_flags["position_price"]-stoploss)
                 trade_flags["end_time"] = insert_time
@@ -659,7 +663,7 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["stl_price"] = current_ask
                 trade_flags["stl"] = True
 
-            elif trade_flags["position_price"] + stoploss < current_ask:
+            elif trade_flags["position_price"] + stoploss < current_ask or trade_flags["stop_rate"] < current_ask:
                 print("STOPLOSS SELL")
                 print(trade_flags["position_price"]+stoploss)
                 trade_flags["end_time"] = insert_time

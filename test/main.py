@@ -529,10 +529,23 @@ def decide_trade(trade_flags, insert_time):
             elif (high_prices[index] < trend_emas[index]):
                 down_count += 1
 
-        slope_df = price_df["close"].tail(12)
+        slope_df = ema25.tail(36)
         slope = getSlope(slope_df)
 
-        if (length == up_count):
+        tmp = price_df.tail(36)
+        maxindex = tmp["close"].idxmax()
+        minindex = tmp["close"].idxmin()
+        max_price = tmp["close"][maxindex]
+        max_time = tmp["insert_time"][maxindex]
+        min_price = tmp["close"][minindex]
+        min_time = tmp["insert_time"][minindex]
+
+        if min_time < max_time:
+            trend_diff = max_price - min_price
+        else:
+            trend_diff = min_price - max_price
+
+        if (length == up_count) and trend_diff > 0.3:
             if trade_flags["direction"] == "buy":
                 pass
             elif trade_flags["direction"] == "sell":
@@ -540,12 +553,15 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["direction"] = "buy"
                 trade_flags["slope"] = slope
                 trade_flags["direction_time"] = insert_time
+                trade_flags["diff"] = trend_diff
+                    
             else:
                 trade_flags["direction"] = "buy"
                 trade_flags["slope"] = slope
                 trade_flags["direction_time"] = insert_time
+                trade_flags["diff"] = trend_diff
 
-        elif (length == down_count):
+        elif (length == down_count) and trend_diff < -0.3:
             if trade_flags["direction"] == "sell":
                 pass
             elif trade_flags["direction"] == "buy":
@@ -553,10 +569,12 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["direction"] = "sell"
                 trade_flags["slope"] = slope
                 trade_flags["direction_time"] = insert_time
+                trade_flags["diff"] = trend_diff
             else:
                 trade_flags["direction"] = "sell"
                 trade_flags["slope"] = slope
                 trade_flags["direction_time"] = insert_time
+                trade_flags["diff"] = trend_diff
 
         if trade_flags["direction"] != "flat":
             trace_logger.info("%s: Direction=%s" % (insert_time, trade_flags["direction"]))
@@ -639,6 +657,7 @@ def decide_trade(trade_flags, insert_time):
                         
     elif trade_flags["position"]:
         profit = 0.2
+        #profit = 0.1
         stoploss = 0.1
 
         if trade_flags["direction"] == "buy":
@@ -649,7 +668,8 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["stl_price"] = current_bid
                 trade_flags["stl"] = True
 
-            elif trade_flags["position_price"] - stoploss > current_bid or trade_flags["stop_rate"] > current_bid:
+            #elif trade_flags["position_price"] - stoploss > current_bid or trade_flags["stop_rate"] > current_bid:
+            elif trade_flags["position_price"] - stoploss > current_bid:
                 print("STOPLOSS BUY")
                 print(trade_flags["position_price"]-stoploss)
                 trade_flags["end_time"] = insert_time
@@ -663,7 +683,8 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["stl_price"] = current_ask
                 trade_flags["stl"] = True
 
-            elif trade_flags["position_price"] + stoploss < current_ask or trade_flags["stop_rate"] < current_ask:
+            #elif trade_flags["position_price"] + stoploss < current_ask or trade_flags["stop_rate"] < current_ask:
+            elif trade_flags["position_price"] + stoploss < current_ask:
                 print("STOPLOSS SELL")
                 print(trade_flags["position_price"]+stoploss)
                 trade_flags["end_time"] = insert_time
@@ -712,6 +733,7 @@ if __name__ == "__main__":
                 debug_logger.info("=====================")
                 debug_logger.info("Direction_time=%s" % trade_flags["direction_time"])
                 debug_logger.info("Direction_slope=%s" % trade_flags["slope"])
+                debug_logger.info("Direction_diff=%s" % trade_flags["diff"])
                 debug_logger.info("Touched_EMA_time=%s" % trade_flags["touched_ema_time"])
                 debug_logger.info("Ordered_time=%s" % trade_flags["start_time"])
                 debug_logger.info("Ordered_price=%s" % trade_flags["position_price"])

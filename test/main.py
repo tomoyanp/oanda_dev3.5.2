@@ -545,7 +545,8 @@ def decide_trade(trade_flags, insert_time):
         else:
             trend_diff = min_price - max_price
 
-        if (length == up_count) and trend_diff > 0.3:
+        #if (length == up_count) and trend_diff > 0.3:
+        if trend_diff > 0.3:
             if trade_flags["direction"] == "buy":
                 pass
             elif trade_flags["direction"] == "sell":
@@ -561,7 +562,8 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["direction_time"] = insert_time
                 trade_flags["diff"] = trend_diff
 
-        elif (length == down_count) and trend_diff < -0.3:
+        #elif (length == down_count) and trend_diff < -0.3:
+        elif trend_diff < -0.3:
             if trade_flags["direction"] == "sell":
                 pass
             elif trade_flags["direction"] == "buy":

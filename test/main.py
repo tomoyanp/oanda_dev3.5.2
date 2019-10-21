@@ -60,7 +60,7 @@ trace_logger.setLevel(DEBUG)
 con = MysqlConnector()
 instrument = "GBP_JPY"
 #insert_time = datetime.strptime("2019-04-01 20:20:30", "%Y-%m-%d %H:%M:%S")
-insert_time = datetime.strptime("2019-10-18 15:00:30", "%Y-%m-%d %H:%M:%S")
+insert_time = datetime.strptime("2019-10-01 00:00:30", "%Y-%m-%d %H:%M:%S")
 end_time = datetime.strptime("2019-10-19 05:00:30", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
 base_candle_size = 5 #5分足を使う
@@ -584,6 +584,11 @@ def decide_trade(trade_flags, insert_time):
 
         # トレンドが出ている場合、ema25にタッチしたことを確認する
         if trade_flags["direction"] != "flat":
+            # Dummy
+            # ema25 = current_ema_df["ema25"].values[0]
+            # trade_flags["touched_ema"] = True
+            # trade_flags["touched_ema_time"] = insert_time
+
             threshold = 0.05
             ema25 = current_ema_df["ema25"].values[0]
             high_price = price_df["high"].tail(1).values[-1]
@@ -598,13 +603,14 @@ def decide_trade(trade_flags, insert_time):
             if trade_flags["touched_ema"]:
                 trace_logger.info("%s: TouhcedEMA=True" % (insert_time))
 
-        if trade_flags["direction"] != "flat" and trade_flags["touched_ema"]:
-            open_prices = price_df["open"].tail(3).values
-            close_prices = price_df["close"].tail(3).values
-            high_prices = price_df["high"].tail(3).values
-            low_prices = price_df["low"].tail(3).values
 
-            barbwire_df = price_df.tail(2).reset_index(drop=True)
+        if trade_flags["direction"] != "flat" and trade_flags["touched_ema"]:
+            open_prices = price_df["open"].tail(2).values
+            close_prices = price_df["close"].tail(2).values
+            high_prices = price_df["high"].tail(2).values
+            low_prices = price_df["low"].tail(2).values
+
+            barbwire_df = price_df.tail(1).reset_index(drop=True)
 
 
             threshold = 0.05
@@ -615,23 +621,17 @@ def decide_trade(trade_flags, insert_time):
                     # 最初の足が陰線
                     if open_prices[0] > close_prices[0]:
                         # 最初の足より安値をつけること。最初の足より高値で終わること
+                        # if low_prices[0] > low_prices[1] and (close_prices[0] < close_prices[1] or barbwire(barbwire_df)["status"] or open_prices[1] < close_prices[1]):
                         if low_prices[0] > low_prices[1] and (close_prices[0] < close_prices[1] or barbwire(barbwire_df)["status"]):
-                            # 中間の足より高値で終わること
-                            if high_prices[1] < close_prices[2]:
-                                trade_flags["position"] = True
-                                # 中間足の安値以下になったら損切
-                                trade_flags["stop_rate"] = low_prices[1]
+                            trade_flags["position"] = True
 
                 elif trade_flags["direction"] == "sell":
                     # 最初の足が陽線
                     if open_prices[0] < close_prices[0]:
                         # 最初の足より高値をつけること。最初の足より安値で終わること
+                        # if high_prices[0] < high_prices[1] and (close_prices[0] > close_prices[1] or barbwire(barbwire_df)["status"] or open_prices[1] > close_prices[1]):
                         if high_prices[0] < high_prices[1] and (close_prices[0] > close_prices[1] or barbwire(barbwire_df)["status"]):
-                            # 中間の足より安値で終わること
-                            if low_prices[1] > close_prices[2]:
-                                trade_flags["position"] = True
-                                # 中間足の高値以上になったら損切
-                                trade_flags["stop_rate"] = high_prices[1]
+                            trade_flags["position"] = True
             else:
                 trade_flags = reset_trade_flags()
                 
@@ -655,6 +655,66 @@ def decide_trade(trade_flags, insert_time):
             # 1時間以上たったらリセットする
             if trade_flags["price_action_count"] >= 12:
                 trade_flags = reset_trade_flags()
+
+ 
+
+        #if trade_flags["direction"] != "flat" and trade_flags["touched_ema"]:
+        #    open_prices = price_df["open"].tail(3).values
+        #    close_prices = price_df["close"].tail(3).values
+        #    high_prices = price_df["high"].tail(3).values
+        #    low_prices = price_df["low"].tail(3).values
+
+        #    barbwire_df = price_df.tail(2).reset_index(drop=True)
+
+
+        #    threshold = 0.05
+        #    diff = abs(ema25 - current_price)
+
+        #    if diff < threshold:
+        #        if trade_flags["direction"] == "buy":
+        #            # 最初の足が陰線
+        #            if open_prices[0] > close_prices[0]:
+        #                # 最初の足より安値をつけること。最初の足より高値で終わること
+        #                if low_prices[0] > low_prices[1] and (close_prices[0] < close_prices[1] or barbwire(barbwire_df)["status"]):
+        #                    # 中間の足より高値で終わること
+        #                    if high_prices[1] < close_prices[2]:
+        #                        trade_flags["position"] = True
+        #                        # 中間足の安値以下になったら損切
+        #                        trade_flags["stop_rate"] = low_prices[1]
+
+        #        elif trade_flags["direction"] == "sell":
+        #            # 最初の足が陽線
+        #            if open_prices[0] < close_prices[0]:
+        #                # 最初の足より高値をつけること。最初の足より安値で終わること
+        #                if high_prices[0] < high_prices[1] and (close_prices[0] > close_prices[1] or barbwire(barbwire_df)["status"]):
+        #                    # 中間の足より安値で終わること
+        #                    if low_prices[1] > close_prices[2]:
+        #                        trade_flags["position"] = True
+        #                        # 中間足の高値以上になったら損切
+        #                        trade_flags["stop_rate"] = high_prices[1]
+        #    else:
+        #        trade_flags = reset_trade_flags()
+        #        
+
+        #            
+        #    if trade_flags["position"]:
+        #        if trade_flags["direction"] == "buy":
+        #            trade_flags["position_price"] = current_ask
+        #        else:
+        #            trade_flags["position_price"] = current_bid
+    
+        #        trade_flags["start_time"] = insert_time
+        #        trade_flags["long_trend"] = long_trend_fin_df
+        #        trade_flags["short_trend"] = short_trend_fin_df
+        #        trade_flags["ema"] = ema
+        #        trade_flags["registance_line"] = registance_line
+        #        trade_flags["support_line"] = support_line
+        #    else:
+        #        trade_flags["price_action_count"] += 1
+
+        #    # 1時間以上たったらリセットする
+        #    if trade_flags["price_action_count"] >= 12:
+        #        trade_flags = reset_trade_flags()
 
                         
     elif trade_flags["position"]:

@@ -60,7 +60,7 @@ trace_logger.setLevel(DEBUG)
 con = MysqlConnector()
 instrument = "GBP_JPY"
 #insert_time = datetime.strptime("2019-04-01 20:20:30", "%Y-%m-%d %H:%M:%S")
-insert_time = datetime.strptime("2019-10-01 00:00:30", "%Y-%m-%d %H:%M:%S")
+insert_time = datetime.strptime("2019-10-18 15:00:30", "%Y-%m-%d %H:%M:%S")
 end_time = datetime.strptime("2019-10-19 05:00:30", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
 base_candle_size = 5 #5分足を使う
@@ -545,8 +545,8 @@ def decide_trade(trade_flags, insert_time):
         else:
             trend_diff = min_price - max_price
 
-        #if (length == up_count) and trend_diff > 0.3:
-        if trend_diff > 0.3:
+        if (length == up_count) and trend_diff > 0.3:
+        #if trend_diff > 0.3:
             if trade_flags["direction"] == "buy":
                 pass
             elif trade_flags["direction"] == "sell":
@@ -562,8 +562,8 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["direction_time"] = insert_time
                 trade_flags["diff"] = trend_diff
 
-        #elif (length == down_count) and trend_diff < -0.3:
-        elif trend_diff < -0.3:
+        elif (length == down_count) and trend_diff < -0.3:
+        #elif trend_diff < -0.3:
             if trade_flags["direction"] == "sell":
                 pass
             elif trade_flags["direction"] == "buy":

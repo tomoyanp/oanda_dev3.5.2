@@ -60,7 +60,7 @@ trace_logger.setLevel(DEBUG)
 con = MysqlConnector()
 instrument = "GBP_JPY"
 #insert_time = datetime.strptime("2019-04-01 20:20:30", "%Y-%m-%d %H:%M:%S")
-insert_time = datetime.strptime("2019-10-01 00:00:30", "%Y-%m-%d %H:%M:%S")
+insert_time = datetime.strptime("2019-04-01 00:00:30", "%Y-%m-%d %H:%M:%S")
 end_time = datetime.strptime("2019-10-19 05:00:30", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
 base_candle_size = 5 #5分足を使う
@@ -437,8 +437,8 @@ def decide_trade(trade_flags, insert_time):
     current_ask, current_bid, current_insert_time = get_current_price(instrument, insert_time)
     current_price = (current_ask + current_bid)/2
 
-    # スプレッドが広い時は両方やらない
-    if current_ask - current_bid > 0.05:
+    # スプレッドが広い時はトレードはしない
+    if current_ask - current_bid > 0.05 and trade_flags["position"] == False:
         pass
 
     elif trade_flags["position"] == False and decide_tradetime(insert_time):
@@ -507,7 +507,7 @@ def decide_trade(trade_flags, insert_time):
         # 25emaと終値を比較して、連続して上回る（下回る）のであればトレンドが出ていると判断する
         trend_emas = ema[ema["insert_time"] <= current_time]
 
-        length = 5 
+        length = 5
 
         up_count = 0
         down_count = 0
@@ -524,9 +524,9 @@ def decide_trade(trade_flags, insert_time):
 
         # 短期的にトレンドが出ているか
         for index in range(0, length):
-            if (low_prices[index] > trend_emas[index]):
+            if (close_prices[index] > trend_emas[index]) or (open_prices[index] > trend_emas[index]):
                 up_count += 1
-            elif (high_prices[index] < trend_emas[index]):
+            elif (close_prices[index] < trend_emas[index]) or (open_prices[index] < trend_emas[index]):
                 down_count += 1
 
         slope_df = ema25.tail(36)
@@ -545,7 +545,9 @@ def decide_trade(trade_flags, insert_time):
         else:
             trend_diff = min_price - max_price
 
-        if (length == up_count) and trend_diff > 0.3:
+        if (up_count == down_count):
+            pass
+        elif (length == up_count) and trend_diff > 0.3:
         #if trend_diff > 0.3:
             if trade_flags["direction"] == "buy":
                 pass
@@ -611,6 +613,7 @@ def decide_trade(trade_flags, insert_time):
             low_prices = price_df["low"].tail(2).values
 
             barbwire_df = price_df.tail(1).reset_index(drop=True)
+            barbwire_status = barbwire(barbwire_df)
 
 
             threshold = 0.05
@@ -622,7 +625,7 @@ def decide_trade(trade_flags, insert_time):
                     if open_prices[0] > close_prices[0]:
                         # 最初の足より安値をつけること。最初の足より高値で終わること
                         # if low_prices[0] > low_prices[1] and (close_prices[0] < close_prices[1] or barbwire(barbwire_df)["status"] or open_prices[1] < close_prices[1]):
-                        if low_prices[0] > low_prices[1] and (close_prices[0] < close_prices[1] or barbwire(barbwire_df)["status"]):
+                        if low_prices[0] > low_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "buy":
                             trade_flags["position"] = True
 
                 elif trade_flags["direction"] == "sell":
@@ -630,7 +633,7 @@ def decide_trade(trade_flags, insert_time):
                     if open_prices[0] < close_prices[0]:
                         # 最初の足より高値をつけること。最初の足より安値で終わること
                         # if high_prices[0] < high_prices[1] and (close_prices[0] > close_prices[1] or barbwire(barbwire_df)["status"] or open_prices[1] > close_prices[1]):
-                        if high_prices[0] < high_prices[1] and (close_prices[0] > close_prices[1] or barbwire(barbwire_df)["status"]):
+                        if high_prices[0] < high_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "sell":
                             trade_flags["position"] = True
             else:
                 trade_flags = reset_trade_flags()
@@ -718,40 +721,46 @@ def decide_trade(trade_flags, insert_time):
 
                         
     elif trade_flags["position"]:
-        profit = 0.2
-        #profit = 0.1
-        stoploss = 0.1
-
-        if trade_flags["direction"] == "buy":
-            if trade_flags["position_price"] + profit < current_bid:
-                print("PROFIT BUY")
-                print(trade_flags["position_price"]+profit)
-                trade_flags["end_time"] = insert_time
-                trade_flags["stl_price"] = current_bid
-                trade_flags["stl"] = True
-
-            #elif trade_flags["position_price"] - stoploss > current_bid or trade_flags["stop_rate"] > current_bid:
-            elif trade_flags["position_price"] - stoploss > current_bid:
-                print("STOPLOSS BUY")
-                print(trade_flags["position_price"]-stoploss)
-                trade_flags["end_time"] = insert_time
-                trade_flags["stl_price"] = current_bid
-                trade_flags["stl"] = True
+        # 週末の3時以降なら即切り
+        if insert_time.weekday() == 5 and insert_time.hour >= 3:
+            trade_flags["end_time"] = insert_time
+            trade_flags["stl_price"] = current_bid
+            trade_flags["stl"] = True
         else:
-            if trade_flags["position_price"] - profit > current_ask:
-                print("PROFIT SELL")
-                print(trade_flags["position_price"]-profit)
-                trade_flags["end_time"] = insert_time
-                trade_flags["stl_price"] = current_ask
-                trade_flags["stl"] = True
+            profit = 0.3
+            #profit = 0.1
+            stoploss = 0.2
 
-            #elif trade_flags["position_price"] + stoploss < current_ask or trade_flags["stop_rate"] < current_ask:
-            elif trade_flags["position_price"] + stoploss < current_ask:
-                print("STOPLOSS SELL")
-                print(trade_flags["position_price"]+stoploss)
-                trade_flags["end_time"] = insert_time
-                trade_flags["stl_price"] = current_ask
-                trade_flags["stl"] = True
+            if trade_flags["direction"] == "buy":
+                if trade_flags["position_price"] + profit < current_bid:
+                    print("PROFIT BUY")
+                    print(trade_flags["position_price"]+profit)
+                    trade_flags["end_time"] = insert_time
+                    trade_flags["stl_price"] = current_bid
+                    trade_flags["stl"] = True
+
+                #elif trade_flags["position_price"] - stoploss > current_bid or trade_flags["stop_rate"] > current_bid:
+                elif trade_flags["position_price"] - stoploss > current_bid:
+                    print("STOPLOSS BUY")
+                    print(trade_flags["position_price"]-stoploss)
+                    trade_flags["end_time"] = insert_time
+                    trade_flags["stl_price"] = current_bid
+                    trade_flags["stl"] = True
+            else:
+                if trade_flags["position_price"] - profit > current_ask:
+                    print("PROFIT SELL")
+                    print(trade_flags["position_price"]-profit)
+                    trade_flags["end_time"] = insert_time
+                    trade_flags["stl_price"] = current_ask
+                    trade_flags["stl"] = True
+
+                #elif trade_flags["position_price"] + stoploss < current_ask or trade_flags["stop_rate"] < current_ask:
+                elif trade_flags["position_price"] + stoploss < current_ask:
+                    print("STOPLOSS SELL")
+                    print(trade_flags["position_price"]+stoploss)
+                    trade_flags["end_time"] = insert_time
+                    trade_flags["stl_price"] = current_ask
+                    trade_flags["stl"] = True
 
     return trade_flags
 

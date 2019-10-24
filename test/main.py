@@ -576,8 +576,8 @@ def decide_trade(trade_flags, insert_time):
 
             test_df = pd.DataFrame()
             test_df["slope"] = trend_df["price"] 
-            test_df["high"] = tmp["high"][start_index:end_index]
-            test_df["low"] = tmp["low"][start_index:end_index]
+            test_df["high"] = tmp["close"][start_index:end_index]
+            test_df["low"] = tmp["open"][start_index:end_index]
 
             test_df = test_df.reset_index(drop=True)
 
@@ -616,8 +616,8 @@ def decide_trade(trade_flags, insert_time):
 
             test_df = pd.DataFrame()
             test_df["slope"] = trend_df["price"] 
-            test_df["high"] = tmp["high"][start_index:end_index]
-            test_df["low"] = tmp["low"][start_index:end_index]
+            test_df["high"] = tmp["open"][start_index:end_index]
+            test_df["low"] = tmp["close"][start_index:end_index]
 
             test_df = test_df.reset_index(drop=True)
 

@@ -60,7 +60,8 @@ trace_logger.setLevel(DEBUG)
 con = MysqlConnector()
 instrument = "GBP_JPY"
 #insert_time = datetime.strptime("2019-04-01 20:20:30", "%Y-%m-%d %H:%M:%S")
-insert_time = datetime.strptime("2019-04-01 00:00:30", "%Y-%m-%d %H:%M:%S")
+#insert_time = datetime.strptime("2019-04-01 00:00:30", "%Y-%m-%d %H:%M:%S")
+insert_time = datetime.strptime("2019-04-01 19:00:30", "%Y-%m-%d %H:%M:%S")
 end_time = datetime.strptime("2019-10-19 05:00:30", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
 base_candle_size = 5 #5分足を使う
@@ -126,24 +127,26 @@ def plot_result(trade_flags):
     ax.plot(trade_flags["end_time"], trade_flags["stl_price"], marker=".", color=stl_color, markersize=10)
     ax.axvline(x=trade_flags["end_time"], linewidth="0.5", color=stl_color)
 
+    # 回帰分析の結果を描画する
+    ax.plot(trade_flags["trend"]["insert_time"], trade_flags["trend"]["price"], linewidth="1.0", color="green")
 
     # 長期トレンドラインを描画する
-    ax.plot(trade_flags["long_trend"]["insert_time"], trade_flags["long_trend"]["high_trend"], linewidth="1.0", color="green")
-    ax.plot(trade_flags["long_trend"]["insert_time"], trade_flags["long_trend"]["low_trend"], linewidth="1.0", color="green")
+    #ax.plot(trade_flags["long_trend"]["insert_time"], trade_flags["long_trend"]["high_trend"], linewidth="1.0", color="green")
+    #ax.plot(trade_flags["long_trend"]["insert_time"], trade_flags["long_trend"]["low_trend"], linewidth="1.0", color="green")
 
     # 短期トレンドラインを描画する
-    ax.plot(trade_flags["short_trend"]["insert_time"], trade_flags["short_trend"]["high_trend"], linewidth="1.0", color="green")
-    ax.plot(trade_flags["short_trend"]["insert_time"], trade_flags["short_trend"]["low_trend"], linewidth="1.0", color="green")
+    #ax.plot(trade_flags["short_trend"]["insert_time"], trade_flags["short_trend"]["high_trend"], linewidth="1.0", color="green")
+    #ax.plot(trade_flags["short_trend"]["insert_time"], trade_flags["short_trend"]["low_trend"], linewidth="1.0", color="green")
 
     # EMAを描画する
     ax.plot(trade_flags["ema"]["insert_time"], trade_flags["ema"]["ema25"], linewidth="1.0", color="orange")
     ax.plot(trade_flags["ema"]["insert_time"], trade_flags["ema"]["ema100"], linewidth="1.0", color="red")
 
     # サポートレジスタンスラインを描画する
-    for ln in trade_flags["registance_line"]:
-        ax.axhline(y=ln, linewidth="1.0", color="red")
-    for ln in trade_flags["support_line"]:
-        ax.axhline(y=ln, linewidth="1.0", color="blue")
+    #for ln in trade_flags["registance_line"]:
+    #    ax.axhline(y=ln, linewidth="1.0", color="red")
+    #for ln in trade_flags["support_line"]:
+    #    ax.axhline(y=ln, linewidth="1.0", color="blue")
 
     plt.savefig("results/%s-%s.png" % (trade_flags["start_time"].strftime("%Y%m%d%H%M"), trade_flags["end_time"].strftime("%Y%m%d%H%M")))
     plt.close()
@@ -423,7 +426,7 @@ def getSlope(target_list):
     tmp_list = []
 
     for i in range(1, len(target_list)+1):
-        index_list.append(float(i)/10)
+        index_list.append(i)
 
     price_list = np.array(target_list)
     index_list = np.array(index_list)
@@ -431,7 +434,7 @@ def getSlope(target_list):
     z = np.polyfit(index_list, price_list, 1)
     slope, intercept = np.poly1d(z)
 
-    return slope
+    return slope, intercept
 
 def decide_trade(trade_flags, insert_time):
     current_ask, current_bid, current_insert_time = get_current_price(instrument, insert_time)
@@ -440,7 +443,14 @@ def decide_trade(trade_flags, insert_time):
     # スプレッドが広い時はトレードはしない
     if current_ask - current_bid > 0.05 and trade_flags["position"] == False:
         pass
-
+    # 週末の3時以降なら即切り
+    elif insert_time.weekday() == 5 and insert_time.hour >= 3:
+        if trade_flags["position"]:
+            trade_flags["end_time"] = insert_time
+            trade_flags["stl_price"] = current_bid
+            trade_flags["stl"] = True
+        else:
+            pass
     elif trade_flags["position"] == False and decide_tradetime(insert_time):
         # 計算用
         price_df = get_price(instrument, insert_time, table_type, length=window_size)
@@ -530,9 +540,10 @@ def decide_trade(trade_flags, insert_time):
                 down_count += 1
 
         slope_df = ema25.tail(36)
-        slope = getSlope(slope_df)
+        slope, intercept = getSlope(slope_df)
 
         tmp = price_df.tail(36)
+        tmp = tmp.reset_index(drop=True)
         maxindex = tmp["close"].idxmax()
         minindex = tmp["close"].idxmin()
         max_price = tmp["close"][maxindex]
@@ -540,10 +551,88 @@ def decide_trade(trade_flags, insert_time):
         min_price = tmp["close"][minindex]
         min_time = tmp["insert_time"][minindex]
 
+        candle_length = 0
         if min_time < max_time:
             trend_diff = max_price - min_price
+            for i in range(minindex, maxindex+1):
+                candle_length += abs(tmp["close"][i] - tmp["open"][i])
+            trade_flags["candle_length"] = candle_length / (maxindex-minindex)
+
+
+            start_index = minindex
+            end_index = maxindex
+
+            trend_close = tmp["close"][start_index:end_index]            
+            trend_insert_time = tmp["insert_time"][start_index:end_index]            
+            trend_slope, trend_intercept = getSlope(trend_close)
+            trend_slope_price = []
+
+            for i in range(1, len(trend_close)+1):
+                trend_slope_price.append((i*trend_slope)+trend_intercept)
+            trend_df = pd.DataFrame()
+            trend_df["insert_time"] = trend_insert_time
+            trend_df["price"] = trend_slope_price
+            trade_flags["trend"] = trend_df
+
+            test_df = pd.DataFrame()
+            test_df["slope"] = trend_df["price"] 
+            test_df["high"] = tmp["high"][start_index:end_index]
+            test_df["low"] = tmp["low"][start_index:end_index]
+
+            test_df = test_df.reset_index(drop=True)
+
+            slope_percentage = 0
+            slope_count = 0
+            for i in range(0, len(test_df["slope"])):
+                if test_df["low"][i] < test_df["slope"][i] < test_df["high"][i]:
+                    slope_count += 1
+                else:
+                    pass
+            trade_flags["slope_matching"] = (slope_count / len(test_df["slope"]))*100
+
         else:
             trend_diff = min_price - max_price
+            for i in range(maxindex, minindex+1):
+                candle_length += abs(tmp["close"][i] - tmp["open"][i])
+
+            trade_flags["candle_length"] = candle_length / (minindex-maxindex)
+
+
+            start_index = maxindex
+            end_index = minindex
+
+            trend_close = tmp["close"][start_index:end_index]            
+            trend_insert_time = tmp["insert_time"][start_index:end_index]            
+            trend_slope, trend_intercept = getSlope(trend_close)
+            trend_slope_price = []
+
+            for i in range(1, len(trend_close)+1):
+                trend_slope_price.append((i*trend_slope)+trend_intercept)
+            trend_df = pd.DataFrame()
+            trend_df["insert_time"] = trend_insert_time
+            trend_df["price"] = trend_slope_price
+            trade_flags["trend"] = trend_df
+
+
+            test_df = pd.DataFrame()
+            test_df["slope"] = trend_df["price"] 
+            test_df["high"] = tmp["high"][start_index:end_index]
+            test_df["low"] = tmp["low"][start_index:end_index]
+
+            test_df = test_df.reset_index(drop=True)
+
+            slope_percentage = 0
+            slope_count = 0
+            for i in range(0, len(test_df["slope"])):
+                if test_df["low"][i] < test_df["slope"][i] < test_df["high"][i]:
+                    slope_count += 1
+                else:
+                    pass
+            trade_flags["slope_matching"] = (slope_count / len(test_df["slope"]))*100
+
+
+
+
 
         if (up_count == down_count):
             pass
@@ -721,46 +810,39 @@ def decide_trade(trade_flags, insert_time):
 
                         
     elif trade_flags["position"]:
-        # 週末の3時以降なら即切り
-        if insert_time.weekday() == 5 and insert_time.hour >= 3:
-            trade_flags["end_time"] = insert_time
-            trade_flags["stl_price"] = current_bid
-            trade_flags["stl"] = True
+        profit = 0.3
+        stoploss = 0.2
+
+        if trade_flags["direction"] == "buy":
+            if trade_flags["position_price"] + profit < current_bid:
+                print("PROFIT BUY")
+                print(trade_flags["position_price"]+profit)
+                trade_flags["end_time"] = insert_time
+                trade_flags["stl_price"] = current_bid
+                trade_flags["stl"] = True
+
+            #elif trade_flags["position_price"] - stoploss > current_bid or trade_flags["stop_rate"] > current_bid:
+            elif trade_flags["position_price"] - stoploss > current_bid:
+                print("STOPLOSS BUY")
+                print(trade_flags["position_price"]-stoploss)
+                trade_flags["end_time"] = insert_time
+                trade_flags["stl_price"] = current_bid
+                trade_flags["stl"] = True
         else:
-            profit = 0.3
-            #profit = 0.1
-            stoploss = 0.2
+            if trade_flags["position_price"] - profit > current_ask:
+                print("PROFIT SELL")
+                print(trade_flags["position_price"]-profit)
+                trade_flags["end_time"] = insert_time
+                trade_flags["stl_price"] = current_ask
+                trade_flags["stl"] = True
 
-            if trade_flags["direction"] == "buy":
-                if trade_flags["position_price"] + profit < current_bid:
-                    print("PROFIT BUY")
-                    print(trade_flags["position_price"]+profit)
-                    trade_flags["end_time"] = insert_time
-                    trade_flags["stl_price"] = current_bid
-                    trade_flags["stl"] = True
-
-                #elif trade_flags["position_price"] - stoploss > current_bid or trade_flags["stop_rate"] > current_bid:
-                elif trade_flags["position_price"] - stoploss > current_bid:
-                    print("STOPLOSS BUY")
-                    print(trade_flags["position_price"]-stoploss)
-                    trade_flags["end_time"] = insert_time
-                    trade_flags["stl_price"] = current_bid
-                    trade_flags["stl"] = True
-            else:
-                if trade_flags["position_price"] - profit > current_ask:
-                    print("PROFIT SELL")
-                    print(trade_flags["position_price"]-profit)
-                    trade_flags["end_time"] = insert_time
-                    trade_flags["stl_price"] = current_ask
-                    trade_flags["stl"] = True
-
-                #elif trade_flags["position_price"] + stoploss < current_ask or trade_flags["stop_rate"] < current_ask:
-                elif trade_flags["position_price"] + stoploss < current_ask:
-                    print("STOPLOSS SELL")
-                    print(trade_flags["position_price"]+stoploss)
-                    trade_flags["end_time"] = insert_time
-                    trade_flags["stl_price"] = current_ask
-                    trade_flags["stl"] = True
+            #elif trade_flags["position_price"] + stoploss < current_ask or trade_flags["stop_rate"] < current_ask:
+            elif trade_flags["position_price"] + stoploss < current_ask:
+                print("STOPLOSS SELL")
+                print(trade_flags["position_price"]+stoploss)
+                trade_flags["end_time"] = insert_time
+                trade_flags["stl_price"] = current_ask
+                trade_flags["stl"] = True
 
     return trade_flags
 
@@ -805,6 +887,8 @@ if __name__ == "__main__":
                 debug_logger.info("Direction_time=%s" % trade_flags["direction_time"])
                 debug_logger.info("Direction_slope=%s" % trade_flags["slope"])
                 debug_logger.info("Direction_diff=%s" % trade_flags["diff"])
+                debug_logger.info("Candle_length=%s" % trade_flags["candle_length"])
+                debug_logger.info("Slope_matching=%s" % trade_flags["slope_matching"])
                 debug_logger.info("Touched_EMA_time=%s" % trade_flags["touched_ema_time"])
                 debug_logger.info("Ordered_time=%s" % trade_flags["start_time"])
                 debug_logger.info("Ordered_price=%s" % trade_flags["position_price"])

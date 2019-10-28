@@ -408,7 +408,7 @@ def get_current_price(instrument, insert_time):
     return ask, bid, insert_time
 
 def reset_trade_flags():
-    return  {"direction": "flat", "touched_ema": False, "position": False, "buildup_count": 0, "buildup": False, "price_action_count": 0, "stl": False, "buildup_flag": False, "insidebar_count": 0, "outsidebar_count": 0, "barbwire_count": 0}
+    return  {"direction": "flat", "touched_ema": False, "position": False, "buildup_count": 0, "buildup": False, "price_action_count": 0, "stl": False}
 
 def decide_tradetime(insert_time):
     hour = insert_time.hour
@@ -547,7 +547,7 @@ def decide_trade(trade_flags, insert_time):
         if 1 == 0:
             pass
         #elif (length == up_count) and trend_diff > 0.2 and slope_matching > 30 and current_price > ema100:
-        elif trend_diff > 0.2 and current_price > ema25:
+        elif trend_diff > 0.2 and slope_matching > 60 and current_price > ema100 and ema25 > ema100 and trade_flags["slope"] > 0:
             if trade_flags["direction"] == "buy":
                 pass
             elif trade_flags["direction"] == "sell":
@@ -565,7 +565,7 @@ def decide_trade(trade_flags, insert_time):
             print(trade_flags["direction"])
 
         #elif (length == down_count) and trend_diff < -0.2 and slope_matching > 30 and current_price < ema100:
-        elif trend_diff < -0.2 and current_price < ema25:
+        elif trend_diff < -0.2 and slope_matching > 60 and current_price < ema100 and ema25 < ema100 and trade_flags["slope"] < 0:
             if trade_flags["direction"] == "sell":
                 pass
             elif trade_flags["direction"] == "buy":
@@ -607,41 +607,6 @@ def decide_trade(trade_flags, insert_time):
 
 
         if trade_flags["direction"] != "flat" and trade_flags["touched_ema"]:
-            # buildupの確認
-            # 直近5本足を見る
-            # 始値終値の差が0.05超えたらNG
-            # 始値終値の最安値最高値の差が0.05超えたらNG
-            buildup_price = price_df.tail(5).reset_index(drop=True)
-            plus_df = buildup_price[buildup_price["open"] < buildup_price["close"]]
-            minus_df = buildup_price[buildup_price["open"] > buildup_price["close"]]
-
-            max_nd = np.hstack([plus_df["close"].values, minus_df["open"].values])
-            min_nd = np.hstack([plus_df["open"].values, minus_df["close"].values])
-
-            buildup_flag = True
-            for i in range(len(buildup_price)):
-                if abs(buildup_price["close"][i] - buildup_price["open"][i]) > 0.05:
-                    buildup_flag = False
-            if abs(max(max_nd) - min(max_nd)) > 0.05 and abs(max(min_nd) - min(min_nd)) > 0.05:
-                buildup_flag = False
-            
-            if buildup_flag:
-                trade_flags["buildup_flag"] = buildup_flag
-            ###
-
-            # プライスアクション判定
-            priceaction_df = price_df.tail(2).reset_index(drop=True)
-            outsidebar_status = outside_bar(priceaction_df)
-            insidebar_status = inside_bar(priceaction_df)
-            barbwire_status = barbwire(priceaction_df.tail(1).reset_index(drop=True))
-
-            if outsidebar_status["status"] and outsidebar_status["direction"] == trade_flags["direction"]:
-                trade_flags["outsidebar_count"] += 1
-            elif insidebar_status["status"] and insidebar_status["direction"] == trade_flags["direction"]:
-                trade_flags["insidebar_count"] += 1
-            elif barbwire_status["status"] and barbwire_status["direction"] == trade_flags["direction"]:
-                trade_flags["barbwire_count"] += 1
-                
             open_prices = price_df["open"].tail(2).values
             close_prices = price_df["close"].tail(2).values
             high_prices = price_df["high"].tail(2).values
@@ -654,7 +619,7 @@ def decide_trade(trade_flags, insert_time):
             threshold = 0.05
             diff = abs(ema25 - current_price)
 
-            if diff < threshold and trade_flags["buildup_flag"]:
+            if diff < threshold:
                 if trade_flags["direction"] == "buy":
                     # 最初の足が陰線
                     if open_prices[0] > close_prices[0]:
@@ -771,9 +736,6 @@ if __name__ == "__main__":
                 debug_logger.info("Direction_diff=%s" % trade_flags["diff"])
                 debug_logger.info("Slope_matching=%s" % trade_flags["slope_matching"])
                 debug_logger.info("Touched_EMA_time=%s" % trade_flags["touched_ema_time"])
-                debug_logger.info("Outsidebar_count=%s" % trade_flags["outsidebar_count"])
-                debug_logger.info("Insidebar_count=%s" % trade_flags["insidebar_count"])
-                debug_logger.info("barbwire_count=%s" % trade_flags["barbwire_count"])
                 debug_logger.info("Ordered_time=%s" % trade_flags["start_time"])
                 debug_logger.info("Ordered_price=%s" % trade_flags["position_price"])
                 debug_logger.info("Ordered_side=%s" % trade_flags["direction"])

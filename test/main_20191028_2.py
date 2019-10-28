@@ -619,9 +619,6 @@ def decide_trade(trade_flags, insert_time):
             min_nd = np.hstack([plus_df["open"].values, minus_df["close"].values])
 
             buildup_flag = True
-            for i in range(len(buildup_price)):
-                if abs(buildup_price["close"][i] - buildup_price["open"][i]) > 0.05:
-                    buildup_flag = False
             if abs(max(max_nd) - min(max_nd)) > 0.05 and abs(max(min_nd) - min(min_nd)) > 0.05:
                 buildup_flag = False
             

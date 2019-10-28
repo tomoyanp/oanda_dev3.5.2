@@ -32,7 +32,7 @@ def candle_stick(price_df):
 
     ax.grid()
 
-    locator = mdates.MinuteLocator(byminute=None, interval=30, tz=None)
+    locator = mdates.MinuteLocator(byminute=None, interval=60, tz=None)
     ax.xaxis.set_major_locator(locator)
     ax.xaxis.set_major_formatter(mdates.DateFormatter("%m/%d\n%H:%M"))
 

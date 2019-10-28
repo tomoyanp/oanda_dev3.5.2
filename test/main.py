@@ -695,6 +695,9 @@ def decide_trade(trade_flags, insert_time):
         profit = 0.3
         stoploss = 0.2
 
+        price_df = get_price(instrument, insert_time, table_type, length=1)
+        current_df = price_df.tail(1).reset_index(drop=True)
+
         if trade_flags["direction"] == "buy":
             if trade_flags["position_price"] + profit < current_bid:
                 print("PROFIT BUY")
@@ -710,6 +713,13 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["end_time"] = insert_time
                 trade_flags["stl_price"] = current_bid
                 trade_flags["stl"] = True
+            elif current_df["open"][0] - current_df["close"][0] > 0.05:
+                print("STOPLOSS POWERBAR BUY")
+                print(trade_flags["position_price"]-stoploss)
+                trade_flags["end_time"] = insert_time
+                trade_flags["stl_price"] = current_bid
+                trade_flags["stl"] = True
+
         else:
             if trade_flags["position_price"] - profit > current_ask:
                 print("PROFIT SELL")
@@ -725,7 +735,13 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["end_time"] = insert_time
                 trade_flags["stl_price"] = current_ask
                 trade_flags["stl"] = True
-
+            elif current_df["close"][0] - current_df["open"][0] > 0.05:
+                print("STOPLOSS POWERBAR SELL")
+                print(trade_flags["position_price"]+stoploss)
+                trade_flags["end_time"] = insert_time
+                trade_flags["stl_price"] = current_ask
+                trade_flags["stl"] = True
+ 
     return trade_flags
 
 

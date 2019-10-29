@@ -61,6 +61,7 @@ con = MysqlConnector()
 instrument = "GBP_JPY"
 #insert_time = datetime.strptime("2019-04-01 20:20:30", "%Y-%m-%d %H:%M:%S")
 insert_time = datetime.strptime("2019-04-01 00:00:30", "%Y-%m-%d %H:%M:%S")
+#insert_time = datetime.strptime("2019-06-01 00:00:30", "%Y-%m-%d %H:%M:%S")
 #insert_time = datetime.strptime("2019-04-01 19:00:30", "%Y-%m-%d %H:%M:%S")
 end_time = datetime.strptime("2019-10-19 05:00:30", "%Y-%m-%d %H:%M:%S")
 table_type = "5m"
@@ -507,6 +508,8 @@ def decide_trade(trade_flags, insert_time):
 
         # 高値と安値の差額
         trend_diff = end_price - start_price
+        candle_diff = tmp["high"][start_index:end_index] - tmp["low"][start_index:end_index]
+        candle_diff = (max(candle_diff))
 
         # トレンドの間のローソク足を取得する
         trend_close = tmp["close"][start_index:end_index]            
@@ -642,12 +645,12 @@ def decide_trade(trade_flags, insert_time):
             elif barbwire_status["status"] and barbwire_status["direction"] == trade_flags["direction"]:
                 trade_flags["barbwire_count"] += 1
                 
-            open_prices = price_df["open"].tail(2).values
-            close_prices = price_df["close"].tail(2).values
-            high_prices = price_df["high"].tail(2).values
-            low_prices = price_df["low"].tail(2).values
+            open_prices = price_df["open"].tail(3).values
+            close_prices = price_df["close"].tail(3).values
+            high_prices = price_df["high"].tail(3).values
+            low_prices = price_df["low"].tail(3).values
 
-            barbwire_df = price_df.tail(1).reset_index(drop=True)
+            barbwire_df = price_df.tail(2).reset_index(drop=True)
             barbwire_status = barbwire(barbwire_df)
 
 
@@ -660,7 +663,7 @@ def decide_trade(trade_flags, insert_time):
                     if open_prices[0] > close_prices[0]:
                         # 最初の足より安値をつけること。最初の足より高値で終わること
                         # if low_prices[0] > low_prices[1] and (close_prices[0] < close_prices[1] or barbwire(barbwire_df)["status"] or open_prices[1] < close_prices[1]):
-                        if low_prices[0] > low_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "buy":
+                        if low_prices[0] > low_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "buy" and close_prices[1] < close_prices[2]:
                             trade_flags["position"] = True
 
                 elif trade_flags["direction"] == "sell":
@@ -668,7 +671,7 @@ def decide_trade(trade_flags, insert_time):
                     if open_prices[0] < close_prices[0]:
                         # 最初の足より高値をつけること。最初の足より安値で終わること
                         # if high_prices[0] < high_prices[1] and (close_prices[0] > close_prices[1] or barbwire(barbwire_df)["status"] or open_prices[1] > close_prices[1]):
-                        if high_prices[0] < high_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "sell":
+                        if high_prices[0] < high_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "sell" and close_prices[1] > close_prices[2]:
                             trade_flags["position"] = True
             else:
                 trade_flags = reset_trade_flags()
@@ -683,6 +686,7 @@ def decide_trade(trade_flags, insert_time):
     
                 trade_flags["start_time"] = insert_time
                 trade_flags["ema"] = ema
+                trade_flags["candle_diff"] = candle_diff
             else:
                 trade_flags["price_action_count"] += 1
 
@@ -693,7 +697,7 @@ def decide_trade(trade_flags, insert_time):
                         
     elif trade_flags["position"]:
         profit = 0.3
-        stoploss = 0.2
+        stoploss = 0.1
 
         price_df = get_price(instrument, insert_time, table_type, length=1)
         current_df = price_df.tail(1).reset_index(drop=True)
@@ -713,12 +717,12 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["end_time"] = insert_time
                 trade_flags["stl_price"] = current_bid
                 trade_flags["stl"] = True
-            elif current_df["open"][0] - current_df["close"][0] > 0.05:
-                print("STOPLOSS POWERBAR BUY")
-                print(trade_flags["position_price"]-stoploss)
-                trade_flags["end_time"] = insert_time
-                trade_flags["stl_price"] = current_bid
-                trade_flags["stl"] = True
+            #elif current_df["open"][0] - current_df["close"][0] > 0.05:
+            #    print("STOPLOSS POWERBAR BUY")
+            #    print(trade_flags["position_price"]-stoploss)
+            #    trade_flags["end_time"] = insert_time
+            #    trade_flags["stl_price"] = current_bid
+            #    trade_flags["stl"] = True
 
         else:
             if trade_flags["position_price"] - profit > current_ask:
@@ -735,12 +739,12 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["end_time"] = insert_time
                 trade_flags["stl_price"] = current_ask
                 trade_flags["stl"] = True
-            elif current_df["close"][0] - current_df["open"][0] > 0.05:
-                print("STOPLOSS POWERBAR SELL")
-                print(trade_flags["position_price"]+stoploss)
-                trade_flags["end_time"] = insert_time
-                trade_flags["stl_price"] = current_ask
-                trade_flags["stl"] = True
+            #elif current_df["close"][0] - current_df["open"][0] > 0.05:
+            #    print("STOPLOSS POWERBAR SELL")
+            #    print(trade_flags["position_price"]+stoploss)
+            #    trade_flags["end_time"] = insert_time
+            #    trade_flags["stl_price"] = current_ask
+            #    trade_flags["stl"] = True
  
     return trade_flags
 
@@ -785,6 +789,7 @@ if __name__ == "__main__":
                 debug_logger.info("Direction_time=%s" % trade_flags["direction_time"])
                 debug_logger.info("Direction_slope=%s" % trade_flags["slope"])
                 debug_logger.info("Direction_diff=%s" % trade_flags["diff"])
+                debug_logger.info("Candle_diff=%s" % trade_flags["candle_diff"])
                 debug_logger.info("Slope_matching=%s" % trade_flags["slope_matching"])
                 debug_logger.info("Touched_EMA_time=%s" % trade_flags["touched_ema_time"])
                 debug_logger.info("Outsidebar_count=%s" % trade_flags["outsidebar_count"])

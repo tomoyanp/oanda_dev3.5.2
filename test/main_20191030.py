@@ -40,7 +40,7 @@ import numpy as np
 from logging import getLogger, FileHandler, DEBUG
 from send_mail import SendMail
 
-from create_candle import candle_stick, candle_stick_1h
+from create_candle import candle_stick
 from price_action import trend_line, supreg, inside_bar, outside_bar, barbwire
 
 debug_logfilename = "%s_debug.log" % (datetime.now().strftime("%Y%m%d%H%M%S"))
@@ -104,46 +104,21 @@ def plot_chart(insert_time, all_price_df, long_trend, short_trend, ema, registan
 def plot_result(trade_flags):
     diff = trade_flags["end_time"] - trade_flags["start_time"]
     diff_minutes = int(diff.total_seconds()/60/5)
-    table_type = "5m"
 
-    future_time = 3600*5
+    future_time = 7200
 
-    candle_length = show_after_size+window_size+diff_minutes+(int(future_time/300))
-    all_price_df = get_price(instrument, trade_flags["end_time"] + timedelta(seconds=future_time), table_type, length=candle_length)
-    ema25_df = get_price(instrument, trade_flags["end_time"] + timedelta(seconds=future_time), table_type, length=candle_length+25)
-    ema100_df = get_price(instrument, trade_flags["end_time"] + timedelta(seconds=future_time), table_type, length=candle_length+100)
-
-    ema25 = pd.DataFrame()
-    ema25["close"] = ema25_df["close"].ewm(span=25).mean()
-    ema25["insert_time"] = ema25_df["insert_time"]
-    ema100 = pd.DataFrame()
-    ema100["close"] = ema100_df["close"].ewm(span=100).mean()
-    ema100["insert_time"] = ema100_df["insert_time"]
-
-    ema25 = ema25.tail(candle_length).reset_index(drop=True)
-    ema100 = ema100.tail(candle_length).reset_index(drop=True)
-
-
-    print(trade_flags["start_time"])
-    print(trade_flags["start_time"].weekday())
-    if int(trade_flags["start_time"].weekday()) == 0:
-        tmp_date = trade_flags["start_time"].strftime("%Y%m%d050000")
-        tmp_date = datetime.strptime(tmp_date, "%Y%m%d%H%M%S")
-
-        all_price_df = all_price_df[all_price_df["insert_time"] > tmp_date]
-        ema25 = ema25[ema25["insert_time"] > tmp_date]
-        ema100 = ema100[ema100["insert_time"] > tmp_date]
+    all_price_df = get_price(instrument, trade_flags["end_time"] + timedelta(seconds=future_time), table_type, length=show_after_size+window_size+diff_minutes+(int(future_time/300)))
 
     # ローソク足の描画
     plt, ax = candle_stick(all_price_df)
 
     #print(trade_flags["position"])
-    if trade_flags["profit"] > 0:
-        trade_color = "green"
-        stl_color = "green"
+    if trade_flags["direction"] == "buy":
+        trade_color = "blue"
+        stl_color = "red"
     else:
-        trade_color = "grey"
-        stl_color = "grey"
+        trade_color = "red"
+        stl_color = "blue"
 
     # 約定時点 
     ax.plot(trade_flags["start_time"], trade_flags["position_price"], marker=".", color=trade_color, markersize=10)
@@ -153,75 +128,28 @@ def plot_result(trade_flags):
     ax.plot(trade_flags["end_time"], trade_flags["stl_price"], marker=".", color=stl_color, markersize=10)
     ax.axvline(x=trade_flags["end_time"], linewidth="0.5", color=stl_color)
 
-    # EMAを描画する
-    ax.plot(ema25["insert_time"], ema25["close"], linewidth="1.0", color="orange")
-    ax.plot(ema100["insert_time"], ema100["close"], linewidth="1.0", color="red")
+    # 回帰分析の結果を描画する
+    ax.plot(trade_flags["trend"]["insert_time"], trade_flags["trend"]["price"], linewidth="1.0", color="green")
 
-    plt.savefig("results/%s-%s-5m.png" % (trade_flags["start_time"].strftime("%Y%m%d%H%M"), trade_flags["end_time"].strftime("%Y%m%d%H%M")))
-    plt.close()
+    # 長期トレンドラインを描画する
+    #ax.plot(trade_flags["long_trend"]["insert_time"], trade_flags["long_trend"]["high_trend"], linewidth="1.0", color="green")
+    #ax.plot(trade_flags["long_trend"]["insert_time"], trade_flags["long_trend"]["low_trend"], linewidth="1.0", color="green")
 
-
-
-    # 1時間用
-    diff = trade_flags["end_time"] - trade_flags["start_time"]
-    diff_hours = int(diff.total_seconds()/3600)
-    table_type = "1h"
-
-    future_time = 3600*24
-    before_time = 3600*24
-
-    candle_length = int((before_time / 3600) + diff_hours + (future_time / 3600))
-    end_time = trade_flags["end_time"] + timedelta(seconds=future_time)
-    end_time = end_time.strftime("%Y-%m-%d %H:%M:%S")
-    all_price_df = get_price(instrument, end_time, table_type, length=candle_length)
-    ema25_df = get_price(instrument, end_time, table_type, length=candle_length+25)
-    ema100_df = get_price(instrument, end_time, table_type, length=candle_length+100)
-
-    ema25 = pd.DataFrame()
-    ema25["close"] = ema25_df["close"].ewm(span=25).mean()
-    ema25["insert_time"] = ema25_df["insert_time"]
-    ema100 = pd.DataFrame()
-    ema100["close"] = ema100_df["close"].ewm(span=100).mean()
-    ema100["insert_time"] = ema100_df["insert_time"]
-
-    ema25 = ema25.tail(candle_length).reset_index(drop=True)
-    ema100 = ema100.tail(candle_length).reset_index(drop=True)
-
-
-    print(trade_flags["start_time"])
-    print(trade_flags["start_time"].weekday())
-    if int(trade_flags["start_time"].weekday()) == 0:
-        tmp_date = trade_flags["start_time"].strftime("%Y%m%d050000")
-        tmp_date = datetime.strptime(tmp_date, "%Y%m%d%H%M%S")
-
-        all_price_df = all_price_df[all_price_df["insert_time"] > tmp_date]
-        ema25 = ema25[ema25["insert_time"] > tmp_date]
-        ema100 = ema100[ema100["insert_time"] > tmp_date]
-
-    # ローソク足の描画
-    plt, ax = candle_stick_1h(all_price_df)
-
-    #print(trade_flags["position"])
-    if trade_flags["profit"] > 0:
-        trade_color = "green"
-        stl_color = "green"
-    else:
-        trade_color = "grey"
-        stl_color = "grey"
-
-    # 約定時点 
-    ax.plot(trade_flags["start_time"], trade_flags["position_price"], marker=".", color=trade_color, markersize=10)
-    ax.axvline(x=trade_flags["start_time"], linewidth="0.5", color=trade_color)
-
-    # 決済時点 
-    ax.plot(trade_flags["end_time"], trade_flags["stl_price"], marker=".", color=stl_color, markersize=10)
-    ax.axvline(x=trade_flags["end_time"], linewidth="0.5", color=stl_color)
+    # 短期トレンドラインを描画する
+    #ax.plot(trade_flags["short_trend"]["insert_time"], trade_flags["short_trend"]["high_trend"], linewidth="1.0", color="green")
+    #ax.plot(trade_flags["short_trend"]["insert_time"], trade_flags["short_trend"]["low_trend"], linewidth="1.0", color="green")
 
     # EMAを描画する
-    ax.plot(ema25["insert_time"], ema25["close"], linewidth="1.0", color="orange")
-    ax.plot(ema100["insert_time"], ema100["close"], linewidth="1.0", color="red")
+    ax.plot(trade_flags["ema"]["insert_time"], trade_flags["ema"]["ema25"], linewidth="1.0", color="orange")
+    ax.plot(trade_flags["ema"]["insert_time"], trade_flags["ema"]["ema100"], linewidth="1.0", color="red")
 
-    plt.savefig("results/%s-%s-1h.png" % (trade_flags["start_time"].strftime("%Y%m%d%H%M"), trade_flags["end_time"].strftime("%Y%m%d%H%M")))
+    # サポートレジスタンスラインを描画する
+    #for ln in trade_flags["registance_line"]:
+    #    ax.axhline(y=ln, linewidth="1.0", color="red")
+    #for ln in trade_flags["support_line"]:
+    #    ax.axhline(y=ln, linewidth="1.0", color="blue")
+
+    plt.savefig("results/%s-%s.png" % (trade_flags["start_time"].strftime("%Y%m%d%H%M"), trade_flags["end_time"].strftime("%Y%m%d%H%M")))
     plt.close()
 
 def decide_season(base_time):
@@ -526,98 +454,192 @@ def decide_trade(trade_flags, insert_time):
         # なければパス（何もトレードしない）
         else:
             pass
-    elif trade_flags["position"] == False:
-        price_df_5m = get_price(instrument, insert_time, table_type="5m", length=window_size)
-        ema_price_df_5m = get_price(instrument, insert_time, table_type="5m", length=window_size+100)
+    elif trade_flags["position"] == False and decide_tradetime(insert_time):
+        # 計算用
+        price_df = get_price(instrument, insert_time, table_type, length=window_size)
+        # 描画用（売買後の値動きを見たいため）
+        all_price_df = get_price(instrument, insert_time + timedelta(minutes=base_candle_size*show_after_size), table_type, length=show_after_size+window_size)
+        # EMA用（過去のローソク足がないと計算できないため）
+        ema_price_df = get_price(instrument, insert_time + timedelta(minutes=base_candle_size*show_after_size), table_type, length=show_after_size+window_size+ema_max_size)
 
-        price_df_1h = get_price(instrument, insert_time, table_type="1h", length=window_size)
-        ema_price_df_1h = get_price(instrument, insert_time, table_type="1h", length=window_size+100)
+        ##########################################################################################################
+        # EMAの計算
+        ema25 = ema_price_df["close"].ewm(span=25).mean()
+        # ema100 = ema_price_df["close"].ewm(span=100).mean()
+        ema100 = ema_price_df["close"].ewm(span=200).mean()
+        ema = pd.DataFrame()
+        ema["ema25"] = ema25.copy()
+        ema["ema100"] = ema100.copy()
+        ema["insert_time"] = ema_price_df["insert_time"].copy()
 
-        ema_5m = pd.DataFrame()
-        ema_5m["ema25"] = ema_price_df_5m["close"].ewm(span=25).mean()
-        ema_5m["ema100"] = ema_price_df_5m["close"].ewm(span=100).mean()
-        ema_5m["insert_time"] = ema_price_df_5m["insert_time"].copy()
+        # 過去分はそぎ落とす
+        ema = ema[ema_max_size:]
 
-        ema_1h = pd.DataFrame()
-        ema_1h["ema25"] = ema_price_df_1h["close"].ewm(span=25).mean()
-        ema_1h["ema100"] = ema_price_df_1h["close"].ewm(span=100).mean()
-        ema_1h["insert_time"] = ema_price_df_1h["insert_time"].copy()
+        ########################################################################################################
+        # 売買ロジック
+        current_time = pd.to_datetime(price_df.tail(1)["insert_time"], "%Y-%m-%d %H:%M:%S").values[0]
+        ema["insert_time"] = pd.to_datetime(ema["insert_time"], format="%Y-%m-%d %H:%M:%S")
+        current_ema_df = ema[ema["insert_time"] == current_time]
+        ema25 = current_ema_df["ema25"].values[0]
+        ema100 = current_ema_df["ema100"].values[0]
 
-        if trade_flags["direction"] == "flat":
-            ########################################################################################################
-            ### トレンドの線形回帰と実値がどのくらい近似しているか
-            # トレンドは一旦3時間分とする
-            # こっちは5分
-            trend_length_5m = 24
-            trend_price_5m = price_df_5m.tail(trend_length_5m).reset_index(drop=True)
-            trend_ema_5m = ema_5m.tail(trend_length_5m).reset_index(drop=True)
+        ### トレンドの線形回帰と実値がどのくらい近似しているか
+        # トレンドは一旦3時間分とする
+        trend_length = 36
+        tmp = price_df.tail(trend_length).reset_index(drop=True)
+        trend_ema = ema["ema25"].tail(trend_length).reset_index(drop=True)
+        trend_count = pd.DataFrame()
+        trend_count["buy"] = (tmp["close"] > trend_ema)
+        trend_count["buy"] = len(trend_count["buy"][trend_count["buy"] == True])
+        trend_count["sell"] = (tmp["close"] < trend_ema)
+        trend_count["sell"] = len(trend_count["sell"][trend_count["sell"] == True])
 
-            trend_length_1h = 5
-            trend_price_1h = price_df_1h.tail(trend_length_1h).reset_index(drop=True)
-            trend_ema_1h = ema_1h.tail(trend_length_1h).reset_index(drop=True)
+        maxindex = tmp["close"].idxmax()
+        minindex = tmp["close"].idxmin()
+        max_time = tmp["insert_time"][maxindex]
+        min_time = tmp["insert_time"][minindex]
 
-            trend_count = pd.DataFrame()
+        # 高値のほうが時系列的に後であれば上昇トレンドとする
+        if tmp["insert_time"][minindex] < tmp["insert_time"][maxindex]:
+            start_index = minindex
+            end_index = maxindex
+        else:
+            start_index = maxindex
+            end_index = minindex
+            
+        start_price = tmp["close"][start_index]
+        end_price = tmp["close"][end_index]
 
-            trend_count["buy_5m"] = (trend_price_5m["close"] > trend_ema_5m["ema25"])
-            trend_count["buy_5m"] = len(trend_count["buy_5m"][trend_count["buy_5m"] == True])
-            trend_count["buy_5m"] = (trend_count["buy_5m"]/trend_length_5m)
+        # 高値と安値の差額
+        trend_diff = end_price - start_price
+        candle_diff = tmp["high"][start_index:end_index] - tmp["low"][start_index:end_index]
+        candle_diff = (max(candle_diff))
 
-            trend_count["sell_5m"] = (trend_price_5m["close"] < trend_ema_5m["ema25"])
-            trend_count["sell_5m"] = len(trend_count["sell_5m"][trend_count["sell_5m"] == True])
-            trend_count["sell_5m"] = (trend_count["sell_5m"]/trend_length_5m)
+        # トレンドの間のローソク足を取得する
+        trend_close = tmp["close"][start_index:end_index]            
+        trend_insert_time = tmp["insert_time"][start_index:end_index]            
 
-            trend_count["buy_1h"] = (trend_price_1h["close"] > trend_ema_1h["ema25"])
-            trend_count["buy_1h"] = len(trend_count["buy_1h"][trend_count["buy_1h"] == True])
-            trend_count["buy_1h"] = (trend_count["buy_1h"]/trend_length_1h)
+        # 回帰分析する
+        trend_slope, trend_intercept = getSlope(trend_close)
 
-            trend_count["sell_1h"] = (trend_price_1h["close"] < trend_ema_1h["ema25"])
-            trend_count["sell_1h"] = len(trend_count["sell_1h"][trend_count["sell_1h"] == True])
-            trend_count["sell_1h"] = (trend_count["sell_1h"]/trend_length_1h)
+        # 傾き×インデックス+切片で回帰分析の想定価格を算出する
+        trend_slope_price = []
+        for i in range(1, len(trend_close)+1):
+            trend_slope_price.append((i*trend_slope)+trend_intercept)
 
+        trend_df = pd.DataFrame()
+        trend_df["insert_time"] = trend_insert_time
+        trend_df["price"] = trend_slope_price
+        trade_flags["trend"] = trend_df
+        trade_flags["slope"] = trend_slope
 
-            if trend_count["buy_5m"][0] > 0.8 and trend_count["buy_1h"][0] > 0.8:
-                if trade_flags["direction"] == "buy":
-                    pass
-                elif trade_flags["direction"] == "sell":
-                    trade_flags = reset_trade_flags()
-                    trade_flags["direction"] = "buy"
-                    trade_flags["direction_time"] = insert_time
+        test_df = pd.DataFrame()
+        test_df["slope"] = trend_df["price"] 
+        test_df["high"] = tmp["high"][start_index:end_index]
+        test_df["low"] = tmp["low"][start_index:end_index]
 
-                else:
-                    trade_flags["direction"] = "buy"
-                    trade_flags["direction_time"] = insert_time
+        test_df = test_df.reset_index(drop=True)
 
+        slope_percentage = 0
+        slope_count = 0
+        # 各実値と回帰分析の値が安値 < 高値の間に収まってれば近似していると判定
+        for i in range(0, len(test_df["slope"])):
+            if test_df["low"][i] < test_df["slope"][i] < test_df["high"][i]:
+                slope_count += 1
+            else:
+                pass
+        slope_matching = (slope_count / len(test_df["slope"]))*100
+        trace_logger.info("trend_diff=%s, slope_matching=%s, current_price=%s, ema100=%s" % (trend_diff, slope_matching, current_price, ema100))
+        #if (up_count == down_count):
+        if 1 == 0:
+            pass
+        #elif (length == up_count) and trend_diff > 0.2 and slope_matching > 30 and current_price > ema100:
+        #elif trend_diff > 0.2 and current_price > ema25:
+        elif (trend_count["buy"] / trend_length)[0] > 0.8:
+            if trade_flags["direction"] == "buy":
+                pass
+            elif trade_flags["direction"] == "sell":
+                trade_flags = reset_trade_flags()
+                trade_flags["direction"] = "buy"
+                trade_flags["direction_time"] = insert_time
+                trade_flags["diff"] = trend_diff
+                trade_flags["slope_matching"] = slope_matching
+                    
+            else:
+                trade_flags["direction"] = "buy"
+                trade_flags["direction_time"] = insert_time
+                trade_flags["diff"] = trend_diff
+                trade_flags["slope_matching"] = slope_matching
+            print(trade_flags["direction"])
 
-            elif trend_count["sell_5m"][0] > 0.8 and trend_count["sell_1h"][0] > 0.8:
-                if trade_flags["direction"] == "sell":
-                    pass
-                elif trade_flags["direction"] == "buy":
-                    trade_flags = reset_trade_flags()
-                    trade_flags["direction"] = "sell"
-                    trade_flags["direction_time"] = insert_time
-                else:
-                    trade_flags["direction"] = "sell"
-                    trade_flags["direction_time"] = insert_time
+        #elif (length == down_count) and trend_diff < -0.2 and slope_matching > 30 and current_price < ema100:
+        #elif trend_diff < -0.2 and current_price < ema25:
+        elif (trend_count["sell"] / trend_length)[0] > 0.8:
+            if trade_flags["direction"] == "sell":
+                pass
+            elif trade_flags["direction"] == "buy":
+                trade_flags = reset_trade_flags()
+                trade_flags["direction"] = "sell"
+                trade_flags["direction_time"] = insert_time
+                trade_flags["diff"] = trend_diff
+                trade_flags["slope_matching"] = slope_matching
+            else:
+                trade_flags["direction"] = "sell"
+                trade_flags["direction_time"] = insert_time
+                trade_flags["diff"] = trend_diff
+                trade_flags["slope_matching"] = slope_matching
+            print(trade_flags["direction"])
 
+        if trade_flags["direction"] != "flat":
+            trace_logger.info("%s: Direction=%s" % (insert_time, trade_flags["direction"]))
+                
 
         # トレンドが出ている場合、ema25にタッチしたことを確認する
         if trade_flags["direction"] != "flat":
-            threshold = 0.05
-            high_price = price_df_5m["high"].tail(1).values[0]
-            low_price = price_df_5m["low"].tail(1).values[0]
-            current_ema25 = ema_5m["ema25"].tail(1).values[0]
+            # Dummy
+            # ema25 = current_ema_df["ema25"].values[0]
+            # trade_flags["touched_ema"] = True
+            # trade_flags["touched_ema_time"] = insert_time
 
-            if trade_flags["direction"] == "buy" and low_price < current_ema25:
+            threshold = 0.05
+            high_price = price_df["high"].tail(1).values[-1]
+            low_price = price_df["low"].tail(1).values[-1]
+
+            if trade_flags["direction"] == "buy" and low_price < ema25:
                 trade_flags["touched_ema"] = True
-                trade_flags["touched_ema_time"] = insert_time
-            elif trade_flags["direction"] == "sell" and high_price < current_ema25:
+            elif trade_flags["direction"] == "sell" and high_price < ema25:
                 trade_flags["touched_ema"] = True
+            if trade_flags["touched_ema"]:
                 trade_flags["touched_ema_time"] = insert_time
+            if trade_flags["touched_ema"]:
+                trace_logger.info("%s: TouhcedEMA=True" % (insert_time))
 
 
         if trade_flags["direction"] != "flat" and trade_flags["touched_ema"]:
+            # buildupの確認
+            # 直近5本足を見る
+            # 始値終値の差が0.05超えたらNG
+            # 始値終値の最安値最高値の差が0.05超えたらNG
+            buildup_price = price_df.tail(5).reset_index(drop=True)
+            plus_df = buildup_price[buildup_price["open"] < buildup_price["close"]]
+            minus_df = buildup_price[buildup_price["open"] > buildup_price["close"]]
+
+            max_nd = np.hstack([plus_df["close"].values, minus_df["open"].values])
+            min_nd = np.hstack([plus_df["open"].values, minus_df["close"].values])
+
+            buildup_flag = True
+            for i in range(len(buildup_price)):
+                if abs(buildup_price["close"][i] - buildup_price["open"][i]) > 0.05:
+                    buildup_flag = False
+            if abs(max(max_nd) - min(max_nd)) > 0.05 and abs(max(min_nd) - min(min_nd)) > 0.05:
+                buildup_flag = False
+            
+            if buildup_flag:
+                trade_flags["buildup_flag"] = buildup_flag
+            ###
+
             # プライスアクション判定
-            priceaction_df = price_df_5m.tail(2).reset_index(drop=True)
+            priceaction_df = price_df.tail(2).reset_index(drop=True)
             outsidebar_status = outside_bar(priceaction_df)
             insidebar_status = inside_bar(priceaction_df)
             barbwire_status = barbwire(priceaction_df.tail(1).reset_index(drop=True))
@@ -628,39 +650,40 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["insidebar_count"] += 1
             elif barbwire_status["status"] and barbwire_status["direction"] == trade_flags["direction"]:
                 trade_flags["barbwire_count"] += 1
+                
+            open_prices = price_df["open"].tail(3).values
+            close_prices = price_df["close"].tail(3).values
+            high_prices = price_df["high"].tail(3).values
+            low_prices = price_df["low"].tail(3).values
 
-            open_prices = price_df_5m["open"].tail(3).values
-            close_prices = price_df_5m["close"].tail(3).values
-            high_prices = price_df_5m["high"].tail(3).values
-            low_prices = price_df_5m["low"].tail(3).values
+            barbwire_df = price_df.tail(2).reset_index(drop=True)
+            barbwire_status = barbwire(barbwire_df)
+
 
             threshold = 0.05
-            current_ema25 = ema_5m["ema25"].tail(1).values[0]
-            diff = abs(current_ema25 - current_price)
+            diff = abs(ema25 - current_price)
 
-            if diff < threshold:
-                # 宵の明星パターン
+            if diff < threshold and trade_flags["buildup_flag"]:
                 if trade_flags["direction"] == "buy":
                     # 最初の足が陰線
                     if open_prices[0] > close_prices[0]:
                         # 最初の足より安値をつけること。最初の足より高値で終わること
-                        if low_prices[0] > low_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "buy" and close_prices[1] < close_prices[2]:
+                        #if low_prices[0] > low_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "buy" and close_prices[1] < close_prices[2]:
+                        if low_prices[0] > low_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "buy":
                             trade_flags["position"] = True
 
                 elif trade_flags["direction"] == "sell":
                     # 最初の足が陽線
                     if open_prices[0] < close_prices[0]:
                         # 最初の足より高値をつけること。最初の足より安値で終わること
-                        if high_prices[0] < high_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "sell" and close_prices[1] > close_prices[2]:
+                        #if high_prices[0] < high_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "sell" and close_prices[1] > close_prices[2]:
+                        if high_prices[0] < high_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "sell":
                             trade_flags["position"] = True
+            else:
+                trade_flags = reset_trade_flags()
+                
 
-                # 包み足パターン
-                elif trade_flags["direction"] == "buy" and outsidebar_status["status"] and outsidebar_status["direction"] == "buy":
-                    trade_flags["position"] = True
-                elif trade_flags["direction"] == "sell" and outsidebar_status["status"] and outsidebar_status["direction"] == "sell":
-                    trade_flags["position"] = True
-
-
+                    
             if trade_flags["position"]:
                 if trade_flags["direction"] == "buy":
                     trade_flags["position_price"] = current_ask
@@ -668,19 +691,19 @@ def decide_trade(trade_flags, insert_time):
                     trade_flags["position_price"] = current_bid
     
                 trade_flags["start_time"] = insert_time
+                trade_flags["ema"] = ema
+                trade_flags["candle_diff"] = candle_diff
+            else:
+                trade_flags["price_action_count"] += 1
 
-            # EMA25を0.1以上割り込んだらリセットする
-            if trade_flags["direction"] == "buy" and current_ema25 - current_price > 0.1:
+            # 1時間以上たったらリセットする
+            if trade_flags["price_action_count"] >= 12:
                 trade_flags = reset_trade_flags()
-                print("reset")
-            elif trade_flags["direction"] == "sell" and current_price - current_ema25 > 0.1:
-                trade_flags = reset_trade_flags()
-                print("reset")
 
-
+                        
     elif trade_flags["position"]:
         profit = 0.3
-        stoploss = 0.2
+        stoploss = 0.1
 
         price_df = get_price(instrument, insert_time, table_type, length=1)
         current_df = price_df.tail(1).reset_index(drop=True)
@@ -766,27 +789,32 @@ if __name__ == "__main__":
                     pass
                 else:
                     response = oanda.close_trade(instrument)
+                plot_result(trade_flags)
 
                 debug_logger.info("=====================")
                 debug_logger.info("Direction_time=%s" % trade_flags["direction_time"])
+                debug_logger.info("Direction_slope=%s" % trade_flags["slope"])
+                debug_logger.info("Direction_diff=%s" % trade_flags["diff"])
+                debug_logger.info("Candle_diff=%s" % trade_flags["candle_diff"])
+                debug_logger.info("Slope_matching=%s" % trade_flags["slope_matching"])
                 debug_logger.info("Touched_EMA_time=%s" % trade_flags["touched_ema_time"])
+                debug_logger.info("Outsidebar_count=%s" % trade_flags["outsidebar_count"])
+                debug_logger.info("Insidebar_count=%s" % trade_flags["insidebar_count"])
+                debug_logger.info("barbwire_count=%s" % trade_flags["barbwire_count"])
                 debug_logger.info("Ordered_time=%s" % trade_flags["start_time"])
                 debug_logger.info("Ordered_price=%s" % trade_flags["position_price"])
                 debug_logger.info("Ordered_side=%s" % trade_flags["direction"])
                 debug_logger.info("Stled_time=%s" % trade_flags["end_time"])
                 debug_logger.info("Stled_price=%s" % trade_flags["stl_price"])
                 if trade_flags["direction"] == "buy":
-                    trade_flags["profit"] = trade_flags["stl_price"]-trade_flags["position_price"]
+                    debug_logger.info("Profit=%s" % (trade_flags["stl_price"]-trade_flags["position_price"]))
                 else:
-                    trade_flags["profit"] = trade_flags["position_price"]-trade_flags["stl_price"]
-
-                debug_logger.info("Profit=%s" % trade_flags["profit"])
+                    debug_logger.info("Profit=%s" % (trade_flags["position_price"]-trade_flags["stl_price"]))
 
                 insert_time = insert_time - timedelta(minutes=(insert_time.minute % 5))
                 diff = 30 - insert_time.second
                 insert_time = insert_time + timedelta(seconds=diff)
 
-                plot_result(trade_flags)
                 trade_flags = reset_trade_flags()
 
 

@@ -5,6 +5,8 @@ import subprocess
 file_list = subprocess.getoutput("ls *.result")
 file_list = file_list.split("\n")
 
+subprocess.getoutput("rm profit_export.txt")
+
 for rf in file_list:
   profit = 0
 

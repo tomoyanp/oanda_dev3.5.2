@@ -652,37 +652,36 @@ def decide_trade(trade_flags, insert_time):
             elif barbwire_status["status"] and barbwire_status["direction"] == trade_flags["direction"]:
                 trade_flags["barbwire_count"] += 1
 
-            open_prices = price_df_5m["open"].tail(2).values
-            close_prices = price_df_5m["close"].tail(2).values
-            high_prices = price_df_5m["high"].tail(2).values
-            low_prices = price_df_5m["low"].tail(2).values
+            open_prices = price_df_5m["open"].tail(3).values
+            close_prices = price_df_5m["close"].tail(3).values
+            high_prices = price_df_5m["high"].tail(3).values
+            low_prices = price_df_5m["low"].tail(3).values
 
             threshold = 0.05
             current_ema25 = ema_5m["ema25"].tail(1).values[0]
             diff = abs(current_ema25 - current_price)
 
             if diff < threshold:
-                # だましの安値
+                # 宵の明星パターン
                 if trade_flags["direction"] == "buy":
-                    # 一本目の足より安値を付けること＆＆陽線で終わること
-                    if low_prices[0] > low_prices[1] and open_prices[1] < close_prices[1]:
-                        trade_flags["price_action"] = True
-                        trade_flags["price_action_algo"] = "damasi"
+                    # 最初の足が陰線
+                    if open_prices[0] > close_prices[0]:
+                        # 最初の足より安値をつけること。最初の足より高値で終わること
+                        if low_prices[0] > low_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "buy":
+                            trade_flags["price_action"] = True
 
-                # だましの高値
                 elif trade_flags["direction"] == "sell":
-                    # 一本目の足より高値を付けること＆＆陰線で終わること
-                    if high_prices[0] < high_prices[1] and open_prices[1] > close_prices[1]:
-                        trade_flags["price_action"] = True
-                        trade_flags["price_action_algo"] = "damasi"
+                    # 最初の足が陽線
+                    if open_prices[0] < close_prices[0]:
+                        # 最初の足より高値をつけること。最初の足より安値で終わること
+                        if high_prices[0] < high_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "sell":
+                            trade_flags["price_action"] = True
 
                 # 包み足パターン
                 elif trade_flags["direction"] == "buy" and outsidebar_status["status"] and outsidebar_status["direction"] == "buy":
                     trade_flags["price_action"] = True
-                    trade_flags["price_action_algo"] = "outsidebar"
                 elif trade_flags["direction"] == "sell" and outsidebar_status["status"] and outsidebar_status["direction"] == "sell":
                     trade_flags["price_action"] = True
-                    trade_flags["price_action_algo"] = "outsidebar"
 
             if trade_flags["price_action"]:
                 trade_flags["high_price"] = max(price_df_5m["high"].tail(5))
@@ -809,7 +808,6 @@ if __name__ == "__main__":
                 debug_logger.info("Direction_time=%s" % trade_flags["direction_time"])
                 debug_logger.info("Touched_EMA_time=%s" % trade_flags["touched_ema_time"])
                 debug_logger.info("Price_action_time=%s" % trade_flags["price_action_time"])
-                debug_logger.info("Price_action_algo=%s" % trade_flags["price_action_algo"])
                 debug_logger.info("Ordered_time=%s" % trade_flags["start_time"])
                 debug_logger.info("Ordered_price=%s" % trade_flags["position_price"])
                 debug_logger.info("Ordered_side=%s" % trade_flags["direction"])

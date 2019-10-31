@@ -43,13 +43,13 @@ from send_mail import SendMail
 from create_candle import candle_stick, candle_stick_1h
 from price_action import trend_line, supreg, inside_bar, outside_bar, barbwire
 
-debug_logfilename = "%s_debug.log" % (datetime.now().strftime("%Y%m%d%H%M%S"))
+debug_logfilename = "logs/%s.result" % (datetime.now().strftime("%Y%m%d%H%M%S"))
 debug_logger = getLogger("debug")
 debug_fh = FileHandler(debug_logfilename, "a+")
 debug_logger.addHandler(debug_fh)
 debug_logger.setLevel(DEBUG)
 
-trace_logfilename = "%s_trace.log" % (datetime.now().strftime("%Y%m%d%H%M%S"))
+trace_logfilename = "logs/%s_trace.log" % (datetime.now().strftime("%Y%m%d%H%M%S"))
 trace_logger = getLogger("trace")
 trace_fh = FileHandler(trace_logfilename, "a+")
 trace_logger.addHandler(trace_fh)
@@ -147,17 +147,17 @@ def plot_result(trade_flags):
 
 
     # 約定時点 
-    ax.axvline(x=trade_flags["direction_time"], linewidth="0.5", color="aqua")
-    ax.axvline(x=trade_flags["touched_ema_time"], linewidth="0.5", color="aqua")
-    ax.axvline(x=trade_flags["price_action_time"], linewidth="0.5", color="aqua")
+    ax.axvline(x=trade_flags["direction_time"], linewidth="1", color="green")
+    ax.axvline(x=trade_flags["touched_ema_time"], linewidth="1", color="green")
+    ax.axvline(x=trade_flags["price_action_time"], linewidth="1", color="green")
 
     # 約定時点 
     ax.plot(trade_flags["start_time"], trade_flags["position_price"], marker=".", color=trade_color, markersize=10)
-    ax.axvline(x=trade_flags["start_time"], linewidth="0.5", color=trade_color)
+    #ax.axvline(x=trade_flags["start_time"], linewidth="0.5", color=trade_color)
 
     # 決済時点 
     ax.plot(trade_flags["end_time"], trade_flags["stl_price"], marker=".", color=stl_color, markersize=10)
-    ax.axvline(x=trade_flags["end_time"], linewidth="0.5", color=stl_color)
+    #ax.axvline(x=trade_flags["end_time"], linewidth="0.5", color=stl_color)
 
     # EMAを描画する
     ax.plot(ema25["insert_time"], ema25["close"], linewidth="1.0", color="orange")
@@ -217,11 +217,11 @@ def plot_result(trade_flags):
 
     # 約定時点 
     ax.plot(trade_flags["start_time"], trade_flags["position_price"], marker=".", color=trade_color, markersize=10)
-    ax.axvline(x=trade_flags["start_time"], linewidth="0.5", color=trade_color)
+    #ax.axvline(x=trade_flags["start_time"], linewidth="0.5", color=trade_color)
 
     # 決済時点 
     ax.plot(trade_flags["end_time"], trade_flags["stl_price"], marker=".", color=stl_color, markersize=10)
-    ax.axvline(x=trade_flags["end_time"], linewidth="0.5", color=stl_color)
+    #ax.axvline(x=trade_flags["end_time"], linewidth="0.5", color=stl_color)
 
     # EMAを描画する
     ax.plot(ema25["insert_time"], ema25["close"], linewidth="1.0", color="orange")
@@ -633,6 +633,10 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["touched_ema"] = True
                 trade_flags["touched_ema_time"] = insert_time
 
+            # トレンド検知後60分経過したらリセットする
+            if trade_flags["direction_time"] + timedelta(minutes=60) < insert_time:
+                trade_flags = reset_trade_flags()
+
 
         if trade_flags["direction"] != "flat" and trade_flags["touched_ema"] and trade_flags["price_action"] == False:
             # プライスアクション判定
@@ -684,6 +688,9 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["low_price"] = min(price_df_5m["low"].tail(5))
                 trade_flags["price_action_time"] = insert_time
 
+            # EMAタッチ後60分経過したらリセットする
+            if trade_flags["touched_ema_time"] + timedelta(minutes=60) < insert_time:
+                trade_flags = reset_trade_flags()
 
         if trade_flags["direction"] != "flat" and trade_flags["touched_ema"] and trade_flags["price_action"]:
             if trade_flags["direction"] == "buy" and current_price > trade_flags["high_price"]:
@@ -695,6 +702,7 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["position_price"] = current_bid
                 trade_flags["start_time"] = insert_time
 
+            # プライスアクション検知後60分経過したらリセットする
             if trade_flags["price_action_time"] + timedelta(minutes=60) < insert_time:
                 trade_flags = reset_trade_flags()
 

@@ -145,6 +145,12 @@ def plot_result(trade_flags):
         trade_color = "grey"
         stl_color = "grey"
 
+
+    # 約定時点 
+    ax.axvline(x=trade_flags["direction_time"], linewidth="0.5", color="aqua")
+    ax.axvline(x=trade_flags["touched_ema_time"], linewidth="0.5", color="aqua")
+    ax.axvline(x=trade_flags["price_action_time"], linewidth="0.5", color="aqua")
+
     # 約定時点 
     ax.plot(trade_flags["start_time"], trade_flags["position_price"], marker=".", color=trade_color, markersize=10)
     ax.axvline(x=trade_flags["start_time"], linewidth="0.5", color=trade_color)
@@ -481,7 +487,20 @@ def get_current_price(instrument, insert_time):
     return ask, bid, insert_time
 
 def reset_trade_flags():
-    return  {"direction": "flat", "touched_ema": False, "position": False, "buildup_count": 0, "buildup": False, "price_action_count": 0, "stl": False, "buildup_flag": False, "insidebar_count": 0, "outsidebar_count": 0, "barbwire_count": 0}
+    return  {
+        "direction": "flat",
+        "touched_ema": False,
+        "price_action": False,
+        "position": False,
+        "buildup_count": 0, 
+        "buildup": False, 
+        "price_action_count": 0, 
+        "stl": False, 
+        "buildup_flag": False, 
+        "insidebar_count": 0, 
+        "outsidebar_count": 0, 
+        "barbwire_count": 0
+        }
 
 def decide_tradetime(insert_time):
     hour = insert_time.hour
@@ -601,7 +620,7 @@ def decide_trade(trade_flags, insert_time):
 
 
         # トレンドが出ている場合、ema25にタッチしたことを確認する
-        if trade_flags["direction"] != "flat":
+        if trade_flags["direction"] != "flat" and trade_flags["touched_ema"] == False:
             threshold = 0.05
             high_price = price_df_5m["high"].tail(1).values[0]
             low_price = price_df_5m["low"].tail(1).values[0]
@@ -615,7 +634,7 @@ def decide_trade(trade_flags, insert_time):
                 trade_flags["touched_ema_time"] = insert_time
 
 
-        if trade_flags["direction"] != "flat" and trade_flags["touched_ema"]:
+        if trade_flags["direction"] != "flat" and trade_flags["touched_ema"] and trade_flags["price_action"] == False:
             # プライスアクション判定
             priceaction_df = price_df_5m.tail(2).reset_index(drop=True)
             outsidebar_status = outside_bar(priceaction_df)
@@ -644,38 +663,48 @@ def decide_trade(trade_flags, insert_time):
                     # 最初の足が陰線
                     if open_prices[0] > close_prices[0]:
                         # 最初の足より安値をつけること。最初の足より高値で終わること
-                        if low_prices[0] > low_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "buy" and close_prices[1] < close_prices[2]:
-                            trade_flags["position"] = True
+                        if low_prices[0] > low_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "buy":
+                            trade_flags["price_action"] = True
 
                 elif trade_flags["direction"] == "sell":
                     # 最初の足が陽線
                     if open_prices[0] < close_prices[0]:
                         # 最初の足より高値をつけること。最初の足より安値で終わること
-                        if high_prices[0] < high_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "sell" and close_prices[1] > close_prices[2]:
-                            trade_flags["position"] = True
+                        if high_prices[0] < high_prices[1] and barbwire_status["status"] and barbwire_status["direction"] == "sell":
+                            trade_flags["price_action"] = True
 
                 # 包み足パターン
                 elif trade_flags["direction"] == "buy" and outsidebar_status["status"] and outsidebar_status["direction"] == "buy":
-                    trade_flags["position"] = True
+                    trade_flags["price_action"] = True
                 elif trade_flags["direction"] == "sell" and outsidebar_status["status"] and outsidebar_status["direction"] == "sell":
-                    trade_flags["position"] = True
+                    trade_flags["price_action"] = True
+
+            if trade_flags["price_action"]:
+                trade_flags["high_price"] = max(price_df_5m["high"].tail(5))
+                trade_flags["low_price"] = min(price_df_5m["low"].tail(5))
+                trade_flags["price_action_time"] = insert_time
 
 
-            if trade_flags["position"]:
-                if trade_flags["direction"] == "buy":
-                    trade_flags["position_price"] = current_ask
-                else:
-                    trade_flags["position_price"] = current_bid
-    
+        if trade_flags["direction"] != "flat" and trade_flags["touched_ema"] and trade_flags["price_action"]:
+            if trade_flags["direction"] == "buy" and current_price > trade_flags["high_price"]:
+                trade_flags["position"] = True
+                trade_flags["position_price"] = current_ask
+                trade_flags["start_time"] = insert_time
+            elif trade_flags["direction"] == "sell" and current_price < trade_flags["low_price"]:
+                trade_flags["position"] = True
+                trade_flags["position_price"] = current_bid
                 trade_flags["start_time"] = insert_time
 
-            # EMA25を0.1以上割り込んだらリセットする
-            if trade_flags["direction"] == "buy" and current_ema25 - current_price > 0.1:
+            if trade_flags["price_action_time"] + timedelta(minutes=60) < insert_time:
                 trade_flags = reset_trade_flags()
-                print("reset")
-            elif trade_flags["direction"] == "sell" and current_price - current_ema25 > 0.1:
-                trade_flags = reset_trade_flags()
-                print("reset")
+
+            # # EMA25を0.1以上割り込んだらリセットする
+            # if trade_flags["direction"] == "buy" and current_ema25 - current_price > 0.1:
+            #     trade_flags = reset_trade_flags()
+            #     print("reset")
+            # elif trade_flags["direction"] == "sell" and current_price - current_ema25 > 0.1:
+            #     trade_flags = reset_trade_flags()
+            #     print("reset")
 
 
     elif trade_flags["position"]:
@@ -770,6 +799,7 @@ if __name__ == "__main__":
                 debug_logger.info("=====================")
                 debug_logger.info("Direction_time=%s" % trade_flags["direction_time"])
                 debug_logger.info("Touched_EMA_time=%s" % trade_flags["touched_ema_time"])
+                debug_logger.info("Price_action_time=%s" % trade_flags["price_action_time"])
                 debug_logger.info("Ordered_time=%s" % trade_flags["start_time"])
                 debug_logger.info("Ordered_price=%s" % trade_flags["position_price"])
                 debug_logger.info("Ordered_side=%s" % trade_flags["direction"])
